@@ -1,26 +1,25 @@
 import { 
   StyleSheet, 
-  Text, 
-  View, 
-  TouchableHighlight,
+  View,
   Image,
   ScrollView,
-  SafeAreaView,
-  TouchableOpacity
+  SafeAreaView
 } from 'react-native';
 
 import React, {useState} from 'react'
 import imagenCromiun from '../../assets/cromiun.png'
-import { InputOutline } from 'react-native-input-outline';
-
+import { TextInput, Text, Button, Title } from 'react-native-paper'
+import { getSHAOf } from "../others/utils";
+import constants from "../others/constants";
 
 
 export default LogInScreen = ({navigation}) =>{
 
-    const [username,setUsername] = useState('');
+    const [mail,setMail] = useState('');
     const [password,setPassword] = useState('');
-    const [usernameError,setUsernameError] = useState(null);
+    const [mailError,setMailError] = useState(null);
     const [passwordError,setPasswordError] = useState(null);
+    const [securePassword, setSecurePassword] = useState(true);
 
     let sendPostRequest = async () =>{
 
@@ -28,16 +27,13 @@ export default LogInScreen = ({navigation}) =>{
           return;
       }
 
-      await fetch("endpoint/login",
+      await fetch(constants.USERS_HOST + constants.SIGN_IN_URL,
           {
             method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
+            headers: constants.JSON_HEADER,
             body: JSON.stringify({
-              username: {username},
-              password: {password},
+              mail: {mail},
+              password: getSHAOf( getSHAOf(password) ),
           })
 
       }).then((response)=>{console.log(response)})
@@ -46,10 +42,10 @@ export default LogInScreen = ({navigation}) =>{
 
     let validate = () =>{
       
-      if ( username === '' ) setUsernameError('Campo "Nombre de Usuario" debe ser completado')
+      if ( mail === '' ) setMailError('Campo "Mail" debe ser completado')
       if ( password === '' ) setPasswordError('Campo "Contraseña" debe ser completado')
 
-      if (( usernameError === null ) && (passwordError === null)){
+      if (( mail === null ) && (passwordError === null)){
           return true;
       }
       
@@ -61,45 +57,52 @@ export default LogInScreen = ({navigation}) =>{
         <SafeAreaView>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View>
-                <TouchableOpacity onPress={()=>{navigation.navigate('NavigatorlogInScreen')}}>
-                  <View>
+                <Button 
+                    mode='text' 
+                    onPress={()=>{navigation.navigate('NavigatorlogInScreen')}}
+                    style={{width: 100}}
+                    >
                     <Text>ATRAS</Text>
-                  </View>
-                </TouchableOpacity>
+                </Button>
                 <Image source={imagenCromiun} style={styles.image}></Image>
-                <Text style={styles.title}>Iniciar sesión en My App</Text>
+                <Title style={styles.title}>Iniciar sesión en My App</Title>
                 
-                <InputOutline
-                    name='Username'
-                    placeholder='Nombre de Usuario*'
-                    value={username}
-                    style={styles.input}
-                    onChangeText={(newText) => {setUsername(newText); setUsernameError(null);}}
-                    error={usernameError}
-                    errorFontSize={8}
-                 />
-
-                <InputOutline
+                <TextInput
+                    name='Mail'
+                    label='Mail*'
+                    value={mail}
+                    onChangeText={(newText) => {setMail(newText); setMailError(null);}}
+                    mode='outlined'
+                    error={mailError!==null}/>
+                {mailError &&(
+                  <Text style={{color: 'red'}}>Campo 'Mail' es requerido</Text>
+                ) }
+                
+                <TextInput
                     name='Password'
-                    placeholder='Contraseña*'
+                    label='Contraseña*'
                     value={password}
-                    style={styles.input}
                     onChangeText={(newText) => {setPassword(newText); setPasswordError(null);}}
-                    secureTextEntry={true}
-                    error={passwordError}
-                    errorFontSize={8}
-                 />
+                    mode='outlined'
+                    error={passwordError!==null}
+                    secureTextEntry={securePassword}
+                    right={<TextInput.Icon name="eye" onPress={()=>{setSecurePassword(! securePassword)}}/>}/>
+                {passwordError &&(
+                  <Text style={{color: 'red'}}>Campo 'Contraseña' es requerido</Text>
+                ) }
+              
 
-                <TouchableHighlight style={styles.button} onPress={sendPostRequest}>
+                <Button mode='contained' style={styles.button} onPress={sendPostRequest}>
                     <Text style={styles.buttonText}>Iniciar</Text>
-                </TouchableHighlight>
+                </Button>
 
-                <TouchableHighlight 
+                <Button 
+                    mode='text'
                     style={{backgroundColor:'#f5fcff'}} 
                     onPress={()=>{navigation.navigate('ForgotPasswordScreen')}}>
                     
                     <Text style={styles.forgotPasswordButton}>¿Olvido su contraseña?</Text>
-                </TouchableHighlight>
+                </Button>
             </View>
             </ScrollView>
         </SafeAreaView>

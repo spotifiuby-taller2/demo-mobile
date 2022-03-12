@@ -1,8 +1,6 @@
 import 'react-native-gesture-handler'
-import { 
-  StyleSheet, 
+import {  
   Text, 
-  TouchableOpacity, 
   View, 
   Image, 
 } from 'react-native';
@@ -10,9 +8,12 @@ import React from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import imagenCromiun from './assets/cromiun.png';
-import LogInScreen from './Screens/BeginScreens/LogInScreen'
-import SignUpScreen from './Screens/BeginScreens/SignUpScreen'
-import ForgotPasswordScreen from './Screens/BeginScreens/ForgotPasswordScreen'
+import LogInScreen from './src/BeginScreens/LogInScreen'
+import SignUpScreen from './src/BeginScreens/SignUpScreen'
+import ForgotPasswordScreen from './src/BeginScreens/ForgotPasswordScreen'
+import { Provider as PaperProvider, Button } from 'react-native-paper';
+
+
 
 const Stack = createNativeStackNavigator();
 
@@ -26,15 +27,24 @@ const NavigationLogInScreen = ({navigation}) =>{
         </Image>
       </View>
       <View style={styles.containerTexts}>
-        <TouchableOpacity style={styles.button} onPress={()=>{navigation.navigate('LogInScreen')}}>
-          <Text style={styles.text}>Iniciar Sesión</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={()=>{navigation.navigate('SignUpScreen')}}>
-          <Text style={styles.text}>Registrarse</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={()=>{navigation.navigate('ForgotPasswordScreen')}}>
-          <Text style={styles.text}>¿Olvido su contraseña?</Text>
-        </TouchableOpacity>
+        <Button
+          mode='text'
+          style={styles.button} 
+          onPress={()=>{navigation.navigate('LogInScreen')}}>
+            <Text style={styles.text}>Iniciar Sesión</Text>
+        </Button>
+        <Button
+          mode='text' 
+          style={styles.button} 
+          onPress={()=>{navigation.navigate('SignUpScreen')}}>
+            <Text style={styles.text}>Registrarse</Text>
+        </Button>
+        <Button
+          mode='text'
+          style={styles.button} 
+          onPress={()=>{navigation.navigate('ForgotPasswordScreen')}}>
+            <Text style={styles.text}>¿Olvido su contraseña?</Text>
+        </Button>
       </View>
     </View>
   )
@@ -44,14 +54,16 @@ const NavigationLogInScreen = ({navigation}) =>{
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}}>
+    <PaperProvider>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{headerShown: false}}>
           <Stack.Screen name='NavigatorlogInScreen' component={NavigationLogInScreen}/>
           <Stack.Screen name='LogInScreen' component={LogInScreen}/>
           <Stack.Screen name='SignUpScreen' component={SignUpScreen}/>
           <Stack.Screen name='ForgotPasswordScreen' component={ForgotPasswordScreen}/>
-      </Stack.Navigator>
-    </NavigationContainer>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
   );
 };
 

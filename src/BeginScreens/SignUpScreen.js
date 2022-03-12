@@ -1,64 +1,57 @@
 import { 
     StyleSheet, 
-    Text, 
     View, 
-    TouchableHighlight,
     Image,
     SafeAreaView,
-    TouchableOpacity,
-    ScrollView,
-    TextInput
+    ScrollView
   } from 'react-native';
   
-  import React, {useRef, useState} from 'react'
+  import React, {useState} from 'react'
   import imagenCromiun from '../../assets/cromiun.png'
-  import { InputOutline } from 'react-native-input-outline';
+  import { TextInput, Button, Text, Title } from 'react-native-paper'
+  import { getSHAOf } from "../others/utils"
+  import constants from "../others/constants"
   
   
   
   export default SignUpScreen = ({navigation}) =>{
 
-      const [username,setUsername] = useState('');
       const [mail,setMail] = useState('');
       const [password,setPassword] = useState('');
-      const [repeatPassword,setRepeatPassword] = useState('');
-      const [usernameError,setUsernameError] = useState(null);
       const [mailError,setMailError] = useState(null);
       const [passwordError,setPasswordError] = useState(null);
-      const [repeatPasswordError,setRepeatPasswordError] = useState(null);
+      const [securePassword, setSecurePassword] = useState(true);
 
       let sendPostRequest = async () =>{
 
         if (! validate()) {
           return;
         }
+        
+        console.log("1");
+        console.log(mail);
+        console.log("2");
+        console.log(password);
 
-        await fetch("endpoint/signup",
+        await fetch(constants.USERS_HOST + constants.SIGN_UP_URL,
             {
               method: 'POST',
-              headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-              },
+              headers: constants.JSON_HEADER,
               body: JSON.stringify({
-                username: {username},
                 mail: {mail},
-                password: {password},
-                repeatPassword: {repeatPassword}
+                password: getSHAOf( getSHAOf(password) )
             })
   
-        }).then((response)=>{console.log(response)})
+        })
+        .then((res) => res.json())
+        .then((response)=>{console.log(response)})
         .catch((err)=>{console.log(err)})
       }
 
       let validate = () =>{
       
-        if ( username === '' ) setUsernameError('Campo "Nombre de Usuario" debe ser completado')
         if ( password === '' ) setPasswordError('Campo "Contraseña" debe ser completado')
         if ( mail === '' ) setMailError('Campo "Mail" debe ser completado')
-        
-        if ( repeatPassword === '' ) 
-          setRepeatPasswordError('Campo "Repetir Contraseña" debe ser completado')
         
         if (password.length < 8 ) 
           setPasswordError('La Contraseña debe tener como minimo 8 caracteres')
@@ -71,16 +64,11 @@ import {
         ){
           setPasswordError('Minimo 1 caracter en mayuscula, 1 caracter en minuscula y 1 numero')
         }
-
-        if ( password !== repeatPassword ){
-          setRepeatPasswordError('No coincide con la contraseña ingresada')
-        }
         
         if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
           setMailError('No tiene formato de mail')
         
-        if (( usernameError === null ) && (passwordError === null) 
-          && (repeatPasswordError === null) && (mailError === null)){
+        if ((passwordError === null) && (mailError === null)){
             return true;
         }
         
@@ -92,52 +80,46 @@ import {
           <SafeAreaView>
             <ScrollView showsVerticalScrollIndicator={false}>
               <View>
-                  <TouchableOpacity onPress={()=>{navigation.navigate('NavigatorlogInScreen')}}>
-                    <View>
+                  <Button
+                      style={{width: 100}}
+                      mode='text' 
+                      onPress={()=>{navigation.navigate('NavigatorlogInScreen')}}>
                       <Text>ATRAS</Text>
-                    </View>
-                  </TouchableOpacity>
+                  </Button>
                   <Image source={imagenCromiun} style={styles.image}></Image>
-                  <Text style={styles.title}>Registrarse en My App</Text>
+                  <Title style={styles.title}>Registrarse en My App</Title>
                   <Text>Ingrese sus datos</Text>
 
-                  <InputOutline
-                      placeholder='Nombre del Usuario'
-                      value={username}
-                      style={styles.input}
-                      onChangeText={(text)=>{setUsername(text);setUsernameError(null);}}
-                      error={usernameError}
-                   />
-
-                   <InputOutline
-                      placeholder='Mail'
-                      value={mail}
-                      style={styles.input}
-                      onChangeText={(text)=> {setMail(text);setMailError(null);}}
-                      error={mailError}
-                   />
-  
-                  <InputOutline
-                      placeholder='Contraseña'
-                      value={password}
-                      style={styles.input}
-                      onChangeText={(text)=>{setPassword(text); setPasswordError(null);}}
-                      secureTextEntry={true}
-                      error={passwordError}
-                   />
-
-                   <InputOutline
-                      placeholder='Repetir Contraseña'
-                      string={repeatPassword}
-                      style={styles.input}
-                      onChangeText={(text)=>{setRepeatPassword(text);setRepeatPasswordError(null);}}
-                      secureTextEntry={true}
-                      error={repeatPasswordError}
-                   />
+                  <TextInput
+                    name='Mail'
+                    label='Mail*'
+                    value={mail}
+                    onChangeText={(newText) => {setMail(newText); setMailError(null);}}
+                    mode='outlined'
+                    error={mailError!==null}/>
+                  
+                  {mailError &&(
+                  <Text style={{color: 'red'}}>Campo 'Mail' es requerido</Text>
+                ) }
+                
+                  <TextInput
+                    name='Password'
+                    label='Contraseña*'
+                    value={password}
+                    onChangeText={(newText) => {setPassword(newText); setPasswordError(null);}}
+                    mode='outlined'
+                    error={passwordError!==null}
+                    secureTextEntry={securePassword}
+                    right={<TextInput.Icon name="eye" onPress={()=>{setSecurePassword(! securePassword)}}/>}
+                    />
+                  
+                  {passwordError &&(
+                  <Text style={{color: 'red'}}>Campo 'Contraseña' es requerido</Text>
+                ) }
                    
-                  <TouchableHighlight style={styles.button} onPress={sendPostRequest}>
+                  <Button mode='contained' style={styles.button} onPress={sendPostRequest}>
                       <Text style={styles.buttonText}>Iniciar</Text>
-                  </TouchableHighlight>
+                  </Button>
   
               </View>
             </ScrollView>

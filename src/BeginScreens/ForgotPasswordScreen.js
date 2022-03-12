@@ -1,21 +1,18 @@
 import { 
     StyleSheet, 
-    Text, 
     View, 
-    TouchableHighlight,
     Image,
     ScrollView,
     SafeAreaView,
-    TouchableOpacity
   } from 'react-native';
   
-  import React, {useState} from 'react'
-  import imagenCromiun from '../../assets/cromiun.png'
-  import { InputOutline } from 'react-native-input-outline';
+import React, {useState} from 'react'
+import imagenCromiun from '../../assets/cromiun.png'
+import { TextInput, Button, Text, Title } from 'react-native-paper'
+import constants from "../others/constants";
+
   
-  
-  
-  export default ForgotPasswordScreen = ({navigation}) =>{
+export default ForgotPasswordScreen = ({navigation}) =>{
   
       const [mail,setMail] = useState('');
       const [mailError,setMailError] = useState(null);
@@ -35,14 +32,15 @@ import {
       }
   
       let sendPostRequest = async () =>{
+
+        if (! validate()) {
+          return;
+        }
   
-        await fetch("endpoint/login",
+        await fetch(constants.USERS_HOST + constants.FORGOT_PASSWORD_URL,
             {
               method: 'POST',
-              headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-              },
+              headers: constants.JSON_HEADER,
               body: JSON.stringify({
                 mail: {mail},
             })
@@ -56,25 +54,30 @@ import {
           <SafeAreaView>
             <ScrollView showsVerticalScrollIndicator={false}>
               <View>
-                  <TouchableOpacity onPress={()=>{navigation.navigate('NavigatorlogInScreen')}}>
-                    <View>
+                  <Button
+                    mode='text'
+                    style={{width: 100}}
+                    onPress={()=>{navigation.navigate('NavigatorlogInScreen')}}>
                       <Text>ATRAS</Text>
-                    </View>
-                  </TouchableOpacity>
+                  </Button>
                   <Image source={imagenCromiun} style={styles.image}></Image>
-                  <Text style={styles.title}>¿Ha olvidado su contraseña?</Text>
+                  <Title style={styles.title}>¿Ha olvidado su contraseña?</Title>
                   
-                  <InputOutline
-                      placeholder='Mail'
+                  <TextInput
+                      name='mail'
+                      label='Mail*'
+                      mode='outlined'
                       value={mail}
-                      style={styles.input}
-                      onChangeText={setMail}
-                      error={mailError}
+                      onChangeText={(text) =>{setMail(text);setMailError(null);}}
+                      error={mailError!==null}
                    />
-  
-                  <TouchableHighlight style={styles.button} onPress={sendPostRequest}>
+                   {mailError &&(
+                      <Text style={{color: 'red'}}>Campo 'Mail' es requerido</Text>
+                    )}
+
+                  <Button mode='contained' style={styles.button} onPress={sendPostRequest}>
                       <Text style={styles.buttonText}>Enviar</Text>
-                  </TouchableHighlight>
+                  </Button>
   
               </View>
               </ScrollView>
@@ -85,7 +88,7 @@ import {
   
     const styles = StyleSheet.create(
        { input: {
-           borderWidth: 2, 
+           borderWidth: 2,
            marginBottom: 15,
            marginTop: 15,
            backgroundColor: '#f5fcff',
