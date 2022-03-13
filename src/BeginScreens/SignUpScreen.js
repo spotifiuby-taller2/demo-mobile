@@ -39,7 +39,7 @@ import {
               headers: constants.JSON_HEADER,
               body: JSON.stringify({
                 email: mail,
-                password: await getSHAOf( await getSHAOf(password) ),
+                password: getSHAOf( getSHAOf(password) ),
                 link: "mobile"
             } )
   

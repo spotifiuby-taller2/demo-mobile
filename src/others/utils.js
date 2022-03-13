@@ -1,10 +1,9 @@
-import * as Crypto from 'expo-crypto';
+import sjcl from 'sjcl';
 
-async function getSHAOf(toHash) {
-    return await Crypto.digestStringAsync(
-        Crypto.CryptoDigestAlgorithm.SHA256,
-        toHash
-    );
+function getSHAOf(toHash) {
+    const myBitArray = sjcl.hash.sha256.hash(toHash)
+    const myHash = sjcl.codec.hex.fromBits(myBitArray)
+    return myHash;
 }
 
 export {
