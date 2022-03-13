@@ -38,7 +38,7 @@ import {
               method: 'POST',
               headers: constants.JSON_HEADER,
               body: JSON.stringify({
-                mail: {mail},
+                mail: mail,
                 password: getSHAOf( getSHAOf(password) )
             })
   
