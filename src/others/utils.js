@@ -1,8 +1,10 @@
-//const crypto = require('crypto-js');
+import * as Crypto from 'expo-crypto';
 
-function getSHAOf(toHash) {
-  return "";
-  //return crypto.SHA256(toHash);
+async function getSHAOf(toHash) {
+    return await Crypto.digestStringAsync(
+        Crypto.CryptoDigestAlgorithm.SHA256,
+        toHash
+    );
 }
 
 export {

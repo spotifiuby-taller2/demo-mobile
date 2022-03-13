@@ -38,9 +38,10 @@ import {
               method: 'POST',
               headers: constants.JSON_HEADER,
               body: JSON.stringify({
-                mail: mail,
-                password: getSHAOf( getSHAOf(password) )
-            })
+                email: mail,
+                password: await getSHAOf( await getSHAOf(password) ),
+                link: "mobile"
+            } )
   
         })
         .then((res) => res.json())

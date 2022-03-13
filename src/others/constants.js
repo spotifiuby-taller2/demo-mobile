@@ -1,8 +1,7 @@
 import {REACT_APP_USERS_HOST} from "@env"
 
-console.log(REACT_APP_USERS_HOST);
 
-/* Frontend paths */
+console.log(REACT_APP_USERS_HOST);
 
 /* Backend hosts */
 const USERS_HOST = REACT_APP_USERS_HOST;
