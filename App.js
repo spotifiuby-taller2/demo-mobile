@@ -18,41 +18,42 @@ import { Provider as PaperProvider, Button } from 'react-native-paper';
 const Stack = createNativeStackNavigator();
 
 
-const NavigationLogInScreen = ({navigation}) =>{
-
-  return(
-    <View style={styles.container}>
-      <View>
-        <Image source={imagenCromiun} style={styles.image}>
-        </Image>
-      </View>
-      <View style={styles.containerTexts}>
-        <Button
-          mode='text'
-          style={styles.button} 
-          onPress={()=>{navigation.navigate('LogInScreen')}}>
-            <Text style={styles.text}>Iniciar Sesión</Text>
-        </Button>
-        <Button
-          mode='text' 
-          style={styles.button} 
-          onPress={()=>{navigation.navigate('SignUpScreen')}}>
-            <Text style={styles.text}>Registrarse</Text>
-        </Button>
-        <Button
-          mode='text'
-          style={styles.button} 
-          onPress={()=>{navigation.navigate('ForgotPasswordScreen')}}>
-            <Text style={styles.text}>¿Olvido su contraseña?</Text>
-        </Button>
-      </View>
-    </View>
-  )
-
-}
-
-
 export default function App() {
+  
+  const NavigationLogInScreen = ({navigation}) =>{
+  
+    return(
+      <View style={styles.container}>
+        <View>
+          <Image source={imagenCromiun} style={styles.image}>
+          </Image>
+        </View>
+        <View style={styles.containerTexts}>
+          <Button
+            mode='text'
+            style={styles.button} 
+            onPress={()=>{navigation.navigate('LogInScreen')}}>
+              <Text style={styles.text}>Iniciar Sesión</Text>
+          </Button>
+          <Button
+            mode='text' 
+            style={styles.button} 
+            onPress={()=>{navigation.navigate('SignUpScreen')}}>
+              <Text style={styles.text}>Registrarse</Text>
+          </Button>
+          <Button
+            mode='text'
+            style={styles.button} 
+            onPress={()=>{navigation.navigate('ForgotPasswordScreen')}}>
+              <Text style={styles.text}>¿Olvido su contraseña?</Text>
+          </Button>
+        </View>
+      </View>
+    )
+  
+  }
+
+
   return (
     <PaperProvider>
       <NavigationContainer>
