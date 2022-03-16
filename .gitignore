@@ -1,6 +1,8 @@
 node_modules/
 .expo/
 .idea
+android
+package-lock.json
 
 dist/
 npm-debug.*
