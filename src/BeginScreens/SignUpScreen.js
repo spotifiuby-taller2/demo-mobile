@@ -3,7 +3,8 @@ import {
     View, 
     Image,
     SafeAreaView,
-    ScrollView
+    ScrollView,
+    Alert
   } from 'react-native';
   
   import React, {useState} from 'react'
@@ -11,48 +12,56 @@ import {
   import { TextInput, Button, Text, Title } from 'react-native-paper'
   import { getSHAOf } from "../others/utils"
   import constants from "../others/constants"
-  
+  import {auth} from '../Firebase/firebase';
+
   
   
   export default SignUpScreen = ({navigation}) =>{
 
-      const [mail,setMail] = useState('');
+      const [email,setEmail] = useState('');
       const [password,setPassword] = useState('');
-      const [mailError,setMailError] = useState(null);
+      const [emailError,setEmailError] = useState(null);
       const [passwordError,setPasswordError] = useState(null);
       const [securePassword, setSecurePassword] = useState(true);
 
-      let sendPostRequest = async () =>{
+      let sendPostRequest = () =>{
 
         if (! validate()) {
           return;
         }
         
-        console.log("1");
-        console.log(mail);
-        console.log("2");
-        console.log(password);
+        auth.createUserWithEmailAndPassword(email, password)
+            .then(
+                userCredentials=>{
+                  const user = userCredentials.user;
+                  console.log(user.email);})
+            .catch(err => alert(err.message));
+        
 
-        await fetch(constants.USERS_HOST + constants.SIGN_UP_URL,
+        fetch(constants.USERS_HOST + constants.SIGN_UP_URL,
             {
               method: 'POST',
               headers: constants.JSON_HEADER,
               body: JSON.stringify({
-                email: mail,
+                email: email,
                 password: getSHAOf( getSHAOf(password) ),
                 link: "mobile"
             } )
   
         })
         .then((res) => res.json())
-        .then((response)=>{console.log(response)})
+        .then((response)=>{
+            console.log(response);
+            setEmail('');
+            setPassword('');
+          })
         .catch((err)=>{console.log(err)})
       }
 
       let validate = () =>{
       
         if ( password === '' ) setPasswordError('Campo "Contraseña" debe ser completado')
-        if ( mail === '' ) setMailError('Campo "Mail" debe ser completado')
+        if ( email === '' ) setEmailError('Campo "Mail" debe ser completado')
         
         if (password.length < 8 ) 
           setPasswordError('La Contraseña debe tener como minimo 8 caracteres')
@@ -66,10 +75,10 @@ import {
           setPasswordError('Minimo 1 caracter en mayuscula, 1 caracter en minuscula y 1 numero')
         }
         
-        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
-          setMailError('No tiene formato de mail')
+        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
+          setEmailError('No tiene formato de mail')
         
-        if ((passwordError === null) && (mailError === null)){
+        if ((passwordError === null) && (emailError === null)){
             return true;
         }
         
@@ -94,13 +103,13 @@ import {
                   <TextInput
                     name='Mail'
                     label='Mail*'
-                    value={mail}
-                    onChangeText={(newText) => {setMail(newText); setMailError(null);}}
+                    value={email}
+                    onChangeText={(newText) => {setEmail(newText); setEmailError(null);}}
                     mode='outlined'
-                    error={mailError!==null}/>
+                    error={emailError!==null}/>
                   
-                  {mailError &&(
-                  <Text style={{color: 'red'}}>Campo 'Mail' es requerido</Text>
+                  {emailError &&(
+                  <Text style={{color: 'red'}}>{emailError}</Text>
                 ) }
                 
                   <TextInput
@@ -115,7 +124,7 @@ import {
                     />
                   
                   {passwordError &&(
-                  <Text style={{color: 'red'}}>Campo 'Contraseña' es requerido</Text>
+                  <Text style={{color: 'red'}}>{passwordError}</Text>
                 ) }
                    
                   <Button mode='contained' style={styles.button} onPress={sendPostRequest}>

@@ -3,14 +3,14 @@ import {
   View,
   Image,
   ScrollView,
-  SafeAreaView
+  SafeAreaView,
+  Alert
 } from 'react-native';
 
 import React, {useState} from 'react'
 import imagenCromiun from '../../assets/cromiun.png'
 import { TextInput, Text, Button, Title } from 'react-native-paper'
-import { getSHAOf } from "../others/utils";
-import constants from "../others/constants";
+
 
 
 export default LogInScreen = ({navigation}) =>{
@@ -27,6 +27,7 @@ export default LogInScreen = ({navigation}) =>{
           return;
       }
 
+      /*
       await fetch(constants.USERS_HOST + constants.SIGN_IN_URL,
           {
             method: 'POST',
@@ -37,7 +38,7 @@ export default LogInScreen = ({navigation}) =>{
           })
 
       }).then((response)=>{console.log(response)})
-      .catch((err)=>{console.log(err)})
+      .catch((err)=>{console.log(err)})*/
     }
 
     let validate = () =>{
