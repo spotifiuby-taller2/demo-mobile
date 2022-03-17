@@ -55,7 +55,7 @@ import {
             setEmail('');
             setPassword('');
           })
-        .catch((err)=>{console.log(err)})
+        .catch((err)=>{alert(err)})
       }
 
       let validate = () =>{
