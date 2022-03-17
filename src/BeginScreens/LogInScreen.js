@@ -27,7 +27,6 @@ export default LogInScreen = ({navigation}) =>{
           return;
       }
 
-      /*
       await fetch(constants.USERS_HOST + constants.SIGN_IN_URL,
           {
             method: 'POST',
@@ -37,8 +36,11 @@ export default LogInScreen = ({navigation}) =>{
               password: getSHAOf( getSHAOf(password) ),
           })
 
-      }).then((response)=>{console.log(response)})
-      .catch((err)=>{console.log(err)})*/
+      } ).then( (response) => {
+          if (response.error !== undefined) {
+              alert(response.error);
+          }
+      } );
     }
 
     let validate = () =>{
