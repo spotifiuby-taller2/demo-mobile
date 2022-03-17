@@ -29,7 +29,8 @@ import {
         if (! validate()) {
           return;
         }
-        
+
+        // No crear el usuario en frontend
         auth.createUserWithEmailAndPassword(email, password)
             .then(
                 userCredentials=>{
@@ -38,6 +39,7 @@ import {
             .catch(err => alert(err.message));
         
 
+        // El manejo de errores se puede reciclar de backoffice
         fetch(constants.USERS_HOST + constants.SIGN_UP_URL,
             {
               method: 'POST',
