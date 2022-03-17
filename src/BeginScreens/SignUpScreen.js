@@ -47,7 +47,8 @@ import {
               body: JSON.stringify({
                 email: email,
                 password: getSHAOf( getSHAOf(password) ),
-                link: "mobile"
+                link: "mobile",
+                firebase: false
             } )
   
         })

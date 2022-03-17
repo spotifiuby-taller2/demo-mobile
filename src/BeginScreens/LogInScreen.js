@@ -10,18 +10,21 @@ import {
 import React, {useState} from 'react'
 import imagenCromiun from '../../assets/cromiun.png'
 import { TextInput, Text, Button, Title } from 'react-native-paper'
+import constants from '../others/constants'
+import { getSHAOf } from "../others/utils"
+import SignInGoogleButton from '../Components/SignInGoogleButton';
 
 
 
 export default LogInScreen = ({navigation}) =>{
 
-    const [mail,setMail] = useState('');
+    const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
-    const [mailError,setMailError] = useState(null);
+    const [emailError,setEmailError] = useState(null);
     const [passwordError,setPasswordError] = useState(null);
     const [securePassword, setSecurePassword] = useState(true);
 
-    let sendPostRequest = async () =>{
+    let handleSignIn = async () =>{
 
       if (validate()) {
           return;
@@ -32,23 +35,28 @@ export default LogInScreen = ({navigation}) =>{
             method: 'POST',
             headers: constants.JSON_HEADER,
             body: JSON.stringify({
-              mail: {mail},
+              email: email,
               password: getSHAOf( getSHAOf(password) ),
+              link: "mobile",
+              firebase: false
           })
 
       } ).then( (response) => {
           if (response.error !== undefined) {
               alert(response.error);
           }
+          else{
+            console.log(response);
+          }
       } );
     }
 
     let validate = () =>{
       
-      if ( mail === '' ) setMailError('Campo "Mail" debe ser completado')
+      if ( email === '' ) setEmailError('Campo "Mail" debe ser completado')
       if ( password === '' ) setPasswordError('Campo "Contraseña" debe ser completado')
 
-      if (( mail === null ) && (passwordError === null)){
+      if (( email === null ) && (passwordError === null)){
           return true;
       }
       
@@ -73,12 +81,12 @@ export default LogInScreen = ({navigation}) =>{
                 <TextInput
                     name='Mail'
                     label='Mail*'
-                    value={mail}
-                    onChangeText={(newText) => {setMail(newText); setMailError(null);}}
+                    value={email}
+                    onChangeText={(newText) => {setEmail(newText); setEmailError(null);}}
                     mode='outlined'
-                    error={mailError!==null}/>
-                {mailError &&(
-                  <Text style={{color: 'red'}}>Campo 'Mail' es requerido</Text>
+                    error={emailError!==null}/>
+                {emailError &&(
+                  <Text style={{color: 'red'}}>{emailError}</Text>
                 ) }
                 
                 <TextInput
@@ -91,11 +99,11 @@ export default LogInScreen = ({navigation}) =>{
                     secureTextEntry={securePassword}
                     right={<TextInput.Icon name="eye" onPress={()=>{setSecurePassword(! securePassword)}}/>}/>
                 {passwordError &&(
-                  <Text style={{color: 'red'}}>Campo 'Contraseña' es requerido</Text>
+                  <Text style={{color: 'red'}}>{passwordError}</Text>
                 ) }
               
 
-                <Button mode='contained' style={styles.button} onPress={sendPostRequest}>
+                <Button mode='contained' style={styles.button} onPress={handleSignIn}>
                     <Text style={styles.buttonText}>Iniciar</Text>
                 </Button>
 
@@ -106,6 +114,8 @@ export default LogInScreen = ({navigation}) =>{
                     
                     <Text style={styles.forgotPasswordButton}>¿Olvido su contraseña?</Text>
                 </Button>
+
+                <SignInGoogleButton />
             </View>
             </ScrollView>
         </SafeAreaView>
