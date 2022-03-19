@@ -12,7 +12,6 @@ import {
   import { TextInput, Button, Text, Title } from 'react-native-paper'
   import { getSHAOf } from "../others/utils"
   import constants from "../others/constants"
-  import {auth} from '../Firebase/firebase';
 
   
   
@@ -29,15 +28,6 @@ import {
         if (! validate()) {
           return;
         }
-
-        // No crear el usuario en frontend
-        auth.createUserWithEmailAndPassword(email, password)
-            .then(
-                userCredentials=>{
-                  const user = userCredentials.user;
-                  console.log(user.email);})
-            .catch(err => alert(err.message));
-        
 
         // El manejo de errores se puede reciclar de backoffice
         fetch(constants.USERS_HOST + constants.SIGN_UP_URL,
