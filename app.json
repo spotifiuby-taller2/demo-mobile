@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "my-app",
-    "slug": "my-app",
+    "name": "test-auth",
+    "slug": "test-auth",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -25,7 +25,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.T2.prueba.rn",
-      "intentFilters":[
+      "intentFilters": [
         {
           "action": "VIEW",
           "autoVerify": true,
@@ -46,6 +46,7 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "scheme": "myapp"
+    "scheme": "myapp",
+    "description": ""
   }
 }
