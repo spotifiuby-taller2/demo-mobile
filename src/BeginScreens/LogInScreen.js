@@ -6,14 +6,12 @@ import {
   SafeAreaView,
   Alert
 } from 'react-native';
-
 import React, {useState} from 'react'
 import imagenCromiun from '../../assets/cromiun.png'
 import { TextInput, Text, Button, Title } from 'react-native-paper'
 import constants from '../others/constants'
 import { getSHAOf } from "../others/utils"
-import SignInGoogleButton from '../Components/SignInGoogleButton';
-
+import SignInWithBiometricButton from '../Components/SignInWithBiometricButton';
 
 
 export default LogInScreen = ({navigation}) =>{
@@ -56,11 +54,7 @@ export default LogInScreen = ({navigation}) =>{
       if ( email === '' ) setEmailError('Campo "Mail" debe ser completado')
       if ( password === '' ) setPasswordError('Campo "Contraseña" debe ser completado')
 
-      if (( email === null ) && (passwordError === null)){
-          return true;
-      }
-      
-      return false;
+      return (email === '') && (passwordError === null);
     }
 
     return(
@@ -115,7 +109,8 @@ export default LogInScreen = ({navigation}) =>{
                     <Text style={styles.forgotPasswordButton}>¿Olvido su contraseña?</Text>
                 </Button>
 
-                <SignInGoogleButton />
+                <SignInWithBiometricButton />
+
             </View>
             </ScrollView>
         </SafeAreaView>
