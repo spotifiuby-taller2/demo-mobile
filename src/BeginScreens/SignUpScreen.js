@@ -38,7 +38,7 @@ import {
                 email: email,
                 password: getSHAOf( getSHAOf(password) ),
                 link: "mobile",
-                firebase: false
+                isExternal: false
             } )
   
         })

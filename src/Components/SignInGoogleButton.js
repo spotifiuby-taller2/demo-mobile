@@ -37,6 +37,8 @@ export default SignInWithGoogle = () =>{
 
          const auth = getAuth();
 
+         console.log(result.idToken);
+
          const response = await signInWithCredential(auth, credential);
 
          if (response.user === undefined) {
@@ -44,14 +46,17 @@ export default SignInWithGoogle = () =>{
              return;
          }
 
+         console.log(response);
+
         fetch(constants.USERS_HOST + constants.SIGN_IN_URL,
             {
               method: 'POST',
               headers: constants.JSON_HEADER,
               body: JSON.stringify({
-                  token: response,
+                  token: response._tokenResponse.idToken,
+                  email: response._tokenResponse.email,
                   link: "mobile",
-                  firebase: true
+                  signin: "google"
               })
 
         })

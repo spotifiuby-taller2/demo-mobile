@@ -12,7 +12,8 @@ import { TextInput, Text, Button, Title } from 'react-native-paper'
 import constants from '../others/constants'
 import { getSHAOf } from "../others/utils"
 import SignInWithBiometricButton from '../Components/SignInWithBiometricButton';
-
+import SignInGoogleButton from '../Components/SignInGoogleButton';
+import { auth } from "../Firebase/firebase";
 
 export default LogInScreen = ({navigation}) =>{
 
@@ -28,15 +29,22 @@ export default LogInScreen = ({navigation}) =>{
           return;
       }
 
+      const hashedPassword = getSHAOf( getSHAOf( password ) );
+
+      const response = await auth.signInWithEmailAndPassword(auth, email, hashedPassword);
+
+      console.log(response);
+
       await fetch(constants.USERS_HOST + constants.SIGN_IN_URL,
           {
             method: 'POST',
             headers: constants.JSON_HEADER,
             body: JSON.stringify({
               email: email,
-              password: getSHAOf( getSHAOf(password) ),
+              password: hashedPassword,
+              idToken: response.idToken,
               link: "mobile",
-              firebase: false
+              signin: "email-password"
           })
 
       } ).then( (response) => {
@@ -108,7 +116,8 @@ export default LogInScreen = ({navigation}) =>{
                     
                     <Text style={styles.forgotPasswordButton}>¿Olvido su contraseña?</Text>
                 </Button>
-
+                
+                <SignInGoogleButton/>
                 <SignInWithBiometricButton />
 
             </View>
