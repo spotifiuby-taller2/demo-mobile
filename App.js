@@ -12,7 +12,7 @@ import LogInScreen from './src/BeginScreens/LogInScreen'
 import SignUpScreen from './src/BeginScreens/SignUpScreen'
 import ForgotPasswordScreen from './src/BeginScreens/ForgotPasswordScreen'
 import { Provider as PaperProvider, Button } from 'react-native-paper';
-import {BiometricAuthScreen} from "./src/BeginScreens/Biometric";
+
 
 
 
@@ -61,8 +61,6 @@ export default function App() {
     <PaperProvider>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen name='BiometricAuthScreen' component={BiometricAuthScreen}/>
-
           <Stack.Screen name='NavigatorlogInScreen' component={NavigationLogInScreen}/>
           <Stack.Screen name='LogInScreen' component={LogInScreen}/>
           <Stack.Screen name='SignUpScreen' component={SignUpScreen}/>

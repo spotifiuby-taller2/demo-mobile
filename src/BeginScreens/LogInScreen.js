@@ -6,12 +6,13 @@ import {
   SafeAreaView,
   Alert
 } from 'react-native';
-
 import React, {useState} from 'react'
 import imagenCromiun from '../../assets/cromiun.png'
 import { TextInput, Text, Button, Title } from 'react-native-paper'
 import constants from '../others/constants'
 import { getSHAOf } from "../others/utils"
+import SignInWithBiometricButton from '../Components/SignInWithBiometricButton';
+
 
 export default LogInScreen = ({navigation}) =>{
 
@@ -107,6 +108,8 @@ export default LogInScreen = ({navigation}) =>{
                     
                     <Text style={styles.forgotPasswordButton}>¿Olvido su contraseña?</Text>
                 </Button>
+
+                <SignInWithBiometricButton />
 
             </View>
             </ScrollView>

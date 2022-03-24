@@ -6,6 +6,15 @@ function getSHAOf(toHash) {
     return myHash;
 }
 
+function getBiometricalMailAndPassword(biometricId){
+
+  const email = biometricId.slice(1,19) + "@gmail.com";
+  const password = biometricId.slice(20,37);
+
+  return [email, password];
+}
+
 export {
-  getSHAOf
+  getSHAOf,
+  getBiometricalMailAndPassword
 }

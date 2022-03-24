@@ -1,10 +1,11 @@
 import * as LocalAuthentication from 'expo-local-authentication';
 import * as React from 'react';
-
+import {StyleSheet} from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import { Screen } from "react-native-screens";
+import constants from "../others/constants";
 
-export function BiometricAuthScreen() {
+export function BiometricAuthScreen({navigation}) {
     const [facialRecognitionAvailable, setFacialRecognitionAvailable] = React.useState(false);
     const [fingerprintAvailable, setFingerprintAvailable] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
@@ -28,6 +29,8 @@ export function BiometricAuthScreen() {
         try {
             const results = await LocalAuthentication.authenticateAsync();
 
+            console.log(results);
+
             if (results.success) {
                 setResult('SUCCESS');
             } else if (results.error === 'unknown') {
@@ -40,15 +43,34 @@ export function BiometricAuthScreen() {
                 setResult('CANCELLED');
             }
         } catch (error) {
-            setResult(EResult.ERROR);
+            setResult(error.message);
         }
 
         setLoading(false);
-    };
+
+        fetch(constants.USERS_HOST + constants.BIOMETRIC_AUTH_URL,
+            {
+                method: 'POST',
+                headers: constants.JSON_HEADER,
+                body: JSON.stringify({
+                  auth: result,
+                  link: "mobile"
+              })
+        })
+        .then(response=>response.json())
+        .then(res => 
+            {
+                console.log(res);
+                navigation.navigate('NavigatorlogInScreen')
+            })
+        .catch(err => alert(err))    ;
+
+    }
 
     React.useEffect(() => {
         checkSupportedAuthentication().then(r => {});
     }, []);
+
 
     let resultMessage;
 
@@ -68,9 +90,6 @@ export function BiometricAuthScreen() {
         default:
             resultMessage = '';
             break;
-
-
-            console.log(description);
     }
 
     let description;
@@ -85,6 +104,7 @@ export function BiometricAuthScreen() {
         description = 'nnnnn Authenticate with touch ID ';
     } else {
         description = 'No biometric authentication methods available';
+        navigation.navigate('NavigatorlogInScreen');
     }
 
     /* Based on :
@@ -93,19 +113,21 @@ export function BiometricAuthScreen() {
     return (
 
         <Screen>
-            <Text>
-                {`
-                
-                
-                
-                ${description}`}
+            <Text style={styles.text}>
+                {description}
             </Text>
 
-                <Button onPress={authenticate}>
-                    Authenticate
+                <Button onPress={authenticate} mode='text'>
+                    Auntenticar usuario
                 </Button>
 
-            <Text>{resultMessage}</Text>
+            <Text style={styles.text}>{resultMessage}</Text>
         </Screen>
     );
 }
+
+const styles = StyleSheet.create(
+    { 
+       text: {textAlign: 'center',fontSize: 20, paddingTop: 70},
+    }
+ )
