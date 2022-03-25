@@ -13,6 +13,8 @@ import * as SecureStore from 'expo-secure-store';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 const utils = require("../others/utils");
+import { auth } from "../Firebase/firebase";
+const firebaseAuth = require("firebase/auth");
 
   
 export default SignInWithBiometricButton = () =>{
@@ -32,7 +34,7 @@ export default SignInWithBiometricButton = () =>{
       */
 
       const setBiometricId = async () =>{
-        const biometricId = await SecureStore.getItemAsync('secure_biometricId')
+        const biometricId = await SecureStore.getItemAsync('secure_biometricId');
         if( ! biometricId){
             const uuid = uuidv4();
             await SecureStore.setItemAsync('secure_biometricId', JSON.stringify(uuid));
@@ -76,6 +78,27 @@ export default SignInWithBiometricButton = () =>{
 
         const emailAndPassword = utils.getBiometricalMailAndPassword(biometricId);
 
+        let response = undefined;
+
+        response = await firebaseAuth.signInWithEmailAndPassword(
+                auth,
+                emailAndPassword[0],
+                emailAndPassword[1])
+                .catch(error=>{
+                    if (error.message === 'Firebase: Error (auth/user-not-found).'){
+                        response = firebaseAuth.createUserWithEmailAndPassword(
+                            auth,
+                            emailAndPassword[0],
+                            emailAndPassword[1])
+                            .then()
+                            .catch(error=>{alert(error)})
+                    }
+                });
+
+        if ( response === undefined){
+            return;
+        }
+
         fetch(constants.USERS_HOST + constants.SIGN_IN_URL,
             {
                 method: 'POST',
@@ -83,6 +106,7 @@ export default SignInWithBiometricButton = () =>{
                 body: JSON.stringify({
                   email: emailAndPassword[0],
                   password: utils.getSHAOf(utils.getSHAOf(emailAndPassword[1])),
+                  idToken: response._tokenResponse.idToken,
                   signin: 'biometric',
                   link: "mobile"
               })
