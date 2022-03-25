@@ -29,6 +29,8 @@ import {
           return;
         }
 
+        console.log("llego aca");
+
         // El manejo de errores se puede reciclar de backoffice
         fetch(constants.USERS_HOST + constants.SIGN_UP_URL,
             {

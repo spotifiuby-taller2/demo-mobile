@@ -14,6 +14,8 @@ import { getSHAOf } from "../others/utils"
 import SignInWithBiometricButton from '../Components/SignInWithBiometricButton';
 import SignInGoogleButton from '../Components/SignInGoogleButton';
 import { auth } from "../Firebase/firebase";
+const firebaseAuth = require("firebase/auth");
+
 
 export default LogInScreen = ({navigation}) =>{
 
@@ -31,9 +33,10 @@ export default LogInScreen = ({navigation}) =>{
 
       const hashedPassword = getSHAOf( getSHAOf( password ) );
 
-      const response = await auth.signInWithEmailAndPassword(auth, email, hashedPassword);
-
-      console.log(response);
+      const response = await firebaseAuth.signInWithEmailAndPassword(
+          auth, 
+          email, 
+          hashedPassword);
 
       await fetch(constants.USERS_HOST + constants.SIGN_IN_URL,
           {
@@ -42,12 +45,14 @@ export default LogInScreen = ({navigation}) =>{
             body: JSON.stringify({
               email: email,
               password: hashedPassword,
-              idToken: response.idToken,
+              idToken: response._tokenResponse.idToken,
               link: "mobile",
               signin: "email-password"
           })
 
-      } ).then( (response) => {
+      } )
+      .then(response => response.json())
+      .then( (response) => {
           if (response.error !== undefined) {
               alert(response.error);
           }
