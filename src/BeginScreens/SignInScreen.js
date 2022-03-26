@@ -38,7 +38,7 @@ export default LogInScreen = ({navigation}) =>{
           email, 
           hashedPassword);
 
-      await fetch(constants.USERS_HOST + constants.SIGN_IN_URL,
+      fetch(constants.USERS_HOST + constants.SIGN_IN_URL,
           {
             method: 'POST',
             headers: constants.JSON_HEADER,

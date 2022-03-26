@@ -14,38 +14,42 @@ import constants from "../others/constants";
   
 export default ForgotPasswordScreen = ({navigation}) =>{
   
-      const [mail,setMail] = useState('');
-      const [mailError,setMailError] = useState(null);
+      const [email,setEmail] = useState('');
+      const [emailError,setEmailError] = useState(null);
 
       let validate = () =>{
       
-        if ( mail === '' ) setMailError('Campo "Mail" debe ser completado')
+        if ( email === '' ) setEmailError('Campo "Mail" debe ser completado')
         
-        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
-          setMailError('No tiene formato de mail')
+        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
+          setEmailError('No tiene formato de mail')
         
-        if (mailError === null){
+        if (emailError === null){
             return true;
         }
         
         return false;
       }
   
-      let sendPostRequest = async () =>{
+      let handleForgotPassword = async () =>{
 
         if (! validate()) {
           return;
         }
   
-        await fetch(constants.USERS_HOST + constants.FORGOT_PASSWORD_URL,
+        console.log(constants.USERS_HOST + constants.FORGOT_PASSWORD_URL);
+        fetch(constants.USERS_HOST + constants.FORGOT_PASSWORD_URL,
             {
               method: 'POST',
               headers: constants.JSON_HEADER,
               body: JSON.stringify({
-                mail: {mail},
+                email: email,
+                link: 'mobile'
             })
   
-        }).then((response)=>{console.log(response)})
+        })
+        .then((response) => response.json())
+        .then((response)=>{console.log(response)})
         .catch((err)=>{console.log(err)})
       }
   
@@ -67,15 +71,15 @@ export default ForgotPasswordScreen = ({navigation}) =>{
                       name='mail'
                       label='Mail*'
                       mode='outlined'
-                      value={mail}
-                      onChangeText={(text) =>{setMail(text);setMailError(null);}}
-                      error={mailError!==null}
+                      value={email}
+                      onChangeText={(text) =>{setEmail(text);setEmailError(null);}}
+                      error={emailError!==null}
                    />
-                   {mailError &&(
-                      <Text style={{color: 'red'}}>Campo 'Mail' es requerido</Text>
+                   {emailError &&(
+                      <Text style={{color: 'red'}}>{emailError}</Text>
                     )}
 
-                  <Button mode='contained' style={styles.button} onPress={sendPostRequest}>
+                  <Button mode='contained' style={styles.button} onPress={handleForgotPassword}>
                       <Text style={styles.buttonText}>Enviar</Text>
                   </Button>
   

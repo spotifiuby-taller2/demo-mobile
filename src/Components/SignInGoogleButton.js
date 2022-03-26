@@ -8,7 +8,7 @@ import {
 import React from 'react'
 import { Button } from 'react-native-paper'
 import * as Google from 'expo-google-app-auth';
-import {IOS_KEY, ANDROID_KEY, WEB_KEY} from "@env"
+import {IOS_KEY, ANDROID_KEY, WEB_KEY, ANDROID_STANDALONE_KEY} from "@env"
 import constants from '../others/constants'
 const {getAuth,signInWithCredential, GoogleAuthProvider} = require("firebase/auth");
 
@@ -21,7 +21,8 @@ export default SignInWithGoogle = () =>{
             result = await Google.logInAsync({ //return an object with result token and user
             iosClientId: IOS_KEY, //From app.json
             androidClientId: ANDROID_KEY, //From app.json
-            webClientId: WEB_KEY
+            webClientId: WEB_KEY,
+            androidStandaloneAppClientId: ANDROID_STANDALONE_KEY
           });
         
         } catch ({ message }) {

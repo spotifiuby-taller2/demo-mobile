@@ -3,8 +3,7 @@ import {
     View, 
     Image,
     SafeAreaView,
-    ScrollView,
-    Alert
+    ScrollView
   } from 'react-native';
   
   import React, {useState} from 'react'
@@ -23,7 +22,7 @@ import {
       const [passwordError,setPasswordError] = useState(null);
       const [securePassword, setSecurePassword] = useState(true);
 
-      let sendPostRequest = () =>{
+      let handleSignUp = () =>{
 
         if (! validate()) {
           return;
@@ -122,7 +121,7 @@ import {
                   <Text style={{color: 'red'}}>{passwordError}</Text>
                 ) }
                    
-                  <Button mode='contained' style={styles.button} onPress={sendPostRequest}>
+                  <Button mode='contained' style={styles.button} onPress={handleSignUp}>
                       <Text style={styles.buttonText}>Iniciar</Text>
                   </Button>
   
