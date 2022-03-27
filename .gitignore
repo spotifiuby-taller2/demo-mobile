@@ -3,6 +3,7 @@ node_modules/
 .idea
 android
 package-lock.json
+yarn.lock
 
 dist/
 npm-debug.*
