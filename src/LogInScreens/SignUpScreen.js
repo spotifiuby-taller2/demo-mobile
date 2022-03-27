@@ -28,8 +28,6 @@ import {
           return;
         }
 
-        console.log("llego aca");
-
         // El manejo de errores se puede reciclar de backoffice
         fetch(constants.USERS_HOST + constants.SIGN_UP_URL,
             {
@@ -42,14 +40,25 @@ import {
                 isExternal: false
             } )
   
-        })
-        .then((res) => res.json())
-        .then((response)=>{
-            console.log(response);
-            setEmail('');
-            setPassword('');
           })
-        .catch((err)=>{alert(err)})
+          .then((res) => res.json())
+          .then((response)=>{
+              checkResponse(response);
+              setEmail('');
+              setPassword('');
+            })
+          .catch((err)=>{alert(err)});
+      }
+      
+
+      let checkResponse = (res) =>{
+        if (res.error === undefined){
+          navigation.navigate('SignInScreen',
+            {
+              email: email,
+              password: password
+            });
+        }
       }
 
       let validate = () =>{

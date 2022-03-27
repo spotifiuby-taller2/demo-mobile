@@ -49,8 +49,13 @@ export default ForgotPasswordScreen = ({navigation}) =>{
   
         })
         .then((response) => response.json())
-        .then((response)=>{console.log(response)})
-        .catch((err)=>{console.log(err)})
+        .then((response)=>{
+            if (response.status === 'ok'){
+              alert("Cuenta confirmada: acceder a su casilla para cambiar contraseña");
+              navigation.navigate('');
+            }
+          })
+        .catch((err)=>{alert(err)})
       }
   
       return(

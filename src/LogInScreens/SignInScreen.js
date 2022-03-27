@@ -14,13 +14,16 @@ import { getSHAOf } from "../others/utils"
 import SignInWithBiometricButton from '../Components/SignInWithBiometricButton';
 import SignInGoogleButton from '../Components/SignInGoogleButton';
 import { auth } from "../Firebase/firebase";
+import { useRoute } from '@react-navigation/native';
 const firebaseAuth = require("firebase/auth");
 
 
 export default LogInScreen = ({navigation}) =>{
 
-    const [email,setEmail] = useState('');
-    const [password,setPassword] = useState('');
+    const route = useRoute();
+
+    const [email,setEmail] = useState(route.params.email);
+    const [password,setPassword] = useState(route.params.password);
     const [emailError,setEmailError] = useState(null);
     const [passwordError,setPasswordError] = useState(null);
     const [securePassword, setSecurePassword] = useState(true);
@@ -53,13 +56,11 @@ export default LogInScreen = ({navigation}) =>{
       } )
       .then(response => response.json())
       .then( (response) => {
-          if (response.error !== undefined) {
-              alert(response.error);
+          if(response.error === undefined){
+              navigation.navigate('HomeScreen');
           }
-          else{
-            console.log(response);
-          }
-      } );
+      } )
+      .catch(err=>alert(err));
     }
 
     let validate = () =>{
