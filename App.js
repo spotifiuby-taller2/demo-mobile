@@ -8,7 +8,7 @@ import React from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import imagenCromiun from './assets/cromiun.png';
-import LogInScreen from './src/BeginScreens/LogInScreen'
+import SignInScreen from './src/BeginScreens/SignInScreen'
 import SignUpScreen from './src/BeginScreens/SignUpScreen'
 import ForgotPasswordScreen from './src/BeginScreens/ForgotPasswordScreen'
 import { Provider as PaperProvider, Button } from 'react-native-paper';
@@ -32,15 +32,17 @@ export default function App() {
           <Button
             mode='text'
             style={styles.button} 
-            onPress={()=>{navigation.navigate('LogInScreen')}}>
+            onPress={()=>{navigation.navigate('SignInScreen')}}>
               <Text style={styles.text}>Iniciar Sesión</Text>
           </Button>
+
           <Button
             mode='text' 
             style={styles.button} 
             onPress={()=>{navigation.navigate('SignUpScreen')}}>
               <Text style={styles.text}>Registrarse</Text>
           </Button>
+
           <Button
             mode='text'
             style={styles.button} 
@@ -59,7 +61,7 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator screenOptions={{headerShown: false}}>
           <Stack.Screen name='NavigatorlogInScreen' component={NavigationLogInScreen}/>
-          <Stack.Screen name='LogInScreen' component={LogInScreen}/>
+          <Stack.Screen name='SignInScreen' component={SignInScreen}/>
           <Stack.Screen name='SignUpScreen' component={SignUpScreen}/>
           <Stack.Screen name='ForgotPasswordScreen' component={ForgotPasswordScreen}/>
         </Stack.Navigator>

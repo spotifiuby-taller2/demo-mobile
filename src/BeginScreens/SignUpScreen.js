@@ -3,8 +3,7 @@ import {
     View, 
     Image,
     SafeAreaView,
-    ScrollView,
-    Alert
+    ScrollView
   } from 'react-native';
   
   import React, {useState} from 'react'
@@ -23,11 +22,13 @@ import {
       const [passwordError,setPasswordError] = useState(null);
       const [securePassword, setSecurePassword] = useState(true);
 
-      let sendPostRequest = () =>{
+      let handleSignUp = () =>{
 
         if (! validate()) {
           return;
         }
+
+        console.log("llego aca");
 
         // El manejo de errores se puede reciclar de backoffice
         fetch(constants.USERS_HOST + constants.SIGN_UP_URL,
@@ -38,7 +39,7 @@ import {
                 email: email,
                 password: getSHAOf( getSHAOf(password) ),
                 link: "mobile",
-                firebase: false
+                isExternal: false
             } )
   
         })
@@ -120,7 +121,7 @@ import {
                   <Text style={{color: 'red'}}>{passwordError}</Text>
                 ) }
                    
-                  <Button mode='contained' style={styles.button} onPress={sendPostRequest}>
+                  <Button mode='contained' style={styles.button} onPress={handleSignUp}>
                       <Text style={styles.buttonText}>Iniciar</Text>
                   </Button>
   

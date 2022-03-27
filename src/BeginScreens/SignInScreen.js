@@ -6,14 +6,15 @@ import {
   SafeAreaView,
   Alert
 } from 'react-native';
-
 import React, {useState} from 'react'
 import imagenCromiun from '../../assets/cromiun.png'
 import { TextInput, Text, Button, Title } from 'react-native-paper'
 import constants from '../others/constants'
 import { getSHAOf } from "../others/utils"
+import SignInWithBiometricButton from '../Components/SignInWithBiometricButton';
 import SignInGoogleButton from '../Components/SignInGoogleButton';
-
+import { auth } from "../Firebase/firebase";
+const firebaseAuth = require("firebase/auth");
 
 
 export default LogInScreen = ({navigation}) =>{
@@ -30,18 +31,28 @@ export default LogInScreen = ({navigation}) =>{
           return;
       }
 
-      await fetch(constants.USERS_HOST + constants.SIGN_IN_URL,
+      const hashedPassword = getSHAOf( getSHAOf( password ) );
+
+      const response = await firebaseAuth.signInWithEmailAndPassword(
+          auth, 
+          email, 
+          hashedPassword);
+
+      fetch(constants.USERS_HOST + constants.SIGN_IN_URL,
           {
             method: 'POST',
             headers: constants.JSON_HEADER,
             body: JSON.stringify({
               email: email,
-              password: getSHAOf( getSHAOf(password) ),
+              password: hashedPassword,
+              idToken: response._tokenResponse.idToken,
               link: "mobile",
-              firebase: false
+              signin: "email-password"
           })
 
-      } ).then( (response) => {
+      } )
+      .then(response => response.json())
+      .then( (response) => {
           if (response.error !== undefined) {
               alert(response.error);
           }
@@ -56,11 +67,7 @@ export default LogInScreen = ({navigation}) =>{
       if ( email === '' ) setEmailError('Campo "Mail" debe ser completado')
       if ( password === '' ) setPasswordError('Campo "Contraseña" debe ser completado')
 
-      if (( email === null ) && (passwordError === null)){
-          return true;
-      }
-      
-      return false;
+      return (email === '') && (passwordError === null);
     }
 
     return(
@@ -114,8 +121,10 @@ export default LogInScreen = ({navigation}) =>{
                     
                     <Text style={styles.forgotPasswordButton}>¿Olvido su contraseña?</Text>
                 </Button>
+                
+                <SignInGoogleButton/>
+                <SignInWithBiometricButton />
 
-                <SignInGoogleButton />
             </View>
             </ScrollView>
         </SafeAreaView>
