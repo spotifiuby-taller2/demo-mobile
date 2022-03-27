@@ -3,53 +3,71 @@ import {
   View,
   Image,
   ScrollView,
-  SafeAreaView
+  SafeAreaView,
+  Alert
 } from 'react-native';
-
 import React, {useState} from 'react'
 import imagenCromiun from '../../assets/cromiun.png'
 import { TextInput, Text, Button, Title } from 'react-native-paper'
-import { getSHAOf } from "../others/utils";
-import constants from "../others/constants";
+import constants from '../others/constants'
+import { getSHAOf } from "../others/utils"
+import SignInWithBiometricButton from '../Components/SignInWithBiometricButton';
+import SignInGoogleButton from '../Components/SignInGoogleButton';
+import { auth } from "../Firebase/firebase";
+const firebaseAuth = require("firebase/auth");
 
 
 export default LogInScreen = ({navigation}) =>{
 
-    const [mail,setMail] = useState('');
+    const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
-    const [mailError,setMailError] = useState(null);
+    const [emailError,setEmailError] = useState(null);
     const [passwordError,setPasswordError] = useState(null);
     const [securePassword, setSecurePassword] = useState(true);
 
-    let sendPostRequest = async () =>{
+    let handleSignIn = async () =>{
 
       if (validate()) {
           return;
       }
 
-      await fetch(constants.USERS_HOST + constants.SIGN_IN_URL,
+      const hashedPassword = getSHAOf( getSHAOf( password ) );
+
+      const response = await firebaseAuth.signInWithEmailAndPassword(
+          auth, 
+          email, 
+          hashedPassword);
+
+      fetch(constants.USERS_HOST + constants.SIGN_IN_URL,
           {
             method: 'POST',
             headers: constants.JSON_HEADER,
             body: JSON.stringify({
-              mail: {mail},
-              password: getSHAOf( getSHAOf(password) ),
+              email: email,
+              password: hashedPassword,
+              idToken: response._tokenResponse.idToken,
+              link: "mobile",
+              signin: "email-password"
           })
 
-      }).then((response)=>{console.log(response)})
-      .catch((err)=>{console.log(err)})
+      } )
+      .then(response => response.json())
+      .then( (response) => {
+          if (response.error !== undefined) {
+              alert(response.error);
+          }
+          else{
+            console.log(response);
+          }
+      } );
     }
 
     let validate = () =>{
       
-      if ( mail === '' ) setMailError('Campo "Mail" debe ser completado')
+      if ( email === '' ) setEmailError('Campo "Mail" debe ser completado')
       if ( password === '' ) setPasswordError('Campo "Contraseña" debe ser completado')
 
-      if (( mail === null ) && (passwordError === null)){
-          return true;
-      }
-      
-      return false;
+      return (email === '') && (passwordError === null);
     }
 
     return(
@@ -70,12 +88,12 @@ export default LogInScreen = ({navigation}) =>{
                 <TextInput
                     name='Mail'
                     label='Mail*'
-                    value={mail}
-                    onChangeText={(newText) => {setMail(newText); setMailError(null);}}
+                    value={email}
+                    onChangeText={(newText) => {setEmail(newText); setEmailError(null);}}
                     mode='outlined'
-                    error={mailError!==null}/>
-                {mailError &&(
-                  <Text style={{color: 'red'}}>Campo 'Mail' es requerido</Text>
+                    error={emailError!==null}/>
+                {emailError &&(
+                  <Text style={{color: 'red'}}>{emailError}</Text>
                 ) }
                 
                 <TextInput
@@ -88,11 +106,11 @@ export default LogInScreen = ({navigation}) =>{
                     secureTextEntry={securePassword}
                     right={<TextInput.Icon name="eye" onPress={()=>{setSecurePassword(! securePassword)}}/>}/>
                 {passwordError &&(
-                  <Text style={{color: 'red'}}>Campo 'Contraseña' es requerido</Text>
+                  <Text style={{color: 'red'}}>{passwordError}</Text>
                 ) }
               
 
-                <Button mode='contained' style={styles.button} onPress={sendPostRequest}>
+                <Button mode='contained' style={styles.button} onPress={handleSignIn}>
                     <Text style={styles.buttonText}>Iniciar</Text>
                 </Button>
 
@@ -103,6 +121,10 @@ export default LogInScreen = ({navigation}) =>{
                     
                     <Text style={styles.forgotPasswordButton}>¿Olvido su contraseña?</Text>
                 </Button>
+                
+                <SignInGoogleButton/>
+                <SignInWithBiometricButton />
+
             </View>
             </ScrollView>
         </SafeAreaView>

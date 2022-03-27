@@ -20,14 +20,38 @@
       "supportsTablet": true
     },
     "android": {
+      "config": {
+        "googleSignIn": {
+          "apiKey": "AIzaSyB8DZnaX6HIBlkubONcCNs7mm56UvgWlao",
+          "certificateHash": "8F0337F18EA7F43559277E223A07405A8E05C46E"
+        }
+      },
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.T2.prueba.rn"
+      "package": "com.T2.prueba.rn",
+      "intentFilters":[
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "myapp",
+              "host": "app",
+              "pathPrefix": "/signup"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "scheme": "myapp"
   }
 }

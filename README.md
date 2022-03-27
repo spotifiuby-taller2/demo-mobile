@@ -1,4 +1,4 @@
-# react_native_T2
+# app
 
 ### Instalación y configuración
 
