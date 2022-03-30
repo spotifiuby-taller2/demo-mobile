@@ -63,12 +63,6 @@ export default ForgotPasswordScreen = ({navigation}) =>{
           <SafeAreaView>
             <ScrollView showsVerticalScrollIndicator={false}>
               <View>
-                  <Button
-                    mode='text'
-                    style={{width: 100}}
-                    onPress={()=>{navigation.navigate('NavigatorlogInScreen')}}>
-                      <Text>ATRAS</Text>
-                  </Button>
                   <Image source={imagenCromiun} style={styles.image}></Image>
                   <Title style={styles.title}>¿Ha olvidado su contraseña?</Title>
                   

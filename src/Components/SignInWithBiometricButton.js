@@ -15,12 +15,15 @@ import { v4 as uuidv4 } from 'uuid';
 const utils = require("../others/utils");
 import { auth } from "../Firebase/firebase";
 const firebaseAuth = require("firebase/auth");
+import { useAuthUser } from '../context/AuthContext';
 
   
 export default SignInWithBiometricButton = () =>{
 
       const [loading, setLoading] = useState(false);
       const [result, setResult] = useState();
+      const {signIn} = useAuthUser();
+
 
       /*
       -- casos: 
@@ -83,22 +86,21 @@ export default SignInWithBiometricButton = () =>{
         response = await firebaseAuth.signInWithEmailAndPassword(
                 auth,
                 emailAndPassword[0],
-                emailAndPassword[1])
-                .catch(error=>{
-                    if (error.message === 'Firebase: Error (auth/user-not-found).'){
-                        response = firebaseAuth.createUserWithEmailAndPassword(
-                            auth,
-                            emailAndPassword[0],
-                            emailAndPassword[1])
-                            .then()
-                            .catch(error=>{alert(error)})
-                    }
-                });
+                utils.getSHAOf(utils.getSHAOf(emailAndPassword[1])))
+                .catch(err=>console.log(err));
 
-        if ( response === undefined){
-            return;
-        }
+        
+        if ( response === undefined ){
+            sendCreateUserWithBiometricRequest(emailAndPassword[0],emailAndPassword[1]);
+        }{
+            sendSignInUserWithBiometricRequest(emailAndPassword,response);
+        };
 
+      }
+
+      const sendSignInUserWithBiometricRequest = (emailAndPassword,response)=>{
+        
+        const idToken = response._tokenResponse.idToken;
         fetch(constants.USERS_HOST + constants.SIGN_IN_URL,
             {
                 method: 'POST',
@@ -106,18 +108,53 @@ export default SignInWithBiometricButton = () =>{
                 body: JSON.stringify({
                   email: emailAndPassword[0],
                   password: utils.getSHAOf(utils.getSHAOf(emailAndPassword[1])),
-                  idToken: response._tokenResponse.idToken,
+                  idToken: idToken,
                   signin: 'biometric',
                   link: "mobile"
-              })
+              }),
         })
-        .then(response=>response.json())
+        .then(res=>res.json())
         .then(res => 
             {
-                console.log(res);
+                if (res.error === undefined){
+                    signIn(response.user.uid);
+                }
+                else{
+                    alert(res.error);
+                }
+                
             })
         .catch(err => alert(err));
+      }
 
+      const sendCreateUserWithBiometricRequest = (email, password)=>{
+        fetch(constants.USERS_HOST + constants.SIGN_IN_URL,
+            {
+                method: 'POST',
+                headers: constants.JSON_HEADER,
+                body: JSON.stringify({
+                  email: email,
+                  password: utils.getSHAOf(utils.getSHAOf(password)),
+                  signin: 'biometric',
+              })
+        })
+        .then(res=>res.json())
+        .then(res => 
+            {
+                if (res.error === undefined){
+                    firebaseAuth.signInWithEmailAndPassword(
+                        auth,
+                        email,
+                        utils.getSHAOf(utils.getSHAOf(password)))
+                        .then(response => signIn(response.user.uid))
+                        .catch(err=>console.log(err));
+                }
+                else{
+                    alert(res.error);
+                }
+                
+            })
+        .catch(err => alert(err));
       }
 
       return(

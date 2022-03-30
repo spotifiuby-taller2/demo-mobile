@@ -10,10 +10,16 @@ import { Button } from 'react-native-paper'
 import * as Google from 'expo-google-app-auth';
 import {IOS_KEY, ANDROID_KEY, WEB_KEY, ANDROID_STANDALONE_KEY} from "@env"
 import constants from '../others/constants'
+import { useAuthUser } from '../context/AuthContext';
 const {getAuth,signInWithCredential, GoogleAuthProvider} = require("firebase/auth");
 
 
+
 export default SignInWithGoogle = () =>{
+     
+     const {signIn} = useAuthUser();
+
+
      let handleSignInWithGoogle = async () => {
         let result;
 
@@ -39,8 +45,6 @@ export default SignInWithGoogle = () =>{
 
          const auth = getAuth();
 
-         console.log(result.idToken);
-
          const response = await signInWithCredential(auth, credential);
 
          if (response.user === undefined) {
@@ -48,7 +52,6 @@ export default SignInWithGoogle = () =>{
              return;
          }
 
-         console.log(response);
 
         fetch(constants.USERS_HOST + constants.SIGN_IN_URL,
             {
@@ -63,9 +66,10 @@ export default SignInWithGoogle = () =>{
 
         })
         .then((res) => res.json())
-        .then((response)=>{
-
-            console.log(response);
+        .then((res)=>{
+          if(res.error === undefined){
+            signIn(credential.idToken);
+          }
         })
         .catch((err)=>{alert(err)});
       };

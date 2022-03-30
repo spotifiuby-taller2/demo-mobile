@@ -15,12 +15,15 @@ import SignInWithBiometricButton from '../Components/SignInWithBiometricButton';
 import SignInGoogleButton from '../Components/SignInGoogleButton';
 import { auth } from "../Firebase/firebase";
 import { useRoute } from '@react-navigation/native';
+import { useAuthUser } from '../context/AuthContext';
 const firebaseAuth = require("firebase/auth");
 
 
 export default LogInScreen = ({navigation}) =>{
 
     const route = useRoute();
+    const {signIn} = useAuthUser();
+
 
     const [email,setEmail] = useState(route.params.email);
     const [password,setPassword] = useState(route.params.password);
@@ -36,7 +39,7 @@ export default LogInScreen = ({navigation}) =>{
 
       const hashedPassword = getSHAOf( getSHAOf( password ) );
 
-      const response = await firebaseAuth.signInWithEmailAndPassword(
+      const fResponse = await firebaseAuth.signInWithEmailAndPassword(
           auth, 
           email, 
           hashedPassword);
@@ -48,7 +51,7 @@ export default LogInScreen = ({navigation}) =>{
             body: JSON.stringify({
               email: email,
               password: hashedPassword,
-              idToken: response._tokenResponse.idToken,
+              idToken: fResponse._tokenResponse.idToken,
               link: "mobile",
               signin: "email-password"
           })
@@ -57,7 +60,7 @@ export default LogInScreen = ({navigation}) =>{
       .then(response => response.json())
       .then( (response) => {
           if(response.error === undefined){
-              navigation.navigate('HomeScreen');
+              signIn(fResponse._tokenResponse.idToken);
           }
       } )
       .catch(err=>alert(err));
@@ -76,13 +79,6 @@ export default LogInScreen = ({navigation}) =>{
         <SafeAreaView>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View>
-                <Button 
-                    mode='text' 
-                    onPress={()=>{navigation.navigate('NavigatorlogInScreen')}}
-                    style={{width: 100}}
-                    >
-                    <Text>ATRAS</Text>
-                </Button>
                 <Image source={imagenCromiun} style={styles.image}></Image>
                 <Title style={styles.title}>Iniciar sesión en My App</Title>
                 
@@ -134,37 +130,37 @@ export default LogInScreen = ({navigation}) =>{
   }
 
   const styles = StyleSheet.create(
-     { input: {
-         borderWidth: 2, 
-         marginBottom: 15,
-         marginTop: 15,
-         backgroundColor: '#f5fcff',
-         height: 50
-        },
-       container: {
-         flex:1,
-         backgroundColor: '#f5fcff',
-         paddingLeft: 15,
-         paddingRight: 15,
-         marginTop: 30
-        },
-        title: {textAlign: 'center',fontSize: 25, marginBottom: 35},
-        button: {
-          backgroundColor: 'skyblue', 
-          paddingTop: 15, 
-          paddingBottom:15, 
-          width: 100, 
-          alignSelf: 'center', 
-          marginTop: 30, 
-          marginBottom:30,
-          borderRadius: 10},
-        buttonText: {textAlign: 'center', fontSize: 13},
-        forgotPasswordButton: {textAlign: 'center', fontSize: 13, color: 'skyblue'},
-        image:{
-          height: 70,
-          width: 70,
-          alignSelf: 'center',
-          marginTop: 50,
-          marginBottom: 80
-        }}
-  )
+    { input: {
+        borderWidth: 2, 
+        marginBottom: 15,
+        marginTop: 15,
+        backgroundColor: '#f5fcff',
+        height: 50
+       },
+      container: {
+        flex:1,
+        backgroundColor: '#f5fcff',
+        paddingLeft: 15,
+        paddingRight: 15,
+        marginTop: 30
+       },
+       title: {textAlign: 'center',fontSize: 25, marginBottom: 35},
+       button: {
+         backgroundColor: 'skyblue', 
+         paddingTop: 15, 
+         paddingBottom:15, 
+         width: 100, 
+         alignSelf: 'center', 
+         marginTop: 30, 
+         marginBottom:30,
+         borderRadius: 10},
+       buttonText: {textAlign: 'center', fontSize: 13},
+       forgotPasswordButton: {textAlign: 'center', fontSize: 13, color: 'skyblue'},
+       image:{
+         height: 70,
+         width: 70,
+         alignSelf: 'center',
+         marginTop: 50,
+         marginBottom: 80
+       }}
+ )
