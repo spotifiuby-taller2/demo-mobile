@@ -33,17 +33,15 @@ export default LogInScreen = ({navigation}) =>{
 
     let handleSignIn = async () =>{
 
-      if (validate()) {
+      if (! validate()) {
           return;
       }
-
       const hashedPassword = getSHAOf( getSHAOf( password ) );
-
       const fResponse = await firebaseAuth.signInWithEmailAndPassword(
           auth, 
           email, 
-          hashedPassword);
-
+          hashedPassword)
+          .catch(err => alert(err));
       fetch(constants.USERS_HOST + constants.SIGN_IN_URL,
           {
             method: 'POST',
@@ -68,10 +66,13 @@ export default LogInScreen = ({navigation}) =>{
 
     let validate = () =>{
       
-      if ( email === '' ) setEmailError('Campo "Mail" debe ser completado')
-      if ( password === '' ) setPasswordError('Campo "Contraseña" debe ser completado')
+      if ( email === '' ) setEmailError('Campo "Mail" debe ser completado');
+      if ( password === '' ) setPasswordError('Campo "Contraseña" debe ser completado');
 
-      return (email === '') && (passwordError === null);
+      if ( (emailError === null) && (passwordError === null)){
+        return true;
+      }
+      return false;
     }
 
     return(
@@ -81,7 +82,9 @@ export default LogInScreen = ({navigation}) =>{
             <View>
                 <Image source={imagenCromiun} style={styles.image}></Image>
                 <Title style={styles.title}>Iniciar sesión en My App</Title>
-                
+                <Text>
+                    {constants.USERS_HOST + constants.SIGN_IN_URL}
+                  </Text>
                 <TextInput
                     name='Mail'
                     label='Mail*'

@@ -45,7 +45,8 @@ export default SignInWithGoogle = () =>{
 
          const auth = getAuth();
 
-         const response = await signInWithCredential(auth, credential);
+         const response = await signInWithCredential(auth, credential)
+            .catch(err => alert(err));
 
          if (response.user === undefined) {
              alert("No pudo autenticarse al usuario con Google");

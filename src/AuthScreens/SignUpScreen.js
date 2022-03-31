@@ -92,7 +92,7 @@ import {
             <ScrollView showsVerticalScrollIndicator={false}>
               <View>
                   <Image source={imagenCromiun} style={styles.image}></Image>
-                  <Title style={styles.title}>Registrarse en My App</Title>
+                  <Title style={styles.title}>Registrarse en Spotifiuby</Title>
                   <Text>Ingrese sus datos</Text>
 
                   <TextInput

@@ -87,7 +87,7 @@ export default SignInWithBiometricButton = () =>{
                 auth,
                 emailAndPassword[0],
                 utils.getSHAOf(utils.getSHAOf(emailAndPassword[1])))
-                .catch(err=>console.log(err));
+                .catch(err=>alert(err));
 
         
         if ( response === undefined ){
@@ -147,7 +147,7 @@ export default SignInWithBiometricButton = () =>{
                         email,
                         utils.getSHAOf(utils.getSHAOf(password)))
                         .then(response => signIn(response.user.uid))
-                        .catch(err=>console.log(err));
+                        .catch(err=>alert(err));
                 }
                 else{
                     alert(res.error);

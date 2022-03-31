@@ -6,6 +6,7 @@ import {
   } from 'react-native';
 import { Button } from 'react-native-paper';
 import React from 'react'
+import constants from '../others/constants';
 
 
 
@@ -18,6 +19,9 @@ export default NavigationLogInScreen = ({navigation}) =>{
           <Image source={imagenCromiun} style={styles.image}>
           </Image>
         </View>
+        <Text>
+          {constants.USERS_HOST}
+        </Text>
         <View style={styles.containerTexts}>
           <Button
             mode='text'
