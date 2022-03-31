@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "my-app",
-    "slug": "my-app",
+    "name": "Spotifuiby",
+    "slug": "Spotifuiby",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -30,7 +30,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.T2.prueba.rn",
+      "package": "com.t2.prueba.rn",
       "intentFilters":[
         {
           "action": "VIEW",

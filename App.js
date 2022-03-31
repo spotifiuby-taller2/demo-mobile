@@ -1,81 +1,129 @@
 import 'react-native-gesture-handler'
-import {  
-  Text, 
-  View, 
-  Image, 
-} from 'react-native';
-import React from 'react'
+import React, {useEffect, useReducer, useMemo} from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import imagenCromiun from './assets/cromiun.png';
-import SignInScreen from './src/BeginScreens/SignInScreen'
-import SignUpScreen from './src/BeginScreens/SignUpScreen'
-import ForgotPasswordScreen from './src/BeginScreens/ForgotPasswordScreen'
-import { Provider as PaperProvider, Button } from 'react-native-paper';
+import SignInScreen from './src/AuthScreens/SignInScreen'
+import SignUpScreen from './src/AuthScreens/SignUpScreen'
+import NavigationLogInScreen from './src/AuthScreens/NavigationLogInScreen';
+import ForgotPasswordScreen from './src/AuthScreens/ForgotPasswordScreen'
+import HomeScreen from './src/HomeScreens/HomeScreen';
+import { Provider as PaperProvider } from 'react-native-paper';
+import { AuthContext } from './src/context/AuthContext';
+import * as SecureStore from 'expo-secure-store';
 
 
+const AuthStack = createNativeStackNavigator();
 
-const Stack = createNativeStackNavigator();
-
-
-export default function App() {
-  
-  const NavigationLogInScreen = ({navigation}) =>{
-  
-    return(
-      <View style={styles.container}>
-        <View>
-          <Image source={imagenCromiun} style={styles.image}>
-          </Image>
-        </View>
-        <View style={styles.containerTexts}>
-          <Button
-            mode='text'
-            style={styles.button} 
-            onPress={()=>{navigation.navigate('SignInScreen')}}>
-              <Text style={styles.text}>Iniciar Sesión</Text>
-          </Button>
-
-          <Button
-            mode='text' 
-            style={styles.button} 
-            onPress={()=>{navigation.navigate('SignUpScreen')}}>
-              <Text style={styles.text}>Registrarse</Text>
-          </Button>
-
-          <Button
-            mode='text'
-            style={styles.button} 
-            onPress={()=>{navigation.navigate('ForgotPasswordScreen')}}>
-              <Text style={styles.text}>¿Olvido su contraseña?</Text>
-          </Button>
-        </View>
-      </View>
-    )
-  
+const initialState = ()=>{
+  return{
+      userToken: null,
+      isSignOut: false
   }
-
-
-  return (
-    <PaperProvider>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{headerShown: false}}>
-          <Stack.Screen name='NavigatorlogInScreen' component={NavigationLogInScreen}/>
-          <Stack.Screen name='SignInScreen' component={SignInScreen}/>
-          <Stack.Screen name='SignUpScreen' component={SignUpScreen}/>
-          <Stack.Screen name='ForgotPasswordScreen' component={ForgotPasswordScreen}/>
-        </Stack.Navigator>
-      </NavigationContainer>
-    </PaperProvider>
-  );
 };
 
+const reducer = (state = initialState(), action = {})=>{
 
+  switch(action.type){
+      case 'RESTORE_TOKEN':
+      return{
+          ...state,
+          userToken: action.token
+      };
+      case 'SIGN_IN':
+      return{
+          ...state,
+          userToken: action.token,
+          isSignOut: false
+      }
+      
+      case 'SIGN_OUT':
+      return{
+          ...state,
+          userToken: null,
+          isSignOut: true
+      }
+  }
+  return state;
+};
 
-const styles = {
-  image: {height: 150, width: 150, borderRadius: 200, resizeMode: 'contain', paddingTop: 200},
-  container: {flex: 1, justifyContent: 'center',alignItems: 'center', backgroundColor: '#f5fcff'},
-  text: {fontSize: 20, color: 'skyblue'},
-  containerTexts: {flex: 1, justifyContent: 'center',alignItems: 'center'},
-  button: {padding: 10}
-}
+export default function App() {
+
+  const [state, dispatch] = useReducer(reducer, reducer());
+
+  useEffect(()=>{
+    const bootstrapAsync = async ()=>{
+
+        let userToken;
+
+    try{
+        userToken = await SecureStore.getItemAsync('authToken');
+    }
+    catch(err){
+        alert(err);
+        return;
+    }
+    console.log("token:")
+    console.log(userToken);
+
+    dispatch({type: 'RESTORE_TOKEN', token: userToken})
+    }
+
+    bootstrapAsync();
+  },[]);
+
+  const authContext = useMemo(()=>{
+    return ({
+        state,
+        signIn: async (token)=>
+            {
+            let userToken;
+
+            try{
+                userToken = await SecureStore.getItemAsync('authToken');
+
+                if (! userToken){
+                    await SecureStore.setItemAsync('authToken', token);
+                    userToken = await SecureStore.getItemAsync('authToken');
+                }
+            }
+            catch(err){
+                alert(err);
+                return;
+            }
+            console.log(userToken);
+            dispatch({type: 'SIGN_IN', token: userToken});
+            },
+        signOut: async ()=>{
+            dispatch({type: 'SIGN_OUT'});
+            await SecureStore.deleteItemAsync('authToken');
+        }
+    });
+    
+  },[]);
+
+  return (
+    <AuthContext.Provider value={authContext}>
+    <PaperProvider>
+        <NavigationContainer>
+          <AuthStack.Navigator screenOptions={{headerShown: false}}>
+            <>
+            {
+              ( ! state.userToken )? (
+                <>
+                  <AuthStack.Screen name='NavigatorlogInScreen' component={NavigationLogInScreen}/>
+                  <AuthStack.Screen name='SignInScreen' component={SignInScreen} initialParams={{email: '', password: ''}} options={{ animationTypeForReplace: state.isSignOut ? 'pop' : 'push'}}/>
+                  <AuthStack.Screen name='SignUpScreen' component={SignUpScreen}/>
+                  <AuthStack.Screen name='ForgotPasswordScreen' component={ForgotPasswordScreen}/>
+                </>
+                
+              ):(
+                <AuthStack.Screen name='HomeScreen' component={HomeScreen}/>
+              )
+            }
+            </>
+          </AuthStack.Navigator>
+        </NavigationContainer>
+        </PaperProvider>
+      </AuthContext.Provider>
+  );
+};

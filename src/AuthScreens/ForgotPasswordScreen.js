@@ -49,8 +49,13 @@ export default ForgotPasswordScreen = ({navigation}) =>{
   
         })
         .then((response) => response.json())
-        .then((response)=>{console.log(response)})
-        .catch((err)=>{console.log(err)})
+        .then((response)=>{
+            if (response.status === 'ok'){
+              alert("Cuenta confirmada: acceder a su casilla para cambiar contraseña");
+              navigation.navigate('');
+            }
+          })
+        .catch((err)=>{alert(err)})
       }
   
       return(
@@ -58,12 +63,6 @@ export default ForgotPasswordScreen = ({navigation}) =>{
           <SafeAreaView>
             <ScrollView showsVerticalScrollIndicator={false}>
               <View>
-                  <Button
-                    mode='text'
-                    style={{width: 100}}
-                    onPress={()=>{navigation.navigate('NavigatorlogInScreen')}}>
-                      <Text>ATRAS</Text>
-                  </Button>
                   <Image source={imagenCromiun} style={styles.image}></Image>
                   <Title style={styles.title}>¿Ha olvidado su contraseña?</Title>
                   
