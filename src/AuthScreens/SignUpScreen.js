@@ -28,8 +28,6 @@ import {
           return;
         }
 
-        console.log("llego aca");
-
         // El manejo de errores se puede reciclar de backoffice
         fetch(constants.USERS_HOST + constants.SIGN_UP_URL,
             {
@@ -42,35 +40,44 @@ import {
                 isExternal: false
             } )
   
-        })
-        .then((res) => res.json())
-        .then((response)=>{
-            console.log(response);
-            setEmail('');
-            setPassword('');
           })
-        .catch((err)=>{alert(err)})
+          .then((res) => res.json())
+          .then((response)=>{
+              checkResponse(response);
+              setEmail('');
+              setPassword('');
+            })
+          .catch((err)=>{alert(err)});
+      }
+      
+
+      let checkResponse = (res) =>{
+        if (res.error === undefined){
+          alert("Mail de confirmación enviado. Solo podra ingresar si confirma que es usted.");
+          navigation.navigate('SignInScreen',
+            {
+              email: email,
+              password: password
+            });
+        }
       }
 
       let validate = () =>{
       
-        if ( password === '' ) setPasswordError('Campo "Contraseña" debe ser completado')
-        if ( email === '' ) setEmailError('Campo "Mail" debe ser completado')
+        if ( password === '' ) setPasswordError('Campo "Contraseña" debe ser completado');
+        if ( email === '' ) setEmailError('Campo "Mail" debe ser completado');
         
         if (password.length < 8 ) 
-          setPasswordError('La Contraseña debe tener como minimo 8 caracteres')
-        
-        else if (password.length > 16 ) 
-          setPasswordError('La Contraseña debe tener como maximo 8 caracteres')
+          setPasswordError('La Contraseña debe tener como minimo 8 caracteres');
         
         else if (
           !/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])/.test(password)
         ){
-          setPasswordError('Minimo 1 caracter en mayuscula, 1 caracter en minuscula y 1 numero')
+          setPasswordError('Minimo 1 caracter en mayuscula, 1 caracter en minuscula y 1 numero');
         }
         
         if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
-          setEmailError('No tiene formato de mail')
+          setEmailError('No tiene formato de mail');
         
         if ((passwordError === null) && (emailError === null)){
             return true;
@@ -84,14 +91,8 @@ import {
           <SafeAreaView>
             <ScrollView showsVerticalScrollIndicator={false}>
               <View>
-                  <Button
-                      style={{width: 100}}
-                      mode='text' 
-                      onPress={()=>{navigation.navigate('NavigatorlogInScreen')}}>
-                      <Text>ATRAS</Text>
-                  </Button>
                   <Image source={imagenCromiun} style={styles.image}></Image>
-                  <Title style={styles.title}>Registrarse en My App</Title>
+                  <Title style={styles.title}>Registrarse en Spotifiuby</Title>
                   <Text>Ingrese sus datos</Text>
 
                   <TextInput
