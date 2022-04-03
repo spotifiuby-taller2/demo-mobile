@@ -7,7 +7,7 @@ import {
   Alert
 } from 'react-native';
 import React from 'react'
-import imagenCromiun from '../../assets/cromiun.png'
+import imageSpotifiuby from '../../assets/SpotifiubyIcon.png'
 import { Title, Text,Button } from 'react-native-paper'
 import { useAuthUser } from '../context/AuthContext';
   
@@ -21,7 +21,7 @@ export default HomeScreen = ({navigation}) =>{
         <SafeAreaView>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View>
-                <Image source={imagenCromiun} style={styles.image}></Image>
+                <Image source={imageSpotifiuby} style={styles.image}></Image>
                 <Title style={styles.title}>Bienvenido a My App</Title>
 
             </View>

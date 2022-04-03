@@ -79,26 +79,34 @@ export default SignInWithBiometricButton = () =>{
 
         const biometricId = await SecureStore.getItemAsync('secure_biometricId');
 
-        const emailAndPassword = utils.getBiometricalMailAndPassword(biometricId);
+        const {email, password} = utils.getBiometricalMailAndPassword(biometricId);
 
-        let response = undefined;
+        const hashedPassword =utils.getSHAOf(utils.getSHAOf(password));
 
-        response = await firebaseAuth.signInWithEmailAndPassword(
+        const response = await firebaseAuth.signInWithEmailAndPassword(
                 auth,
-                emailAndPassword[0],
-                utils.getSHAOf(utils.getSHAOf(emailAndPassword[1])))
-                .catch(err=>alert(err));
-
+                email,
+                hashedPassword)
+                .catch(err=>{
+                    if ( err.message === "Firebase: Error (auth/user-not-found)."){
+                        alert("Su usuario sera creado");
+                    }
+                    else{
+                        alert(err.message);
+                    }
+                    
+                });
         
         if ( response === undefined ){
-            sendCreateUserWithBiometricRequest(emailAndPassword[0],emailAndPassword[1]);
-        }{
-            sendSignInUserWithBiometricRequest(emailAndPassword,response);
+            sendCreateUserWithBiometricRequest(email,hashedPassword);
+        }
+        else{
+            sendSignInUserWithBiometricRequest(email, hashedPassword,response);
         };
 
       }
 
-      const sendSignInUserWithBiometricRequest = (emailAndPassword,response)=>{
+      const sendSignInUserWithBiometricRequest = (email, password,response)=>{
         
         const idToken = response._tokenResponse.idToken;
         fetch(constants.USERS_HOST + constants.SIGN_IN_URL,
@@ -106,8 +114,8 @@ export default SignInWithBiometricButton = () =>{
                 method: 'POST',
                 headers: constants.JSON_HEADER,
                 body: JSON.stringify({
-                  email: emailAndPassword[0],
-                  password: utils.getSHAOf(utils.getSHAOf(emailAndPassword[1])),
+                  email: email,
+                  password: password,
                   idToken: idToken,
                   signin: 'biometric',
                   link: "mobile"
@@ -116,6 +124,7 @@ export default SignInWithBiometricButton = () =>{
         .then(res=>res.json())
         .then(res => 
             {
+                console.log(res);
                 if (res.error === undefined){
                     signIn(response.user.uid);
                 }
@@ -134,7 +143,7 @@ export default SignInWithBiometricButton = () =>{
                 headers: constants.JSON_HEADER,
                 body: JSON.stringify({
                   email: email,
-                  password: utils.getSHAOf(utils.getSHAOf(password)),
+                  password: password,
                   signin: 'biometric',
               })
         })
@@ -145,7 +154,7 @@ export default SignInWithBiometricButton = () =>{
                     firebaseAuth.signInWithEmailAndPassword(
                         auth,
                         email,
-                        utils.getSHAOf(utils.getSHAOf(password)))
+                        password)
                         .then(response => signIn(response.user.uid))
                         .catch(err=>alert(err));
                 }

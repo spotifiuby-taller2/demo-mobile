@@ -15,11 +15,16 @@ const JSON_HEADER = {
   'Accept': 'application/json'
 }
 
+/* Constants */
+
+const MIN_LENGTH_PASSWORD = 8;
+
 module.exports = {
   USERS_HOST,
   SIGN_UP_URL,
   SIGN_IN_URL,
   FORGOT_PASSWORD_URL,
   JSON_HEADER,
-  SIGN_UP_END_URL
+  SIGN_UP_END_URL,
+  MIN_LENGTH_PASSWORD
 }

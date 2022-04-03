@@ -7,7 +7,7 @@ import {
   } from 'react-native';
   
 import React, {useState} from 'react'
-import imagenCromiun from '../../assets/cromiun.png'
+import imageSpotifiuby from '../../assets/SpotifiubyIcon.png'
 import { TextInput, Button, Text, Title } from 'react-native-paper'
 import constants from "../others/constants";
 
@@ -18,17 +18,20 @@ export default ForgotPasswordScreen = ({navigation}) =>{
       const [emailError,setEmailError] = useState(null);
 
       let validate = () =>{
+
+        let isValid = true;
       
-        if ( email === '' ) setEmailError('Campo "Mail" debe ser completado')
-        
-        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
-          setEmailError('No tiene formato de mail')
-        
-        if (emailError === null){
-            return true;
+        if ( email === '' ) {
+          setEmailError('Campo "Mail" debe ser completado');
+          isValid = false;
         }
         
-        return false;
+        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)){
+          setEmailError('No tiene formato de mail');
+          isValid = false;
+        }
+          
+        return isValid;
       }
   
       let handleForgotPassword = async () =>{
@@ -36,8 +39,8 @@ export default ForgotPasswordScreen = ({navigation}) =>{
         if (! validate()) {
           return;
         }
+
   
-        console.log(constants.USERS_HOST + constants.FORGOT_PASSWORD_URL);
         fetch(constants.USERS_HOST + constants.FORGOT_PASSWORD_URL,
             {
               method: 'POST',
@@ -50,9 +53,12 @@ export default ForgotPasswordScreen = ({navigation}) =>{
         })
         .then((response) => response.json())
         .then((response)=>{
-            if (response.status === 'ok'){
+            if (response.error === undefined ){
               alert("Cuenta confirmada: acceder a su casilla para cambiar contraseña");
-              navigation.navigate('');
+              navigation.navigate('SignInScreen');
+            }
+            else{
+              alert(response.error);
             }
           })
         .catch((err)=>{alert(err)})
@@ -63,7 +69,7 @@ export default ForgotPasswordScreen = ({navigation}) =>{
           <SafeAreaView>
             <ScrollView showsVerticalScrollIndicator={false}>
               <View>
-                  <Image source={imagenCromiun} style={styles.image}></Image>
+                  <Image source={imageSpotifiuby} style={styles.image}></Image>
                   <Title style={styles.title}>¿Ha olvidado su contraseña?</Title>
                   
                   <TextInput
@@ -116,11 +122,5 @@ export default ForgotPasswordScreen = ({navigation}) =>{
             borderRadius: 10},
           buttonText: {textAlign: 'center', fontSize: 13},
           forgotPasswordButton: {textAlign: 'center', fontSize: 13, color: 'skyblue'},
-          image:{
-            height: 70,
-            width: 70,
-            alignSelf: 'center',
-            marginTop: 50,
-            marginBottom: 80
-          }}
+          image:{height:  150, width: 150, borderRadius: 200, resizeMode: 'contain', paddingTop: 200, marginLeft: 84}}
     )

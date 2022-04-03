@@ -1,4 +1,4 @@
-import imagenCromiun from '../../assets/cromiun.png';
+import imageSpotifiuby from '../../assets/SpotifiubyIcon.png';
 import {  
     Text, 
     View, 
@@ -6,7 +6,6 @@ import {
   } from 'react-native';
 import { Button } from 'react-native-paper';
 import React from 'react'
-import constants from '../others/constants';
 
 
 
@@ -16,12 +15,9 @@ export default NavigationLogInScreen = ({navigation}) =>{
     return(
       <View style={styles.container}>
         <View>
-          <Image source={imagenCromiun} style={styles.image}>
+          <Image source={imageSpotifiuby} style={styles.image}>
           </Image>
         </View>
-        <Text>
-          {constants.USERS_HOST}
-        </Text>
         <View style={styles.containerTexts}>
           <Button
             mode='text'
@@ -52,7 +48,7 @@ export default NavigationLogInScreen = ({navigation}) =>{
 
 
   const styles = {
-    image: {height: 150, width: 150, borderRadius: 200, resizeMode: 'contain', paddingTop: 200},
+    image: {height: 200, width: 200, borderRadius: 200, resizeMode: 'contain', paddingTop: 300},
     container: {flex: 1, justifyContent: 'center',alignItems: 'center', backgroundColor: '#f5fcff'},
     text: {fontSize: 20, color: 'skyblue'},
     containerTexts: {flex: 1, justifyContent: 'center',alignItems: 'center'},

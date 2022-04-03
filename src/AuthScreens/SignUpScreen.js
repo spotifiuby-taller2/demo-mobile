@@ -7,7 +7,7 @@ import {
   } from 'react-native';
   
   import React, {useState} from 'react'
-  import imagenCromiun from '../../assets/cromiun.png'
+  import imageSpotifiuby from '../../assets/SpotifiubyIcon.png'
   import { TextInput, Button, Text, Title } from 'react-native-paper'
   import { getSHAOf } from "../others/utils"
   import constants from "../others/constants"
@@ -44,8 +44,6 @@ import {
           .then((res) => res.json())
           .then((response)=>{
               checkResponse(response);
-              setEmail('');
-              setPassword('');
             })
           .catch((err)=>{alert(err)});
       }
@@ -60,30 +58,41 @@ import {
               password: password
             });
         }
+        else{
+          alert(response.error);
+        }
       }
 
       let validate = () =>{
+
+        let isValid = true;
       
-        if ( password === '' ) setPasswordError('Campo "Contraseña" debe ser completado');
-        if ( email === '' ) setEmailError('Campo "Mail" debe ser completado');
+        if ( password === '' ){ 
+          setPasswordError('Campo "Contraseña" debe ser completado');
+          isValid = false;
+        }
+        if ( email === '' ) {
+          setEmailError('Campo "Mail" debe ser completado');
+          isValid=false;
+        }
         
-        if (password.length < 8 ) 
+        if (password.length < constants.MIN_LENGTH_PASSWORD ) {
           setPasswordError('La Contraseña debe tener como minimo 8 caracteres');
+          isValid = false;
+        }
         
-        else if (
-          !/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])/.test(password)
-        ){
+        else if (!/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])/.test(password)){
           setPasswordError('Minimo 1 caracter en mayuscula, 1 caracter en minuscula y 1 numero');
+          isValid = false;
         }
         
-        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
+        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)){
           setEmailError('No tiene formato de mail');
-        
-        if ((passwordError === null) && (emailError === null)){
-            return true;
+          isValid = false;
         }
+
         
-        return false;
+        return isValid;
       }
   
       return(
@@ -91,7 +100,7 @@ import {
           <SafeAreaView>
             <ScrollView showsVerticalScrollIndicator={false}>
               <View>
-                  <Image source={imagenCromiun} style={styles.image}></Image>
+                  <Image source={imageSpotifiuby} style={styles.image}></Image>
                   <Title style={styles.title}>Registrarse en Spotifiuby</Title>
                   <Text>Ingrese sus datos</Text>
 
@@ -160,11 +169,5 @@ import {
             borderRadius: 10},
           buttonText: {textAlign: 'center', fontSize: 13},
           forgotPasswordButton: {textAlign: 'center', fontSize: 13, color: 'skyblue'},
-          image:{
-            height: 70,
-            width: 70,
-            alignSelf: 'center',
-            marginTop: 50,
-            marginBottom: 80
-          }}
+          image:{height:  150, width: 150, borderRadius: 200, resizeMode: 'contain', paddingTop: 200, marginLeft: 84}}
     )

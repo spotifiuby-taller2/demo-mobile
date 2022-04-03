@@ -4,9 +4,9 @@
     "slug": "Spotifuiby",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/SpotifiubyIcon.png",
     "splash": {
-      "image": "./assets/splash.jpeg",
+      "image": "./assets/SpotifiubySplash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -27,8 +27,8 @@
         }
       },
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./assets/SpotifiubyAdaptiveIcon.png",
+        "backgroundColor": "#f5fcff"
       },
       "package": "com.t2.prueba.rn",
       "intentFilters":[

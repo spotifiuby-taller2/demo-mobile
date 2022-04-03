@@ -11,7 +11,7 @@ function getBiometricalMailAndPassword(biometricId){
   const email = biometricId.slice(1,19) + "@gmail.com";
   const password = biometricId.slice(20,37);
 
-  return [email, password];
+  return {email: email, password : password};
 }
 
 export {

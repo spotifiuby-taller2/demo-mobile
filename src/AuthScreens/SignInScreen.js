@@ -7,7 +7,7 @@ import {
   Alert
 } from 'react-native';
 import React, {useState} from 'react'
-import imagenCromiun from '../../assets/cromiun.png'
+import imageSpotifiuby from '../../assets/SpotifiubyIcon.png'
 import { TextInput, Text, Button, Title } from 'react-native-paper'
 import constants from '../others/constants'
 import { getSHAOf } from "../others/utils"
@@ -36,6 +36,8 @@ export default LogInScreen = ({navigation}) =>{
       if (! validate()) {
           return;
       }
+
+
       const hashedPassword = getSHAOf( getSHAOf( password ) );
       const fResponse = await firebaseAuth.signInWithEmailAndPassword(
           auth, 
@@ -60,19 +62,27 @@ export default LogInScreen = ({navigation}) =>{
           if(response.error === undefined){
               signIn(fResponse._tokenResponse.idToken);
           }
+          else{
+            alert(response.error);
+          }
       } )
       .catch(err=>alert(err));
     }
 
     let validate = () =>{
-      
-      if ( email === '' ) setEmailError('Campo "Mail" debe ser completado');
-      if ( password === '' ) setPasswordError('Campo "Contraseña" debe ser completado');
 
-      if ( (emailError === null) && (passwordError === null)){
-        return true;
+      let isValid = true;
+      
+      if ( email === '' ) {
+        setEmailError('Campo "Mail" debe ser completado');
+        isValid=false;
       }
-      return false;
+      if ( password === '' ) {
+          setPasswordError('Campo "Contraseña" debe ser completado');
+          isValid = false;
+      }
+
+      return isValid;
     }
 
     return(
@@ -80,11 +90,8 @@ export default LogInScreen = ({navigation}) =>{
         <SafeAreaView>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View>
-                <Image source={imagenCromiun} style={styles.image}></Image>
-                <Title style={styles.title}>Iniciar sesión en My App</Title>
-                <Text>
-                    {constants.USERS_HOST + constants.SIGN_IN_URL}
-                  </Text>
+                <Image source={imageSpotifiuby} style={styles.image}></Image>
+                <Title style={styles.title}>Iniciar sesión en Spotifiuby</Title>
                 <TextInput
                     name='Mail'
                     label='Mail*'
@@ -159,11 +166,5 @@ export default LogInScreen = ({navigation}) =>{
          borderRadius: 10},
        buttonText: {textAlign: 'center', fontSize: 13},
        forgotPasswordButton: {textAlign: 'center', fontSize: 13, color: 'skyblue'},
-       image:{
-         height: 70,
-         width: 70,
-         alignSelf: 'center',
-         marginTop: 50,
-         marginBottom: 80
-       }}
+       image:{height:  150, width: 150, borderRadius: 200, resizeMode: 'contain', paddingTop: 200, marginLeft: 84}}
  )

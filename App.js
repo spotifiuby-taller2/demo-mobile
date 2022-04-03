@@ -65,7 +65,7 @@ export default function App() {
     console.log("token:")
     console.log(userToken);
 
-    dispatch({type: 'RESTORE_TOKEN', token: userToken})
+    dispatch({type: 'RESTORE_TOKEN', token: userToken});
     }
 
     bootstrapAsync();
