@@ -18,9 +18,14 @@ import {
 
       const [email,setEmail] = useState('');
       const [password,setPassword] = useState('');
+      const [repeatPassword,setRepeatPassword] = useState('');
       const [emailError,setEmailError] = useState(null);
       const [passwordError,setPasswordError] = useState(null);
+      const [repeatPasswordError,setRepeatPasswordError] = useState(null);
       const [securePassword, setSecurePassword] = useState(true);
+      const [secureRepeatPassword, setSecureRepeatPassword] = useState(true);
+      const [phoneNumber, setPhoneNumber] = useState('');
+      const [phoneNumberError, setPhoneNumberError] = useState(null);
 
       let handleSignUp = () =>{
 
@@ -28,17 +33,20 @@ import {
           return;
         }
 
+        const requestBody = {
+          email: email,
+          phoneNumber: phoneNumber,
+          password: getSHAOf( getSHAOf(password) ),
+          link: "mobile",
+          isExternal: false
+      };
+
         // El manejo de errores se puede reciclar de backoffice
         fetch(constants.USERS_HOST + constants.SIGN_UP_URL,
             {
               method: 'POST',
               headers: constants.JSON_HEADER,
-              body: JSON.stringify({
-                email: email,
-                password: getSHAOf( getSHAOf(password) ),
-                link: "mobile",
-                isExternal: false
-            } )
+              body: JSON.stringify(requestBody)
   
           })
           .then((res) => res.json())
@@ -64,35 +72,38 @@ import {
       }
 
       let validate = () =>{
-
-        let isValid = true;
       
         if ( password === '' ){ 
           setPasswordError('Campo "Contraseña" debe ser completado');
-          isValid = false;
+          return false;
         }
         if ( email === '' ) {
           setEmailError('Campo "Mail" debe ser completado');
-          isValid=false;
+          return false;
         }
         
         if (password.length < constants.MIN_LENGTH_PASSWORD ) {
           setPasswordError('La Contraseña debe tener como minimo 8 caracteres');
-          isValid = false;
+          return false;
         }
         
         else if (!/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])/.test(password)){
           setPasswordError('Minimo 1 caracter en mayuscula, 1 caracter en minuscula y 1 numero');
-          isValid = false;
+          return false;
         }
         
         if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)){
           setEmailError('No tiene formato de mail');
-          isValid = false;
+          return false;
+        }
+
+        if (password !== repeatPassword){
+          setRepeatPasswordError('Debe coincidir con la contraseña que ingresaste');
+          return false;
         }
 
         
-        return isValid;
+        return true;
       }
   
       return(
@@ -113,8 +124,20 @@ import {
                     error={emailError!==null}/>
                   
                   {emailError &&(
-                  <Text style={{color: 'red'}}>{emailError}</Text>
-                ) }
+                    <Text style={{color: 'red'}}>{emailError}</Text>
+                  ) }
+
+                  <TextInput
+                    name='PhoneNumber'
+                    label='Telefono*'
+                    value={phoneNumber}
+                    onChangeText={(newText) => {setPhoneNumber(newText); setPhoneNumberError(null);}}
+                    mode='outlined'
+                    error={phoneNumberError!==null}/>
+                  
+                  {phoneNumberError &&(
+                    <Text style={{color: 'red'}}>{phoneNumberError}</Text>
+                  ) }
                 
                   <TextInput
                     name='Password'
@@ -128,8 +151,24 @@ import {
                     />
                   
                   {passwordError &&(
-                  <Text style={{color: 'red'}}>{passwordError}</Text>
-                ) }
+                    <Text style={{color: 'red'}}>{passwordError}</Text>
+                  ) }
+
+                  <TextInput
+                    name='Repeat-Password'
+                    label='Repetir Contraseña*'
+                    value={repeatPassword}
+                    onChangeText={(newText) => {setRepeatPassword(newText); setRepeatPasswordError(null);}}
+                    mode='outlined'
+                    error={repeatPasswordError!==null}
+                    secureTextEntry={secureRepeatPassword}
+                    right={<TextInput.Icon name="eye" onPress={()=>{setSecureRepeatPassword(! secureRepeatPassword)}}/>}
+                    />
+                  
+                  {repeatPasswordError &&(
+                    <Text style={{color: 'red'}}>{repeatPasswordError}</Text>
+                  ) }
+
                    
                   <Button mode='contained' style={styles.button} onPress={handleSignUp}>
                       <Text style={styles.buttonText}>Iniciar</Text>
