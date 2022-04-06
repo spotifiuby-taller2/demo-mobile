@@ -39,7 +39,7 @@ import {
           password: getSHAOf( getSHAOf(password) ),
           link: "mobile",
           isExternal: false
-      };
+        };
 
         // El manejo de errores se puede reciclar de backoffice
         fetch(constants.USERS_HOST + constants.SIGN_UP_URL,
@@ -58,41 +58,33 @@ import {
       
 
       let checkResponse = (res) =>{
+        console.log(res);
         if (res.error === undefined){
-          alert("Mail de confirmación enviado. Solo podra ingresar si confirma que es usted.");
-          navigation.navigate('SignInScreen',
+          navigation.navigate('PINScreen',
             {
               email: email,
-              password: password
+              password: password,
+              id: res.id
             });
         }
         else{
-          alert(response.error);
+          alert(res.error);
         }
       }
 
       let validate = () =>{
-      
-        if ( password === '' ){ 
-          setPasswordError('Campo "Contraseña" debe ser completado');
-          return false;
-        }
-        if ( email === '' ) {
-          setEmailError('Campo "Mail" debe ser completado');
-          return false;
-        }
-        
-        if (password.length < constants.MIN_LENGTH_PASSWORD ) {
+              
+        if (password.length < constants.MIN_LENGTH_PASSWORD && password !== '' ) {
           setPasswordError('La Contraseña debe tener como minimo 8 caracteres');
           return false;
         }
         
-        else if (!/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])/.test(password)){
+        else if (!/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])/.test(password) && password !== ''){
           setPasswordError('Minimo 1 caracter en mayuscula, 1 caracter en minuscula y 1 numero');
           return false;
         }
         
-        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)){
+        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) && email !== ''){
           setEmailError('No tiene formato de mail');
           return false;
         }
