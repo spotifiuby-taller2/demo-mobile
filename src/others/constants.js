@@ -17,7 +17,7 @@ const JSON_HEADER = {
 
 /* Constants */
 
-const MIN_LENGTH_PASSWORD = 8;
+const MIN_LENGTH_PASSWORD = 10;
 
 module.exports = {
   USERS_HOST,

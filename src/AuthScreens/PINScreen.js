@@ -23,11 +23,6 @@ import {
 
       let handleSignUp = () =>{
 
-        if (! validate()) {
-          return;
-        }
-
-        // El manejo de errores se puede reciclar de backoffice
         fetch(constants.USERS_HOST + constants.SIGN_UP_END_URL + `/${route.params.id}/${pin}`,
             {
               headers: constants.JSON_HEADER
@@ -43,22 +38,26 @@ import {
 
       let checkResponse = (res) =>{
         if (res.error === undefined){
-          navigation.navigate('SignInScreen',
+
+          if ( ! route.params.isListener){
+            navigation.navigate('SignInScreen',
             {
               email: route.params.email,
               password: route.params.password
             });
+          }
+          {
+            navigation.navigate('RequestMusicalInterestsScreen',
+            {
+              email: route.params.email,
+              password: route.params.password
+            });
+          }
+          
         }
         else{
           alert(res.error);
         }
-      }
-
-      let validate = () =>{
-        
-        //TODO
-        
-        return true;
       }
   
       return(

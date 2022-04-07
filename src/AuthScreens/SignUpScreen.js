@@ -8,7 +8,7 @@ import {
   
   import React, {useState} from 'react'
   import imageSpotifiuby from '../../assets/SpotifiubyIcon.png'
-  import { TextInput, Button, Text, Title } from 'react-native-paper'
+  import { TextInput, Button, Text, Title, Checkbox } from 'react-native-paper'
   import { getSHAOf } from "../others/utils"
   import constants from "../others/constants"
 
@@ -16,6 +16,8 @@ import {
   
   export default SignUpScreen = ({navigation}) =>{
 
+      const [name,setName] = useState('');
+      const [surname,setSurname] = useState('');
       const [email,setEmail] = useState('');
       const [password,setPassword] = useState('');
       const [repeatPassword,setRepeatPassword] = useState('');
@@ -26,17 +28,25 @@ import {
       const [secureRepeatPassword, setSecureRepeatPassword] = useState(true);
       const [phoneNumber, setPhoneNumber] = useState('');
       const [phoneNumberError, setPhoneNumberError] = useState(null);
+      const [nameError, setNameError] = useState(null);
+      const [surnameError, setSurnameError] = useState(null);
+      const [isListener, setIsListener] = useState(false);
+      const [isArtist, setIsArtist] = useState(false);
+      const [userTypeError, setUserTypeError] = useState(null);
 
       let handleSignUp = () =>{
 
-        if (! validate()) {
-          return;
-        }
+        validate();
 
         const requestBody = {
+          name: name,
+          surname: surname,
           email: email,
           phoneNumber: phoneNumber,
-          password: getSHAOf( getSHAOf(password) ),
+          password: getSHAOf( getSHAOf(password)),
+          repeatPassword: getSHAOf( getSHAOf(repeatPassword)),
+          isArtist: isArtist,
+          isListener: isListener,
           link: "mobile",
           isExternal: false
         };
@@ -58,14 +68,15 @@ import {
       
 
       let checkResponse = (res) =>{
-        console.log(res);
         if (res.error === undefined){
-          navigation.navigate('PINScreen',
+            navigation.navigate('PINScreen',
             {
               email: email,
               password: password,
-              id: res.id
+              id: res.id,
+              isListener: isListener
             });
+          
         }
         else{
           alert(res.error);
@@ -73,29 +84,47 @@ import {
       }
 
       let validate = () =>{
+        
+        if ( name === '' ){ 
+          setNameError('Campo "Nombre" debe ser completado');
+        }
+        if ( surname === '' ) {
+          setSurnameError('Campo "Apellido" debe ser completado');
+        }
+
+        if ( password === '' ){ 
+          setPasswordError('Campo "Contraseña" debe ser completado');
+        }
+        if ( email === '' ) {
+          setEmailError('Campo "Mail" debe ser completado');
+        }
+
+        if ( phoneNumber === '' ) {
+          setPhoneNumberError('Campo "Telefono" debe ser completado');
+        }
+        if ( repeatPassword === '' ) {
+          setRepeatPasswordError('Campo "Repetir Contraseña" debe ser completado');
+        }
               
         if (password.length < constants.MIN_LENGTH_PASSWORD && password !== '' ) {
-          setPasswordError('La Contraseña debe tener como minimo 8 caracteres');
-          return false;
+          setPasswordError('La Contraseña debe tener como minimo 10 caracteres');
         }
-        
+        /*
         else if (!/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])/.test(password) && password !== ''){
           setPasswordError('Minimo 1 caracter en mayuscula, 1 caracter en minuscula y 1 numero');
-          return false;
-        }
+        }*/
         
         if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) && email !== ''){
           setEmailError('No tiene formato de mail');
-          return false;
         }
 
         if (password !== repeatPassword){
           setRepeatPasswordError('Debe coincidir con la contraseña que ingresaste');
-          return false;
         }
 
-        
-        return true;
+        if ( ! isArtist && ! isListener ){
+            setUserTypeError("Elija el tipo de usuario que desee ser")
+        }
       }
   
       return(
@@ -105,7 +134,33 @@ import {
               <View>
                   <Image source={imageSpotifiuby} style={styles.image}></Image>
                   <Title style={styles.title}>Registrarse en Spotifiuby</Title>
-                  <Text>Ingrese sus datos</Text>
+                  <Title>Ingrese sus datos:</Title>
+
+                  <TextInput
+                    name='Name'
+                    label='Nombre*'
+                    value={name}
+                    onChangeText={(newText) => {setName(newText); setNameError(null);}}
+                    mode='outlined'
+                    error={nameError!==null}
+                    style={styles.input}/>
+                  
+                  {nameError &&(
+                    <Text style={{color: 'red'}}>{nameError}</Text>
+                  ) }
+
+                  <TextInput
+                    name='Surname'
+                    label='Apellido*'
+                    value={surname}
+                    onChangeText={(newText) => {setSurname(newText); setSurnameError(null);}}
+                    mode='outlined'
+                    error={surnameError!==null}
+                    style={styles.input}/>
+                  
+                  {surnameError &&(
+                    <Text style={{color: 'red'}}>{surnameError}</Text>
+                  ) }
 
                   <TextInput
                     name='Mail'
@@ -113,7 +168,8 @@ import {
                     value={email}
                     onChangeText={(newText) => {setEmail(newText); setEmailError(null);}}
                     mode='outlined'
-                    error={emailError!==null}/>
+                    error={emailError!==null}
+                    style={styles.input}/>
                   
                   {emailError &&(
                     <Text style={{color: 'red'}}>{emailError}</Text>
@@ -125,7 +181,8 @@ import {
                     value={phoneNumber}
                     onChangeText={(newText) => {setPhoneNumber(newText); setPhoneNumberError(null);}}
                     mode='outlined'
-                    error={phoneNumberError!==null}/>
+                    error={phoneNumberError!==null}
+                    style={styles.input}/>
                   
                   {phoneNumberError &&(
                     <Text style={{color: 'red'}}>{phoneNumberError}</Text>
@@ -140,7 +197,7 @@ import {
                     error={passwordError!==null}
                     secureTextEntry={securePassword}
                     right={<TextInput.Icon name="eye" onPress={()=>{setSecurePassword(! securePassword)}}/>}
-                    />
+                    style={styles.input}/>
                   
                   {passwordError &&(
                     <Text style={{color: 'red'}}>{passwordError}</Text>
@@ -155,12 +212,39 @@ import {
                     error={repeatPasswordError!==null}
                     secureTextEntry={secureRepeatPassword}
                     right={<TextInput.Icon name="eye" onPress={()=>{setSecureRepeatPassword(! secureRepeatPassword)}}/>}
+                    style={styles.input}
                     />
                   
                   {repeatPasswordError &&(
                     <Text style={{color: 'red'}}>{repeatPasswordError}</Text>
                   ) }
 
+                  <Title style={{fontSize: 17, marginTop: 20}}>Tipo de usuario:</Title>
+
+                  <View style={{flexDirection:'row' , marginTop: 10, paddingRight: 100}}>
+                      <View style={{flexDirection:'row', marginRight: 140}}>
+                        <Title style={{fontSize: 14}}>Listener</Title>
+                        <Checkbox
+                          status={isListener? 'checked':'unchecked'}
+                          color='steelblue'
+                          onPress={()=>{setIsListener(! isListener); isArtist? setIsArtist(false): null;setUserTypeError(null);}}
+                        />
+                      </View>
+
+                      <View style={{flexDirection:'row'}}>
+                        <Title style={{fontSize: 14}}>Artista</Title>
+                        <Checkbox
+                          status={isArtist? 'checked':'unchecked'}
+                          color='steelblue'
+                          onPress={()=>{setIsArtist(! isArtist); isListener? setIsListener(false): null;setUserTypeError(null);}}
+                          style={{paddingLeft: 300}}
+                        />
+                      </View>
+                  </View>
+                  {userTypeError &&(
+                    <Text style={{color: 'red'}}>{userTypeError}</Text>
+                  ) }
+                  
                    
                   <Button mode='contained' style={styles.button} onPress={handleSignUp}>
                       <Text style={styles.buttonText}>Iniciar</Text>
@@ -175,10 +259,9 @@ import {
   
     const styles = StyleSheet.create(
        { input: {
-           borderWidth: 2, 
-           marginBottom: 15,
-           marginTop: 15,
-           backgroundColor: '#f5fcff',
+           marginBottom: 5,
+           marginTop: 5,
+           backgroundColor: 'white',
            height: 60
           },
          container: {
