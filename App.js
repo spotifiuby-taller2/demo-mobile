@@ -7,6 +7,8 @@ import SignUpScreen from './src/AuthScreens/SignUpScreen'
 import NavigationLogInScreen from './src/AuthScreens/NavigationLogInScreen';
 import ForgotPasswordScreen from './src/AuthScreens/ForgotPasswordScreen'
 import PINScreen from './src/AuthScreens/PINScreen';
+import RequestExternalUserATypeScreen from './src/AuthScreens/RequestExternalUserATypeScreen';
+import RequestMusicalPreferencesScreen from './src/AuthScreens/RequestMusicalPreferencesScreen';
 import HomeScreen from './src/HomeScreens/HomeScreen';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { AuthContext } from './src/context/AuthContext';
@@ -116,6 +118,8 @@ export default function App() {
                   <AuthStack.Screen name='SignUpScreen' component={SignUpScreen}/>
                   <AuthStack.Screen name='ForgotPasswordScreen' component={ForgotPasswordScreen}/>
                   <AuthStack.Screen name='PINScreen' component={PINScreen}/>
+                  <AuthStack.Screen name='RequestMusicalPreferencesScreen' component={RequestMusicalPreferencesScreen}/>
+                  <AuthStack.Screen name='RequestExternalUserATypeScreen' component={RequestExternalUserATypeScreen}/>
                 </>
                 
               ):(

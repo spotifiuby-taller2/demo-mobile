@@ -8,9 +8,10 @@ import {
   
   import React, {useState} from 'react'
   import imageSpotifiuby from '../../assets/SpotifiubyIcon.png'
-  import { TextInput, Button, Text, Title, Checkbox } from 'react-native-paper'
+  import { TextInput, Button, Text, Title, Checkbox, IconButton } from 'react-native-paper'
   import { getSHAOf } from "../others/utils"
   import constants from "../others/constants"
+  import { requestLocation } from "../others/utils"
 
   
   
@@ -50,6 +51,12 @@ import {
           link: "mobile",
           isExternal: false
         };
+
+        if ( isListener ){
+          const locaction = requestLocation(requestBody.email);
+          requestBody['latitude'] = locaction.latitude;
+          requestBody['longitude'] = locaction.longitude;
+        }
 
         // El manejo de errores se puede reciclar de backoffice
         fetch(constants.USERS_HOST + constants.SIGN_UP_URL,
@@ -222,23 +229,24 @@ import {
                   <Title style={{fontSize: 17, marginTop: 20}}>Tipo de usuario:</Title>
 
                   <View style={{flexDirection:'row' , marginTop: 10, paddingRight: 100}}>
-                      <View style={{flexDirection:'row', marginRight: 140}}>
+                      <View style={{flexDirection:'row', marginRight: 70}}>
                         <Title style={{fontSize: 14}}>Listener</Title>
-                        <Checkbox
-                          status={isListener? 'checked':'unchecked'}
-                          color='steelblue'
-                          onPress={()=>{setIsListener(! isListener); isArtist? setIsArtist(false): null;setUserTypeError(null);}}
-                        />
+                        <IconButton
+                              icon="headphones"
+                              color={isListener?'skyblue':'grey'}
+                              size={50}
+                              onPress={()=>{setIsListener(! isListener); isArtist? setIsArtist(false): null;setUserTypeError(null);}}
+                            />
                       </View>
 
                       <View style={{flexDirection:'row'}}>
                         <Title style={{fontSize: 14}}>Artista</Title>
-                        <Checkbox
-                          status={isArtist? 'checked':'unchecked'}
-                          color='steelblue'
-                          onPress={()=>{setIsArtist(! isArtist); isListener? setIsListener(false): null;setUserTypeError(null);}}
-                          style={{paddingLeft: 300}}
-                        />
+                        <IconButton
+                              icon='account'
+                              color={isArtist?'skyblue':'grey'}
+                              size={50}
+                              onPress={()=>{setIsArtist(! isArtist); isListener? setIsListener(false): null;setUserTypeError(null);}}
+                            />
                       </View>
                   </View>
                   {userTypeError &&(

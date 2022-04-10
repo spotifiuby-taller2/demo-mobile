@@ -45,9 +45,9 @@ import {
               email: route.params.email,
               password: route.params.password
             });
-          }
+          }else
           {
-            navigation.navigate('RequestMusicalInterestsScreen',
+            navigation.navigate('RequestMusicalPreferencesScreen',
             {
               email: route.params.email,
               password: route.params.password

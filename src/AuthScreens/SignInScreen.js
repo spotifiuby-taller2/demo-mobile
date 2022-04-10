@@ -129,8 +129,8 @@ export default LogInScreen = ({navigation}) =>{
                     <Text style={styles.forgotPasswordButton}>¿Olvido su contraseña?</Text>
                 </Button>
                 
-                <SignInGoogleButton/>
-                <SignInWithBiometricButton />
+                <SignInGoogleButton navigation={navigation}/>
+                <SignInWithBiometricButton navigation={navigation}/>
 
             </View>
             </ScrollView>

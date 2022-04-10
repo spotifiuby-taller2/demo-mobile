@@ -9,6 +9,7 @@ const SIGN_UP_URL = "/signup";
 const SIGN_IN_URL = "/signin";
 const SIGN_UP_END_URL = SIGN_UP_URL + "/end";
 const FORGOT_PASSWORD_URL = "/forgotpassword";
+const LISTENER_LOC_URL="/listener/location";
 
 const JSON_HEADER = {
   'Content-Type': 'application/json',
@@ -26,5 +27,6 @@ module.exports = {
   FORGOT_PASSWORD_URL,
   JSON_HEADER,
   SIGN_UP_END_URL,
-  MIN_LENGTH_PASSWORD
+  MIN_LENGTH_PASSWORD,
+  LISTENER_LOC_URL
 }

@@ -18,7 +18,7 @@ const firebaseAuth = require("firebase/auth");
 import { useAuthUser } from '../context/AuthContext';
 
   
-export default SignInWithBiometricButton = () =>{
+export default SignInWithBiometricButton = (props) =>{
 
       const [loading, setLoading] = useState(false);
       const [result, setResult] = useState();
@@ -88,10 +88,7 @@ export default SignInWithBiometricButton = () =>{
                 email,
                 hashedPassword)
                 .catch(err=>{
-                    if ( err.message === "Firebase: Error (auth/user-not-found)."){
-                        alert("Su usuario sera creado");
-                    }
-                    else{
+                    if ( err.message !== "Firebase: Error (auth/user-not-found)."){
                         alert(err.message);
                     }
                     
@@ -124,7 +121,6 @@ export default SignInWithBiometricButton = () =>{
         .then(res=>res.json())
         .then(res => 
             {
-                console.log(res);
                 if (res.error === undefined){
                     signIn(response.user.uid);
                 }
@@ -137,33 +133,14 @@ export default SignInWithBiometricButton = () =>{
       }
 
       const sendCreateUserWithBiometricRequest = (email, password)=>{
-        fetch(constants.USERS_HOST + constants.SIGN_IN_URL,
-            {
-                method: 'POST',
-                headers: constants.JSON_HEADER,
-                body: JSON.stringify({
-                  email: email,
-                  password: password,
-                  signin: 'biometric',
-              })
-        })
-        .then(res=>res.json())
-        .then(res => 
-            {
-                if (res.error === undefined){
-                    firebaseAuth.signInWithEmailAndPassword(
-                        auth,
-                        email,
-                        password)
-                        .then(response => signIn(response.user.uid))
-                        .catch(err=>alert(err));
-                }
-                else{
-                    alert(res.error);
-                }
-                
-            })
-        .catch(err => alert(err));
+
+        let requestBody = {
+            email: email,
+            password: password,
+            signin: 'biometric',
+        }
+
+        props.navigation.navigate('RequestExternalUserATypeScreen', {body: requestBody});
       }
 
       return(
