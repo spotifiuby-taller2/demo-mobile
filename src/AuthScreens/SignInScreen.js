@@ -19,7 +19,7 @@ import { useAuthUser } from '../context/AuthContext';
 const firebaseAuth = require("firebase/auth");
 
 
-export default LogInScreen = ({navigation}) =>{
+export default SignInScreen = ({navigation}) =>{
 
     const route = useRoute();
     const {signIn} = useAuthUser();
@@ -44,6 +44,12 @@ export default LogInScreen = ({navigation}) =>{
           email, 
           hashedPassword)
           .catch(err => alert(err));
+      
+      if ( fResponse.error ){
+        alert("No existe el usuario");
+        return;
+      }
+          
       fetch(constants.USERS_HOST + constants.SIGN_IN_URL,
           {
             method: 'POST',
@@ -60,7 +66,8 @@ export default LogInScreen = ({navigation}) =>{
       .then(response => response.json())
       .then( (response) => {
           if(response.error === undefined){
-              signIn(fResponse._tokenResponse.idToken);
+              const {idToken, localId} = fResponse._tokenResponse;
+              signIn(idToken, localId);
           }
           else{
             alert(response.error);

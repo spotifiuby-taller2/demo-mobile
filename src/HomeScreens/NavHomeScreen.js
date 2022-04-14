@@ -7,16 +7,18 @@ import HomeScreen from './HomeScreen';
 import ProfileScreen from './ProfileScreen';
 import UserListScreen from './UserListScreen';
 import 'react-native-gesture-handler'
-
+import {useAuthUser} from '../context/AuthContext'
     
 const Drawer = createDrawerNavigator();
 
 export default NavHomeScreen = () =>{
+
+    const {userState} = useAuthUser();
       
     return(
         <Drawer.Navigator>
             <Drawer.Screen name='Inicio' component={HomeScreen} />
-            <Drawer.Screen name='Perfil' component={ProfileScreen} />
+            <Drawer.Screen name='Perfil' component={ProfileScreen} initialParams={{uid: userState.uid}}/>
             <Drawer.Screen name='Usuarios' component={UserListScreen} />
         </Drawer.Navigator>
     )

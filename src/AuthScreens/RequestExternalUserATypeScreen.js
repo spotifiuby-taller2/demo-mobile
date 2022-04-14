@@ -82,7 +82,7 @@ const firebaseAuth = require("firebase/auth");
           navigation.navigate('RequestMusicalPreferencesScreen', params);
         }else
         {
-          signIn(params.id);
+          signIn(params.id, params.id);
         }
       }
       

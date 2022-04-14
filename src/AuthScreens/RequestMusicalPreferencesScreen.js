@@ -152,7 +152,7 @@ const reducer = (state = initialState(), action = {})=>{
             if ( route.params.body === undefined ){
               navigation.navigate('SignInScreen', route.params)
             }else{;
-              signIn(route.params.id);
+              signIn(route.params.id, route.params.id);
             }
           }
           else{
