@@ -23,7 +23,7 @@ import {
 
       let handleSignUp = () =>{
 
-        fetch(constants.USERS_HOST + constants.SIGN_UP_END_URL + `/${route.params.id}/${pin}`,
+        fetch(constants.USERS_HOST + constants.SIGN_UP_END_URL + `/${route.params.tempId}/${pin}`,
             {
               headers: constants.JSON_HEADER
   
@@ -38,20 +38,13 @@ import {
 
       let checkResponse = (res) =>{
         if (res.error === undefined){
-
-          if ( ! route.params.isListener){
-            navigation.navigate('SignInScreen',
-            {
-              email: route.params.email,
-              password: route.params.password
-            });
+          let args = route.params;
+          args['id'] = res.id;
+          if ( route.params.isListener){
+            navigation.navigate('RequestMusicalPreferencesScreen', args);
           }else
           {
-            navigation.navigate('RequestMusicalPreferencesScreen',
-            {
-              email: route.params.email,
-              password: route.params.password
-            });
+            navigation.navigate('SignInScreen', args);
           }
           
         }

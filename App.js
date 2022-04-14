@@ -9,7 +9,7 @@ import ForgotPasswordScreen from './src/AuthScreens/ForgotPasswordScreen'
 import PINScreen from './src/AuthScreens/PINScreen';
 import RequestExternalUserATypeScreen from './src/AuthScreens/RequestExternalUserATypeScreen';
 import RequestMusicalPreferencesScreen from './src/AuthScreens/RequestMusicalPreferencesScreen';
-import HomeScreen from './src/HomeScreens/HomeScreen';
+import NavHomeScreen from './src/HomeScreens/NavHomeScreen';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { AuthContext } from './src/context/AuthContext';
 import * as SecureStore from 'expo-secure-store';
@@ -111,7 +111,7 @@ export default function App() {
           <AuthStack.Navigator screenOptions={{headerShown: false}}>
             <>
             {
-              ( ! state.userToken )? (
+              ( false )? (
                 <>
                   <AuthStack.Screen name='NavigatorlogInScreen' component={NavigationLogInScreen}/>
                   <AuthStack.Screen name='SignInScreen' component={SignInScreen} initialParams={{email: '', password: ''}} options={{ animationTypeForReplace: state.isSignOut ? 'pop' : 'push'}}/>
@@ -123,7 +123,7 @@ export default function App() {
                 </>
                 
               ):(
-                <AuthStack.Screen name='HomeScreen' component={HomeScreen}/>
+                <AuthStack.Screen name='NavHomeScreen' component={NavHomeScreen}/>
               )
             }
             </>

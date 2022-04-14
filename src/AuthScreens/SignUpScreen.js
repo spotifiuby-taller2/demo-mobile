@@ -53,9 +53,10 @@ import {
         };
 
         if ( isListener ){
-          const locaction = requestLocation(requestBody.email);
-          requestBody['latitude'] = locaction.latitude;
-          requestBody['longitude'] = locaction.longitude;
+          const location = requestLocation(requestBody.email);
+          console.log(location);
+          requestBody['latitude'] = location.latitude;
+          requestBody['longitude'] = location.longitude;
         }
 
         // El manejo de errores se puede reciclar de backoffice
@@ -80,8 +81,8 @@ import {
             {
               email: email,
               password: password,
-              id: res.id,
-              isListener: isListener
+              isListener: isListener,
+              tempId: res.id
             });
           
         }
@@ -230,12 +231,12 @@ import {
 
                   <View style={{flexDirection:'row' , marginTop: 10, paddingRight: 100}}>
                       <View style={{flexDirection:'row', marginRight: 70}}>
-                        <Title style={{fontSize: 14}}>Listener</Title>
+                        <Title style={{fontSize: 14}}>Oyente</Title>
                         <IconButton
                               icon="headphones"
                               color={isListener?'skyblue':'grey'}
                               size={50}
-                              onPress={()=>{setIsListener(! isListener); isArtist? setIsArtist(false): null;setUserTypeError(null);}}
+                              onPress={()=>{setIsListener(! isListener);setUserTypeError(null);}}
                             />
                       </View>
 
@@ -245,7 +246,7 @@ import {
                               icon='account'
                               color={isArtist?'skyblue':'grey'}
                               size={50}
-                              onPress={()=>{setIsArtist(! isArtist); isListener? setIsListener(false): null;setUserTypeError(null);}}
+                              onPress={()=>{setIsArtist(! isArtist);setUserTypeError(null);}}
                             />
                       </View>
                   </View>

@@ -96,7 +96,8 @@ export default SignInWithGoogle = (props) =>{
             <Button
               icon='google'
               mode="contained"
-              onPress={handleSignInWithGoogle}>
+              onPress={handleSignInWithGoogle}
+              style={{marginBottom: 10, marginTop: 30}}>
               
               <Text>Ingrese con Google</Text>
             </Button>
@@ -104,4 +105,3 @@ export default SignInWithGoogle = (props) =>{
       );
     }
   
-    const containerStyle = {backgroundColor: 'white', padding: 120};

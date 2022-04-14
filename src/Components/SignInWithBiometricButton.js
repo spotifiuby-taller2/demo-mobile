@@ -148,7 +148,8 @@ export default SignInWithBiometricButton = (props) =>{
           <Button
             icon='fingerprint'
             mode="contained"
-            color='red'
+            color='purple'
+            style={{marginBottom: 10}}
             onPress={handleAuthWithBiometric}
             >
             

@@ -78,11 +78,11 @@ const firebaseAuth = require("firebase/auth");
       }
 
       let goTONextScreen =(params)=>{
-        if ( ! isListener){
-          signIn(params.id);
+        if ( isListener){
+          navigation.navigate('RequestMusicalPreferencesScreen', params);
         }else
         {
-          navigation.navigate('RequestMusicalPreferencesScreen', params);
+          signIn(params.id);
         }
       }
       
@@ -107,12 +107,12 @@ const firebaseAuth = require("firebase/auth");
 
                   <View style={{flexDirection:'row' , marginTop: 10, paddingRight: 100}}>
                       <View style={{flexDirection:'row', marginRight: 70}}>
-                        <Title style={{fontSize: 14}}>Listener</Title>
+                        <Title style={{fontSize: 14}}>Oyente</Title>
                         <IconButton
                               icon="headphones"
                               color={isListener?'skyblue':'grey'}
                               size={50}
-                              onPress={()=>{setIsListener(! isListener); isArtist? setIsArtist(false): null;setUserTypeError(null);}}
+                              onPress={()=>{setIsListener(! isListener) ;setUserTypeError(null);}}
                             />
                       </View>
 
@@ -122,7 +122,7 @@ const firebaseAuth = require("firebase/auth");
                               icon='account'
                               color={isArtist?'skyblue':'grey'}
                               size={50}
-                              onPress={()=>{setIsArtist(! isArtist); isListener? setIsListener(false): null;setUserTypeError(null);}}
+                              onPress={()=>{setIsArtist(! isArtist);setUserTypeError(null);}}
                             />
                       </View>
                   </View>
