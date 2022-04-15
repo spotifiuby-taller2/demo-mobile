@@ -6,23 +6,49 @@ import {
     SafeAreaView,
     Alert
   } from 'react-native';
-  import React from 'react'
-  import imageSpotifiuby from '../../assets/SpotifiubyIcon.png'
-  import { Title, Text,Button } from 'react-native-paper'
-  import { useAuthUser } from '../context/AuthContext';
+  import React, {useEffect, useState} from 'react'
+  import { Title, Text,Button, Chip, Avatar } from 'react-native-paper';
+  import constants from '../others/constants'
+  import ProfileScreen from './ProfileScreen';
     
-  export default UserListScreen = () =>{
-  
-        const {signOut} = useAuthUser();
-  
+  export default UserListScreen = ({navigation}) =>{
+        
+        const [usersList, setList] = useState([]);
+
+        useEffect(()=>{
+            function getAllUsers(){
+                fetch(constants.USERS_HOST + constants.USERS_LIST_URL)
+                .then(res => res.json())
+                .then(res => setList(res.users))
+                .catch(err => alert(err));
+            }
+
+            getAllUsers();
+        },[]);
+
     
         return(
           <View style={styles.container}>
           <SafeAreaView>
             <ScrollView showsVerticalScrollIndicator={false}>
               <View>
-                  <Image source={imageSpotifiuby} style={styles.image}></Image>
-                  <Title style={styles.title}>Agregar Lista de Usuarios</Title>
+                  {
+                    usersList.map( (user, id)=>{
+                        return (
+                        <Chip id={id} key={user.id} style={styles.chip} onPress={()=>{navigation.navigate('ProfileScreen',{uid: user.id})}}>
+                          <View style={{flexDirection:'row'}}>
+                            <Avatar.Text 
+                              style={{marginRight: 30, backgroundColor: '#ff4500'}}
+                              label={`${user.name.charAt(0)}${user.surname.charAt(0)}`}
+                              />
+                            <View >
+                              <Text style={styles.name}>{user.name} {user.surname}</Text>
+                              <Text style={styles.email}>{user.email}</Text>
+                            </View>
+                          </View>
+                        </Chip>
+                    )})
+                }
               </View>
               </ScrollView>
           </SafeAreaView>
@@ -32,37 +58,25 @@ import {
   
   
       const styles = StyleSheet.create(
-        { input: {
-            borderWidth: 2, 
-            marginBottom: 15,
-            marginTop: 15,
-            backgroundColor: '#f5fcff',
-            height: 50
-           },
+        { 
           container: {
             flex:1,
-            backgroundColor: '#f5fcff',
+            backgroundColor: 'steelblue',
             paddingLeft: 15,
             paddingRight: 15,
             marginTop: 30
            },
-           title: {textAlign: 'center',fontSize: 25, marginBottom: 35},
-           button: {
-             backgroundColor: 'skyblue', 
-             paddingTop: 15, 
-             paddingBottom:15, 
-             width: 100, 
-             alignSelf: 'center', 
-             marginTop: 30, 
-             marginBottom:30,
-             borderRadius: 10},
-           buttonText: {textAlign: 'center', fontSize: 13},
-           forgotPasswordButton: {textAlign: 'center', fontSize: 13, color: 'skyblue'},
-           image:{
-             height: 170,
-             width: 170,
-             alignSelf: 'center',
-             marginTop: 50,
-             marginBottom: 80
-           }}
+           chip:{
+             backgroundColor: 'darkblue',
+             marginTop: 5,
+             height: 115
+           },
+           name:{
+             fontSize: 24,
+             color: 'white'
+           },
+           email: {
+             color: 'white'
+           }
+          }
      )

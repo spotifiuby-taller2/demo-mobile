@@ -84,7 +84,7 @@ export default SignInWithGoogle = (props) =>{
         .then((res) => res.json())
         .then((res)=>{
           if(res.error === undefined){
-            signIn(response.user.uid);
+            signIn(response._tokenResponse.idToken,response.user.uid);
           }
         })
         .catch((err)=>{alert(err)});

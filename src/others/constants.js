@@ -13,6 +13,7 @@ const USERS_URL = "/users";
 const PROFILE_URL = USERS_URL + "/profile";
 const MUSICAL_PREF_URL = PROFILE_URL + "/musicalpref";
 const USER_ID_QUERY_PARAM = "userId=";
+const USERS_LIST_URL = USERS_URL + "/list";
 
 const JSON_HEADER = {
   'Content-Type': 'application/json',
@@ -34,5 +35,6 @@ module.exports = {
   MUSICAL_PREF_URL,
   USERS_URL,
   PROFILE_URL,
-  USER_ID_QUERY_PARAM
+  USER_ID_QUERY_PARAM,
+  USERS_LIST_URL
 }

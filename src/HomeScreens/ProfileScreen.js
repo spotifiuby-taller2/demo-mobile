@@ -8,7 +8,6 @@ import React, { useEffect, useState } from 'react'
 import { Title, Text, Button, Avatar, Chip } from 'react-native-paper'
 import { useRoute } from '@react-navigation/native';
 import constants from '../others/constants'
-import { backgroundColor } from 'react-native/Libraries/Components/View/ReactNativeStyleAttributes';
     
   export default ProfileScreen = ({navigation}) =>{
 
@@ -72,12 +71,14 @@ import { backgroundColor } from 'react-native/Libraries/Components/View/ReactNat
               setProfile(newState);
           })
           }
+          
           getProfile(route.params.uid);
-        },[]);
+
+        },[navigation]);
 
 
         return(
-          <View>
+          <View style={styles.container}>
           <SafeAreaView>
             <ScrollView showsVerticalScrollIndicator={false}>
               <View>
@@ -121,6 +122,9 @@ import { backgroundColor } from 'react-native/Libraries/Components/View/ReactNat
   
 const styles =StyleSheet.create(
   {
+    container: {
+      flex: 1,
+      backgroundColor: '#f5fcff'},
     avatar: {
       marginTop: 30,
       alignSelf: 'center',

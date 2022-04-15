@@ -122,7 +122,7 @@ export default SignInWithBiometricButton = (props) =>{
         .then(res => 
             {
                 if (res.error === undefined){
-                    signIn(response.user.uid);
+                    signIn(response._tokenResponse.idToken,response.user.uid);
                 }
                 else{
                     alert(res.error);

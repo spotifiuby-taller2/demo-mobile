@@ -2,19 +2,20 @@ import {
     StyleSheet
   } from 'react-native';
 import React from 'react'
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import HomeScreen from './HomeScreen';
-import ProfileScreen from './ProfileScreen';
-import UserListScreen from './UserListScreen';
+import HomeScreen from '../HomeScreens/HomeScreen';
+import ProfileScreen from '../HomeScreens/ProfileScreen';
+import UserListScreen from '../HomeScreens/UserListScreen';
 import 'react-native-gesture-handler'
 import {useAuthUser} from '../context/AuthContext'
+import { createDrawerNavigator } from '@react-navigation/drawer';
     
 const Drawer = createDrawerNavigator();
 
-export default NavHomeScreen = () =>{
+export default Menu = () =>{
 
     const {userState} = useAuthUser();
-      
+    
+    /* Todas las pantallas del menu se agregan Aca*/
     return(
         <Drawer.Navigator>
             <Drawer.Screen name='Inicio' component={HomeScreen} />

@@ -9,7 +9,7 @@ import ForgotPasswordScreen from './src/AuthScreens/ForgotPasswordScreen'
 import PINScreen from './src/AuthScreens/PINScreen';
 import RequestExternalUserATypeScreen from './src/AuthScreens/RequestExternalUserATypeScreen';
 import RequestMusicalPreferencesScreen from './src/AuthScreens/RequestMusicalPreferencesScreen';
-import NavHomeScreen from './src/HomeScreens/NavHomeScreen';
+import HomeNavStack from './src/Components/HomeNavStack';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { AuthContext } from './src/context/AuthContext';
 import * as SecureStore from 'expo-secure-store';
@@ -125,7 +125,7 @@ export default function App() {
                 </>
                 
               ):(
-                <AuthStack.Screen name='NavHomeScreen' component={NavHomeScreen}/>
+                <AuthStack.Screen name='HomeNavStack' component={HomeNavStack}/>
               )
             }
             </>
