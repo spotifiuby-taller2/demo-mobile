@@ -9,7 +9,7 @@ import {
   import React, {useState} from 'react'
   import imageSpotifiuby from '../../assets/SpotifiubyIcon.png'
   import { TextInput, Button, Text, Title, Checkbox, IconButton } from 'react-native-paper'
-  import { getSHAOf } from "../others/utils"
+  import {getSHAOf, postToGateway} from "../others/utils"
   import constants from "../others/constants"
   import { requestLocation } from "../others/utils"
 
@@ -59,19 +59,13 @@ import {
           requestBody['longitude'] = location.longitude;
         }
 
-        // El manejo de errores se puede reciclar de backoffice
-        fetch(constants.USERS_HOST + constants.SIGN_UP_URL,
-            {
-              method: 'POST',
-              headers: constants.JSON_HEADER,
-              body: JSON.stringify(requestBody)
-  
-          })
-          .then((res) => res.json())
-          .then((response)=>{
+          requestBody['redirectTo'] = constants.USERS_HOST + constants.SIGN_UP_URL;
+
+          // El manejo de errores se puede reciclar de backoffice
+          postToGateway(requestBody)
+          .then((response)=> {
               checkResponse(response);
-            })
-          .catch((err)=>{alert(err)});
+            } );
       }
       
 

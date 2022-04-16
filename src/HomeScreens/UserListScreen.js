@@ -10,6 +10,7 @@ import {
   import { Title, Text,Button, Chip, Avatar } from 'react-native-paper';
   import constants from '../others/constants'
   import ProfileScreen from './ProfileScreen';
+import {getToGateway} from "../others/utils";
     
   export default UserListScreen = ({navigation}) =>{
         
@@ -17,10 +18,15 @@ import {
 
         useEffect(()=>{
             function getAllUsers(){
-                fetch(constants.USERS_HOST + constants.USERS_LIST_URL)
-                .then(res => res.json())
-                .then(res => setList(res.users))
-                .catch(err => alert(err));
+
+                getToGateway(constants.USERS_HOST + constants.APP_USERS_LIST_URL,
+                             "").then(res => {
+                    if (res.error !== undefined) {
+                        alert(res.error);
+                    } else {
+                        setList(res.users);
+                    }
+                });
             }
 
             getAllUsers();

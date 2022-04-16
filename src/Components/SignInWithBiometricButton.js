@@ -16,6 +16,7 @@ const utils = require("../others/utils");
 import { auth } from "../Firebase/firebase";
 const firebaseAuth = require("firebase/auth");
 import { useAuthUser } from '../context/AuthContext';
+import {postToGateway} from "../others/utils";
 
   
 export default SignInWithBiometricButton = (props) =>{
@@ -106,30 +107,27 @@ export default SignInWithBiometricButton = (props) =>{
       const sendSignInUserWithBiometricRequest = (email, password,response)=>{
         
         const idToken = response._tokenResponse.idToken;
-        fetch(constants.USERS_HOST + constants.SIGN_IN_URL,
-            {
-                method: 'POST',
-                headers: constants.JSON_HEADER,
-                body: JSON.stringify({
-                  email: email,
-                  password: password,
-                  idToken: idToken,
-                  signin: 'biometric',
-                  link: "mobile"
-              }),
-        })
-        .then(res=>res.json())
+
+        const body = {
+            email: email,
+            password: password,
+            idToken: idToken,
+            signin: 'biometric',
+            link: "mobile",
+            redirectTo: constants.USERS_HOST + constants.SIGN_IN_URL
+        };
+
+        postToGateway(body)
         .then(res => 
             {
                 if (res.error === undefined){
-                    signIn(response._tokenResponse.idToken,response.user.uid);
+                    signIn(response._tokenResponse.idToken,
+                           response.user.uid);
                 }
                 else{
                     alert(res.error);
                 }
-                
-            })
-        .catch(err => alert(err));
+            });
       }
 
       const sendCreateUserWithBiometricRequest = (email, password)=>{

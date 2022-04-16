@@ -10,7 +10,7 @@ import React, {useState} from 'react'
 import imageSpotifiuby from '../../assets/SpotifiubyIcon.png'
 import { TextInput, Text, Button, Title } from 'react-native-paper'
 import constants from '../others/constants'
-import { getSHAOf } from "../others/utils"
+import {getSHAOf, postToGateway} from "../others/utils"
 import SignInWithBiometricButton from '../Components/SignInWithBiometricButton';
 import SignInGoogleButton from '../Components/SignInGoogleButton';
 import { auth } from "../Firebase/firebase";
@@ -49,21 +49,17 @@ export default SignInScreen = ({navigation}) =>{
         alert("No existe el usuario");
         return;
       }
-          
-      fetch(constants.USERS_HOST + constants.SIGN_IN_URL,
-          {
-            method: 'POST',
-            headers: constants.JSON_HEADER,
-            body: JSON.stringify({
-              email: email,
-              password: hashedPassword,
-              idToken: fResponse._tokenResponse.idToken,
-              link: "mobile",
-              signin: "email-password"
-          })
 
-      } )
-      .then(response => response.json())
+      const body = {
+          email: email,
+          password: hashedPassword,
+          idToken: fResponse._tokenResponse.idToken,
+          link: "mobile",
+          signin: "email-password",
+          redirectTo: constants.USERS_HOST + constants.SIGN_IN_URL
+      }
+
+      postToGateway(body)
       .then( (response) => {
           if(response.error === undefined){
               const {idToken, localId} = fResponse._tokenResponse;
@@ -72,8 +68,7 @@ export default SignInScreen = ({navigation}) =>{
           else{
             alert(response.error);
           }
-      } )
-      .catch(err=>alert(err));
+      } );
     }
 
     let validate = () =>{

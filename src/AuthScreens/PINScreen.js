@@ -11,6 +11,7 @@ import {
   import { TextInput, Button, Text, Title } from 'react-native-paper'
   import constants from "../others/constants"
   import { useRoute } from '@react-navigation/native';
+import {getToGateway} from "../others/utils";
 
 
   
@@ -23,18 +24,12 @@ import {
 
       let handleSignUp = () =>{
 
-        fetch(constants.USERS_HOST + constants.SIGN_UP_END_URL + `/${route.params.tempId}/${pin}`,
-            {
-              headers: constants.JSON_HEADER
-  
-          })
-          .then((res) => res.json())
+        getToGateway(constants.USERS_HOST + constants.SIGN_UP_END_URL,
+                    `/${route.params.tempId}/${pin}`)
           .then((response)=>{
               checkResponse(response);
-            })
-          .catch((err)=>{alert(err)});
+            });
       }
-      
 
       let checkResponse = (res) =>{
         if (res.error === undefined){

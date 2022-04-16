@@ -11,6 +11,7 @@ import * as Google from 'expo-google-app-auth';
 import {IOS_KEY, ANDROID_KEY, WEB_KEY, ANDROID_STANDALONE_KEY} from "@env"
 import constants from '../others/constants'
 import { useAuthUser } from '../context/AuthContext';
+import {postToGateway} from "../others/utils";
 
 const {getAuth,signInWithCredential, GoogleAuthProvider} = require("firebase/auth");
 
@@ -65,7 +66,8 @@ export default SignInWithGoogle = (props) =>{
               link: "mobile",
               signin: "google",
               isArtist: isArtist,
-              isListener: isListener
+              isListener: isListener,
+             redirectTo: constants.USERS_HOST + constants.SIGN_IN_URL
           };
         
          if ( response._tokenResponse.isNewUser !== undefined ){
@@ -73,21 +75,13 @@ export default SignInWithGoogle = (props) =>{
             return;
          }
          
-
-        fetch(constants.USERS_HOST + constants.SIGN_IN_URL,
-            {
-              method: 'POST',
-              headers: constants.JSON_HEADER,
-              body: JSON.stringify(resquestBody)
-
-        })
-        .then((res) => res.json())
-        .then((res)=>{
+        postToGateway(requestBody).then((res)=>{
           if(res.error === undefined){
             signIn(response._tokenResponse.idToken,response.user.uid);
+          } else {
+              alert(res.error);
           }
-        })
-        .catch((err)=>{alert(err)});
+        });
       };
 
 

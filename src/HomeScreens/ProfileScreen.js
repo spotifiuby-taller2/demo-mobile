@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react'
 import { Title, Text, Button, Avatar, Chip } from 'react-native-paper'
 import { useRoute } from '@react-navigation/native';
 import constants from '../others/constants'
+import {getToGateway} from "../others/utils";
     
   export default ProfileScreen = ({navigation}) =>{
 
@@ -41,34 +42,39 @@ import constants from '../others/constants'
       const [profile, setProfile] = useState(initialState);
 
         useEffect(()=>{
-          function getProfile(userId){
-            fetch(constants.USERS_HOST + constants.PROFILE_URL 
-              + "?" + constants.USER_ID_QUERY_PARAM + userId)
-          .then(res => res.json())
+          function getProfile(userId) {
+          getToGateway(constants.USERS_HOST + constants.PROFILE_URL
+                                            + "?"
+                                            + constants.USER_ID_QUERY_PARAM
+                                            + userId)
           .then(res =>{
-              const newState = {
-                name: res.name,
-                surname: res.surname,
-                email: res.email,
-                phoneNumber: res.phoneNumber,
-                isListener: res.isListener,
-                isArtist: res.isArtist,
-                metal: res.metal,
-                rock: res.rock,
-                salsa: res.salsa,
-                inide: res.indie,
-                electronic: res.electronic,
-                classic: res.classic,
-                pop: res.pop,
-                punk: res.punk,
-                jazz: res.jazz,
-                blues: res.blues,
-                others: res.other,
-                reggeaton: res.reggeaton,
-                rap: res.rap 
-                
-              };
-              setProfile(newState);
+              if (res.error !== undefined) {
+                  alert(res.error);
+              } else {
+                  const newState = {
+                      name: res.name,
+                      surname: res.surname,
+                      email: res.email,
+                      phoneNumber: res.phoneNumber,
+                      isListener: res.isListener,
+                      isArtist: res.isArtist,
+                      metal: res.metal,
+                      rock: res.rock,
+                      salsa: res.salsa,
+                      inide: res.indie,
+                      electronic: res.electronic,
+                      classic: res.classic,
+                      pop: res.pop,
+                      punk: res.punk,
+                      jazz: res.jazz,
+                      blues: res.blues,
+                      others: res.other,
+                      reggeaton: res.reggeaton,
+                      rap: res.rap
+
+                  };
+                  setProfile(newState);
+              }
           })
           }
           

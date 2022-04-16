@@ -14,6 +14,7 @@ import MusicalPreferenceCheckbox from '../Components/MusicalPreferenceCheckbox';
 import { useAuthUser } from '../context/AuthContext';
 import { MusicalPreferencesContext } from '../context/MusicalPreferencesContext';
 import constants from "../others/constants";
+import {postToGateway} from "../others/utils";
 
 const reducer = (state = initialState(), action = {})=>{
 
@@ -129,21 +130,18 @@ const reducer = (state = initialState(), action = {})=>{
       let handleSend = () =>{
 
         const requestBody={
-          musicalPref: musicalPrefs 
+          musicalPref: musicalPrefs,
+          redirectTo: constants.USERS_HOST + constants.MUSICAL_PREF_URL
+                                           + "?"
+                                           + constants.USER_ID_QUERY_PARAM
+                                           + route.params.id
         };
 
-        fetch(constants.USERS_HOST + constants.MUSICAL_PREF_URL
-            + "?" + constants.USER_ID_QUERY_PARAM + route.params.id,
-          {
-            method: 'PATCH',
-            headers: constants.JSON_HEADER,
-            body: JSON.stringify(requestBody),
-
-          })
-          .then(res => res.json())
-          .then( res => checkResponse(res))
-          .catch( err => alert(err) );
-
+        postToGateway(requestBody,
+              'PATCH')
+          .then( res => {
+              checkResponse(res)
+          });
       }
 
       let checkResponse = (res)=>{

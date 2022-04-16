@@ -10,6 +10,7 @@ import React, {useState} from 'react'
 import imageSpotifiuby from '../../assets/SpotifiubyIcon.png'
 import { TextInput, Button, Text, Title } from 'react-native-paper'
 import constants from "../others/constants";
+import {postToGateway} from "../others/utils";
 
   
 export default ForgotPasswordScreen = ({navigation}) =>{
@@ -40,18 +41,13 @@ export default ForgotPasswordScreen = ({navigation}) =>{
           return;
         }
 
+        const body = {
+            email: email,
+            link: 'mobile',
+            redirectTo: constants.USERS_HOST + constants.FORGOT_PASSWORD_URL
+        };
   
-        fetch(constants.USERS_HOST + constants.FORGOT_PASSWORD_URL,
-            {
-              method: 'POST',
-              headers: constants.JSON_HEADER,
-              body: JSON.stringify({
-                email: email,
-                link: 'mobile'
-            })
-  
-        })
-        .then((response) => response.json())
+        postToGateway(body)
         .then((response)=>{
             if (response.error === undefined ){
               alert("Cuenta confirmada: acceder a su casilla para cambiar contraseña");
@@ -60,8 +56,7 @@ export default ForgotPasswordScreen = ({navigation}) =>{
             else{
               alert(response.error);
             }
-          })
-        .catch((err)=>{alert(err)})
+          });
       }
   
       return(
