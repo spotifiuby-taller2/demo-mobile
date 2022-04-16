@@ -22,7 +22,6 @@ export default HomeScreen = () =>{
           <ScrollView showsVerticalScrollIndicator={false}>
             <View>
                 <Image source={imageSpotifiuby} style={styles.image}></Image>
-                <Title style={styles.title}>Bienvenido a My App</Title>
 
             </View>
             <Button mode='contained' onPress={()=>{signOut()}}>

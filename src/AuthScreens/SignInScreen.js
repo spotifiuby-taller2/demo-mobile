@@ -13,17 +13,15 @@ import constants from '../others/constants'
 import {getSHAOf, postToGateway} from "../others/utils"
 import SignInWithBiometricButton from '../Components/SignInWithBiometricButton';
 import SignInGoogleButton from '../Components/SignInGoogleButton';
-import { auth } from "../Firebase/firebase";
+import { auth, firebaseConfig } from "../Firebase/firebase";
 import { useRoute } from '@react-navigation/native';
 import { useAuthUser } from '../context/AuthContext';
 const firebaseAuth = require("firebase/auth");
 
 
 export default SignInScreen = ({navigation}) =>{
-
     const route = useRoute();
     const {signIn} = useAuthUser();
-
 
     const [email,setEmail] = useState(route.params.email);
     const [password,setPassword] = useState(route.params.password);
@@ -31,14 +29,13 @@ export default SignInScreen = ({navigation}) =>{
     const [passwordError,setPasswordError] = useState(null);
     const [securePassword, setSecurePassword] = useState(true);
 
-    let handleSignIn = async () =>{
-
+    let handleSignIn = async () => {
       if (! validate()) {
           return;
       }
 
-
       const hashedPassword = getSHAOf( getSHAOf( password ) );
+
       const fResponse = await firebaseAuth.signInWithEmailAndPassword(
           auth, 
           email, 

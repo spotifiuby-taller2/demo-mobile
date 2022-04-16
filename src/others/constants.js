@@ -4,7 +4,9 @@ import {REACT_APP_USERS_HOST_DEV,
         REACT_APP_SERVICES_HOST_PROD} from "@env"
 
 /* Backend hosts */
-const USERS_HOST = (__DEV__)? REACT_APP_USERS_HOST_DEV:REACT_APP_USERS_HOST_PROD;
+const USERS_HOST = (__DEV__)
+                    ? REACT_APP_USERS_HOST_DEV
+                    : REACT_APP_USERS_HOST_PROD;
 
 /* Backends paths */
 const SIGN_UP_URL = "/signup";
@@ -19,7 +21,9 @@ const USERS_LIST_URL = USERS_URL + "/list";
 const APP_USERS_LIST_URL = USERS_URL + "/applist";
 const REDIRECT_URL = "/redirect";
 
-const SERVICES_HOST = (__DEV__)? REACT_APP_SERVICES_HOST_DEV:REACT_APP_SERVICES_HOST_PROD;
+const SERVICES_HOST = (__DEV__)
+                      ? REACT_APP_SERVICES_HOST_DEV
+                      : REACT_APP_SERVICES_HOST_PROD;
 
 const JSON_HEADER = {
   'Content-Type': 'application/json',

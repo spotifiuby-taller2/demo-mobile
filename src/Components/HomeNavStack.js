@@ -9,6 +9,7 @@ import UserListScreen from '../HomeScreens/UserListScreen';
 import 'react-native-gesture-handler'
 import {useAuthUser} from '../context/AuthContext'
 import Menu from './Menu';
+import ContentScreen from "../HomeScreens/ContentScreen";
 
 const HomeStack = createNativeStackNavigator();
 
@@ -23,6 +24,7 @@ export default HomeNavStack = () =>{
             <HomeStack.Screen name='HomeScreen' component={HomeScreen} />
             <HomeStack.Screen name='ProfileScreen' component={ProfileScreen} initialParams={{uid: userState.uid}}/>
             <HomeStack.Screen name='UserListScreen' component={UserListScreen} />
+            <HomeStack.Screen name='ContentScreen' component={ContentScreen} />
         </HomeStack.Navigator>
     )
 }
