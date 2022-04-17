@@ -13,6 +13,7 @@ import HomeNavStack from './src/Components/HomeNavStack';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { AuthContext } from './src/context/AuthContext';
 import * as SecureStore from 'expo-secure-store';
+import ContentScreen from "./src/HomeScreens/ContentScreen";
 
 
 const AuthStack = createNativeStackNavigator();
@@ -115,6 +116,8 @@ export default function App() {
             {
               ( ! userState.userToken )? (
                 <>
+                  <AuthStack.Screen name='ContentScreen' component={ContentScreen}/>
+
                   <AuthStack.Screen name='NavigatorlogInScreen' component={NavigationLogInScreen}/>
                   <AuthStack.Screen name='SignInScreen' component={SignInScreen} initialParams={{email: '', password: ''}} options={{ animationTypeForReplace: userState.isSignOut ? 'pop' : 'push'}}/>
                   <AuthStack.Screen name='SignUpScreen' component={SignUpScreen}/>

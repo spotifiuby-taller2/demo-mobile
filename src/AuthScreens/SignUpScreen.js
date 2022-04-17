@@ -36,6 +36,7 @@ import {
       const [userTypeError, setUserTypeError] = useState(null);
 
       let handleSignUp = () =>{
+        console.log(constants.SERVICES_HOST);
 
         validate();
 

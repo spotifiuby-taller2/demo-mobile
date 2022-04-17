@@ -1,10 +1,8 @@
-import { 
-  StyleSheet, 
-  View,
-  ScrollView,
-  SafeAreaView
+import {
+    StyleSheet,
+    View,
 } from 'react-native';
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {BottomNavigation, Text} from "react-native-paper";
 import {
     buttonStyle,
@@ -15,14 +13,25 @@ import {
     titleStyle
 } from "../styles/genericStyles";
 
-const MusicRoute = () => <Text>Music</Text>;
+import ListComponent from "./ListComponent";
+import {getToGateway} from "../others/utils";
+import constants from '../others/constants'
 
-const AlbumsRoute = () => <Text>Albums</Text>;
+const MusicRoute = ({navigation},
+                    userList) => {
+    return ListComponent(userList,
+                        "ProfileScreen",
+                        {navigation});
+};
 
-export default ContentScreen = () => {
-    const [index, setIndex] = React.useState(0);
+const AlbumsRoute = () => null;
 
-    const [routes] = React.useState([
+//const MusicRoute = () => <Text>Música</Text>;
+
+export default ContentScreen = ({navigation}) => {
+    const [index, setIndex] = useState(1);
+
+    const [routes] = useState([
         {
             key: 'music',
             title: 'Canciones',
@@ -35,33 +44,47 @@ export default ContentScreen = () => {
         }
     ]);
 
+    const [userList, setUserList] = useState([]);
+
+    useEffect(()  => {
+        function getAllSongs() {
+            getToGateway(constants.MEDIA_HOST + constants.SONGS_URL,
+                "").then((response) => {
+                if (response.error !== undefined) {
+                    alert(response.error);
+                    return;
+                }
+
+                setUserList(response);
+            });
+        }
+
+        getAllSongs();
+    }, []);
+
     const renderScene = BottomNavigation.SceneMap({
-        music: MusicRoute,
+        music: MusicRoute({navigation},
+                          userList),
         albums: AlbumsRoute,
     });
 
-      return(
+    return(
         <View style={styles.container}>
-            <SafeAreaView>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                </ScrollView>
-            </SafeAreaView>
-
             <BottomNavigation
                 navigationState={{ index, routes }}
                 onIndexChange={setIndex}
                 renderScene={renderScene}
             />
         </View>
-      )
+    )
 }
 
 const styles = StyleSheet.create(
-      { input: inputStyle,
+    { input: inputStyle,
         container: containerStyle,
-         title: titleStyle,
-         button: buttonStyle,
-         buttonText: buttonTextStyle,
-         image: imageStyle
-      }
-   )
+        title: titleStyle,
+        button: buttonStyle,
+        buttonText: buttonTextStyle,
+        image: imageStyle
+    }
+)

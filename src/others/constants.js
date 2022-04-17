@@ -1,12 +1,23 @@
 import {REACT_APP_USERS_HOST_DEV,
         REACT_APP_USERS_HOST_PROD,
         REACT_APP_SERVICES_HOST_DEV,
-        REACT_APP_SERVICES_HOST_PROD} from "@env"
+        REACT_APP_SERVICES_HOST_PROD,
+        REACT_APP_MEDIA_HOST_DEV,
+        REACT_APP_MEDIA_HOST_PROD} from "@env"
 
 /* Backend hosts */
 const USERS_HOST = (__DEV__)
                     ? REACT_APP_USERS_HOST_DEV
                     : REACT_APP_USERS_HOST_PROD;
+
+const MEDIA_HOST = (__DEV__)
+                    ? REACT_APP_MEDIA_HOST_DEV
+                    : REACT_APP_MEDIA_HOST_PROD;
+
+const SERVICES_HOST = (__DEV__)
+                      ? REACT_APP_SERVICES_HOST_DEV
+                      : REACT_APP_SERVICES_HOST_PROD;
+
 
 /* Backends paths */
 const SIGN_UP_URL = "/signup";
@@ -19,15 +30,15 @@ const MUSICAL_PREF_URL = PROFILE_URL + "/musicalpref";
 const USER_ID_QUERY_PARAM = "userId=";
 const USERS_LIST_URL = USERS_URL + "/list";
 const APP_USERS_LIST_URL = USERS_URL + "/applist";
+
 const REDIRECT_URL = "/redirect";
 
-const SERVICES_HOST = (__DEV__)
-                      ? REACT_APP_SERVICES_HOST_DEV
-                      : REACT_APP_SERVICES_HOST_PROD;
+const SONGS_URL = "/songs";
 
 const JSON_HEADER = {
   'Content-Type': 'application/json',
-  'Accept': 'application/json'
+  'Accept': 'application/json',
+  'Access-Control-Allow-Origin': '*'
 }
 
 /* Constants */
@@ -51,5 +62,7 @@ module.exports = {
   APP_USERS_LIST_URL,
   SERVICES_HOST,
   MY_API_KEY,
-  REDIRECT_URL
+  REDIRECT_URL,
+  MEDIA_HOST,
+  SONGS_URL
 }

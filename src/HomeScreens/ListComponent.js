@@ -1,34 +1,42 @@
-import {ScrollView, View} from "react-native";
-import {Avatar, Chip, Text} from "react-native-paper";
+import {SafeAreaView, ScrollView, View} from "react-native";
+import {Chip} from "react-native-paper";
 import React from "react";
+import {Text} from "react-native-paper";
 
 import {
-    nameStyle,
     chipStyle,
-    avatarStyle
 } from "../styles/listStyles";
 
-ListComponent = (usersList) => {
-    return <View>
-        {
-            usersList.map( (user, id)=>{
-                return (
-                    <Chip id={id} key={user.id} style={chipStyle} onPress={ ()=> {
-                        navigation.navigate('ProfileScreen',
-                                            {uid: user.id})
-                        }
-                    }>
-                        <View style={{flexDirection:'row'}}>
-                            <Avatar.Text
-                                style={avatarStyle}
-                                label={`${user.name.charAt(0)}${user.surname.charAt(0)}`}
-                            />
-                            <View >
-                                <Text style={nameStyle}>{user.name} {user.surname}</Text>
-                            </View>
-                        </View>
-                    </Chip>
-                )})
-        }
-    </View>
+const ListComponent = (usersList,
+                       screen,
+                       navigation) => {
+    return (
+        <SafeAreaView>
+            <ScrollView showsVerticalScrollIndicator={false}>
+                <View>
+                    {
+                        usersList.map( (user, id)=>{
+                            return (
+                                <Chip id={id}
+                                      key={user.id}
+                                      style={chipStyle}
+                                      onPress={ ()=> {
+                                        navigation.navigate(screen,
+                                                           {uid: user.id})
+                                      }
+                                }>
+                                    <View style={{flexDirection:'row'}}>
+                                        <View >
+                                            <Text>{user.name} {user.surname}</Text>
+                                        </View>
+                                    </View>
+                                </Chip>
+                            )})
+                    }
+                </View>
+            </ScrollView>
+        </SafeAreaView>
+    );
 }
+
+export default ListComponent;
