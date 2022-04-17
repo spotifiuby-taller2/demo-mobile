@@ -9,7 +9,6 @@ import {
   import React, {useEffect, useState} from 'react'
   import { Title, Text,Button, Chip, Avatar } from 'react-native-paper';
   import constants from '../others/constants'
-  import ProfileScreen from './ProfileScreen';
 import {getToGateway} from "../others/utils";
     
   export default UserListScreen = ({navigation}) =>{
@@ -28,10 +27,11 @@ import {getToGateway} from "../others/utils";
                     }
                 });
             }
-
             getAllUsers();
-        },[]);
+            console.log(usersList);
 
+        },[]);
+        
     
         return(
           <View style={styles.container}>
@@ -43,13 +43,18 @@ import {getToGateway} from "../others/utils";
                         return (
                         <Chip id={id} key={user.id} style={styles.chip} onPress={()=>{navigation.navigate('ProfileScreen',{uid: user.id})}}>
                           <View style={{flexDirection:'row'}}>
-                            <Avatar.Text 
-                              style={{marginRight: 30, backgroundColor: '#ff4500'}}
-                              label={`${user.name.charAt(0)}${user.surname.charAt(0)}`}
-                              />
-                            <View >
-                              <Text style={styles.name}>{user.name} {user.surname}</Text>
-                              <Text style={styles.email}>{user.email}</Text>
+                            <View style={{flexDirection:'column'}}>
+
+                              <Avatar.Text 
+                                style={{marginRight: 20, backgroundColor: '#ff4500'}}
+                                label={`${user.name.charAt(0)}${user.surname.charAt(0)}`}
+                                />
+
+                              <View >
+                                <Text style={styles.name}>{user.name} {user.surname}</Text>
+                                <Text style={styles.email}>{user.email}</Text>
+                              </View>
+                              
                             </View>
                           </View>
                         </Chip>
@@ -75,12 +80,12 @@ import {getToGateway} from "../others/utils";
            chip:{
              backgroundColor: 'darkblue',
              marginTop: 5,
-             height: 115
+             height: 120,
            },
            name:{
-             fontSize: 24,
-             color: 'white'
-           },
+             fontSize: 19,
+             color: 'gold'
+          },
            email: {
              color: 'white'
            }

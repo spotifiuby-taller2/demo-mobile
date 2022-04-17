@@ -61,6 +61,7 @@ export default RequestExternalUserATypeScreen = ({navigation}) => {
                 goTONextScreen(params);
             }
         }
+    }
 
         let goTONextScreen = (params) => {
             if (isListener) {
@@ -163,4 +164,3 @@ export default RequestExternalUserATypeScreen = ({navigation}) => {
             image: {height: 150, width: 150, borderRadius: 200, resizeMode: 'contain', paddingTop: 200, marginLeft: 84}
         }
     )
-}

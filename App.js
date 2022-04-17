@@ -113,7 +113,7 @@ export default function App() {
           <AuthStack.Navigator screenOptions={{headerShown: false}}>
             <>
             {
-              ( ! userState.userToken )? (
+              ( false )? (
                 <>
                   <AuthStack.Screen name='NavigatorlogInScreen' component={NavigationLogInScreen}/>
                   <AuthStack.Screen name='SignInScreen' component={SignInScreen} initialParams={{email: '', password: ''}} options={{ animationTypeForReplace: userState.isSignOut ? 'pop' : 'push'}}/>
