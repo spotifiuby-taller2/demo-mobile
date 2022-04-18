@@ -35,7 +35,7 @@ import {
       const [isArtist, setIsArtist] = useState(false);
       const [userTypeError, setUserTypeError] = useState(null);
 
-      let handleSignUp = () =>{
+      let handleSignUp = async () =>{
 
         validate();
 
@@ -52,13 +52,17 @@ import {
           isExternal: false
         };
 
-        if ( isListener ){
-          const location = requestLocation(requestBody.email);
-          console.log(location);
-          requestBody['latitude'] = location.latitude;
-          requestBody['longitude'] = location.longitude;
-        }
+        let location
 
+        if ( isListener ){
+          location = await requestLocation()
+
+          if ( location === undefined )
+            return;
+
+        }
+          requestBody['latitude'] = location.coords.latitude;
+          requestBody['longitude'] = location.coords.longitude;
           requestBody['redirectTo'] = constants.USERS_HOST + constants.SIGN_UP_URL;
 
           // El manejo de errores se puede reciclar de backoffice

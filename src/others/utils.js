@@ -16,22 +16,22 @@ function getBiometricalMailAndPassword(biometricId){
   return {email: email, password : password};
 }
 
-async function requestLocation(email){
+async function requestLocation(){
 
   try {
     let { status } = await Location.requestPermissionsAsync();
     if (status !== 'granted') {
       alert("No es posible contiuar con el registro si no habilita una ubicación");
-      return;
+      return null;
     }
-    let location = await Location.getCurrentPositionAsync({});
     
-    return location;
+    return await Location.getCurrentPositionAsync({});
+
   } 
   catch (error) {
-    alert(error);
+    alert("Error: no se pudo acceder a la ubicación del dispositivo. Por favor, habilitela para poder registrarse");
+    return null
   }
-
 }
 
 // response.json() is a promise

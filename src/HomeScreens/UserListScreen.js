@@ -28,8 +28,6 @@ import {getToGateway} from "../others/utils";
                 });
             }
             getAllUsers();
-            console.log(usersList);
-
         },[]);
         
     
