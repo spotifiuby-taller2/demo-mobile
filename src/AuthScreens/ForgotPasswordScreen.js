@@ -7,7 +7,7 @@ import {
   } from 'react-native';
   
 import React, {useState} from 'react'
-import imageSpotifiuby from '../../assets/SpotifiubyIcon.png'
+import imageSpotifiuby from '../../assets/SpotifiubyImage.png'
 import { TextInput, Button, Text, Title } from 'react-native-paper'
 import constants from "../others/constants";
 import {postToGateway} from "../others/utils";
