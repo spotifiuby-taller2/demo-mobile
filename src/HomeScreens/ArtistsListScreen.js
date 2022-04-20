@@ -16,7 +16,7 @@ import UserChip from '../Components/UserChip';
         useEffect(()=>{
             function getAllUsers(){
 
-                getToGateway(constants.USERS_HOST + constants.APP_USERS_LIST_URL,
+                getToGateway(constants.USERS_HOST + constants.APP_ARTIST_LIST_URL,
                              "").then(res => {
                     if (res.error !== undefined) {
                         alert(res.error);
@@ -37,10 +37,8 @@ import UserChip from '../Components/UserChip';
                   {
                     usersList.map( (user, id)=>{
                         return (
-                          <UserChip id={id} key={id} user={user} navigation={navigation}/>
-                          )
-                        }
-                      )
+                        <UserChip id={id} key={id} user={user} navigation={navigation}/>
+                    )})
                 }
               </View>
               </ScrollView>
@@ -59,5 +57,5 @@ import UserChip from '../Components/UserChip';
             paddingRight: 15,
             marginTop: 30
            }
-          }
+        }
      )

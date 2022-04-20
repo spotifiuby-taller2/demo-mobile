@@ -59,10 +59,12 @@ import {
 
           if ( location === undefined )
             return;
-
-        }
+          
           requestBody['latitude'] = location.coords.latitude;
           requestBody['longitude'] = location.coords.longitude;
+
+          }
+          
           requestBody['redirectTo'] = constants.USERS_HOST + constants.SIGN_UP_URL;
 
           // El manejo de errores se puede reciclar de backoffice

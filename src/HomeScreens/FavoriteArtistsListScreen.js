@@ -1,33 +1,34 @@
 import { 
-    StyleSheet
+    StyleSheet, 
+    View,
+    Image,
+    ScrollView,
+    SafeAreaView,
+    Alert
   } from 'react-native';
-import React from 'react'
-import HomeScreen from '../HomeScreens/HomeScreen';
-import ProfileScreen from '../HomeScreens/ProfileScreen';
-import UserListScreen from '../HomeScreens/UserListScreen';
-import 'react-native-gesture-handler'
-import {useAuthUser} from '../context/AuthContext'
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import ContentScreen from "../HomeScreens/ContentScreen";
-import ArtistsListTab from "./ArtistsListTab"
+  import React from 'react'
+  import imageSpotifiuby from '../../assets/SpotifiubyIcon.png'
+  import { Text } from 'react-native-paper'
+  import { useAuthUser } from '../context/AuthContext';
     
-const Drawer = createDrawerNavigator();
-
-export default Menu = () =>{
-
-    const {userState} = useAuthUser();
+  export default HomeScreen = () =>{
+  
+        const {signOut} = useAuthUser();
+  
     
-    /* Todas las pantallas del menu se agregan Aca*/
-    return(
-        <Drawer.Navigator>
-            <Drawer.Screen name='Inicio' component={HomeScreen} />
-            <Drawer.Screen name='Perfil' component={ProfileScreen} initialParams={{uid: userState.uid}}/>
-            <Drawer.Screen name='Usuarios' component={UserListScreen} />
-            <Drawer.Screen name='Artistas' component={ArtistsListTab} />
-            <Drawer.Screen name='Crear contenido' component={ContentScreen} />
-        </Drawer.Navigator>
-    )
-}
+        return(
+          <View style={styles.container}>
+          <SafeAreaView>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <View>
+                  <Image source={imageSpotifiuby} style={styles.image}></Image>
+                  <Text>Artistas favoritos</Text>
+              </View>
+              </ScrollView>
+          </SafeAreaView>
+        </View>
+        )
+      }
   
   
       const styles = StyleSheet.create(

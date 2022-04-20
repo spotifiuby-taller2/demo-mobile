@@ -19,6 +19,7 @@ const MUSICAL_PREF_URL = PROFILE_URL + "/musicalpref";
 const USER_ID_QUERY_PARAM = "userId=";
 const USERS_LIST_URL = USERS_URL + "/list";
 const APP_USERS_LIST_URL = USERS_URL + "/applist";
+const APP_ARTIST_LIST_URL = USERS_URL + "/artistlist";
 const REDIRECT_URL = "/redirect";
 
 const SERVICES_HOST = (__DEV__)
@@ -51,5 +52,6 @@ module.exports = {
   APP_USERS_LIST_URL,
   SERVICES_HOST,
   MY_API_KEY,
-  REDIRECT_URL
+  REDIRECT_URL,
+  APP_ARTIST_LIST_URL
 }
