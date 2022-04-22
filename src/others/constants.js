@@ -15,8 +15,10 @@ const SIGN_UP_END_URL = SIGN_UP_URL + "/end";
 const FORGOT_PASSWORD_URL = "/forgotpassword";
 const USERS_URL = "/users";
 const PROFILE_URL = USERS_URL + "/profile";
+const PROFILE_PHOTO_URL = PROFILE_URL + "/photo";
 const MUSICAL_PREF_URL = PROFILE_URL + "/musicalpref";
 const USER_ID_QUERY_PARAM = "userId=";
+const PHOTO_URL_QUERY_PARAM = "photoUrl=";
 const USERS_LIST_URL = USERS_URL + "/list";
 const APP_USERS_LIST_URL = USERS_URL + "/applist";
 const APP_ARTIST_LIST_URL = USERS_URL + "/artistlist";
@@ -53,5 +55,7 @@ module.exports = {
   SERVICES_HOST,
   MY_API_KEY,
   REDIRECT_URL,
-  APP_ARTIST_LIST_URL
+  APP_ARTIST_LIST_URL,
+  PROFILE_PHOTO_URL,
+  PHOTO_URL_QUERY_PARAM
 }

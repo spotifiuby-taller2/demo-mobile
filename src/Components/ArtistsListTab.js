@@ -6,16 +6,24 @@ import { Avatar } from 'react-native-paper';
 
 const ArtistsTab = createBottomTabNavigator();
 
-export default HomeNavStack = ({navigation}) => {
+export default ArtistsListTab = ({navigation}) => {
   return (
     <ArtistsTab.Navigator screenOptions={{headerShown: false}}>
       <ArtistsTab.Screen 
           name="Artistas" 
           component={ArtistsListScreen}
           options={{
-            tabBarIcon: ({size, color}) => (< Avatar.Icon size={24} icon='star'/>)
-        }} />
-      <ArtistsTab.Screen name="Favoritos" component={FavoriteArtistsListScreen} />
+            tabBarIcon: () => (< Avatar.Icon size={30} icon='account' />)
+          }}
+          />
+          
+      <ArtistsTab.Screen 
+          name="Favoritos" 
+          component={FavoriteArtistsListScreen}
+          options={{
+            tabBarIcon: () => (< Avatar.Icon size={30} icon='star'/>)
+          }} 
+          />
     </ArtistsTab.Navigator>
   );
 }

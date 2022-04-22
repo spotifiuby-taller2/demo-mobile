@@ -5,10 +5,11 @@ import {
     SafeAreaView,
   } from 'react-native';
 import React, { useEffect, useState } from 'react'
-import { Title, Text, Button, Avatar, Chip } from 'react-native-paper'
+import { Text, Chip } from 'react-native-paper'
 import { useRoute } from '@react-navigation/native';
 import constants from '../others/constants'
 import {getToGateway} from "../others/utils";
+import ProfilePicture from '../Components/ProfilePicture';
     
   export default ProfileScreen = ({navigation}) =>{
 
@@ -43,10 +44,10 @@ import {getToGateway} from "../others/utils";
 
         useEffect(()=>{
           function getProfile(userId) {
-          getToGateway(constants.USERS_HOST + constants.PROFILE_URL
-                                            + "?"
-                                            + constants.USER_ID_QUERY_PARAM
-                                            + userId)
+            getToGateway(constants.USERS_HOST + constants.PROFILE_URL
+                                              + "?"
+                                              + constants.USER_ID_QUERY_PARAM
+                                              + userId)
           .then(res =>{
               if (res.error !== undefined) {
                   alert(res.error);
@@ -71,7 +72,6 @@ import {getToGateway} from "../others/utils";
                       others: res.other,
                       reggeaton: res.reggeaton,
                       rap: res.rap
-
                   };
                   setProfile(newState);
               }
@@ -88,11 +88,12 @@ import {getToGateway} from "../others/utils";
           <SafeAreaView>
             <ScrollView showsVerticalScrollIndicator={false}>
               <View>
-                <Avatar.Text
-                    style={styles.avatar}
-                    size={175}
-                    label={`${profile.name.charAt(0)}${profile.surname.charAt(0)}`}
-                    />
+                <ProfilePicture
+                  uid={route.params.uid}
+                  name={profile.name} 
+                  surname={profile.surname}
+                  style={styles.avatar}
+                  />
                 <Text style={styles.name}>{profile.name} {profile.surname}</Text>
                 <Text style={styles.usertype}>{(profile.isArtist)? 'Artista': 'Oyente'}</Text>
                 <Text style={styles.email}>{profile.email}</Text>

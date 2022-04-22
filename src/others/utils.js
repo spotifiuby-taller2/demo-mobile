@@ -76,10 +76,32 @@ const getToGateway = (destiny,
   } );
 }
 
+const patchToGateway = (destiny, redirectParams) => {
+      const body = {}
+      body.redirectParams = redirectParams
+      body.verbRedirect = "PATCH";
+      body.redirectTo = destiny;
+      body.apiKey = constants.MY_API_KEY;
+
+      return fetch(constants.SERVICES_HOST + constants.REDIRECT_URL, {
+          method: "POST",
+          headers: constants.JSON_HEADER,
+          body: JSON.stringify(body)
+      }
+      ).then(response =>
+          response.json()
+      ).catch(error => {
+          return {
+              error: error.toString()
+          };
+      } );
+}
+
 export {
   getSHAOf,
   getBiometricalMailAndPassword,
   requestLocation,
   postToGateway,
-  getToGateway
+  getToGateway,
+  patchToGateway
 }
