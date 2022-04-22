@@ -13,7 +13,7 @@ import constants from '../others/constants'
 import {getSHAOf, postToGateway} from "../others/utils"
 import SignInWithBiometricButton from '../Components/SignInWithBiometricButton';
 import SignInGoogleButton from '../Components/SignInGoogleButton';
-import { auth, firebaseConfig } from "../Firebase/firebase";
+import { auth } from "../Firebase/firebase";
 import { useRoute } from '@react-navigation/native';
 import { useAuthUser } from '../context/AuthContext';
 const firebaseAuth = require("firebase/auth");
@@ -54,7 +54,7 @@ export default SignInScreen = ({navigation}) =>{
           link: "mobile",
           signin: "email-password",
           redirectTo: constants.USERS_HOST + constants.SIGN_IN_URL
-      }
+      };
 
       postToGateway(body)
       .then( (response) => {

@@ -17,6 +17,7 @@ import {
   
   export default SignUpScreen = ({navigation}) =>{
 
+      const [id,setId] = useState('');
       const [name,setName] = useState('');
       const [surname,setSurname] = useState('');
       const [email,setEmail] = useState('');
@@ -37,7 +38,10 @@ import {
 
       let handleSignUp = async () =>{
 
-        validate();
+        if (! validate()){
+          alert("Error: no se puede registar al usuario por valores invalidos");
+          return;
+        }
 
         const requestBody = {
           name: name,
@@ -49,10 +53,10 @@ import {
           isArtist: isArtist,
           isListener: isListener,
           link: "mobile",
-          isExternal: false
+          isExternal: false,
         };
 
-        let location
+        let location;
 
         if ( isListener ){
           location = await requestLocation()
@@ -65,10 +69,10 @@ import {
 
           }
           
-          requestBody['redirectTo'] = constants.USERS_HOST + constants.SIGN_UP_URL;
+        requestBody['redirectTo'] = constants.USERS_HOST + constants.SIGN_UP_URL;
 
-          // El manejo de errores se puede reciclar de backoffice
-          postToGateway(requestBody)
+
+        postToGateway(requestBody)
           .then((response)=> {
               checkResponse(response);
             } );
@@ -76,13 +80,18 @@ import {
       
 
       let checkResponse = (res) =>{
-        if (res.error === undefined){
+
+        if (res.id){
+          setId(res.id);
+        }
+
+        if (res.error === undefined || res.error  === "Ya hay un usuario con ese mail pendiente de confirmación"){
             navigation.navigate('PINScreen',
             {
               email: email,
               password: password,
               isListener: isListener,
-              tempId: res.id
+              tempId: id,
             });
           
         }
@@ -92,6 +101,8 @@ import {
       }
 
       let validate = () =>{
+
+        let isValid = true;
         
         if ( name === '' ){ 
           setNameError('Campo "Nombre" debe ser completado');
@@ -117,10 +128,6 @@ import {
         if (password.length < constants.MIN_LENGTH_PASSWORD && password !== '' ) {
           setPasswordError('La Contraseña debe tener como minimo 10 caracteres');
         }
-        /*
-        else if (!/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])/.test(password) && password !== ''){
-          setPasswordError('Minimo 1 caracter en mayuscula, 1 caracter en minuscula y 1 numero');
-        }*/
         
         if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) && email !== ''){
           setEmailError('No tiene formato de mail');
@@ -128,11 +135,15 @@ import {
 
         if (password !== repeatPassword){
           setRepeatPasswordError('Debe coincidir con la contraseña que ingresaste');
+          isValid = false;
         }
 
         if ( ! isArtist && ! isListener ){
-            setUserTypeError("Elija el tipo de usuario que desee ser")
+          setUserTypeError("Elija el tipo de usuario que desee ser")
+          isValid = false;
         }
+
+        return isValid;
       }
   
       return(
