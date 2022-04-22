@@ -1,4 +1,4 @@
-import imageSpotifiuby from '../../assets/SpotifiubyIcon.png';
+import imageSpotifiuby from '../../assets/SpotifiubyImage.png';
 import {  
     Text, 
     View, 
@@ -48,9 +48,9 @@ export default NavigationLogInScreen = ({navigation}) =>{
 
 
   const styles = {
-    image: {height: 200, width: 200, borderRadius: 200, resizeMode: 'contain', paddingTop: 300},
+    image: {height: 250, width: 250, borderRadius: 200, resizeMode: 'contain', paddingTop: 300},
     container: {flex: 1, justifyContent: 'center',alignItems: 'center', backgroundColor: '#f5fcff'},
-    text: {fontSize: 20, color: 'skyblue'},
+    text: {fontSize: 20, color: 'steelblue'},
     containerTexts: {flex: 1, justifyContent: 'center',alignItems: 'center'},
     button: {padding: 10}
   }
