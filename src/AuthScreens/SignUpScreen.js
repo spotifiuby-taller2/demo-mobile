@@ -58,7 +58,7 @@ import {
 
         let location;
 
-        if ( isListener ){
+        if ( isListener ) {
           location = await requestLocation()
 
           if ( location === undefined )
@@ -67,10 +67,7 @@ import {
           requestBody['latitude'] = location.coords.latitude;
           requestBody['longitude'] = location.coords.longitude;
 
-          }
-          
         requestBody['redirectTo'] = constants.USERS_HOST + constants.SIGN_UP_URL;
-
 
         postToGateway(requestBody)
           .then((response)=> {
@@ -101,49 +98,55 @@ import {
       }
 
       let validate = () =>{
-
-        let isValid = true;
-        
+        let ok = true;
         if ( name === '' ){ 
           setNameError('Campo "Nombre" debe ser completado');
+          ok = false;
         }
         if ( surname === '' ) {
           setSurnameError('Campo "Apellido" debe ser completado');
+            ok = false;
         }
 
         if ( password === '' ){ 
           setPasswordError('Campo "Contraseña" debe ser completado');
+            ok = false;
         }
         if ( email === '' ) {
           setEmailError('Campo "Mail" debe ser completado');
+            ok = false;
         }
 
         if ( phoneNumber === '' ) {
           setPhoneNumberError('Campo "Telefono" debe ser completado');
+            ok = false;
         }
         if ( repeatPassword === '' ) {
           setRepeatPasswordError('Campo "Repetir Contraseña" debe ser completado');
+            ok = false;
         }
               
         if (password.length < constants.MIN_LENGTH_PASSWORD && password !== '' ) {
           setPasswordError('La Contraseña debe tener como minimo 10 caracteres');
+            ok = false;
         }
         
         if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) && email !== ''){
           setEmailError('No tiene formato de mail');
+            ok = false;
         }
 
         if (password !== repeatPassword){
           setRepeatPasswordError('Debe coincidir con la contraseña que ingresaste');
-          isValid = false;
+            ok = false;
         }
 
         if ( ! isArtist && ! isListener ){
-          setUserTypeError("Elija el tipo de usuario que desee ser")
-          isValid = false;
+            setUserTypeError("Elija el tipo de usuario que desee ser");
+            ok = false;
         }
 
-        return isValid;
+        return ok;
       }
   
       return(

@@ -50,8 +50,14 @@ const postToGateway = (body,
   ).then(response =>
       response.json()
   ).catch(error => {
+    let errorToShow = error.toString();
+
+    if (errorToShow.includes("JSON")) {
+        errorToShow = "La app no puede enviar la solicitud."
+    }
+
     return {
-      error: error.toString()
+      error: errorToShow
     };
   } );
 }
