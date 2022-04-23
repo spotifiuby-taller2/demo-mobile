@@ -7,23 +7,21 @@ import {
   Alert
 } from 'react-native';
 import React, {useState} from 'react'
-import imageSpotifiuby from '../../assets/SpotifiubyIcon.png'
+import imageSpotifiuby from '../../assets/SpotifiubyImage.png'
 import { TextInput, Text, Button, Title } from 'react-native-paper'
 import constants from '../others/constants'
-import { getSHAOf } from "../others/utils"
+import {getSHAOf, postToGateway} from "../others/utils"
 import SignInWithBiometricButton from '../Components/SignInWithBiometricButton';
 import SignInGoogleButton from '../Components/SignInGoogleButton';
-import { auth } from "../Firebase/firebase";
+import { auth, firebaseConfig } from "../Firebase/firebase";
 import { useRoute } from '@react-navigation/native';
 import { useAuthUser } from '../context/AuthContext';
 const firebaseAuth = require("firebase/auth");
 
 
-export default LogInScreen = ({navigation}) =>{
-
+export default SignInScreen = ({navigation}) =>{
     const route = useRoute();
     const {signIn} = useAuthUser();
-
 
     const [email,setEmail] = useState(route.params.email);
     const [password,setPassword] = useState(route.params.password);
@@ -31,42 +29,43 @@ export default LogInScreen = ({navigation}) =>{
     const [passwordError,setPasswordError] = useState(null);
     const [securePassword, setSecurePassword] = useState(true);
 
-    let handleSignIn = async () =>{
-
+    let handleSignIn = async () => {
       if (! validate()) {
           return;
       }
 
-
       const hashedPassword = getSHAOf( getSHAOf( password ) );
+
       const fResponse = await firebaseAuth.signInWithEmailAndPassword(
           auth, 
           email, 
           hashedPassword)
-          .catch(err => alert(err));
-      fetch(constants.USERS_HOST + constants.SIGN_IN_URL,
-          {
-            method: 'POST',
-            headers: constants.JSON_HEADER,
-            body: JSON.stringify({
-              email: email,
-              password: hashedPassword,
-              idToken: fResponse._tokenResponse.idToken,
-              link: "mobile",
-              signin: "email-password"
-          })
+          .catch(err => alert("Error al verificar al usuario. "));
+      
+      if ( fResponse.error ){
+        alert("No existe el usuario");
+        return;
+      }
 
-      } )
-      .then(response => response.json())
+      const body = {
+          email: email,
+          password: hashedPassword,
+          idToken: fResponse._tokenResponse.idToken,
+          link: "mobile",
+          signin: "email-password",
+          redirectTo: constants.USERS_HOST + constants.SIGN_IN_URL
+      }
+
+      postToGateway(body)
       .then( (response) => {
           if(response.error === undefined){
-              signIn(fResponse._tokenResponse.idToken);
+              const {idToken, localId} = fResponse._tokenResponse;
+              signIn(idToken, localId);
           }
           else{
             alert(response.error);
           }
-      } )
-      .catch(err=>alert(err));
+      } );
     }
 
     let validate = () =>{
@@ -129,8 +128,8 @@ export default LogInScreen = ({navigation}) =>{
                     <Text style={styles.forgotPasswordButton}>¿Olvido su contraseña?</Text>
                 </Button>
                 
-                <SignInGoogleButton/>
-                <SignInWithBiometricButton />
+                <SignInGoogleButton navigation={navigation}/>
+                <SignInWithBiometricButton navigation={navigation}/>
 
             </View>
             </ScrollView>

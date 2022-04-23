@@ -11,7 +11,7 @@ import imageSpotifiuby from '../../assets/SpotifiubyIcon.png'
 import { Title, Text,Button } from 'react-native-paper'
 import { useAuthUser } from '../context/AuthContext';
   
-export default HomeScreen = ({navigation}) =>{
+export default HomeScreen = () =>{
 
       const {signOut} = useAuthUser();
 
@@ -22,7 +22,6 @@ export default HomeScreen = ({navigation}) =>{
           <ScrollView showsVerticalScrollIndicator={false}>
             <View>
                 <Image source={imageSpotifiuby} style={styles.image}></Image>
-                <Title style={styles.title}>Bienvenido a My App</Title>
 
             </View>
             <Button mode='contained' onPress={()=>{signOut()}}>

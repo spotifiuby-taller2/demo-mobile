@@ -1,4 +1,6 @@
 import sjcl from 'sjcl';
+import constants from './constants'
+import * as Location from "expo-location";
 
 function getSHAOf(toHash) {
     const myBitArray = sjcl.hash.sha256.hash(toHash)
@@ -14,7 +16,76 @@ function getBiometricalMailAndPassword(biometricId){
   return {email: email, password : password};
 }
 
+async function requestLocation(){
+
+  try {
+    let { status } = await Location.requestPermissionsAsync();
+    if (status !== 'granted') {
+      alert("No es posible contiuar con el registro si no habilita una ubicación");
+      return null;
+    }
+    
+    return await Location.getCurrentPositionAsync({});
+
+  } 
+  catch (error) {
+    alert("Error: no se pudo acceder a la ubicación del dispositivo. Por favor, habilitela para poder registrarse");
+    return null
+  }
+}
+
+// response.json() is a promise
+const postToGateway = (body,
+                       verb = "POST") => {
+  body.verbRedirect = verb;
+  body.apiKey = constants.MY_API_KEY;
+
+  return fetch(constants.SERVICES_HOST + constants.REDIRECT_URL, {
+        method: "POST",
+        headers: constants.JSON_HEADER,
+        body: JSON.stringify(body)
+      }
+  ).then(response =>
+      response.json()
+  ).catch(error => {
+    let errorToShow = error.toString();
+
+    if (errorToShow.includes("JSON")) {
+        errorToShow = "La app no puede enviar la solicitud."
+    }
+
+    return {
+      error: errorToShow
+    };
+  } );
+}
+
+const getToGateway = (destiny,
+                      redirectParams) => {
+  const body = {}
+  body.redirectParams = redirectParams
+  body.verbRedirect = "GET";
+  body.redirectTo = destiny;
+  body.apiKey = constants.MY_API_KEY;
+
+  return fetch(constants.SERVICES_HOST + constants.REDIRECT_URL, {
+        method: "POST",
+        headers: constants.JSON_HEADER,
+        body: JSON.stringify(body)
+      }
+  ).then(response =>
+      response.json()
+  ).catch(error => {
+    return {
+      error: error.toString()
+    };
+  } );
+}
+
 export {
   getSHAOf,
-  getBiometricalMailAndPassword
+  getBiometricalMailAndPassword,
+  requestLocation,
+  postToGateway,
+  getToGateway
 }

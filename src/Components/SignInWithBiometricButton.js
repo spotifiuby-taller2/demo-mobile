@@ -16,9 +16,10 @@ const utils = require("../others/utils");
 import { auth } from "../Firebase/firebase";
 const firebaseAuth = require("firebase/auth");
 import { useAuthUser } from '../context/AuthContext';
+import {postToGateway} from "../others/utils";
 
   
-export default SignInWithBiometricButton = () =>{
+export default SignInWithBiometricButton = (props) =>{
 
       const [loading, setLoading] = useState(false);
       const [result, setResult] = useState();
@@ -61,21 +62,26 @@ export default SignInWithBiometricButton = () =>{
 
             } else if (results.error === 'unknown') {
                 setResult('DISABLED');
+                alert("Error en ingreso biométrico.");
             } else if (
                 results.error === 'user_cancel' ||
                 results.error === 'system_cancel' ||
                 results.error === 'app_cancel'
             ) {
                 setResult('CANCELLED');
+                alert("Error en ingreso biométrico.");
             }
         } catch (error) {
             setResult(error.message);
+            alert("Error en ingreso biométrico.");
         }
 
         setLoading(false);
 
-        if (result !== 'SUCCESS')
+        if (result !== 'SUCCESS') {
+            alert("Error en ingreso biométrico.");
             return;
+        }
 
         const biometricId = await SecureStore.getItemAsync('secure_biometricId');
 
@@ -88,13 +94,9 @@ export default SignInWithBiometricButton = () =>{
                 email,
                 hashedPassword)
                 .catch(err=>{
-                    if ( err.message === "Firebase: Error (auth/user-not-found)."){
-                        alert("Su usuario sera creado");
-                    }
-                    else{
+                    if ( err.message !== "Firebase: Error (auth/user-not-found)."){
                         alert(err.message);
                     }
-                    
                 });
         
         if ( response === undefined ){
@@ -102,68 +104,44 @@ export default SignInWithBiometricButton = () =>{
         }
         else{
             sendSignInUserWithBiometricRequest(email, hashedPassword,response);
-        };
+        }
 
       }
 
       const sendSignInUserWithBiometricRequest = (email, password,response)=>{
         
         const idToken = response._tokenResponse.idToken;
-        fetch(constants.USERS_HOST + constants.SIGN_IN_URL,
-            {
-                method: 'POST',
-                headers: constants.JSON_HEADER,
-                body: JSON.stringify({
-                  email: email,
-                  password: password,
-                  idToken: idToken,
-                  signin: 'biometric',
-                  link: "mobile"
-              }),
-        })
-        .then(res=>res.json())
+
+        const body = {
+            email: email,
+            password: password,
+            idToken: idToken,
+            signin: 'biometric',
+            link: "mobile",
+            redirectTo: constants.USERS_HOST + constants.SIGN_IN_URL
+        };
+
+        postToGateway(body)
         .then(res => 
             {
-                console.log(res);
                 if (res.error === undefined){
-                    signIn(response.user.uid);
+                    signIn(response._tokenResponse.idToken,
+                           response.user.uid);
                 }
                 else{
                     alert(res.error);
                 }
-                
-            })
-        .catch(err => alert(err));
+            });
       }
 
-      const sendCreateUserWithBiometricRequest = (email, password)=>{
-        fetch(constants.USERS_HOST + constants.SIGN_IN_URL,
-            {
-                method: 'POST',
-                headers: constants.JSON_HEADER,
-                body: JSON.stringify({
-                  email: email,
-                  password: password,
-                  signin: 'biometric',
-              })
-        })
-        .then(res=>res.json())
-        .then(res => 
-            {
-                if (res.error === undefined){
-                    firebaseAuth.signInWithEmailAndPassword(
-                        auth,
-                        email,
-                        password)
-                        .then(response => signIn(response.user.uid))
-                        .catch(err=>alert(err));
-                }
-                else{
-                    alert(res.error);
-                }
-                
-            })
-        .catch(err => alert(err));
+      const sendCreateUserWithBiometricRequest = (email, password) => {
+        let requestBody = {
+            email: email,
+            password: password,
+            signin: 'biometric',
+        }
+
+        props.navigation.navigate('RequestExternalUserATypeScreen', {body: requestBody});
       }
 
       return(
@@ -171,7 +149,8 @@ export default SignInWithBiometricButton = () =>{
           <Button
             icon='fingerprint'
             mode="contained"
-            color='red'
+            color='purple'
+            style={{marginBottom: 10}}
             onPress={handleAuthWithBiometric}
             >
             

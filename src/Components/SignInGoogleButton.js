@@ -11,17 +11,21 @@ import * as Google from 'expo-google-app-auth';
 import {IOS_KEY, ANDROID_KEY, WEB_KEY, ANDROID_STANDALONE_KEY} from "@env"
 import constants from '../others/constants'
 import { useAuthUser } from '../context/AuthContext';
+import {postToGateway} from "../others/utils";
+
 const {getAuth,signInWithCredential, GoogleAuthProvider} = require("firebase/auth");
 
 
 
-export default SignInWithGoogle = () =>{
+export default SignInWithGoogle = (props) =>{
      
      const {signIn} = useAuthUser();
 
 
      let handleSignInWithGoogle = async () => {
         let result;
+        let isArtist = false;
+        let isListener = false;
 
         try {
             result = await Google.logInAsync({ //return an object with result token and user
@@ -39,53 +43,59 @@ export default SignInWithGoogle = () =>{
              alert("No pudo autenticarse al usuario con Google");
              return;
          }
-
-         const credential = GoogleAuthProvider.credential(result.idToken,
+        const credential = GoogleAuthProvider.credential(result.idToken,
                                                           result.accessToken);
+        const auth = getAuth();
 
-         const auth = getAuth();
-
-         const response = await signInWithCredential(auth, credential)
+        const response = await signInWithCredential(auth, credential)
             .catch(err => alert(err));
 
-         if (response.user === undefined) {
+
+        if (response.user === undefined) {
              alert("No pudo autenticarse al usuario con Google");
-             return;
+            return;
+
+        }
+        
+        const requestBody = {
+              token: response._tokenResponse.idToken,
+              email: response._tokenResponse.email,
+              name: response._tokenResponse.firstName,
+              surname: response._tokenResponse.lastName,
+              link: "mobile",
+              signin: "google",
+              isArtist: isArtist,
+              isListener: isListener,
+              redirectTo: constants.USERS_HOST + constants.SIGN_IN_URL
+          };
+
+          if ( response._tokenResponse.isNewUser !== undefined ){
+            props.navigation.navigate('RequestExternalUserATypeScreen',{body: requestBody, id: response.user.uid});
          }
-
-
-        fetch(constants.USERS_HOST + constants.SIGN_IN_URL,
-            {
-              method: 'POST',
-              headers: constants.JSON_HEADER,
-              body: JSON.stringify({
-                  token: response._tokenResponse.idToken,
-                  email: response._tokenResponse.email,
-                  link: "mobile",
-                  signin: "google"
-              })
-
-        })
-        .then((res) => res.json())
-        .then((res)=>{
-          if(res.error === undefined){
-            signIn(credential.idToken);
-          }
-        })
-        .catch((err)=>{alert(err)});
+         else{
+            postToGateway(requestBody).then((res)=>{
+              if(res.error === undefined){
+                signIn(response._tokenResponse.idToken,response.user.uid);
+              } else {
+                  alert(res.error);
+              }
+            });
+         }
+        
       };
 
 
       return(
-        <View>
-          <Button
-            icon='google'
-            mode="contained"
-            onPress={handleSignInWithGoogle}>
-            
-            <Text>Ingrese con Google</Text>
-          </Button>
-        </View>
-      )
+          <View>      
+            <Button
+              icon='google'
+              mode="contained"
+              onPress={handleSignInWithGoogle}
+              style={{marginBottom: 10, marginTop: 30}}>
+              
+              <Text>Ingrese con Google</Text>
+            </Button>
+          </View>
+      );
     }
   
