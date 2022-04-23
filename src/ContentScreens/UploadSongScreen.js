@@ -1,12 +1,13 @@
-import {StyleSheet, View, ScrollView} from "react-native";
+import {StyleSheet, View, ScrollView} from 'react-native';
 import React, {useState} from 'react'
-import {validateFieldNotBlank} from "../others/utils";
-import {Button, Text, TextInput, Title} from "react-native-paper";
-import FilePicker from "../Components/FilePicker";
+import {validateFieldNotBlank} from '../others/utils';
+import {Button, Text, TextInput, Title} from 'react-native-paper';
+import FilePicker from '../Components/FilePicker';
+import {uploadFile} from '../Services/CloudStorageService';
 
 const UploadSongScreen = ({navigation}) => {
   const [title, setTitle] = useState({value: '', error: null});
-  const [documentPickerResponse, setDocumentPickerResponse] = useState();
+  const [file, setFile] = useState();
 
   const fieldsAreValid = () => {
     return validateFieldNotBlank('Titulo', title, setTitle);
@@ -16,14 +17,15 @@ const UploadSongScreen = ({navigation}) => {
       const name = doc.name.split('.')[0];
       setTitle({value: name, error: null});
     }
-    setDocumentPickerResponse(doc);
+    setFile(doc);
   }
-  const handleUpload = () => {
+  const handleUpload = async () => {
     if (!fieldsAreValid()) {
       return;
     }
-    console.log(JSON.stringify(documentPickerResponse));
-    alert(`${title.value}: ${JSON.stringify(documentPickerResponse)}`);
+    const fileUrl = await file.contentPromise.then(uploadFile);
+    console.log(fileUrl);
+    alert(`${title.value}: ${fileUrl}`);
   }
 
   return (<View style={styles.container}>

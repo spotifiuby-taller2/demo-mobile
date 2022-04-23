@@ -9,7 +9,9 @@ const handleFilePicker = async (setFileCallback, mimeType) => {
   if (file.type === 'cancel') {
     return;
   }
-  setFileCallback({uri: file.uri, name: file.name, size: file.size});
+  const fileContent = fetch(file.uri)
+    .then(response => response.blob());
+  setFileCallback({contentPromise: fileContent, name: file.name, size: file.size});
 }
 
 const FilePicker = (props) => {
