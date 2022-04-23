@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app'
-import {getAuth, updateProfile} from 'firebase/auth'
+import {getAuth, updateProfile, signOut} from 'firebase/auth'
 import {getStorage, ref, uploadBytes, getDownloadURL, deleteObject} from 'firebase/storage'
 import {postToGateway} from "../others/utils";
 import constants from '../others/constants';
@@ -75,4 +75,4 @@ const getCurrentUser =() =>{
     return auth.currentUser;
 }
 
-export {auth, uploadImage,getCurrentUser,firebaseConfig};
+export {auth, uploadImage,signOut,getCurrentUser,firebaseConfig};

@@ -40,7 +40,10 @@ export default SignInScreen = ({navigation}) =>{
           auth, 
           email, 
           hashedPassword)
-          .catch(err => alert(err));
+          .catch(err => {
+            return {
+              error: error.toString()
+            };});
       
       if ( fResponse.error ){
         alert("No existe el usuario");

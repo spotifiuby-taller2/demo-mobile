@@ -1,6 +1,8 @@
 import sjcl from 'sjcl';
 import constants from './constants'
 import * as Location from "expo-location";
+import * as SecureStore from 'expo-secure-store';
+
 
 function getSHAOf(toHash) {
     const myBitArray = sjcl.hash.sha256.hash(toHash)
@@ -77,10 +79,20 @@ const getToGateway = (destiny,
 }
 
 
+async function checkAuthTokenExpirationTime(){
+
+    const begin = Number(await SecureStore.getItemAsync("tokenTimestamp"));
+    const now = Date.now()
+    const dif = now - begin;
+
+    return ( dif < 3600000);
+}
+
 export {
   getSHAOf,
   getBiometricalMailAndPassword,
   requestLocation,
   postToGateway,
-  getToGateway
+  getToGateway,
+  checkAuthTokenExpirationTime
 }
