@@ -9,8 +9,15 @@ const UploadSongScreen = ({navigation}) => {
   const [title, setTitle] = useState({value: '', error: null});
   const [file, setFile] = useState();
 
+  const validateFile = () => {
+    if (file === null || file === undefined) {
+      alert('Debe seleccionar un archivo');
+      return false;
+    }
+    return true;
+  }
   const fieldsAreValid = () => {
-    return validateFieldNotBlank('Titulo', title, setTitle);
+    return validateFile() && validateFieldNotBlank('Titulo', title, setTitle);
   }
   const handleDocumentPick = (doc) => {
     if (title.value === '') {
