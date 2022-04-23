@@ -1,68 +1,47 @@
-import { 
-    StyleSheet, 
+import {
     View,
-    Image,
     ScrollView,
     SafeAreaView,
-    Alert
-  } from 'react-native';
-  import React from 'react'
-  import imageSpotifiuby from '../../assets/SpotifiubyIcon.png'
-  import { Text } from 'react-native-paper'
-  import { useAuthUser } from '../context/AuthContext';
-    
-  export default HomeScreen = () =>{
-  
-        const {signOut} = useAuthUser();
-  
-    
-        return(
-          <View style={styles.container}>
-          <SafeAreaView>
-            <ScrollView showsVerticalScrollIndicator={false}>
-              <View>
-                  <Image source={imageSpotifiuby} style={styles.image}></Image>
-                  <Text>Artistas favoritos</Text>
-              </View>
-              </ScrollView>
-          </SafeAreaView>
+} from 'react-native';
+import React, {useEffect, useState} from 'react'
+import constants from '../others/constants'
+import {getToGateway} from "../others/utils";
+import UserChip from '../Components/UserChip';
+import {containerStyle} from "../styles/genericStyles";
+
+export default FavoriteArtistListScreen = ({navigation}) =>{
+
+    const [usersList, setList] = useState([]);
+
+    useEffect(()=>{
+        function getAllUsers(){
+
+            getToGateway(constants.USERS_HOST + constants.APP_ARTIST_LIST_URL,
+                "").then(res => {
+                if (res.error !== undefined) {
+                    alert(res.error);
+                } else {
+                    setList(res.users);
+                }
+            });
+        }
+        getAllUsers();
+    },[]);
+
+    return(
+        <View style={containerStyle}>
+            <SafeAreaView>
+                <ScrollView showsVerticalScrollIndicator={false}>
+                    <View>
+                        {
+                            usersList.map( (user, id)=>{
+                                return (
+                                    <UserChip id={id} key={id} user={user} navigation={navigation}/>
+                                )})
+                        }
+                    </View>
+                </ScrollView>
+            </SafeAreaView>
         </View>
-        )
-      }
-  
-  
-      const styles = StyleSheet.create(
-        { input: {
-            borderWidth: 2, 
-            marginBottom: 15,
-            marginTop: 15,
-            backgroundColor: '#f5fcff',
-            height: 50
-           },
-          container: {
-            flex:1,
-            backgroundColor: '#f5fcff',
-            paddingLeft: 15,
-            paddingRight: 15,
-            marginTop: 30
-           },
-           title: {textAlign: 'center',fontSize: 25, marginBottom: 35},
-           button: {
-             backgroundColor: 'skyblue', 
-             paddingTop: 15, 
-             paddingBottom:15, 
-             width: 100, 
-             alignSelf: 'center', 
-             marginTop: 30, 
-             marginBottom:30,
-             borderRadius: 10},
-           buttonText: {textAlign: 'center', fontSize: 13},
-           forgotPasswordButton: {textAlign: 'center', fontSize: 13, color: 'skyblue'},
-           image:{
-             height: 170,
-             width: 170,
-             alignSelf: 'center',
-             marginTop: 50,
-             marginBottom: 80
-           }}
-     )
+    )
+}

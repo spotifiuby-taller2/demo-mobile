@@ -15,7 +15,6 @@ import { AuthContext } from './src/context/AuthContext';
 import * as SecureStore from 'expo-secure-store';
 import { auth, signOut} from './src/Firebase/firebase';
 
-
 const AuthStack = createNativeStackNavigator();
 
 const initialState = ()=>{

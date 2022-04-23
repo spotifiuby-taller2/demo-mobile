@@ -6,10 +6,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../HomeScreens/HomeScreen';
 import ProfileScreen from '../HomeScreens/ProfileScreen';
 import UserListScreen from '../HomeScreens/UserListScreen';
+import ArtistListScreen from '../HomeScreens/ArtistsListScreen';
+import FavoriteArtistListScreen from '../HomeScreens/FavoriteArtistsListScreen';
 import 'react-native-gesture-handler'
 import {useAuthUser} from '../context/AuthContext'
 import Menu from './Menu';
 import ContentScreen from "../HomeScreens/ContentScreen";
+import ArtistsListTab from "../Components/ArtistsListTab";
 
 const HomeStack = createNativeStackNavigator();
 
@@ -23,13 +26,12 @@ export default HomeNavStack = () =>{
             <HomeStack.Screen name='Menu' component={Menu} />
             <HomeStack.Screen name='HomeScreen' component={HomeScreen} />
             <HomeStack.Screen name='ProfileScreen' component={ProfileScreen} initialParams={{uid: userState.uid}}/>
-            <HomeStack.Screen name='UserListScreen' component={UserListScreen} />
+            <HomeStack.Screen name='ArtistsListTab' component={ArtistsListTab} />
             <HomeStack.Screen name='ContentScreen' component={ContentScreen} />
         </HomeStack.Navigator>
     )
 }
-  
-  
+
       const styles = StyleSheet.create(
         { input: {
             borderWidth: 2, 

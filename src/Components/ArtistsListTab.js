@@ -10,7 +10,7 @@ export default ArtistsListTab = ({navigation}) => {
   return (
     <ArtistsTab.Navigator screenOptions={{headerShown: false}}>
       <ArtistsTab.Screen 
-          name="Artistas" 
+          name="Ver artistas"
           component={ArtistsListScreen}
           options={{
             tabBarIcon: () => (< Avatar.Icon size={30} icon='account' />)
@@ -18,7 +18,7 @@ export default ArtistsListTab = ({navigation}) => {
           />
           
       <ArtistsTab.Screen 
-          name="Favoritos" 
+          name="Ver favoritos"
           component={FavoriteArtistsListScreen}
           options={{
             tabBarIcon: () => (< Avatar.Icon size={30} icon='star'/>)
