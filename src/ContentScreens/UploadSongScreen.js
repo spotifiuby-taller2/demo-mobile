@@ -12,6 +12,10 @@ const UploadSongScreen = ({navigation}) => {
     return validateFieldNotBlank('Titulo', title, setTitle);
   }
   const handleDocumentPick = (doc) => {
+    if (title.value === '') {
+      const name = doc.name.split('.')[0];
+      setTitle({value: name, error: null});
+    }
     setDocumentPickerResponse(doc);
   }
   const handleUpload = () => {
@@ -19,7 +23,7 @@ const UploadSongScreen = ({navigation}) => {
       return;
     }
     console.log(JSON.stringify(documentPickerResponse));
-    alert(`test: ${JSON.stringify(documentPickerResponse)}`);
+    alert(`${title.value}: ${JSON.stringify(documentPickerResponse)}`);
   }
 
   return (<View style={styles.container}>

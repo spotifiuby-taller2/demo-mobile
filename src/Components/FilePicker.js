@@ -14,7 +14,7 @@ const handleError = (err) => {
 const handleFilePicker = async (setFileCallback, mimeType) => {
   try {
     const file = await DocumentPicker.getDocumentAsync({
-      copyToCacheDirectory: true, type: mimeType, multiple: false,
+      copyToCacheDirectory: true, type: mimeType || '*/*', multiple: false,
     }).then(file => ({uri: file.uri, name: file.name, size: file.size}));
     setFileCallback(file);
   } catch (e) {
