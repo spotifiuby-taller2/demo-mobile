@@ -24,10 +24,10 @@ async function requestLocation(){
       alert("No es posible contiuar con el registro si no habilita una ubicación");
       return null;
     }
-    
+
     return await Location.getCurrentPositionAsync({});
 
-  } 
+  }
   catch (error) {
     alert("Error: no se pudo acceder a la ubicación del dispositivo. Por favor, habilitela para poder registrarse");
     return null
@@ -82,10 +82,20 @@ const getToGateway = (destiny,
   } );
 }
 
+const validateFieldNotBlank = (fieldName, field, setField) => {
+  const value = field.value;
+  if (value === '' || value === null || value === undefined) {
+    setField({value, error: `El campo "${fieldName}" debe ser completado`});
+    return false;
+  }
+  return true;
+}
+
 export {
   getSHAOf,
   getBiometricalMailAndPassword,
   requestLocation,
   postToGateway,
-  getToGateway
+  getToGateway,
+  validateFieldNotBlank,
 }

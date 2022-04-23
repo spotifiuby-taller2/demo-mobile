@@ -2,6 +2,7 @@ import 'react-native-gesture-handler'
 import React, {useEffect, useReducer, useMemo} from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import UploadSongScreen from './src/ContentScreens/UploadSongScreen';
 import SignInScreen from './src/AuthScreens/SignInScreen'
 import SignUpScreen from './src/AuthScreens/SignUpScreen'
 import NavigationLogInScreen from './src/AuthScreens/NavigationLogInScreen';
@@ -41,7 +42,7 @@ const reducer = (state = initialState(), action = {})=>{
           userToken: action.token,
           isSignOut: false
       }
-      
+
       case 'SIGN_OUT':
       return{
           ...state,
@@ -82,7 +83,7 @@ export default function App() {
         signIn: async (token, uid)=>
             {
             let userToken;
-            
+
 
             try{
                 userToken = await SecureStore.getItemAsync('authToken');
@@ -103,7 +104,7 @@ export default function App() {
             await SecureStore.deleteItemAsync('authToken');
         }
     });
-    
+
   },[userState]);
 
   return (
@@ -112,7 +113,7 @@ export default function App() {
         <NavigationContainer>
           <AuthStack.Navigator screenOptions={{headerShown: false}}>
             <>
-            {
+            {/*
               ( ! userState.userToken )? (
                 <>
                   <AuthStack.Screen name='NavigatorlogInScreen' component={NavigationLogInScreen}/>
@@ -123,11 +124,12 @@ export default function App() {
                   <AuthStack.Screen name='RequestMusicalPreferencesScreen' component={RequestMusicalPreferencesScreen}/>
                   <AuthStack.Screen name='RequestExternalUserATypeScreen' component={RequestExternalUserATypeScreen}/>
                 </>
-                
+
               ):(
                 <AuthStack.Screen name='HomeNavStack' component={HomeNavStack}/>
               )
-            }
+            */}
+            <AuthStack.Screen name='UploadSong' component={UploadSongScreen}/>
             </>
           </AuthStack.Navigator>
         </NavigationContainer>
