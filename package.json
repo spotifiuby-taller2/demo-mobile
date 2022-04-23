@@ -42,7 +42,7 @@
     "react-native-web": "0.17.1",
     "sjcl": "1.0.8",
     "uri-scheme": "1.0.116",
-    "uuid": "8.3.2"
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@babel/core": "7.12.9"
