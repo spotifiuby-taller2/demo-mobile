@@ -8,6 +8,8 @@ const USERS_HOST = (__DEV__)
                     ? REACT_APP_USERS_HOST_DEV
                     : REACT_APP_USERS_HOST_PROD;
 
+const MEDIA_HOST = (__DEV__) ? REACT_APP_MEDIA_HOST_DEV : REACT_APP_MEDIA_HOST_PROD;
+
 /* Backends paths */
 const SIGN_UP_URL = "/signup";
 const SIGN_IN_URL = "/signin";
@@ -37,6 +39,7 @@ const MY_API_KEY="13a6bcee5bd256b05e451bde47f45a68e8bee660777f349f15f493b2873999
 
 module.exports = {
   USERS_HOST,
+  MEDIA_HOST,
   SIGN_UP_URL,
   SIGN_IN_URL,
   FORGOT_PASSWORD_URL,
