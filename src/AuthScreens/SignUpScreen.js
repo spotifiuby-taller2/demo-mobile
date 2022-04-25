@@ -58,13 +58,15 @@ import {
 
         if ( isListener ) {
           location = await requestLocation()
-
-          if ( location === undefined )
-            return;
-
         }
-          requestBody['latitude'] = location.coords.latitude;
-          requestBody['longitude'] = location.coords.longitude;
+
+        if (location === undefined || ! isListener) {
+            requestBody['latitude'] = "";
+            requestBody['longitude'] = "";
+        } else {
+            requestBody['latitude'] = location.coords.latitude;
+            requestBody['longitude'] = location.coords.longitude;
+        }
           requestBody['redirectTo'] = constants.USERS_HOST + constants.SIGN_UP_URL;
 
           postToGateway(requestBody)
@@ -72,7 +74,7 @@ import {
               checkResponse(response);
             } );
       }
-      
+
 
       let checkResponse = (res) =>{
         if (res.error === undefined){
