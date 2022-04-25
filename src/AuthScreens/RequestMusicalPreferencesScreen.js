@@ -129,6 +129,8 @@ const reducer = (state = initialState(), action = {})=>{
 
       let handleSend = () =>{
 
+        console.log(route.params.id);
+
         const requestBody={
           musicalPref: musicalPrefs,
           redirectTo: constants.USERS_HOST + constants.MUSICAL_PREF_URL

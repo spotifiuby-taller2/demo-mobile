@@ -14,6 +14,7 @@ export default ArtistListScreen = ({navigation}) =>{
     const [usersList, setList] = useState([]);
 
     useEffect(()=>{
+        
         function getAllUsers(){
 
             getToGateway(constants.USERS_HOST + constants.APP_ARTIST_LIST_URL,
@@ -25,8 +26,13 @@ export default ArtistListScreen = ({navigation}) =>{
                 }
             });
         }
-        getAllUsers();
-    },[]);
+
+        navigation.addListener('focus',
+            ()=>{
+                getAllUsers();
+            });
+        
+        },[navigation]);
 
     return(
         <View style={containerStyle}>

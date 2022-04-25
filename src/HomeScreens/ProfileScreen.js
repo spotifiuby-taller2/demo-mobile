@@ -10,13 +10,19 @@ import { useRoute } from '@react-navigation/native';
 import constants from '../others/constants'
 import {getToGateway} from "../others/utils";
 import ProfilePicture from '../Components/ProfilePicture';
-    
+import FollowArtistButton from '../Components/FollowArtistButton';
+import { useAuthUser } from '../context/AuthContext';
+
+
   export default ProfileScreen = ({navigation}) =>{
 
 
       const route = useRoute();
+      const {userState} = useAuthUser();
+      const [renderButton, setRenderButton] =useState(false);
       
       const initialState = {
+        id:'',
         name: '',
         surname: '',
         email: '',
@@ -53,6 +59,7 @@ import ProfilePicture from '../Components/ProfilePicture';
                   alert(res.error);
               } else {
                   const newState = {
+                      id: res.id,
                       name: res.name,
                       surname: res.surname,
                       email: res.email,
@@ -74,6 +81,7 @@ import ProfilePicture from '../Components/ProfilePicture';
                       rap: res.rap
                   };
                   setProfile(newState);
+                  setRenderButton(true);
               }
           })
           }
@@ -120,6 +128,17 @@ import ProfilePicture from '../Components/ProfilePicture';
                       </View>
                       </>)
                 }
+                {
+                  renderButton && (
+                      <FollowArtistButton
+                          openAsListener={(userState.userType === constants.LISTENER) 
+                                  && (profile.isArtist) }
+                          idListener={userState.uid}
+                          idArtist={profile.id}/>
+                  )
+                }
+                
+
               </View>
               </ScrollView>
           </SafeAreaView>

@@ -21,7 +21,8 @@ const initialState = ()=>{
   return{
       uid: null,
       userToken: null,
-      isSignOut: true
+      isSignOut: true,
+      userType: null
   }
 };
 
@@ -47,7 +48,14 @@ const reducer = (state = initialState(), action = {})=>{
           ...state,
           uid: null,
           userToken: null,
-          isSignOut: true
+          isSignOut: true,
+          userType: null
+      }
+
+      case 'SET_USER_TYPE':
+      return{
+        ...state,
+        userType: action.userType
       }
   }
   return state;
@@ -115,6 +123,9 @@ export default function App() {
             await SecureStore.deleteItemAsync('tokenTimestamp');
             await signOut(auth);
             dispatch({type: 'SIGN_OUT'});
+        },
+        setUserType: (userType)=>{
+          dispatch({type: 'SET_USER_TYPE', userType: userType})
         }
     });
     

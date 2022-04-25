@@ -67,14 +67,14 @@ import {
               requestBody['latitude'] = location.coords.latitude;
               requestBody['longitude'] = location.coords.longitude;
 
-              requestBody['redirectTo'] = constants.USERS_HOST + constants.SIGN_UP_URL;
-
-              postToGateway(requestBody)
+          }
+          
+          requestBody['redirectTo'] = constants.USERS_HOST + constants.SIGN_UP_URL;
+          postToGateway(requestBody)
                   .then((response) => {
                       checkResponse(response);
                   });
-          }
-
+        }
 
           let checkResponse = (res) => {
 
@@ -88,7 +88,7 @@ import {
                           email: email,
                           password: password,
                           isListener: isListener,
-                          tempId: id,
+                          tempId: (id === '')? res.id: id
                       });
 
               } else {
@@ -306,7 +306,6 @@ import {
               </View>
           )
       }
-  }
   
     const styles = StyleSheet.create(
        { input: {
