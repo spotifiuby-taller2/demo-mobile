@@ -4,6 +4,7 @@ import {validateFieldNotBlank} from '../others/utils';
 import {Button, Text, TextInput, Title} from 'react-native-paper';
 import FilePicker from '../Components/FilePicker';
 import {uploadFile} from '../Services/CloudStorageService';
+import {createSong} from '../Services/MediaService';
 
 const UploadSongScreen = ({navigation}) => {
   const [title, setTitle] = useState({value: '', error: null});
@@ -30,9 +31,15 @@ const UploadSongScreen = ({navigation}) => {
     if (!fieldsAreValid()) {
       return;
     }
-    const fileUrl = await file.contentPromise.then(uploadFile);
-    console.log(fileUrl);
-    alert(`${title.value}: ${fileUrl}`);
+    try {
+      const fileUrl = await file.contentPromise.then(uploadFile);
+      const song = await createSong({title: title.value, link: fileUrl, artists: ['dummyArtistId']});
+      console.log(`Song created: ${JSON.stringify(song)}`);
+      alert('Song created!');
+    } catch (err) {
+      console.log(err);
+      alert('There was an error creating the song, please try again');
+    }
   }
 
   return (<View style={styles.container}>

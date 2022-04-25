@@ -1,7 +1,9 @@
 import {REACT_APP_USERS_HOST_DEV,
         REACT_APP_USERS_HOST_PROD,
         REACT_APP_SERVICES_HOST_DEV,
-        REACT_APP_SERVICES_HOST_PROD} from "@env"
+        REACT_APP_MEDIA_HOST_DEV,
+        REACT_APP_MEDIA_HOST_PROD,
+        REACT_APP_SERVICES_HOST_PROD} from "@env";
 
 /* Backend hosts */
 const USERS_HOST = (__DEV__)

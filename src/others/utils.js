@@ -34,6 +34,19 @@ async function requestLocation(){
   }
 }
 
+const requestToGateway = (verb, body, redirectURL) => {
+  body.verbRedirect = verb;
+  body.apiKey = constants.MY_API_KEY;
+  body.redirectTo = redirectURL;
+
+  return fetch(constants.SERVICES_HOST + constants.REDIRECT_URL, {
+      method: "POST",
+      headers: constants.JSON_HEADER,
+      body: JSON.stringify(body)
+    }
+  );
+}
+
 // response.json() is a promise
 const postToGateway = (body,
                        verb = "POST") => {
@@ -95,6 +108,7 @@ export {
   getSHAOf,
   getBiometricalMailAndPassword,
   requestLocation,
+  requestToGateway,
   postToGateway,
   getToGateway,
   validateFieldNotBlank,
