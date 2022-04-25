@@ -61,8 +61,8 @@ import {
         }
 
         if (location === undefined || ! isListener) {
-            requestBody['latitude'] = "";
-            requestBody['longitude'] = "";
+            requestBody['latitude'] = 0;
+            requestBody['longitude'] = 0;
         } else {
             requestBody['latitude'] = location.coords.latitude;
             requestBody['longitude'] = location.coords.longitude;
