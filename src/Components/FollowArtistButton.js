@@ -12,6 +12,8 @@ import constants from '../others/constants'
 
   
 export default FollowArtistButton = (props) =>{
+
+    console.log(props);
     
     const [followed, setFollowed] = useState(false);
 
@@ -79,17 +81,18 @@ export default FollowArtistButton = (props) =>{
       <>
         {
           props.openAsListener &&
-          (<View style={{marginTop: 30, alignSelf: 'center'}}>
-          <Button
-            mode="contained"
-            color={followed? "coral":"red"}
-            style={{marginBottom: 10, width: 163}}
-            onPress={handlePress}
-            >
-            
-            <Text>{followed?  "Dejar de Seguir": "Seguir"}</Text>
-          </Button>
-        </View>)}
+            (<View style={{marginTop: 30, alignSelf: 'center'}}>
+            <Button
+              mode="contained"
+              color={followed? "coral":"red"}
+              style={{marginBottom: 10, width: 163}}
+              onPress={handlePress}
+              >
+              
+              <Text>{followed?  "Dejar de Seguir": "Seguir"}</Text>
+            </Button>
+          </View>)
+        }
       </>
       )
     
