@@ -4,15 +4,12 @@ import {
   } from 'react-native';
 import React from 'react'
 import { Text, Chip, Avatar } from 'react-native-paper';
-import FollowArtistButton from './FollowArtistButton';
 import { useAuthUser } from '../context/AuthContext';
-import constants from '../others/constants'
 
 /*user must be {name: '', surname: '', email:''}*/
     
   export default UserChip = (props) =>{
 
-        const {userState} = useAuthUser();
                 
         return(
             <Chip style={styles.chip} onPress={()=>{props.navigation.navigate('ProfileScreen',{uid: props.user.id})}}>

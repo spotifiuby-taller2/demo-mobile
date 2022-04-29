@@ -12,8 +12,6 @@ import constants from '../others/constants'
 
   
 export default FollowArtistButton = (props) =>{
-
-    console.log(props);
     
     const [followed, setFollowed] = useState(false);
 
@@ -23,9 +21,6 @@ export default FollowArtistButton = (props) =>{
         const url = constants.USERS_HOST + constants.APP_FAV_ARTIST_URL 
               + "?" + constants.LISTENER_ID_QUERY_PARAM + props.idListener
               + "&" + constants.ARTIST_ID_QUERY_PARAM + props.idArtist;
-
-        console.log(url);
-
 
 
         const res = getToGateway(url)
