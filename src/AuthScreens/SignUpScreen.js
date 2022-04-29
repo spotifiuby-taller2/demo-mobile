@@ -56,27 +56,29 @@ import {
               isExternal: false,
           };
 
-          let location;
+        if ( isListener ) {
+          location = await requestLocation()
+        }
 
-          if (isListener) {
-              location = await requestLocation()
+        if (location === undefined || ! isListener) {
+            requestBody['latitude'] = 0;
+            requestBody['longitude'] = 0;
+        } else {
+            requestBody['latitude'] = location.coords.latitude;
+            requestBody['longitude'] = location.coords.longitude;
+        }
 
-              if (location === undefined)
-                  return;
-
-              requestBody['latitude'] = location.coords.latitude;
-              requestBody['longitude'] = location.coords.longitude;
-
-          }
-          
-          requestBody['redirectTo'] = constants.USERS_HOST + constants.SIGN_UP_URL;
-          postToGateway(requestBody)
+        requestBody['redirectTo'] = constants.USERS_HOST + constants.SIGN_UP_URL;
+        postToGateway(requestBody)
                   .then((response) => {
                       checkResponse(response);
                   });
         }
 
-          let checkResponse = (res) => {
+
+
+
+        let checkResponse = (res) => {
 
               if (res.id) {
                   setId(res.id);
