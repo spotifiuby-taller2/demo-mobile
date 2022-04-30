@@ -16,7 +16,7 @@ export default EditProfileTextInput = (props) =>{
             onChangeText={ (text)=> {props.execute({type: props.name, value: text})}}
             activeOutlineColor='#f5fcff'
             theme={{colors: {text: 'darkblue' }}}
-            style={{width: 144, fontSize: 30, height: 80, alignSelf: 'center', backgroundColor: '#f5fcff', marginBottom: 10,marginRight: 7, marginLeft: 7}}
+            style={props.styles}
             />
     )
 

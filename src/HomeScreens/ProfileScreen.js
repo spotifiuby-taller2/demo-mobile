@@ -185,12 +185,14 @@ const styles =StyleSheet.create(
     email: {
       alignSelf: 'center',
       fontSize: 17,
-      marginBottom: 10
+      marginBottom: 10,
+      color: 'darkblue'
     },
     phone: {
       alignSelf: 'center',
       fontSize: 17,
-      marginBottom: 10
+      marginBottom: 10,
+      color: 'darkblue'
     },
     usertype:{
       alignSelf: 'center',

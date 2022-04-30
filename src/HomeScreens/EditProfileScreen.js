@@ -4,7 +4,7 @@ import {
     ScrollView,
     SafeAreaView,
   } from 'react-native';
-import React, { useReducer, useState } from 'react'
+import React, { useReducer } from 'react'
 import { Text, Chip, Button } from 'react-native-paper'
 import { useRoute } from '@react-navigation/native';
 import constants from '../others/constants'
@@ -31,6 +31,12 @@ const reducer = (state, action = {})=>{
         return{
           ...state,
           phoneNumber: action.value
+        }
+
+        case 'email':
+        return{
+          ...state,
+          email: action.value
         }
 
         case 'metal':
@@ -128,6 +134,10 @@ const reducer = (state, action = {})=>{
           requestBody['phoneNumber'] = profile.phoneNumber;
         }
 
+        if ( route.params.profile.email !== profile.email ){
+          requestBody['email'] = profile.email;
+        }
+
         if ( route.params.metal !== profile.metal ){
           requestBody['metal'] = profile.metal;
         }
@@ -198,23 +208,33 @@ const reducer = (state, action = {})=>{
                         label='Nombre'
                         name='name'
                         input={profile.name}
-                        execute={dispatch}/>
+                        execute={dispatch}
+                        styles={styles.name}/>
                     
                     <EditProfileTextInput 
                         label='Apellido'
                         name='surname'
                         input={profile.surname}
-                        execute={dispatch}/>
+                        execute={dispatch}
+                        styles={styles.name}/>
 
                 </View>
                 
                 <Text style={styles.usertype}>{(profile.isArtist)? 'Artista': 'Oyente'}</Text>
-                <Text style={styles.email}>{profile.email}</Text>
+                
+                <EditProfileTextInput 
+                    label='Mail'
+                    name='email'
+                    input={profile.email}
+                    execute={dispatch}
+                    styles={styles.email}/>
+
                 <EditProfileTextInput 
                     label='Telefono'
                     name='phoneNumber'
                     input={profile.phoneNumber}
-                    execute={dispatch}/>
+                    execute={dispatch}
+                    styles={styles.phone}/>
 
                 {profile.isListener && 
                       (
@@ -332,21 +352,34 @@ const styles =StyleSheet.create(
       marginBottom: 50
     },
     name: {
-      alignSelf: 'center',
-      fontSize: 29,
-      marginBottom: 5,
-      color: 'darkblue'
-    },
+      width: 144, 
+      fontSize: 30, 
+      height: 80, 
+      alignSelf: 'center', 
+      backgroundColor: '#f5fcff', 
+      marginBottom: 10,
+      marginRight: 7, 
+      marginLeft: 7},
+
     email: {
-      alignSelf: 'center',
-      fontSize: 17,
-      marginBottom: 10
-    },
+      width: 300, 
+      fontSize: 17, 
+      height: 50, 
+      alignSelf: 'center', 
+      backgroundColor: '#f5fcff', 
+      marginBottom: 10,
+      marginRight: 7, 
+      marginLeft: 7},
     phone: {
-      alignSelf: 'center',
-      fontSize: 17,
-      marginBottom: 10
-    },
+      width: 144, 
+      fontSize: 17, 
+      height: 50, 
+      alignSelf: 'center', 
+      backgroundColor: '#f5fcff', 
+      marginBottom: 10,
+      marginRight: 7, 
+      marginLeft: 7},
+
     usertype:{
       alignSelf: 'center',
       color: 'purple',
