@@ -86,8 +86,13 @@ import { useAuthUser } from '../context/AuthContext';
               }
           })
           }
+
+          navigation.addListener('focus',
+            ()=>{
+              getProfile(route.params.uid);
+            });
           
-          getProfile(route.params.uid);
+          
 
         },[navigation]);
 
@@ -145,7 +150,7 @@ import { useAuthUser } from '../context/AuthContext';
                   (<Button 
                       mode='contained'
                       color='#fdfcff'
-                      style={{width: 177, alignSelf: 'center'}} 
+                      style={{width: 177, alignSelf: 'center', marginTop: 30, marginBottom: 30}} 
                       onPress={()=>{navigation.navigate('EditProfileScreen', {profile: profile})}}>
                       <Text>Editar Tu Perfil</Text>
                   </Button>)

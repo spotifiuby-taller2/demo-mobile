@@ -110,8 +110,10 @@ const reducer = (state, action = {})=>{
       const [profile, dispatch] = useReducer(reducer ,route.params.profile);
 
       let saveProfile = ()=>{
-        requestBody={
+        
+        let requestBody={
           redirectTo: constants.USERS_HOST + constants.EDIT_PROFILE_URL
+             + "?" + constants.USER_ID_QUERY_PARAM + profile.id
         };
 
         if ( route.params.profile.name !== profile.name ){
@@ -127,59 +129,45 @@ const reducer = (state, action = {})=>{
         }
 
         if ( route.params.metal !== profile.metal ){
-          requestBody['updateMusicalPref'] = true;
+          requestBody['metal'] = profile.metal;
         }
         if ( route.params.rock !== profile.rock ){
-          requestBody['updateMusicalPref'] = true;
+          requestBody['rock'] = profile.metal;
         }
         if ( route.params.pop !== profile.pop ){
-          requestBody['updateMusicalPref'] = true;
+          requestBody['pop'] = profile.pop;
         }
         if ( route.params.punk !== profile.punk ){
-          requestBody['updateMusicalPref'] = true;
+          requestBody['punk'] = profile.punk;
         }
         if ( route.params.blues !== profile.blues ){
-          requestBody['updateMusicalPref'] = true;
+          requestBody['blues'] = profile.blues;
         }
         if ( route.params.salsa !== profile.salsa ){
-          requestBody['updateMusicalPref'] = true;
+          requestBody['salsa'] = profile.salsa;
         }
         if ( route.params.jazz !== profile.jazz ){
-          requestBody['updateMusicalPref'] = true;
+          requestBody['jazz'] = profile.jazz;
         }
         if ( route.params.classic !== profile.classic ){
-          requestBody['updateMusicalPref'] = true;
+          requestBody['classic'] = profile.classic;
         }
         if ( route.params.electronic !== profile.electronic ){
-          requestBody['updateMusicalPref'] = true;
+          requestBody['electronic'] = profile.electronic;
         }
         if ( route.params.reggeaton !== profile.reggeaton ){
-          requestBody['updateMusicalPref'] = true;
+          requestBody['reggeaton'] = profile.reggeaton;
         }
         if ( route.params.indie !== profile.indie ){
-          requestBody['updateMusicalPref'] = true;
+          requestBody['indie'] = profile.indie;
         }
         if ( route.params.rap !== profile.rap ){
-          requestBody['updateMusicalPref'] = true;
+          requestBody['rap'] = profile.rap;
         }
         if ( route.params.others !== profile.others ){
-          requestBody['updateMusicalPref'] = true;
+          requestBody['others'] = profile.others;
         }
         
-        requestBody['metal'] = profile.metal;
-        requestBody['rock'] = profile.rock;
-        requestBody['jazz'] = profile.jazz;
-        requestBody['pop'] = profile.pop;
-        requestBody['punk'] = profile.punk;
-        requestBody['salsa'] = profile.salsa;
-        requestBody['rap'] = profile.rap;
-        requestBody['indie'] = profile.indie;
-        requestBody['electronic'] = profile.electronic;
-        requestBody['blues'] = profile.blues;
-        requestBody['classic'] = profile.classic;
-        requestBody['reggeaton'] = profile.reggeaton;
-        requestBody['others'] = profile.others;
-
 
         postToGateway(requestBody,'PATCH')
           .then(res => {
@@ -317,12 +305,11 @@ const reducer = (state, action = {})=>{
                 
                 <View>
                   <Button
+                    mode='contained'
                     color='#fdfcff'
-                    style={{width: 160, alignItems: 'center'}}
+                    style={{width: 210, alignSelf: 'center', margin: 30}}
                     onPress={saveProfile}>
-                    <Text>
-                        Guardar Cambios
-                    </Text>
+                    <Text>Guardar Cambios</Text>
                   </Button>
                 </View>
                 
