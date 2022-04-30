@@ -8,6 +8,9 @@ import {createSong} from '../Services/MediaService';
 
 const UploadSongScreen = ({navigation}) => {
   const [title, setTitle] = useState({value: '', error: null});
+  const [description, setDescription] = useState();
+  const [authors, setAuthors] = useState();
+  // TODO: genre and subscription optional fields
   const [file, setFile] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -35,9 +38,16 @@ const UploadSongScreen = ({navigation}) => {
     setIsLoading(true);
     try {
       const fileUrl = await file.contentPromise.then(uploadFile);
-      const song = await createSong({title: title.value, link: fileUrl, artists: ['dummyArtistId']});
+      const song = await createSong({
+        title: title.value,
+        link: fileUrl,
+        artists: ['dummyArtistId'],
+        description,
+        author: authors,
+      });
       console.log(`Song created: ${JSON.stringify(song)}`);
       alert('Song created!');
+      // TODO: navigate to song list?
     } catch (err) {
       console.log(JSON.stringify(err));
       alert('There was an error creating the song, please try again');
@@ -54,12 +64,22 @@ const UploadSongScreen = ({navigation}) => {
         name='Titulo'
         label='Titulo*'
         value={title.value}
-        onChangeText={(newText) => {
-          setTitle({value: newText, error: null})
-        }}
+        onChangeText={newText => setTitle({value: newText, error: null})}
         mode='outlined'
         error={title.error !== null}/>
       {title.error && (<Text style={{color: 'red'}}>{title.error}</Text>)}
+      <TextInput
+        name='Descripción'
+        label='Descripción'
+        value={description}
+        onChangeText={newText => setDescription(newText)}
+        mode='outlined'/>
+      <TextInput
+        name='Autor/es'
+        label='Autor/es'
+        value={authors}
+        onChangeText={newText => setAuthors(newText)}
+        mode='outlined'/>
       <Button mode='contained'
               style={styles.button}
               onPress={handleUpload}
