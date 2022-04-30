@@ -22,6 +22,8 @@ import {getToGateway} from "../others/utils";
       const [pin,setPin] = useState('');
       const [pinError,setPinError] = useState(null);
 
+
+    
       let handleSignUp = () =>{
 
         getToGateway(constants.USERS_HOST + constants.SIGN_UP_END_URL,

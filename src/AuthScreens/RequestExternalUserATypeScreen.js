@@ -29,7 +29,9 @@ export default RequestExternalUserATypeScreen = ({navigation}) => {
         let params = route.params;
         let body = params.body;
 
-        validate();
+        if (! validate()){
+            return;
+        }
 
         if (isListener) {
             const locaction = requestLocation(body.email);
@@ -72,10 +74,14 @@ export default RequestExternalUserATypeScreen = ({navigation}) => {
         }
 
         let validate = () => {
-
+            
+            let isValid = true
             if (!isArtist && !isListener) {
                 setUserTypeError("Elija el tipo de usuario que desee ser")
+                isValid = false;
             }
+
+            return isValid;
         }
 
         return (
