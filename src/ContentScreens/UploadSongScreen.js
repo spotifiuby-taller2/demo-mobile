@@ -9,6 +9,7 @@ import {createSong} from '../Services/MediaService';
 const UploadSongScreen = ({navigation}) => {
   const [title, setTitle] = useState({value: '', error: null});
   const [file, setFile] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
   const validateFile = () => {
     if (file === null || file === undefined) {
@@ -31,15 +32,17 @@ const UploadSongScreen = ({navigation}) => {
     if (!fieldsAreValid()) {
       return;
     }
+    setIsLoading(true);
     try {
       const fileUrl = await file.contentPromise.then(uploadFile);
       const song = await createSong({title: title.value, link: fileUrl, artists: ['dummyArtistId']});
       console.log(`Song created: ${JSON.stringify(song)}`);
       alert('Song created!');
     } catch (err) {
-      console.log(err);
+      console.log(JSON.stringify(err));
       alert('There was an error creating the song, please try again');
     }
+    setIsLoading(false);
   }
 
   return (<View style={styles.container}>
@@ -57,8 +60,12 @@ const UploadSongScreen = ({navigation}) => {
         mode='outlined'
         error={title.error !== null}/>
       {title.error && (<Text style={{color: 'red'}}>{title.error}</Text>)}
-      <Button mode='contained' style={styles.button} onPress={handleUpload}>
-        <Text style={styles.buttonText}>Subir</Text>
+      <Button mode='contained'
+              style={styles.button}
+              onPress={handleUpload}
+              loading={isLoading}
+              disabled={isLoading}>
+        <Text style={styles.buttonText}>{isLoading ? 'Subiendo...' : 'Subir'}</Text>
       </Button>
     </ScrollView>
   </View>);
@@ -73,7 +80,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'skyblue',
     paddingTop: 15,
     paddingBottom: 15,
-    width: 100,
+    width: 200,
     alignSelf: 'center',
     marginTop: 30,
     marginBottom: 30,
