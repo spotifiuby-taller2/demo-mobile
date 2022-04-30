@@ -1,6 +1,7 @@
 import {StyleSheet, View, ScrollView} from 'react-native';
 import React, {useState} from 'react'
 import {validateFieldNotBlank} from '../others/utils';
+import {buttonStyle, buttonTextStyle, inputStyle, titleStyle, containerStyle} from '../styles/genericStyles';
 import {Button, Text, TextInput, Title} from 'react-native-paper';
 import FilePicker from '../Components/FilePicker';
 import {uploadFile} from '../Services/CloudStorageService';
@@ -92,19 +93,13 @@ const UploadSongScreen = ({navigation}) => {
 }
 
 const styles = StyleSheet.create({
-  input: {
-    marginBottom: 5, marginTop: 5, backgroundColor: 'white', height: 60
-  }, container: {
-    flex: 1, backgroundColor: '#f5fcff', paddingLeft: 15, paddingRight: 15, marginTop: 30
-  }, title: {textAlign: 'center', fontSize: 25, marginBottom: 35}, button: {
-    backgroundColor: 'skyblue',
-    paddingTop: 15,
-    paddingBottom: 15,
+  input: inputStyle,
+  container: containerStyle,
+  title: titleStyle,
+  button: {
+    ...buttonStyle,
     width: 200,
-    alignSelf: 'center',
-    marginTop: 30,
-    marginBottom: 30,
-    borderRadius: 10
-  }, buttonText: {textAlign: 'center', fontSize: 13},
+  },
+  buttonText: buttonTextStyle,
 })
 export default UploadSongScreen;
