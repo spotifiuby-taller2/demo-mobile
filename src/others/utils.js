@@ -21,7 +21,7 @@ function getBiometricalMailAndPassword(biometricId){
 async function requestLocation(){
 
   try {
-    let { status } = await Location.requestPermissionsAsync();
+    let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
       alert("No es posible contiuar con el registro si no habilita una ubicación");
       return null;

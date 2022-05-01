@@ -1,0 +1,54 @@
+[
+  {
+    "label": "metal",
+    "value": "metal"
+  },
+  {
+    "label": "rock",
+    "value": "rock"
+  },
+  {
+    "label": "jazz",
+    "value": "jazz"
+  },
+  {
+    "label": "blues",
+    "value": "blues"
+  },
+  {
+    "label": "electronic",
+    "value": "electronic"
+  },
+  {
+    "label": "punk",
+    "value": "punk"
+  },
+  {
+    "label": "pop",
+    "value": "pop"
+  },
+  {
+    "label": "rap",
+    "value": "rap"
+  },
+  {
+    "label": "indie",
+    "value": "indie"
+  },
+  {
+    "label": "salsa",
+    "value": "salsa"
+  },
+  {
+    "label": "reggeaton",
+    "value": "reggeaton"
+  },
+  {
+    "label": "classic",
+    "value": "classic"
+  },
+  {
+    "label": "other",
+    "value": "other"
+  }
+]

@@ -5,7 +5,7 @@ import {
   SafeAreaView
 } from 'react-native';
 import React from 'react'
-import {BottomNavigation, Text} from "react-native-paper";
+import {BottomNavigation, Text, Title} from "react-native-paper";
 import {
     buttonStyle,
     buttonTextStyle,
@@ -15,9 +15,14 @@ import {
     titleStyle
 } from "../styles/genericStyles";
 
+import UploadSongScreen from '../ContentScreens/UploadSongScreen';
+import UploadAlbumScreen from '../ContentScreens/UploadAlbumScreen';
+
+
 const MusicRoute = () => <Text>Music</Text>;
 
-const AlbumsRoute = () => <Text>Albums</Text>;
+const AlbumsRoute = () => <Text>Albumes</Text>;
+
 
 export default ContentScreen = () => {
     const [index, setIndex] = React.useState(0);
@@ -36,8 +41,8 @@ export default ContentScreen = () => {
     ]);
 
     const renderScene = BottomNavigation.SceneMap({
-        music: MusicRoute,
-        albums: AlbumsRoute,
+        music: UploadSongScreen,
+        albums: UploadAlbumScreen,
     });
 
       return(

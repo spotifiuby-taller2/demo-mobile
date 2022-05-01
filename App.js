@@ -2,7 +2,6 @@ import 'react-native-gesture-handler'
 import React, {useEffect, useReducer, useMemo} from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import UploadSongScreen from './src/ContentScreens/UploadSongScreen';
 import SignInScreen from './src/AuthScreens/SignInScreen'
 import SignUpScreen from './src/AuthScreens/SignUpScreen'
 import NavigationLogInScreen from './src/AuthScreens/NavigationLogInScreen';
@@ -153,11 +152,10 @@ export default function App() {
                 <AuthStack.Screen name='HomeNavStack' component={HomeNavStack}/>
               )
             }
-              { /* <AuthStack.Screen name='UploadSong' component={UploadSongScreen}/> */ }
             </>
           </AuthStack.Navigator>
         </NavigationContainer>
         </PaperProvider>
       </AuthContext.Provider>
   );
-};
+}

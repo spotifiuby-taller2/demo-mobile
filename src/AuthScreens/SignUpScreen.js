@@ -55,7 +55,7 @@ import {
               link: "mobile",
               isExternal: false,
           };
-
+         let location;
         if ( isListener ) {
           location = await requestLocation()
         }
