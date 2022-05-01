@@ -26,14 +26,27 @@ async function requestLocation(){
       alert("No es posible contiuar con el registro si no habilita una ubicación");
       return null;
     }
-    
+
     return await Location.getCurrentPositionAsync({});
 
-  } 
+  }
   catch (error) {
     alert("Error: no se pudo acceder a la ubicación del dispositivo. Por favor, habilitela para poder registrarse");
     return null
   }
+}
+
+const requestToGateway = (verb, redirectURL, body = {}) => {
+  body.verbRedirect = verb;
+  body.apiKey = constants.MY_API_KEY;
+  body.redirectTo = redirectURL;
+
+  return fetch(constants.SERVICES_HOST + constants.REDIRECT_URL, {
+      method: "POST",
+      headers: constants.JSON_HEADER,
+      body: JSON.stringify(body)
+    }
+  );
 }
 
 // response.json() is a promise
@@ -84,6 +97,14 @@ const getToGateway = (destiny,
   } );
 }
 
+const validateFieldNotBlank = (fieldName, field, setField) => {
+  const value = field.value;
+  if (value === '' || value === null || value === undefined) {
+    setField({value, error: `El campo "${fieldName}" debe ser completado`});
+    return false;
+  }
+  return true;
+}
 
 async function checkAuthTokenExpirationTime(){
 
@@ -98,7 +119,9 @@ export {
   getSHAOf,
   getBiometricalMailAndPassword,
   requestLocation,
+  requestToGateway,
   postToGateway,
   getToGateway,
-  checkAuthTokenExpirationTime
+  validateFieldNotBlank,
+  checkAuthTokenExpirationTime,
 }

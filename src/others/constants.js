@@ -1,12 +1,16 @@
 import {REACT_APP_USERS_HOST_DEV,
         REACT_APP_USERS_HOST_PROD,
         REACT_APP_SERVICES_HOST_DEV,
-        REACT_APP_SERVICES_HOST_PROD} from "@env"
+        REACT_APP_MEDIA_HOST_DEV,
+        REACT_APP_MEDIA_HOST_PROD,
+        REACT_APP_SERVICES_HOST_PROD} from "@env";
 
 /* Backend hosts */
 const USERS_HOST = (__DEV__)
                     ? REACT_APP_USERS_HOST_DEV
                     : REACT_APP_USERS_HOST_PROD;
+
+const MEDIA_HOST = (__DEV__) ? REACT_APP_MEDIA_HOST_DEV : REACT_APP_MEDIA_HOST_PROD;
 
 /* Backends paths */
 const SIGN_UP_URL = "/signup";
@@ -51,6 +55,7 @@ const ARTIST = "artist";
 
 module.exports = {
   USERS_HOST,
+  MEDIA_HOST,
   SIGN_UP_URL,
   SIGN_IN_URL,
   FORGOT_PASSWORD_URL,

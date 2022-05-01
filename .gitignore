@@ -2,6 +2,7 @@ node_modules/
 .expo/
 .idea
 android
+ios
 package-lock.json
 yarn.lock
 
