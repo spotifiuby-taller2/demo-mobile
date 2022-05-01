@@ -5,7 +5,7 @@ import {
     SafeAreaView,
   } from 'react-native';
 import React, { useEffect, useState } from 'react'
-import { Text, Chip } from 'react-native-paper'
+import { Text, Chip, Button } from 'react-native-paper'
 import { useRoute } from '@react-navigation/native';
 import constants from '../others/constants'
 import {getToGateway} from "../others/utils";
@@ -15,6 +15,7 @@ import { useAuthUser } from '../context/AuthContext';
 
 
   export default ProfileScreen = ({navigation}) =>{
+
 
 
       const route = useRoute();
@@ -34,7 +35,7 @@ import { useAuthUser } from '../context/AuthContext';
         metal: false,
         rock: false,
         salsa: false,
-        inide: false,
+        indie: false,
         electronic: false,
         classic: false,
         pop: false,
@@ -69,7 +70,7 @@ import { useAuthUser } from '../context/AuthContext';
                       metal: res.metal,
                       rock: res.rock,
                       salsa: res.salsa,
-                      inide: res.indie,
+                      indie: res.indie,
                       electronic: res.electronic,
                       classic: res.classic,
                       pop: res.pop,
@@ -85,8 +86,13 @@ import { useAuthUser } from '../context/AuthContext';
               }
           })
           }
+
+          navigation.addListener('focus',
+            ()=>{
+              getProfile(route.params.uid);
+            });
           
-          getProfile(route.params.uid);
+          
 
         },[navigation]);
 
@@ -121,7 +127,7 @@ import { useAuthUser } from '../context/AuthContext';
                         {profile.punk && (<Chip style={styles.chip}><Text>Punk</Text></Chip>)}
                         {profile.rap && (<Chip style={styles.chip}><Text>Rap</Text></Chip>)}
                         {profile.pop && (<Chip style={styles.chip}><Text>Pop</Text></Chip>)}
-                        {profile.salsa && (<Chip style={styles.chip}><Text>Salsa</Text></Chip>)}
+                        {profile.indie && (<Chip style={styles.chip}><Text>Indie</Text></Chip>)}
                         {profile.classic && (<Chip style={styles.chip}><Text>Clásica</Text></Chip>)}
                         {profile.electronic && (<Chip style={styles.chip}><Text>Electronica</Text></Chip>)}
                         {profile.others && (<Chip style={styles.chip}><Text>Otros</Text></Chip>)}
@@ -137,6 +143,20 @@ import { useAuthUser } from '../context/AuthContext';
                           idArtist={profile.id}/>
                   )
                 }
+
+                { 
+                  (userState.uid === profile.id) &&
+
+                  (<Button 
+                      mode='contained'
+                      color='#fdfcff'
+                      style={{width: 177, alignSelf: 'center', marginTop: 30, marginBottom: 30}} 
+                      onPress={()=>{navigation.navigate('EditProfileScreen', {profile: profile})}}>
+                      <Text>Editar Tu Perfil</Text>
+                  </Button>)
+                
+                }
+
                 
 
               </View>
@@ -165,12 +185,14 @@ const styles =StyleSheet.create(
     email: {
       alignSelf: 'center',
       fontSize: 17,
-      marginBottom: 10
+      marginBottom: 10,
+      color: 'darkblue'
     },
     phone: {
       alignSelf: 'center',
       fontSize: 17,
-      marginBottom: 10
+      marginBottom: 10,
+      color: 'darkblue'
     },
     usertype:{
       alignSelf: 'center',

@@ -18,6 +18,7 @@ const PROFILE_URL = USERS_URL + "/profile";
 const PROFILE_PHOTO_URL = PROFILE_URL + "/photo";
 const PROFILE_USER_TYPE_URL = PROFILE_URL + "/type";
 const MUSICAL_PREF_URL = PROFILE_URL + "/musicalpref";
+const EDIT_PROFILE_URL = USERS_URL + "/editprodile";
 const USER_ID_QUERY_PARAM = "userId=";
 const LISTENER_ID_QUERY_PARAM = "idListener=";
 const ARTIST_ID_QUERY_PARAM = "idArtist=";
@@ -74,5 +75,6 @@ module.exports = {
   LISTENER_ID_QUERY_PARAM,
   PROFILE_USER_TYPE_URL,
   LISTENER,
-  ARTIST
+  ARTIST,
+  EDIT_PROFILE_URL
 }

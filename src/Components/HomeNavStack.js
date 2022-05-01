@@ -12,6 +12,7 @@ import ContentScreen from "../HomeScreens/ContentScreen";
 import ArtistsListTab from "../Components/ArtistsListTab";
 import { getToGateway } from '../others/utils';
 import constants from '../others/constants'
+import EditProfileScreen from '../HomeScreens/EditProfileScreen';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -46,6 +47,7 @@ export default HomeNavStack = () =>{
             <HomeStack.Screen name='ProfileScreen' component={ProfileScreen} initialParams={{uid: userState.uid}}/>
             <HomeStack.Screen name='ArtistsListTab' component={ArtistsListTab} />
             <HomeStack.Screen name='ContentScreen' component={ContentScreen} />
+            <HomeStack.Screen name='EditProfileScreen' component={EditProfileScreen}/>
         </HomeStack.Navigator>
     )
 }

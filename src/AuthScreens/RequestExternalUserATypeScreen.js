@@ -56,6 +56,7 @@ export default RequestExternalUserATypeScreen = ({navigation}) => {
                     body.password)
                     .then(res => {
                         params['id'] = res.user.uid;
+                        params['token'] = res._tokenResponse.idToken;
                         goTONextScreen(params);
                     })
                     .catch(err => alert(err));
@@ -69,7 +70,7 @@ export default RequestExternalUserATypeScreen = ({navigation}) => {
             if (isListener) {
                 navigation.navigate('RequestMusicalPreferencesScreen', params);
             } else {
-                signIn(params.id, params.id);
+                signIn(params.token, params.id);
             }
         }
 
