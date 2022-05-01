@@ -1,9 +1,9 @@
 import {requestToGateway} from '../others/utils';
-import {MEDIA_HOST} from '../others/constants';
+import {USERS_HOST} from '../others/constants';
 
 
-const createSong = song => {
-  return requestToGateway('POST', `${MEDIA_HOST}/songs`, song)
+const getArtists = () => {
+  return requestToGateway('GET', `${USERS_HOST}/users/artistlist`)
     .then(response => {
       if (response.status !== 200) {
         console.log(`Response error with status ${response.status}`)
@@ -13,4 +13,4 @@ const createSong = song => {
     });
 }
 
-export {createSong};
+export {getArtists};
