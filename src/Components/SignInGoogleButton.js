@@ -50,7 +50,6 @@ export default SignInWithGoogle = (props) =>{
         const response = await signInWithCredential(auth, credential)
             .catch(err => alert(err));
 
-
         if (response.user === undefined) {
              alert("No pudo autenticarse al usuario con Google");
             return;
@@ -70,7 +69,7 @@ export default SignInWithGoogle = (props) =>{
           };
 
           if ( response._tokenResponse.isNewUser !== undefined ){
-            props.navigation.navigate('RequestExternalUserATypeScreen',{body: requestBody, id: response.user.uid});
+            props.navigation.navigate('RequestExternalUserATypeScreen',{body: requestBody, id: response.user.uid, token: response._tokenResponse.idToken});
          }
          else{
             postToGateway(requestBody).then((res)=>{
@@ -91,7 +90,7 @@ export default SignInWithGoogle = (props) =>{
               icon='google'
               mode="contained"
               onPress={handleSignInWithGoogle}
-              style={{marginBottom: 10, marginTop: 30}}>
+              style={{marginBottom: 10, marginTop: 30, borderRadius: 20}}>
               
               <Text>Ingrese con Google</Text>
             </Button>

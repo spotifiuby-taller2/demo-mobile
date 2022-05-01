@@ -36,7 +36,7 @@ async function requestLocation(){
   }
 }
 
-const requestToGateway = (verb, body, redirectURL) => {
+const requestToGateway = (verb, redirectURL, body = {}) => {
   body.verbRedirect = verb;
   body.apiKey = constants.MY_API_KEY;
   body.redirectTo = redirectURL;

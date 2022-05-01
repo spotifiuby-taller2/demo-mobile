@@ -1,15 +1,18 @@
 import {StyleSheet, View, ScrollView} from 'react-native';
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {validateFieldNotBlank} from '../others/utils';
+import {buttonStyle, buttonTextStyle, titleStyle, containerStyle} from '../styles/genericStyles';
 import {Button, Text, TextInput, Title} from 'react-native-paper';
 import FilePicker from '../Components/FilePicker';
 import {uploadFile} from '../Services/CloudStorageService';
 import {createSong} from '../Services/MediaService';
+import {getArtists} from '../Services/UsersService';
+import MultiSelection from "../Components/MultiSelection";
 
-const UploadSongScreen = ({navigation}) => {
+const UploadSongScreen = () => {
   const [title, setTitle] = useState({value: '', error: null});
   const [description, setDescription] = useState();
-  const [authors, setAuthors] = useState();
+  const [artists, setArtists] = useState([]);
   // TODO: genre and subscription optional fields
   const [file, setFile] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -20,6 +23,10 @@ const UploadSongScreen = ({navigation}) => {
       return false;
     }
     return true;
+  }
+  const filterArtist = text => {
+    text = text.toLowerCase();
+    return a => a.name.toLowerCase().includes(text) || a.surname.toLowerCase().includes(text);
   }
   const fieldsAreValid = () => {
     return validateFile() && validateFieldNotBlank('Titulo', title, setTitle);
@@ -41,9 +48,9 @@ const UploadSongScreen = ({navigation}) => {
       const song = await createSong({
         title: title.value,
         link: fileUrl,
-        artists: ['dummyArtistId'],
+        artists: artists.map(a => a.id),
         description,
-        author: authors,
+        author: artists.map(a => `${a.name} ${a.surname}`).join(', '),
       });
       console.log(`Song created: ${JSON.stringify(song)}`);
       alert('Song created!');
@@ -74,12 +81,16 @@ const UploadSongScreen = ({navigation}) => {
         value={description}
         onChangeText={newText => setDescription(newText)}
         mode='outlined'/>
-      <TextInput
-        name='Autor/es'
-        label='Autor/es'
-        value={authors}
-        onChangeText={newText => setAuthors(newText)}
-        mode='outlined'/>
+      <MultiSelection selectedElements={artists}
+                      renderElement={artist => (<Text>{`${artist.name} ${artist.surname}`}</Text>)}
+                      getAllElements={() => getArtists().then(b => b.users)}
+                      elementFilter={filterArtist}
+                      elementCallback={{
+                        add: artist => setArtists([...artists, artist]),
+                        remove: artist => setArtists(artists.filter(a => a.id !== artist.id)),
+                        clear: () => setArtists([]),
+                      }}
+      />
       <Button mode='contained'
               style={styles.button}
               onPress={handleUpload}
@@ -92,19 +103,12 @@ const UploadSongScreen = ({navigation}) => {
 }
 
 const styles = StyleSheet.create({
-  input: {
-    marginBottom: 5, marginTop: 5, backgroundColor: 'white', height: 60
-  }, container: {
-    flex: 1, backgroundColor: '#f5fcff', paddingLeft: 15, paddingRight: 15, marginTop: 30
-  }, title: {textAlign: 'center', fontSize: 25, marginBottom: 35}, button: {
-    backgroundColor: 'skyblue',
-    paddingTop: 15,
-    paddingBottom: 15,
+  container: containerStyle,
+  title: titleStyle,
+  button: {
+    ...buttonStyle,
     width: 200,
-    alignSelf: 'center',
-    marginTop: 30,
-    marginBottom: 30,
-    borderRadius: 10
-  }, buttonText: {textAlign: 'center', fontSize: 13},
+  },
+  buttonText: buttonTextStyle,
 })
 export default UploadSongScreen;

@@ -122,14 +122,24 @@ export default SignInScreen = ({navigation}) =>{
                 <Button mode='contained' style={styles.button} onPress={handleSignIn}>
                     <Text style={styles.buttonText}>Iniciar</Text>
                 </Button>
+                
+                <Button 
+                    mode='text'
+                    style={{backgroundColor:'#f5fcff', width: 120, alignSelf: 'center'}} 
+                    onPress={()=>{navigation.navigate('SignUpScreen')}}>
+                    
+                    <Text style={styles.forgotPasswordButton}>Registarse</Text>
+                </Button>
 
                 <Button 
                     mode='text'
-                    style={{backgroundColor:'#f5fcff'}} 
+                    style={{backgroundColor:'#f5fcff', width: 220, alignSelf: 'center'}} 
                     onPress={()=>{navigation.navigate('ForgotPasswordScreen')}}>
                     
                     <Text style={styles.forgotPasswordButton}>¿Olvido su contraseña?</Text>
                 </Button>
+
+                
                 
                 <SignInGoogleButton navigation={navigation}/>
                 <SignInWithBiometricButton navigation={navigation}/>

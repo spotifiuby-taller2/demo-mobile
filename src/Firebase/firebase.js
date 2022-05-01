@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app'
-import {getAuth, updateProfile, signOut} from 'firebase/auth'
-import {getStorage, ref, uploadBytes, getDownloadURL, deleteObject} from 'firebase/storage'
+import {getAuth, updateProfile, signOut, signInWithEmailAndPassword} from 'firebase/auth'
+import {getStorage, ref, uploadBytes, getDownloadURL} from 'firebase/storage'
 import {postToGateway} from "../others/utils";
 import constants from '../others/constants';
 
