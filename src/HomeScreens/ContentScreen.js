@@ -1,5 +1,5 @@
-import { 
-  StyleSheet, 
+import {
+  StyleSheet,
   View,
   ScrollView,
   SafeAreaView
@@ -14,15 +14,16 @@ import {
     inputStyle,
     titleStyle
 } from "../styles/genericStyles";
+import UploadSongScreen from "../ContentScreens/UploadSongScreen";
 
-const MusicRoute = () => <Text>Music</Text>;
+const MusicRoute = () => <UploadSongScreen/>;
 
 const AlbumsRoute = () => <Text>Albums</Text>;
 
-export default ContentScreen = () => {
+const ContentScreen = () => {
     const [index, setIndex] = React.useState(0);
 
-    const [routes] = React.useState([
+    const routes = [
         {
             key: 'music',
             title: 'Canciones',
@@ -33,7 +34,7 @@ export default ContentScreen = () => {
             title: 'Álbumes',
             icon: 'album'
         }
-    ]);
+    ];
 
     const renderScene = BottomNavigation.SceneMap({
         music: MusicRoute,
@@ -42,11 +43,6 @@ export default ContentScreen = () => {
 
       return(
         <View style={styles.container}>
-            <SafeAreaView>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                </ScrollView>
-            </SafeAreaView>
-
             <BottomNavigation
                 navigationState={{ index, routes }}
                 onIndexChange={setIndex}
@@ -56,12 +52,13 @@ export default ContentScreen = () => {
       )
 }
 
-const styles = StyleSheet.create(
-      { input: inputStyle,
-        container: containerStyle,
-         title: titleStyle,
-         button: buttonStyle,
-         buttonText: buttonTextStyle,
-         image: imageStyle
-      }
-   )
+const styles = StyleSheet.create({
+  input: inputStyle,
+  container: containerStyle,
+  title: titleStyle,
+  button: buttonStyle,
+  buttonText: buttonTextStyle,
+  image: imageStyle
+});
+
+export default ContentScreen;

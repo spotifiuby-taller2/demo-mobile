@@ -9,7 +9,7 @@ import {createSong} from '../Services/MediaService';
 import {getArtists} from '../Services/UsersService';
 import MultiSelection from "../Components/MultiSelection";
 
-const UploadSongScreen = ({navigation}) => {
+const UploadSongScreen = () => {
   const [title, setTitle] = useState({value: '', error: null});
   const [description, setDescription] = useState();
   const [artists, setArtists] = useState([]);
@@ -48,7 +48,7 @@ const UploadSongScreen = ({navigation}) => {
       const song = await createSong({
         title: title.value,
         link: fileUrl,
-        artists: artists,
+        artists: artists.map(a => a.id),
         description,
         author: artists.map(a => `${a.name} ${a.surname}`).join(', '),
       });
