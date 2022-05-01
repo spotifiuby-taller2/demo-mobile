@@ -134,10 +134,6 @@ const reducer = (state, action = {})=>{
           requestBody['phoneNumber'] = profile.phoneNumber;
         }
 
-        if ( route.params.profile.email !== profile.email ){
-          requestBody['email'] = profile.email;
-        }
-
         if ( route.params.metal !== profile.metal ){
           requestBody['metal'] = profile.metal;
         }
@@ -221,7 +217,9 @@ const reducer = (state, action = {})=>{
                 </View>
                 
                 <Text style={styles.usertype}>{(profile.isArtist)? 'Artista': 'Oyente'}</Text>
-                
+                <Text style={styles.email}>{profile.email}</Text>
+
+
                 <EditProfileTextInput 
                     label='Mail'
                     name='email'
@@ -361,15 +359,12 @@ const styles =StyleSheet.create(
       marginRight: 7, 
       marginLeft: 7},
 
-    email: {
-      width: 300, 
-      fontSize: 17, 
-      height: 50, 
-      alignSelf: 'center', 
-      backgroundColor: '#f5fcff', 
-      marginBottom: 10,
-      marginRight: 7, 
-      marginLeft: 7},
+      email: {
+        alignSelf: 'center',
+        fontSize: 17,
+        marginBottom: 10,
+        color: 'darkblue'
+    },
     phone: {
       width: 144, 
       fontSize: 17, 

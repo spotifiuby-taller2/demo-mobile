@@ -98,8 +98,7 @@ export default function App() {
             {
             let userToken;
             let userId;
-            
-
+  
             try{
                 userToken = await SecureStore.getItemAsync('authToken');
 

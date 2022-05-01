@@ -56,6 +56,7 @@ export default RequestExternalUserATypeScreen = ({navigation}) => {
                     body.password)
                     .then(res => {
                         params['id'] = res.user.uid;
+                        params['token'] = res._tokenResponse.idToken;
                         goTONextScreen(params);
                     })
                     .catch(err => alert(err));
