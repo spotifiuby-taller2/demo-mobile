@@ -14,22 +14,9 @@ const UploadSongScreen = ({navigation}) => {
   const [description, setDescription] = useState();
   const [authors, setAuthors] = useState();
   const [artists, setArtists] = useState([]);
-  const [allArtists, setAllArtists] = useState([]);
   // TODO: genre and subscription optional fields
   const [file, setFile] = useState();
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const getAllArtists = async () => {
-      await getArtists()
-        .then(body => setAllArtists(body.users))
-        .catch(e => {
-          console.log(`Error fetching artists: ${JSON.stringify(e)}`);
-          alert(`Error fetching artists: ${JSON.stringify(e)}`);
-        });
-    }
-    getAllArtists();
-  }, []);
 
   const validateFile = () => {
     if (file === null || file === undefined) {
@@ -38,9 +25,9 @@ const UploadSongScreen = ({navigation}) => {
     }
     return true;
   }
-  const getArtistsToDisplay = text => {
-    return allArtists.filter(a => text === undefined || a.name.includes(text) || a.surname.includes(text))
-        .filter(a => !artists.map(ar => ar.id).includes(a.id))
+  const filterArtist = text => {
+    text = text.toLowerCase();
+    return a => a.name.toLowerCase().includes(text) || a.surname.toLowerCase().includes(text);
   }
   const fieldsAreValid = () => {
     return validateFile() && validateFieldNotBlank('Titulo', title, setTitle);
@@ -96,11 +83,14 @@ const UploadSongScreen = ({navigation}) => {
         onChangeText={newText => setDescription(newText)}
         mode='outlined'/>
       <MultiSelection selectedElements={artists}
-                      addElementCallback={artist => setArtists([...artists, artist])}
                       renderElement={artist => (<Text>{artist.name}</Text>)}
-                      clearElementsCallback={() => setArtists([])}
-                      getElementsToDisplay={getArtistsToDisplay}
-                      removeElementCallback={artist => setArtists(artists.filter(a => a.id !== artist.id))}
+                      getAllElements={() => getArtists().then(b => b.users)}
+                      elementFilter={filterArtist}
+                      elementCallback={{
+                        add: artist => setArtists([...artists, artist]),
+                        remove: artist => setArtists(artists.filter(a => a.id !== artist.id)),
+                        clear: () => setArtists([]),
+                      }}
       />
       <TextInput
         name='Autor/es'

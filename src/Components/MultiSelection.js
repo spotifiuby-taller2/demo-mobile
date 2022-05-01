@@ -3,22 +3,33 @@ import {
   ScrollView,
 } from 'react-native';
 import {containerStyle} from '../styles/genericStyles';
-import React, {useState} from 'react'
-import {Button, Chip, Searchbar} from "react-native-paper";
+import React, {useEffect, useState} from 'react'
+import {Button, Chip, Divider, Searchbar} from "react-native-paper";
 
 const MultiSelection = props => {
-  const [elements, setElements] = useState([]);
+  const [allElements, setAllElements] = useState([]);
+  const [text, setText] = useState('')
 
-  const getElementsToDisplay = (text) => {
-    let elementsToDisplay = props.getElementsToDisplay(text);
-    console.log(JSON.stringify(elementsToDisplay));
-    setElements(elementsToDisplay);
+  useEffect(() => {
+    const fetchAllElements = async () => {
+      await props.getAllElements()
+        .then(elements => setAllElements(elements))
+        .catch(e => {
+          console.log(`Error fetching elements: ${JSON.stringify(e)}`);
+          alert(`Error fetching elements: ${JSON.stringify(e)}`);
+        });
+    }
+    fetchAllElements();
+  }, []);
+
+  const elementShouldBeDisplayed = (text) => {
+    return e => props.elementFilter(text)(e) && !props.selectedElements.map(el => el.id).includes(e.id);
   }
 
   function renderSelectedChip(element, id) {
     return (
       <Chip key={id}
-            onClose={props.removeElementCallback ? () => props.removeElementCallback(element) : undefined}
+            onClose={props.elementCallback.remove ? () => props.elementCallback.remove(element) : undefined}
       >
         {props.renderElement(element)}
       </Chip>
@@ -28,7 +39,9 @@ const MultiSelection = props => {
   function renderDisplayedChip(element, id) {
     return (
       <Chip key={id}
-            onPress={() => props.addElementCallback(element)}
+            onPress={() => {
+              props.elementCallback.add(element);
+            }}
       >
         {props.renderElement(element)}
       </Chip>
@@ -38,23 +51,21 @@ const MultiSelection = props => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}
                 style={containerStyle}>
-      <Searchbar placeHolder={'Search artists'} onChangeText={text => getElementsToDisplay(text)}/>
+      <Searchbar onChangeText={setText}/>
 
       {/* Scrollview height cannot be adapted directly */}
-      <View style={{"max-height": 125}}>
+      <View style={{'max-height': 125}}>
         <ScrollView showsVerticalScrollIndicator={true}>
-          {elements.map(renderDisplayedChip)}
+          {allElements.filter(elementShouldBeDisplayed(text)).map(renderDisplayedChip)}
         </ScrollView>
       </View>
-
+      <Divider style={{margin: 5}}/>
       <ScrollView showsVerticalScrollIndicator={true}
                   useReference={props.selectedElements}>
-        {
-          props.selectedElements.map(renderSelectedChip)
-        }
+        {props.selectedElements.map(renderSelectedChip)}
       </ScrollView>
 
-      <Button onPress={props.clearElementsCallback}>Limpiar
+      <Button onPress={props.elementCallback.clear}>Limpiar
       </Button>
     </ScrollView>
   )
