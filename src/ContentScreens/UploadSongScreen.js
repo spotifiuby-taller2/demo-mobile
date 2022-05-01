@@ -12,7 +12,6 @@ import MultiSelection from "../Components/MultiSelection";
 const UploadSongScreen = ({navigation}) => {
   const [title, setTitle] = useState({value: '', error: null});
   const [description, setDescription] = useState();
-  const [authors, setAuthors] = useState();
   const [artists, setArtists] = useState([]);
   // TODO: genre and subscription optional fields
   const [file, setFile] = useState();
@@ -49,9 +48,9 @@ const UploadSongScreen = ({navigation}) => {
       const song = await createSong({
         title: title.value,
         link: fileUrl,
-        artists: ['dummyArtistId'],
+        artists: artists,
         description,
-        author: authors,
+        author: artists.map(a => `${a.name} ${a.surname}`).join(', '),
       });
       console.log(`Song created: ${JSON.stringify(song)}`);
       alert('Song created!');
@@ -83,7 +82,7 @@ const UploadSongScreen = ({navigation}) => {
         onChangeText={newText => setDescription(newText)}
         mode='outlined'/>
       <MultiSelection selectedElements={artists}
-                      renderElement={artist => (<Text>{artist.name}</Text>)}
+                      renderElement={artist => (<Text>{`${artist.name} ${artist.surname}`}</Text>)}
                       getAllElements={() => getArtists().then(b => b.users)}
                       elementFilter={filterArtist}
                       elementCallback={{
@@ -92,12 +91,6 @@ const UploadSongScreen = ({navigation}) => {
                         clear: () => setArtists([]),
                       }}
       />
-      <TextInput
-        name='Autor/es'
-        label='Autor/es'
-        value={authors}
-        onChangeText={newText => setAuthors(newText)}
-        mode='outlined'/>
       <Button mode='contained'
               style={styles.button}
               onPress={handleUpload}
