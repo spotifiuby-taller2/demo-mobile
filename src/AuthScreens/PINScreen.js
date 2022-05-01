@@ -12,6 +12,10 @@ import {
   import constants from "../others/constants"
   import { useRoute } from '@react-navigation/native';
 import {getToGateway} from "../others/utils";
+import {auth} from '../Firebase/firebase'
+import { useAuthUser } from '../context/AuthContext';
+const firebaseAuth = require("firebase/auth");
+
 
 
   
@@ -21,6 +25,7 @@ import {getToGateway} from "../others/utils";
       const route = useRoute();
       const [pin,setPin] = useState('');
       const [pinError,setPinError] = useState(null);
+      const {signIn} = useAuthUser();
 
 
     
@@ -33,15 +38,34 @@ import {getToGateway} from "../others/utils";
             });
       }
 
-      let checkResponse = (res) =>{
+      let checkResponse = async (res) =>{
         if (res.error === undefined){
           let args = route.params;
           args['id'] = res.id;
+
+          const response = await firebaseAuth.signInWithEmailAndPassword(auth, 
+                                            route.params.email,
+                                            route.params.password)
+                                .catch(err => {
+                                      return {
+                                            error: err.toString()
+                                      };
+                                });
+
+          if ( response.error !== undefined ){
+                alert("No se pudo iniciar sesión");
+                return;
+          }
+
+          args['token'] = response._tokenResponse.idToken;
+          
+          
           if ( route.params.isListener){
             navigation.navigate('RequestMusicalPreferencesScreen', args);
-          }else
+          }
+          else
           {
-            navigation.navigate('SignInScreen', args);
+            signIn(response._tokenResponse.idToken, response.user.uid);
           }
           
         }
@@ -49,6 +73,8 @@ import {getToGateway} from "../others/utils";
           alert(res.error);
         }
       }
+
+
   
       return(
         <View style={styles.container}>

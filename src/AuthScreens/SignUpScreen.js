@@ -86,7 +86,7 @@ import {
                   navigation.navigate('PINScreen',
                       {
                           email: email,
-                          password: password,
+                          password: getSHAOf(getSHAOf(password)),
                           isListener: isListener,
                           tempId: (id === '')? res.id: id
                       });

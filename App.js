@@ -140,7 +140,6 @@ export default function App() {
             {
               ( userState.userToken === null )? (
                 <>
-                  <AuthStack.Screen name='NavigatorlogInScreen' component={NavigationLogInScreen}/>
                   <AuthStack.Screen name='SignInScreen' component={SignInScreen} initialParams={{email: '', password: ''}} options={{ animationTypeForReplace: userState.isSignOut ? 'pop' : 'push'}}/>
                   <AuthStack.Screen name='SignUpScreen' component={SignUpScreen}/>
                   <AuthStack.Screen name='ForgotPasswordScreen' component={ForgotPasswordScreen}/>

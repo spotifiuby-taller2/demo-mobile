@@ -15,6 +15,10 @@ import { useAuthUser } from '../context/AuthContext';
 import { MusicalPreferencesContext } from '../context/MusicalPreferencesContext';
 import constants from "../others/constants";
 import {postToGateway} from "../others/utils";
+import { auth } from "../Firebase/firebase";
+const firebaseAuth = require("firebase/auth");
+
+
 
 const reducer = (state = initialState(), action = {})=>{
 
@@ -129,8 +133,6 @@ const reducer = (state = initialState(), action = {})=>{
 
       let handleSend = () =>{
 
-        console.log(route.params.id);
-
         const requestBody={
           musicalPref: musicalPrefs,
           redirectTo: constants.USERS_HOST + constants.MUSICAL_PREF_URL
@@ -146,14 +148,10 @@ const reducer = (state = initialState(), action = {})=>{
           });
       }
 
-      let checkResponse = (res)=>{
+      let checkResponse = async (res)=>{
 
           if (res.error === undefined){
-            if ( route.params.body === undefined ){
-              navigation.navigate('SignInScreen', route.params)
-            }else{;
-              signIn(route.params.id, route.params.id);
-            }
+              signIn(route.params.token, route.params.id);
           }
           else{
             alert(res.error);

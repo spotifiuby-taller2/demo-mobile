@@ -69,7 +69,7 @@ export default RequestExternalUserATypeScreen = ({navigation}) => {
             if (isListener) {
                 navigation.navigate('RequestMusicalPreferencesScreen', params);
             } else {
-                signIn(params.id, params.id);
+                signIn(params.token, params.id);
             }
         }
 
