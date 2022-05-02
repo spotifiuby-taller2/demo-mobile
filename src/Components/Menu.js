@@ -9,10 +9,11 @@ import 'react-native-gesture-handler'
 import {useAuthUser} from '../context/AuthContext'
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import ContentScreen from "../HomeScreens/ContentScreen";
+import {ExitScreen} from "../HomeScreens/ExitScreen";
     
 const Drawer = createDrawerNavigator();
 
-export default Menu = () =>{
+export default Menu = () => {
 
     const {userState} = useAuthUser();
     
@@ -23,6 +24,7 @@ export default Menu = () =>{
             <Drawer.Screen name='Perfil' component={ProfileScreen} initialParams={{uid: userState.uid}}/>
             <Drawer.Screen name='Usuarios' component={UserListScreen} />
             <Drawer.Screen name='Crear contenido' component={ContentScreen} />
+            <Drawer.Screen name='Salir' component={ExitScreen} />
         </Drawer.Navigator>
     )
 }

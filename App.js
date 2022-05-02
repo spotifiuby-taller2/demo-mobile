@@ -58,7 +58,7 @@ export default function App() {
 
   const [userState, dispatch] = useReducer(reducer, reducer());
 
-  useEffect(()=>{
+  useEffect( () => {
     const bootstrapAsync = async ()=>{
 
         let userToken;
@@ -116,8 +116,6 @@ export default function App() {
             {
               ( ! userState.userToken )? (
                 <>
-                  <AuthStack.Screen name='ContentScreen' component={ContentScreen}/>
-
                   <AuthStack.Screen name='NavigatorlogInScreen' component={NavigationLogInScreen}/>
                   <AuthStack.Screen name='SignInScreen' component={SignInScreen} initialParams={{email: '', password: ''}} options={{ animationTypeForReplace: userState.isSignOut ? 'pop' : 'push'}}/>
                   <AuthStack.Screen name='SignUpScreen' component={SignUpScreen}/>
