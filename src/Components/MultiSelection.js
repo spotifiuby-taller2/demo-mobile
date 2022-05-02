@@ -49,9 +49,8 @@ const MultiSelection = props => {
   }
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}
-                style={containerStyle}>
-      <Searchbar onChangeText={setText}/>
+    <ScrollView showsVerticalScrollIndicator={false} style={containerStyle}>
+      <Searchbar onChangeText={setText} placeholder={props.placeholder}/>
 
       {/* Scrollview height cannot be adapted directly */}
       <View style={{'max-height': 125}}>

@@ -45,12 +45,6 @@ const spacerStyle = {
   marginBottom: 5
 };
 
-const modalStyle = {
-  flex: 1,
-  justifyContent: "center",
-  alignItems: "center",
-}
-
 export {
   inputStyle,
   containerStyle,
@@ -58,6 +52,5 @@ export {
   buttonStyle,
   buttonTextStyle,
   imageStyle,
-  spacerStyle,
-  modalStyle
+  spacerStyle
 }

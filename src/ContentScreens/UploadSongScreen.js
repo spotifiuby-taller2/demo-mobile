@@ -82,6 +82,7 @@ const UploadSongScreen = () => {
         onChangeText={newText => setDescription(newText)}
         mode='outlined'/>
       <MultiSelection selectedElements={artists}
+                      placeholder={"Buscar artistas"}
                       renderElement={artist => (<Text>{`${artist.name} ${artist.surname}`}</Text>)}
                       getAllElements={() => getArtists().then(b => b.users)}
                       elementFilter={filterArtist}

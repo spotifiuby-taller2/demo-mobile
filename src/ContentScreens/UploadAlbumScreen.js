@@ -1,12 +1,11 @@
-import {Modal, Pressable, ScrollView, View} from "react-native";
+import {ScrollView, View} from "react-native";
 import {Button, Text, TextInput, Title} from "react-native-paper";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {
   buttonStyle,
   buttonTextStyle,
   containerStyle,
   inputStyle,
-  modalStyle,
   spacerStyle,
   titleStyle
 } from '../styles/genericStyles';
@@ -19,7 +18,7 @@ import GenreDropDown from "../Components/GenreDropDown";
 import SubscriptionDropDown from "../Components/SubscriptionDropDown";
 import MultiSelectWithCheckBox from "../Components/MultiSelectWithChechBox";
 import {useAuthUser} from "../context/AuthContext";
-import SongsSearch from "../Components/SongsSearch";
+import MultiSelection from "../Components/MultiSelection";
 
 const UploadAlbumScreen = ({navigation}) => {
   const [title, setTitle] = useState({value: '', error: null});
@@ -27,29 +26,9 @@ const UploadAlbumScreen = ({navigation}) => {
   const [subscription, setSubscription] = useState({value: '', error: null});
   const [artists, setArtists] = useState({value: [], error: null});
   const [songs, setSongs] = useState({value: [], error: null});
-  const [allArtistSongs, setAllArtistSongs] = useState({value: [], error: null});
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState();
-  const [modalSongsVisible, setModalSongsVisible] = useState(false);
-
   const {userState, setUserType} = useAuthUser();
-
-  useEffect(() => {
-    const fetchAllSongs = async () => {
-      await getSongsByArtist(userState.uid)
-        .then(songs => {
-          const formatSongs = songs.map(s => {
-            return {id: s.id, title: s.title, description: s.description};
-          });
-          setAllArtistSongs(formatSongs);
-        })
-        .catch(e => {
-          console.log(`Error fetching songs: ${JSON.stringify(e)}`);
-          alert(`Error fetching songs: ${JSON.stringify(e)}`);
-        });
-    }
-    fetchAllSongs();
-  }, []);
 
   const handleDocumentPick = (doc) => {
     if (title.value === '') {
@@ -69,6 +48,11 @@ const UploadAlbumScreen = ({navigation}) => {
     return ok;
   }
 
+  const filterSong = text => {
+    text = text.toLowerCase();
+    return s => s.title.toLowerCase().includes(text);
+  }
+
   const handleUpload = async () => {
     if (!fieldsAreValid()) {
       return;
@@ -84,14 +68,14 @@ const UploadAlbumScreen = ({navigation}) => {
         genre: genre.value,
         subscription: subscription.value,
         artists: artists.value,
-        songs: songs.value,
+        songs: songs.value.map(s => s.id),
         link: fileUrl
       });
       console.log(`Album created: ${JSON.stringify(album)}`);
-      alert('Album created!');
+      alert('Album creado!');
     } catch (err) {
       console.log(JSON.stringify(err));
-      alert('There was an error creating the album, please try again');
+      alert('Ha ocurrido un error inesperado al crear el álbum, por favor intente mas tarde');
     }
     setIsLoading(false);
   }
@@ -132,28 +116,20 @@ const UploadAlbumScreen = ({navigation}) => {
       />
       {artists.error && (<Text style={{color: 'red'}}>{artists.error}</Text>)}
 
-      <View style={modalStyle}>
-        <Modal animationType="slide" transparent={false} visible={modalSongsVisible}
-               onRequestClose={() => setModalSongsVisible(!modalSongsVisible)}>
-          <Text>Hellow world</Text>
-          <SongsSearch
-            name='Artistas'
-            allArtistSongs={allArtistSongs.value}
-            songs={songs.value}
-            setSongs={newSongs => setSongs(newSongs)}
-          />
-        </Modal>
-        <Pressable style={{
-          alignSelf: 'center',
-          width: '80%',
-          paddingTop: 5,
-          paddingBottom: 5,
-          marginBottom: 5,
-          backgroundColor: 'skyblue'
-        }} onPress={() => setModalSongsVisible(true)}>
-          <Text>Seleccionar Canciones</Text>
-        </Pressable>
-      </View>
+      <View style={spacerStyle}/>
+      <MultiSelection selectedElements={songs.value}
+                      placeholder={"Buscar canciones"}
+                      renderElement={song => (<Text>{`${song.title}`}</Text>)}
+                      getAllElements={() => getSongsByArtist(userState.uid)}
+                      elementFilter={filterSong}
+                      elementCallback={{
+                        add: song => setSongs({value: [...songs.value, song], error: null}),
+                        remove: song => setSongs({value: songs.value.filter(s => s.id !== song.id), error: null}),
+                        clear: () => setSongs({value: [], error: null}),
+                      }}
+      />
+      {songs.error && (<Text style={{color: 'red'}}>{songs.error}</Text>)}
+
 
       <View style={spacerStyle}/>
       <FilePicker title={'Elegir foto de portada'} mimeType={'image/*'} icon={'camera'}
