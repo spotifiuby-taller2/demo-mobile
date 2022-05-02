@@ -99,7 +99,7 @@ const getToGateway = (destiny,
 
 const validateFieldNotBlank = (fieldName, field, setField) => {
   const value = field.value;
-  if (value === '' || value === null || value === undefined) {
+  if (value === '' || value === null || value === undefined || value.length === 0 ) {
     setField({value, error: `El campo "${fieldName}" debe ser completado`});
     return false;
   }

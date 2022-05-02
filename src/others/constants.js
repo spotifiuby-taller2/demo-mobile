@@ -30,6 +30,8 @@ const PHOTO_URL_QUERY_PARAM = "photoUrl=";
 const USERS_LIST_URL = USERS_URL + "/list";
 const APP_USERS_LIST_URL = USERS_URL + "/applist";
 const APP_ARTIST_LIST_URL = USERS_URL + "/artistlist";
+const ARTIST_QUERY = USERS_URL + "/artist";
+const ARTIST_NAME_PARAM = "name=";
 const APP_FAV_ARTIST_LIST_URL = USERS_URL + "/favartistlist";
 const REDIRECT_URL = "/redirect";
 const APP_FAV_ARTIST_URL = USERS_URL + "/favartist";
@@ -80,6 +82,8 @@ module.exports = {
   LISTENER_ID_QUERY_PARAM,
   PROFILE_USER_TYPE_URL,
   LISTENER,
+  EDIT_PROFILE_URL,
   ARTIST,
-  EDIT_PROFILE_URL
+  ARTIST_QUERY,
+  ARTIST_NAME_PARAM
 }

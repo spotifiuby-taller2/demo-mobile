@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
 import DropDown from 'react-native-paper-dropdown';
+
 const subscriptionData = require('../data/subscription.json');
 
 const SubscriptionDropDown = (props) => {
-  const [subscription, setSubscription] = useState({value: '', error: null});
+  const [subscription, setSubscription] = useState('');
   const [showDropDown, setShowDropDown] = useState(false);
 
   const setValues = (value) => {
@@ -18,8 +19,8 @@ const SubscriptionDropDown = (props) => {
       visible={showDropDown}
       showDropDown={() => setShowDropDown(true)}
       onDismiss={() => setShowDropDown(false)}
-      value={subscription.value}
-      setValue={newSubscription => setValues({value: newSubscription, error: null})}
+      value={subscription}
+      setValue={newSubscription => setValues(newSubscription)}
       list={subscriptionData}
     />
   );
