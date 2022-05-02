@@ -43,22 +43,21 @@ export default SignInWithGoogle = (props) =>{
              alert("No pudo autenticarse al usuario con Google");
              return;
          }
-
         const credential = GoogleAuthProvider.credential(result.idToken,
                                                           result.accessToken);
-
         const auth = getAuth();
 
         const response = await signInWithCredential(auth, credential)
             .catch(err => alert(err));
 
+
         if (response.user === undefined) {
              alert("No pudo autenticarse al usuario con Google");
-             return;
+            return;
 
-         }
-
-         const resquestBody = {
+        }
+        
+        const requestBody = {
               token: response._tokenResponse.idToken,
               email: response._tokenResponse.email,
               name: response._tokenResponse.firstName,
@@ -67,21 +66,22 @@ export default SignInWithGoogle = (props) =>{
               signin: "google",
               isArtist: isArtist,
               isListener: isListener,
-             redirectTo: constants.USERS_HOST + constants.SIGN_IN_URL
+              redirectTo: constants.USERS_HOST + constants.SIGN_IN_URL
           };
-        
-         if ( response._tokenResponse.isNewUser !== undefined ){
-            props.navigation.navigate('RequestExternalUserATypeScreen',{body: resquestBody, id: response.user.uid});
-            return;
+
+          if ( response._tokenResponse.isNewUser !== undefined ){
+            props.navigation.navigate('RequestExternalUserATypeScreen',{body: requestBody, id: response.user.uid});
          }
-         
-        postToGateway(requestBody).then((res)=>{
-          if(res.error === undefined){
-            signIn(response._tokenResponse.idToken,response.user.uid);
-          } else {
-              alert(res.error);
-          }
-        });
+         else{
+            postToGateway(requestBody).then((res)=>{
+              if(res.error === undefined){
+                signIn(response._tokenResponse.idToken,response.user.uid);
+              } else {
+                  alert(res.error);
+              }
+            });
+         }
+        
       };
 
 

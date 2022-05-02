@@ -7,7 +7,7 @@ import {
   } from 'react-native';
   
 import React, {useReducer, useMemo, useEffect} from 'react'
-import imageSpotifiuby from '../../assets/SpotifiubyIcon.png'
+import imageSpotifiuby from '../../assets/SpotifiubyImage.png'
 import { Button, Text, Title } from 'react-native-paper'
 import { useRoute } from '@react-navigation/native';
 import MusicalPreferenceCheckbox from '../Components/MusicalPreferenceCheckbox';
@@ -128,6 +128,8 @@ const reducer = (state = initialState(), action = {})=>{
 
 
       let handleSend = () =>{
+
+        console.log(route.params.id);
 
         const requestBody={
           musicalPref: musicalPrefs,

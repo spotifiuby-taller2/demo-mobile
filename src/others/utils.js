@@ -1,6 +1,8 @@
 import sjcl from 'sjcl';
 import constants from './constants'
 import * as Location from "expo-location";
+import * as SecureStore from 'expo-secure-store';
+
 
 function getSHAOf(toHash) {
     const myBitArray = sjcl.hash.sha256.hash(toHash)
@@ -16,22 +18,22 @@ function getBiometricalMailAndPassword(biometricId){
   return {email: email, password : password};
 }
 
-async function requestLocation(email){
+async function requestLocation(){
 
   try {
     let { status } = await Location.requestPermissionsAsync();
     if (status !== 'granted') {
       alert("No es posible contiuar con el registro si no habilita una ubicación");
-      return;
+      return null;
     }
-    let location = await Location.getCurrentPositionAsync({});
     
-    return location;
+    return await Location.getCurrentPositionAsync({});
+
   } 
   catch (error) {
-    alert(error);
+    alert("Error: no se pudo acceder a la ubicación del dispositivo. Por favor, habilitela para poder registrarse");
+    return null
   }
-
 }
 
 // response.json() is a promise
@@ -48,8 +50,14 @@ const postToGateway = (body,
   ).then(response =>
       response.json()
   ).catch(error => {
+    let errorToShow = error.toString();
+
+    if (errorToShow.includes("JSON")) {
+        errorToShow = "La app no puede enviar la solicitud."
+    }
+
     return {
-      error: error.toString()
+      error: errorToShow
     };
   } );
 }
@@ -76,10 +84,21 @@ const getToGateway = (destiny,
   } );
 }
 
+
+async function checkAuthTokenExpirationTime(){
+
+    const begin = Number(await SecureStore.getItemAsync("tokenTimestamp"));
+    const now = Date.now()
+    const dif = now - begin;
+
+    return ( dif < 3600000);
+}
+
 export {
   getSHAOf,
   getBiometricalMailAndPassword,
   requestLocation,
   postToGateway,
-  getToGateway
+  getToGateway,
+  checkAuthTokenExpirationTime
 }

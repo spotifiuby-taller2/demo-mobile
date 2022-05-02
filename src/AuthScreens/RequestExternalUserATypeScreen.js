@@ -7,7 +7,7 @@ import {
   } from 'react-native';
   
 import React, {useState} from 'react'
-import imageSpotifiuby from '../../assets/SpotifiubyIcon.png'
+import imageSpotifiuby from '../../assets/SpotifiubyImage.png'
 import { Button, Text, Title, IconButton } from 'react-native-paper'
 import constants from "../others/constants"
 import { useRoute } from '@react-navigation/native';
@@ -29,7 +29,9 @@ export default RequestExternalUserATypeScreen = ({navigation}) => {
         let params = route.params;
         let body = params.body;
 
-        validate();
+        if (! validate()){
+            return;
+        }
 
         if (isListener) {
             const locaction = requestLocation(body.email);
@@ -61,6 +63,7 @@ export default RequestExternalUserATypeScreen = ({navigation}) => {
                 goTONextScreen(params);
             }
         }
+    }
 
         let goTONextScreen = (params) => {
             if (isListener) {
@@ -71,10 +74,14 @@ export default RequestExternalUserATypeScreen = ({navigation}) => {
         }
 
         let validate = () => {
-
+            
+            let isValid = true
             if (!isArtist && !isListener) {
                 setUserTypeError("Elija el tipo de usuario que desee ser")
+                isValid = false;
             }
+
+            return isValid;
         }
 
         return (
@@ -163,4 +170,3 @@ export default RequestExternalUserATypeScreen = ({navigation}) => {
             image: {height: 150, width: 150, borderRadius: 200, resizeMode: 'contain', paddingTop: 200, marginLeft: 84}
         }
     )
-}

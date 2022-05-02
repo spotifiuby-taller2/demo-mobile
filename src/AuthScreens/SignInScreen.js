@@ -7,13 +7,13 @@ import {
   Alert
 } from 'react-native';
 import React, {useState} from 'react'
-import imageSpotifiuby from '../../assets/SpotifiubyIcon.png'
+import imageSpotifiuby from '../../assets/SpotifiubyImage.png'
 import { TextInput, Text, Button, Title } from 'react-native-paper'
 import constants from '../others/constants'
 import {getSHAOf, postToGateway} from "../others/utils"
 import SignInWithBiometricButton from '../Components/SignInWithBiometricButton';
 import SignInGoogleButton from '../Components/SignInGoogleButton';
-import { auth, firebaseConfig } from "../Firebase/firebase";
+import { auth } from "../Firebase/firebase";
 import { useRoute } from '@react-navigation/native';
 import { useAuthUser } from '../context/AuthContext';
 const firebaseAuth = require("firebase/auth");
@@ -40,9 +40,12 @@ export default SignInScreen = ({navigation}) =>{
           auth, 
           email, 
           hashedPassword)
-          .catch(err => alert(err));
+          .catch(err => {
+            return {
+              error: err.toString()
+            };});
       
-      if ( fResponse.error ){
+      if ( fResponse.error ) {
         alert("No existe el usuario");
         return;
       }
@@ -54,7 +57,7 @@ export default SignInScreen = ({navigation}) =>{
           link: "mobile",
           signin: "email-password",
           redirectTo: constants.USERS_HOST + constants.SIGN_IN_URL
-      }
+      };
 
       postToGateway(body)
       .then( (response) => {

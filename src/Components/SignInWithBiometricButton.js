@@ -62,21 +62,26 @@ export default SignInWithBiometricButton = (props) =>{
 
             } else if (results.error === 'unknown') {
                 setResult('DISABLED');
+                alert("Error en ingreso biométrico.");
             } else if (
                 results.error === 'user_cancel' ||
                 results.error === 'system_cancel' ||
                 results.error === 'app_cancel'
             ) {
                 setResult('CANCELLED');
+                alert("Error en ingreso biométrico.");
             }
         } catch (error) {
             setResult(error.message);
+            alert("Error en ingreso biométrico.");
         }
 
         setLoading(false);
 
-        if (result !== 'SUCCESS')
+        if (result !== 'SUCCESS') {
+            alert("Error en ingreso biométrico.");
             return;
+        }
 
         const biometricId = await SecureStore.getItemAsync('secure_biometricId');
 
@@ -92,7 +97,6 @@ export default SignInWithBiometricButton = (props) =>{
                     if ( err.message !== "Firebase: Error (auth/user-not-found)."){
                         alert(err.message);
                     }
-                    
                 });
         
         if ( response === undefined ){
@@ -100,7 +104,7 @@ export default SignInWithBiometricButton = (props) =>{
         }
         else{
             sendSignInUserWithBiometricRequest(email, hashedPassword,response);
-        };
+        }
 
       }
 
@@ -130,8 +134,7 @@ export default SignInWithBiometricButton = (props) =>{
             });
       }
 
-      const sendCreateUserWithBiometricRequest = (email, password)=>{
-
+      const sendCreateUserWithBiometricRequest = (email, password) => {
         let requestBody = {
             email: email,
             password: password,

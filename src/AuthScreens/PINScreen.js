@@ -7,7 +7,7 @@ import {
   } from 'react-native';
   
   import React, {useState} from 'react'
-  import imageSpotifiuby from '../../assets/SpotifiubyIcon.png'
+  import imageSpotifiuby from '../../assets/SpotifiubyImage.png'
   import { TextInput, Button, Text, Title } from 'react-native-paper'
   import constants from "../others/constants"
   import { useRoute } from '@react-navigation/native';
@@ -22,6 +22,8 @@ import {getToGateway} from "../others/utils";
       const [pin,setPin] = useState('');
       const [pinError,setPinError] = useState(null);
 
+
+    
       let handleSignUp = () =>{
 
         getToGateway(constants.USERS_HOST + constants.SIGN_UP_END_URL,

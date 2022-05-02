@@ -5,17 +5,24 @@ import {
     SafeAreaView,
   } from 'react-native';
 import React, { useEffect, useState } from 'react'
-import { Title, Text, Button, Avatar, Chip } from 'react-native-paper'
+import { Text, Chip } from 'react-native-paper'
 import { useRoute } from '@react-navigation/native';
 import constants from '../others/constants'
 import {getToGateway} from "../others/utils";
-    
+import ProfilePicture from '../Components/ProfilePicture';
+import FollowArtistButton from '../Components/FollowArtistButton';
+import { useAuthUser } from '../context/AuthContext';
+
+
   export default ProfileScreen = ({navigation}) =>{
 
 
       const route = useRoute();
+      const {userState} = useAuthUser();
+      const [renderButton, setRenderButton] =useState(false);
       
       const initialState = {
+        id:'',
         name: '',
         surname: '',
         email: '',
@@ -43,15 +50,16 @@ import {getToGateway} from "../others/utils";
 
         useEffect(()=>{
           function getProfile(userId) {
-          getToGateway(constants.USERS_HOST + constants.PROFILE_URL
-                                            + "?"
-                                            + constants.USER_ID_QUERY_PARAM
-                                            + userId)
+            getToGateway(constants.USERS_HOST + constants.PROFILE_URL
+                                              + "?"
+                                              + constants.USER_ID_QUERY_PARAM
+                                              + userId)
           .then(res =>{
               if (res.error !== undefined) {
                   alert(res.error);
               } else {
                   const newState = {
+                      id: res.id,
                       name: res.name,
                       surname: res.surname,
                       email: res.email,
@@ -71,9 +79,9 @@ import {getToGateway} from "../others/utils";
                       others: res.other,
                       reggeaton: res.reggeaton,
                       rap: res.rap
-
                   };
                   setProfile(newState);
+                  setRenderButton(true);
               }
           })
           }
@@ -88,11 +96,12 @@ import {getToGateway} from "../others/utils";
           <SafeAreaView>
             <ScrollView showsVerticalScrollIndicator={false}>
               <View>
-                <Avatar.Text
-                    style={styles.avatar}
-                    size={175}
-                    label={`${profile.name.charAt(0)}${profile.surname.charAt(0)}`}
-                    />
+                <ProfilePicture
+                  uid={route.params.uid}
+                  name={profile.name} 
+                  surname={profile.surname}
+                  style={styles.avatar}
+                  />
                 <Text style={styles.name}>{profile.name} {profile.surname}</Text>
                 <Text style={styles.usertype}>{(profile.isArtist)? 'Artista': 'Oyente'}</Text>
                 <Text style={styles.email}>{profile.email}</Text>
@@ -119,6 +128,17 @@ import {getToGateway} from "../others/utils";
                       </View>
                       </>)
                 }
+                {
+                  renderButton && (
+                      <FollowArtistButton
+                          openAsListener={(userState.userType === constants.LISTENER) 
+                                  && (profile.isArtist) }
+                          idListener={userState.uid}
+                          idArtist={profile.id}/>
+                  )
+                }
+                
+
               </View>
               </ScrollView>
           </SafeAreaView>

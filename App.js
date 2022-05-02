@@ -14,7 +14,7 @@ import { Provider as PaperProvider } from 'react-native-paper';
 import { AuthContext } from './src/context/AuthContext';
 import * as SecureStore from 'expo-secure-store';
 import ContentScreen from "./src/HomeScreens/ContentScreen";
-
+import { auth, signOut} from './src/Firebase/firebase';
 
 const AuthStack = createNativeStackNavigator();
 
@@ -22,7 +22,8 @@ const initialState = ()=>{
   return{
       uid: null,
       userToken: null,
-      isSignOut: false
+      isSignOut: true,
+      userType: null
   }
 };
 
@@ -33,7 +34,7 @@ const reducer = (state = initialState(), action = {})=>{
       return{
           ...state,
           uid: action.uid,
-          userToken: action.token
+          userToken: action.token,
       };
       case 'SIGN_IN':
       return{
@@ -48,7 +49,14 @@ const reducer = (state = initialState(), action = {})=>{
           ...state,
           uid: null,
           userToken: null,
-          isSignOut: true
+          isSignOut: true,
+          userType: null
+      }
+
+      case 'SET_USER_TYPE':
+      return{
+        ...state,
+        userType: action.userType
       }
   }
   return state;
@@ -62,17 +70,24 @@ export default function App() {
     const bootstrapAsync = async ()=>{
 
         let userToken;
+        let userId;
 
     try{
         userToken = await SecureStore.getItemAsync('authToken');
+        userId = await SecureStore.getItemAsync('uid');
     }
     catch(err){
         alert(err);
         return;
     }
 
-    dispatch({type: 'RESTORE_TOKEN', token: userToken});
+    if ( userToken === null  ){
+      authContext.signOut();
     }
+    else{
+      dispatch({type: 'RESTORE_TOKEN', token: userToken, uid: userId});
+    }
+  }
 
     bootstrapAsync();
   },[]);
@@ -83,6 +98,7 @@ export default function App() {
         signIn: async (token, uid)=>
             {
             let userToken;
+            let userId;
             
 
             try{
@@ -91,17 +107,26 @@ export default function App() {
                 if (! userToken){
                     await SecureStore.setItemAsync('authToken', token);
                     userToken = await SecureStore.getItemAsync('authToken');
+                    await SecureStore.setItemAsync('uid', uid);
+                    userId = await SecureStore.getItemAsync('uid');
+                    await SecureStore.setItemAsync('tokenTimestamp', JSON.stringify(Date.now()));
                 }
             }
             catch(err){
                 alert(err);
                 return;
             }
-            dispatch({type: 'SIGN_IN', token: userToken, uid: uid});
+            dispatch({type: 'SIGN_IN', token: userToken, uid: userId});
             },
         signOut: async ()=>{
-            dispatch({type: 'SIGN_OUT'});
             await SecureStore.deleteItemAsync('authToken');
+            await SecureStore.deleteItemAsync('uid');
+            await SecureStore.deleteItemAsync('tokenTimestamp');
+            await signOut(auth);
+            dispatch({type: 'SIGN_OUT'});
+        },
+        setUserType: (userType)=>{
+          dispatch({type: 'SET_USER_TYPE', userType: userType})
         }
     });
     
@@ -114,7 +139,7 @@ export default function App() {
           <AuthStack.Navigator screenOptions={{headerShown: false}}>
             <>
             {
-              ( ! userState.userToken )? (
+              ( userState.userToken === null )? (
                 <>
                   <AuthStack.Screen name='NavigatorlogInScreen' component={NavigationLogInScreen}/>
                   <AuthStack.Screen name='SignInScreen' component={SignInScreen} initialParams={{email: '', password: ''}} options={{ animationTypeForReplace: userState.isSignOut ? 'pop' : 'push'}}/>
