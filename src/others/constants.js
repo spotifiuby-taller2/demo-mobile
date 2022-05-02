@@ -18,6 +18,8 @@ const SIGN_IN_URL = "/signin";
 const SIGN_UP_END_URL = SIGN_UP_URL + "/end";
 const FORGOT_PASSWORD_URL = "/forgotpassword";
 const USERS_URL = "/users";
+const SONGS_URL = "/songs";
+const ALBUMS_URL = "/albums";
 const PROFILE_URL = USERS_URL + "/profile";
 const PROFILE_PHOTO_URL = PROFILE_URL + "/photo";
 const PROFILE_USER_TYPE_URL = PROFILE_URL + "/type";
@@ -66,6 +68,8 @@ module.exports = {
   MIN_LENGTH_PASSWORD,
   MUSICAL_PREF_URL,
   USERS_URL,
+  SONGS_URL,
+  ALBUMS_URL,
   PROFILE_URL,
   USER_ID_QUERY_PARAM,
   USERS_LIST_URL,

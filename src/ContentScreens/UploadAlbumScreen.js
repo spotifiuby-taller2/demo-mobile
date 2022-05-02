@@ -1,22 +1,25 @@
-import {ScrollView, View} from "react-native";
+import {Modal, Pressable, ScrollView, View} from "react-native";
 import {Button, Text, TextInput, Title} from "react-native-paper";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
   buttonStyle,
   buttonTextStyle,
   containerStyle,
   inputStyle,
+  modalStyle,
   spacerStyle,
   titleStyle
 } from '../styles/genericStyles';
 import FilePicker from "../Components/FilePicker";
 import {uploadFile} from "../Services/CloudStorageService";
-import {createAlbum} from "../Services/MediaService";
+import {createAlbum, getSongsByArtist} from "../Services/MediaService";
 import {getArtists} from '../Services/UsersService';
 import {validateFieldNotBlank} from "../others/utils";
 import GenreDropDown from "../Components/GenreDropDown";
 import SubscriptionDropDown from "../Components/SubscriptionDropDown";
 import MultiSelectWithCheckBox from "../Components/MultiSelectWithChechBox";
+import {useAuthUser} from "../context/AuthContext";
+import SongsSearch from "../Components/SongsSearch";
 
 const UploadAlbumScreen = ({navigation}) => {
   const [title, setTitle] = useState({value: '', error: null});
@@ -24,8 +27,29 @@ const UploadAlbumScreen = ({navigation}) => {
   const [subscription, setSubscription] = useState({value: '', error: null});
   const [artists, setArtists] = useState({value: [], error: null});
   const [songs, setSongs] = useState({value: [], error: null});
+  const [allArtistSongs, setAllArtistSongs] = useState({value: [], error: null});
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState();
+  const [modalSongsVisible, setModalSongsVisible] = useState(false);
+
+  const {userState, setUserType} = useAuthUser();
+
+  useEffect(() => {
+    const fetchAllSongs = async () => {
+      await getSongsByArtist(userState.uid)
+        .then(songs => {
+          const formatSongs = songs.map(s => {
+            return {id: s.id, title: s.title, description: s.description};
+          });
+          setAllArtistSongs(formatSongs);
+        })
+        .catch(e => {
+          console.log(`Error fetching songs: ${JSON.stringify(e)}`);
+          alert(`Error fetching songs: ${JSON.stringify(e)}`);
+        });
+    }
+    fetchAllSongs();
+  }, []);
 
   const handleDocumentPick = (doc) => {
     if (title.value === '') {
@@ -41,12 +65,8 @@ const UploadAlbumScreen = ({navigation}) => {
     if (!validateFieldNotBlank('Género', genre, setGenre)) ok = false;
     if (!validateFieldNotBlank('Suscripción', subscription, setSubscription)) ok = false;
     if (!validateFieldNotBlank('Artistas', artists, setArtists)) ok = false;
+    if (!validateFieldNotBlank('Canciones', songs, setSongs)) ok = false;
     return ok;
-  }
-
-  const filterArtist = text => {
-    text = text.toLowerCase();
-    return a => a.name.toLowerCase().includes(text) || a.surname.toLowerCase().includes(text);
   }
 
   const handleUpload = async () => {
@@ -64,7 +84,7 @@ const UploadAlbumScreen = ({navigation}) => {
         genre: genre.value,
         subscription: subscription.value,
         artists: artists.value,
-        songs: [],
+        songs: songs.value,
         link: fileUrl
       });
       console.log(`Album created: ${JSON.stringify(album)}`);
@@ -111,6 +131,29 @@ const UploadAlbumScreen = ({navigation}) => {
         setValue={newArtists => setArtists(newArtists)}
       />
       {artists.error && (<Text style={{color: 'red'}}>{artists.error}</Text>)}
+
+      <View style={modalStyle}>
+        <Modal animationType="slide" transparent={false} visible={modalSongsVisible}
+               onRequestClose={() => setModalSongsVisible(!modalSongsVisible)}>
+          <Text>Hellow world</Text>
+          <SongsSearch
+            name='Artistas'
+            allArtistSongs={allArtistSongs.value}
+            songs={songs.value}
+            setSongs={newSongs => setSongs(newSongs)}
+          />
+        </Modal>
+        <Pressable style={{
+          alignSelf: 'center',
+          width: '80%',
+          paddingTop: 5,
+          paddingBottom: 5,
+          marginBottom: 5,
+          backgroundColor: 'skyblue'
+        }} onPress={() => setModalSongsVisible(true)}>
+          <Text>Seleccionar Canciones</Text>
+        </Pressable>
+      </View>
 
       <View style={spacerStyle}/>
       <FilePicker title={'Elegir foto de portada'} mimeType={'image/*'} icon={'camera'}
