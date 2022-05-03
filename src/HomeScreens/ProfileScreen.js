@@ -103,10 +103,11 @@ import { useAuthUser } from '../context/AuthContext';
             <ScrollView showsVerticalScrollIndicator={false}>
               <View>
                 <ProfilePicture
-                  uid={route.params.uid}
+                  uid={profile.id}
                   name={profile.name} 
                   surname={profile.surname}
                   style={styles.avatar}
+                  pictureSize={175}
                   />
                 <Text style={styles.name}>{profile.name} {profile.surname}</Text>
                 <Text style={styles.usertype}>{(profile.isArtist)? 'Artista': 'Oyente'}</Text>
@@ -156,7 +157,25 @@ import { useAuthUser } from '../context/AuthContext';
                   </Button>)
                 
                 }
+                { 
+                  (userState.uid !== profile.id) &&
 
+                  (<Button 
+                      mode='contained'
+                      color='#fdfcff'
+                      style={{width: 177, alignSelf: 'center', marginTop: 30, marginBottom: 30}} 
+                      onPress={()=>{navigation.navigate('ChatScreen', 
+                        {
+                          idEmissor: userState.uid,
+                          idReceptor: profile.id,
+                          nameReceptor:  profile.name,
+                          surnameReceptor: profile.surname
+                        })
+                        }}>
+                      <Text>Abrir Chat</Text>
+                  </Button>)
+                
+                }
                 
 
               </View>

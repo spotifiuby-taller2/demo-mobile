@@ -1,8 +1,9 @@
 import { initializeApp } from 'firebase/app'
-import {getAuth, updateProfile, signOut, signInWithEmailAndPassword} from 'firebase/auth'
+import {getAuth, updateProfile, signOut} from 'firebase/auth'
 import {getStorage, ref, uploadBytes, getDownloadURL} from 'firebase/storage'
 import {postToGateway} from "../others/utils";
 import constants from '../others/constants';
+import {addDoc, collection, orderBy, getDocs, initializeFirestore, onSnapshot} from 'firebase/firestore';
 
 
 
@@ -32,6 +33,7 @@ const firebaseConfig = (__DEV__)
 const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)
 const storage = getStorage(app);
+const db = initializeFirestore(app, {useFetchStreams: false});
 
 
 
@@ -75,4 +77,34 @@ const getCurrentUser =() =>{
     return auth.currentUser;
 }
 
-export {auth, uploadImage,signOut,getCurrentUser,firebaseConfig};
+const addDocIntoCollection = async (collectionName, newDoc) =>{
+  try{
+    await addDoc(collection(db, collectionName), newDoc)
+  }
+  catch (err){
+    alert(err);
+  }   
+}
+
+const getSnapshot = async (collectionName)=>{
+
+  const snapshot =  onSnapshot(collection(db, collectionName),
+    (querySnapshot) => 
+      {
+        return querySnapshot
+      } ); 
+  
+  return snapshot;
+
+}
+
+export {
+  auth, 
+  uploadImage,
+  signOut,
+  getCurrentUser,
+  firebaseConfig,
+  db ,
+  addDocIntoCollection,
+  getSnapshot,
+  orderBy};

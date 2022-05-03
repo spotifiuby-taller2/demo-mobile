@@ -13,6 +13,7 @@ import ArtistsListTab from "../Components/ArtistsListTab";
 import { getToGateway } from '../others/utils';
 import constants from '../others/constants'
 import EditProfileScreen from '../HomeScreens/EditProfileScreen';
+import ChatScreen from '../HomeScreens/ChatScreen';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -48,6 +49,7 @@ export default HomeNavStack = () =>{
             <HomeStack.Screen name='ArtistsListTab' component={ArtistsListTab} />
             <HomeStack.Screen name='ContentScreen' component={ContentScreen} />
             <HomeStack.Screen name='EditProfileScreen' component={EditProfileScreen}/>
+            <HomeStack.Screen name='ChatScreen' component={ChatScreen}/>
         </HomeStack.Navigator>
     )
 }
