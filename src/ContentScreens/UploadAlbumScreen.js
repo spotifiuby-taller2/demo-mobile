@@ -75,7 +75,7 @@ const UploadAlbumScreen = ({navigation}) => {
       alert('Album creado!');
     } catch (err) {
       console.log(JSON.stringify(err));
-      alert('Ha ocurrido un error inesperado al crear el álbum, por favor intente mas tarde');
+      alert('Ha ocurrido un error inesperado al crear el álbum, por favor intente más tarde');
     }
     setIsLoading(false);
   }

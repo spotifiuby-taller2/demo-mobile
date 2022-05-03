@@ -53,11 +53,11 @@ const UploadSongScreen = () => {
         author: artists.map(a => `${a.name} ${a.surname}`).join(', '),
       });
       console.log(`Song created: ${JSON.stringify(song)}`);
-      alert('Song created!');
+      alert('Canción subida!');
       // TODO: navigate to song list?
     } catch (err) {
       console.log(JSON.stringify(err));
-      alert('There was an error creating the song, please try again');
+      alert('Ha ocurrido un error inesperado al subir la canción, por favor intente más tarde');
     }
     setIsLoading(false);
   }
