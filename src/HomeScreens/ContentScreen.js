@@ -1,90 +1,29 @@
-import {
-    StyleSheet,
-    View,
-} from 'react-native';
 import React, {useEffect, useState} from 'react'
-import {BottomNavigation, Text} from "react-native-paper";
-import {
-    buttonStyle,
-    buttonTextStyle,
-    containerStyle,
-    imageStyle,
-    inputStyle,
-    titleStyle
-} from "../styles/genericStyles";
-
-import ListComponent from "./ListComponent";
-import {getToGateway} from "../others/utils";
-import constants from '../others/constants'
-
-const MusicRoute = ({navigation},
-                    userList) => {
-    return ListComponent(userList,
-                        "ProfileScreen",
-                        {navigation});
-};
-
-const AlbumsRoute = () => null;
-
-//const MusicRoute = () => <Text>Música</Text>;
+import {Avatar} from "react-native-paper";
+import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import {SongListScreen} from "./SongListScreen";
+import {AlbumListScreen} from "./AlbumListScreen";
 
 export default ContentScreen = ({navigation}) => {
-    const [index, setIndex] = useState(1);
+    const ContentTab = createBottomTabNavigator();
 
-    const [routes] = useState([
-        {
-            key: 'music',
-            title: 'Canciones',
-            icon: 'music'
-        },
-        {
-            key: 'albums',
-            title: 'Álbumes',
-            icon: 'album'
-        }
-    ]);
-
-    const [userList, setUserList] = useState([]);
-
-    useEffect(()  => {
-        function getAllSongs() {
-            getToGateway(constants.MEDIA_HOST + constants.SONGS_URL,
-                "").then((response) => {
-                if (response.error !== undefined) {
-                    alert(response.error);
-                    return;
-                }
-
-                setUserList(response);
-            });
-        }
-
-        getAllSongs();
-    }, []);
-
-    const renderScene = BottomNavigation.SceneMap({
-        music: MusicRoute({navigation},
-                          userList),
-        albums: AlbumsRoute,
-    });
-
-    return(
-        <View style={styles.container}>
-            <BottomNavigation
-                navigationState={{ index, routes }}
-                onIndexChange={setIndex}
-                renderScene={renderScene}
+    return (
+        <ContentTab.Navigator screenOptions={{headerShown: false}}>
+            <ContentTab.Screen
+                name="Canciones"
+                component={SongListScreen}
+                options={{
+                    tabBarIcon: () => (< Avatar.Icon size={30} icon='music' />)
+                }}
             />
-        </View>
-    )
-}
 
-const styles = StyleSheet.create(
-    { input: inputStyle,
-        container: containerStyle,
-        title: titleStyle,
-        button: buttonStyle,
-        buttonText: buttonTextStyle,
-        image: imageStyle
-    }
-)
+            <ContentTab.Screen
+                name="Álbumes"
+                component={AlbumListScreen}
+                options={{
+                    tabBarIcon: () => (< Avatar.Icon size={30} icon='album'/>)
+                }}
+            />
+        </ContentTab.Navigator>
+    );
+}

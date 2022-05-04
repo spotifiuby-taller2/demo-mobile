@@ -42,7 +42,7 @@ export default Menu = () => {
             <Drawer.Screen name='Perfil' component={ProfileScreen} initialParams={{uid: userState.uid}}/>
             <Drawer.Screen name='Usuarios' component={UserListScreen} />
             <Drawer.Screen name='Artistas' component={ArtistsListTab} />
-            <Drawer.Screen name='Crear contenido' component={ContentScreen} />
+            <Drawer.Screen name='Contenido' component={ContentScreen} />
             <Drawer.Screen name='Salir' component={ExitScreen} />
         </Drawer.Navigator>
     )

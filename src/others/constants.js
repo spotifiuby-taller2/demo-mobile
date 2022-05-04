@@ -42,8 +42,9 @@ const APP_FAV_ARTIST_LIST_URL = USERS_URL + "/favartistlist";
 const REDIRECT_URL = "/redirect";
 const APP_FAV_ARTIST_URL = USERS_URL + "/favartist";
 
-
 const SONGS_URL = "/songs";
+const ALBUM_URL = "/albums";
+const PLAYLIST_URL = "/playlists";
 
 const JSON_HEADER = {
   'Content-Type': 'application/json',
@@ -88,5 +89,7 @@ module.exports = {
   LISTENER_ID_QUERY_PARAM,
   PROFILE_USER_TYPE_URL,
   LISTENER,
-  ARTIST
+  ARTIST,
+  ALBUM_URL,
+  PLAYLIST_URL
 }

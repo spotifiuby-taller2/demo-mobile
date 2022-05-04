@@ -9,8 +9,6 @@ import { useAuthUser } from '../context/AuthContext';
 /*user must be {name: '', surname: '', email:''}*/
     
   export default UserChip = (props) =>{
-
-                
         return(
             <Chip style={styles.chip} onPress={()=>{props.navigation.navigate('ProfileScreen',{uid: props.user.id})}}>
                 <View style={{flexDirection:'row', flexWrap: "wrap"}}>
