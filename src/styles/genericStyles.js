@@ -1,7 +1,6 @@
 const inputStyle = {
-  marginBottom: 10,
-  marginTop: 10,
-  backgroundColor: '#f5fcff',
+  marginBottom: 5,
+  marginTop: 5,
   height: 50
 };
 
@@ -41,9 +40,6 @@ const imageStyle = {
   marginTop: 50,
   marginBottom: 80
 };
-const spacerStyle = {
-  marginBottom: 5
-};
 
 export {
   inputStyle,
@@ -51,6 +47,5 @@ export {
   titleStyle,
   buttonStyle,
   buttonTextStyle,
-  imageStyle,
-  spacerStyle
+  imageStyle
 }

@@ -1,5 +1,5 @@
 import {ScrollView, View} from "react-native";
-import {Button, Text, TextInput, Title} from "react-native-paper";
+import {Button, Divider, Text, TextInput, Title} from "react-native-paper";
 import React, {useState} from "react";
 import {
   buttonStyle,
@@ -16,7 +16,6 @@ import {getArtists} from '../Services/UsersService';
 import {validateFieldNotBlank} from "../others/utils";
 import GenreDropDown from "../Components/GenreDropDown";
 import SubscriptionDropDown from "../Components/SubscriptionDropDown";
-import MultiSelectWithCheckBox from "../Components/MultiSelectWithChechBox";
 import {useAuthUser} from "../context/AuthContext";
 import MultiSelection from "../Components/MultiSelection";
 
@@ -53,6 +52,11 @@ const UploadAlbumScreen = ({navigation}) => {
     return s => s.title.toLowerCase().includes(text);
   }
 
+  const filterArtist = text => {
+    text = text.toLowerCase();
+    return a => a.name.toLowerCase().includes(text) || a.surname.toLowerCase().includes(text);
+  }
+
   const handleUpload = async () => {
     if (!fieldsAreValid()) {
       return;
@@ -80,70 +84,76 @@ const UploadAlbumScreen = ({navigation}) => {
     setIsLoading(false);
   }
 
-  return (<View style={containerStyle}>
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <Title style={titleStyle}>Subir nuevo album</Title>
+  return (
+    <View style={containerStyle}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Title style={titleStyle}>Subir nuevo album</Title>
 
-      <TextInput
-        name='Título'
-        label='Título*'
-        value={title.value}
-        onChangeText={newText => setTitle({value: newText, error: null})}
-        mode='outlined'
-        error={title.error !== null}
-        style={inputStyle}
-      />
-      {title.error && (<Text style={{color: 'red'}}>{title.error}</Text>)}
-      <GenreDropDown
-        name='Género'
-        value={genre.value}
-        setValue={newGenre => setGenre({value: newGenre, error: null})}
-      />
-      {genre.error && (<Text style={{color: 'red'}}>{genre.error}</Text>)}
-      <SubscriptionDropDown
-        name='Suscripción'
-        value={subscription.value}
-        setValue={newSubscription => setSubscription({value: newSubscription, error: null})}
-      />
-      {subscription.error && (<Text style={{color: 'red'}}>{subscription.error}</Text>)}
+        <TextInput
+          name='Título'
+          label='Título*'
+          value={title.value}
+          onChangeText={newText => setTitle({value: newText, error: null})}
+          mode='outlined'
+          error={title.error !== null}
+          style={inputStyle}
+        />
+        {title.error && (<Text style={{color: 'red'}}>{title.error}</Text>)}
+        <GenreDropDown
+          name='Género'
+          value={genre.value}
+          setValue={newGenre => setGenre({value: newGenre, error: null})}
+        />
+        {genre.error && (<Text style={{color: 'red'}}>{genre.error}</Text>)}
+        <View style={{marginBottom: 5}}/>
+        <SubscriptionDropDown
+          name='Suscripción'
+          value={subscription.value}
+          setValue={newSubscription => setSubscription({value: newSubscription, error: null})}
+        />
+        {subscription.error && (<Text style={{color: 'red'}}>{subscription.error}</Text>)}
+        <View style={{marginBottom: 5}}/>
+        <MultiSelection selectedElements={artists.value}
+                        placeholder={"Buscar artistas"}
+                        renderElement={artist => (<Text>{`${artist.name} ${artist.surname}`}</Text>)}
+                        getAllElements={() => getArtists().then(b => b.users)}
+                        elementFilter={filterArtist}
+                        elementCallback={{
+                          add: artist => setArtists({value: [...artists.value, artist], error: null}),
+                          remove: artist => setArtists({
+                            value: artists.value.filter(a => a.id !== artist.id),
+                            error: null
+                          }),
+                          clear: () => setArtists({value: [], error: null}),
+                        }}
+        />
+        {artists.error && (<Text style={{color: 'red'}}>{artists.error}</Text>)}
+        <View style={{marginBottom: 5}}/>
+        <MultiSelection selectedElements={songs.value}
+                        placeholder={"Buscar canciones"}
+                        renderElement={song => (<Text>{`${song.title}`}</Text>)}
+                        getAllElements={() => getSongsByArtist(userState.uid)}
+                        elementFilter={filterSong}
+                        elementCallback={{
+                          add: song => setSongs({value: [...songs.value, song], error: null}),
+                          remove: song => setSongs({value: songs.value.filter(s => s.id !== song.id), error: null}),
+                          clear: () => setSongs({value: [], error: null}),
+                        }}
+        />
+        {songs.error && (<Text style={{color: 'red'}}>{songs.error}</Text>)}
+        <View style={{marginBottom: 5}}/>
+        <FilePicker title={'Elegir foto de portada'} mimeType={'image/*'} icon={'camera'}
+                    setFileCallback={handleDocumentPick}/>
 
-      <View style={spacerStyle}/>
-      <MultiSelectWithCheckBox
-        name='Artistas'
-        getAllElements={() => getArtists().then(b => b.users)}
-        value={artists.value}
-        setValue={newArtists => setArtists(newArtists)}
-      />
-      {artists.error && (<Text style={{color: 'red'}}>{artists.error}</Text>)}
-
-      <View style={spacerStyle}/>
-      <MultiSelection selectedElements={songs.value}
-                      placeholder={"Buscar canciones"}
-                      renderElement={song => (<Text>{`${song.title}`}</Text>)}
-                      getAllElements={() => getSongsByArtist(userState.uid)}
-                      elementFilter={filterSong}
-                      elementCallback={{
-                        add: song => setSongs({value: [...songs.value, song], error: null}),
-                        remove: song => setSongs({value: songs.value.filter(s => s.id !== song.id), error: null}),
-                        clear: () => setSongs({value: [], error: null}),
-                      }}
-      />
-      {songs.error && (<Text style={{color: 'red'}}>{songs.error}</Text>)}
-
-
-      <View style={spacerStyle}/>
-      <FilePicker title={'Elegir foto de portada'} mimeType={'image/*'} icon={'camera'}
-                  setFileCallback={handleDocumentPick}/>
-
-      <Button mode='contained'
-              style={buttonStyle}
-              onPress={handleUpload}
-              loading={isLoading}
-              disabled={isLoading}>
-        <Text style={buttonTextStyle}>{isLoading ? 'Subiendo...' : 'Subir'}</Text>
-      </Button>
-    </ScrollView>
-  </View>);
+        <Button mode='contained'
+                style={buttonStyle}
+                onPress={handleUpload}
+                loading={isLoading}
+                disabled={isLoading}>
+          <Text style={buttonTextStyle}>{isLoading ? 'Subiendo...' : 'Subir'}</Text>
+        </Button>
+      </ScrollView>
+    </View>);
 }
 
 export default UploadAlbumScreen;

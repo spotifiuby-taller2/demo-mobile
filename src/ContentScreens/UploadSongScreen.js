@@ -1,7 +1,7 @@
-import {StyleSheet, View, ScrollView} from 'react-native';
-import React, {useEffect, useState} from 'react'
+import {ScrollView, StyleSheet, View} from 'react-native';
+import React, {useState} from 'react'
 import {validateFieldNotBlank} from '../others/utils';
-import {buttonStyle, buttonTextStyle, titleStyle, containerStyle} from '../styles/genericStyles';
+import {buttonStyle, buttonTextStyle, containerStyle, titleStyle} from '../styles/genericStyles';
 import {Button, Text, TextInput, Title} from 'react-native-paper';
 import FilePicker from '../Components/FilePicker';
 import {uploadFile} from '../Services/CloudStorageService';
@@ -28,9 +28,14 @@ const UploadSongScreen = () => {
     text = text.toLowerCase();
     return a => a.name.toLowerCase().includes(text) || a.surname.toLowerCase().includes(text);
   }
+
   const fieldsAreValid = () => {
-    return validateFile() && validateFieldNotBlank('Titulo', title, setTitle);
+    let ok = true;
+    if (!validateFile()) ok = false;
+    if (!validateFieldNotBlank('Título', title, setTitle)) ok = false;
+    return ok;
   }
+
   const handleDocumentPick = (doc) => {
     if (title.value === '') {
       const name = doc.name.split('.')[0];
@@ -65,8 +70,6 @@ const UploadSongScreen = () => {
   return (<View style={styles.container}>
     <ScrollView showsVerticalScrollIndicator={false}>
       <Title style={styles.title}>Subir nueva canción</Title>
-      <FilePicker title={'Elegir canción'} mimeType={'audio/*'} icon={'file-music'}
-                  setFileCallback={handleDocumentPick}/>
       <TextInput
         name='Titulo'
         label='Titulo*'
@@ -81,6 +84,7 @@ const UploadSongScreen = () => {
         value={description}
         onChangeText={newText => setDescription(newText)}
         mode='outlined'/>
+      <View style={{marginBottom: 5}}/>
       <MultiSelection selectedElements={artists}
                       placeholder={"Buscar artistas"}
                       renderElement={artist => (<Text>{`${artist.name} ${artist.surname}`}</Text>)}
@@ -92,6 +96,9 @@ const UploadSongScreen = () => {
                         clear: () => setArtists([]),
                       }}
       />
+      <View style={{marginBottom: 5}}/>
+      <FilePicker title={'Elegir canción'} mimeType={'audio/*'} icon={'file-music'}
+                  setFileCallback={handleDocumentPick}/>
       <Button mode='contained'
               style={styles.button}
               onPress={handleUpload}
