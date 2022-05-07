@@ -1,5 +1,5 @@
-import { 
-  StyleSheet, 
+import {
+  StyleSheet,
   View,
   Image,
   ScrollView,
@@ -10,12 +10,18 @@ import React from 'react'
 import imageSpotifiuby from '../../assets/SpotifiubyIcon.png'
 import { Title, Text,Button } from 'react-native-paper'
 import { useAuthUser } from '../context/AuthContext';
-  
+import TrackPlayer from "react-native-track-player";
+
 export default HomeScreen = () =>{
 
       const {signOut} = useAuthUser();
 
-  
+  const track = {
+    url: 'https://firebasestorage.googleapis.com/v0/b/fir-firebase-acc6b.appspot.com/o/c33a901d-ce0c-4d76-a1c1-52dde342d07b?alt=media&token=14fa0c43-d859-4d7f-b1b7-e411eaba5037', // Load media from the network
+    title: 'Test song',
+    artist: 'test artist',
+  };
+
       return(
         <View style={styles.container}>
         <SafeAreaView>
@@ -24,9 +30,14 @@ export default HomeScreen = () =>{
                 <Image source={imageSpotifiuby} style={styles.image}></Image>
 
             </View>
-            <Button mode='contained' onPress={()=>{signOut()}}>
+            <Button style={styles.button} mode='contained' onPress={()=>signOut()}>
               <Text>
                 SALIR
+              </Text>
+            </Button>
+            <Button style={styles.button} mode='contained' onPress={()=>{TrackPlayer.add(track).then(_ => TrackPlayer.play())}}>
+              <Text>
+                TEST PLAY
               </Text>
             </Button>
             </ScrollView>
@@ -38,7 +49,7 @@ export default HomeScreen = () =>{
 
     const styles = StyleSheet.create(
       { input: {
-          borderWidth: 2, 
+          borderWidth: 2,
           marginBottom: 15,
           marginTop: 15,
           backgroundColor: '#f5fcff',
@@ -53,12 +64,12 @@ export default HomeScreen = () =>{
          },
          title: {textAlign: 'center',fontSize: 25, marginBottom: 35},
          button: {
-           backgroundColor: 'skyblue', 
-           paddingTop: 15, 
-           paddingBottom:15, 
-           width: 100, 
-           alignSelf: 'center', 
-           marginTop: 30, 
+           backgroundColor: 'skyblue',
+           paddingTop: 15,
+           paddingBottom:15,
+           width: '100%',
+           alignSelf: 'center',
+           marginTop: 30,
            marginBottom:30,
            borderRadius: 10},
          buttonText: {textAlign: 'center', fontSize: 13},

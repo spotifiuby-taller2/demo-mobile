@@ -26,7 +26,7 @@ const firebaseConfigDev = {
   };
 
 const firebaseConfig = (__DEV__)
-                       ? firebaseConfigDev
+                       ? firebaseConfigProd
                        : firebaseConfigProd;
   
 const app = initializeApp(firebaseConfig)
