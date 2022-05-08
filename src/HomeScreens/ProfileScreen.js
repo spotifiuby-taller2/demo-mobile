@@ -44,7 +44,9 @@ import { useAuthUser } from '../context/AuthContext';
         blues: false,
         others: false,
         reggeaton: false,
-        rap: false 
+        rap: false,
+        photoUrl: '',
+        pushNotificationToken: ''
       }
 
       const [profile, setProfile] = useState(initialState);
@@ -79,7 +81,10 @@ import { useAuthUser } from '../context/AuthContext';
                       blues: res.blues,
                       others: res.other,
                       reggeaton: res.reggeaton,
-                      rap: res.rap
+                      rap: res.rap,
+                      photoUrl: res.photoUrl,
+                      pushNotificationToken: res.pushNotificationToken
+
                   };
                   setProfile(newState);
                   setRenderButton(true);
@@ -163,16 +168,19 @@ import { useAuthUser } from '../context/AuthContext';
                   (<Button 
                       mode='contained'
                       color='#fdfcff'
-                      style={{width: 177, alignSelf: 'center', marginTop: 30, marginBottom: 30}} 
+                      style={{width: 210, alignSelf: 'center', marginTop: 30, marginBottom: 30}} 
                       onPress={()=>{navigation.navigate('ChatScreen', 
                         {
                           idEmissor: userState.uid,
                           idReceptor: profile.id,
                           nameReceptor:  profile.name,
-                          surnameReceptor: profile.surname
+                          surnameReceptor: profile.surname,
+                          nameEmissor: userState.name,
+                          surnameEmissor: userState.surname,
+                          pushNotificationToken: profile.pushNotificationToken
                         })
                         }}>
-                      <Text>Abrir Chat</Text>
+                      <Text>Abrir Chat Privado</Text>
                   </Button>)
                 
                 }

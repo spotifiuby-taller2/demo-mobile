@@ -38,11 +38,13 @@ import {
 
       let handleSignUp = async () => {
 
+        
+
           if (!validate()) {
               alert("Error: no se puede registar al usuario por valores invalidos");
               return;
           }
-
+          let location = null;
           const requestBody = {
               name: name,
               surname: surname,
@@ -60,7 +62,7 @@ import {
           location = await requestLocation()
         }
 
-        if (location === undefined || ! isListener) {
+        if (location === null || ! isListener) {
             requestBody['latitude'] = 0;
             requestBody['longitude'] = 0;
         } else {

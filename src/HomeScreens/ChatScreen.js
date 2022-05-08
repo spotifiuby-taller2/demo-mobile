@@ -11,14 +11,23 @@ import { useRoute } from '@react-navigation/native';
 import { collection, orderBy, query, onSnapshot} from 'firebase/firestore';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import ProfilePicture from '../Components/ProfilePicture';
+import constants from '../others/constants';
 const utils = require("../others/utils");
+import * as Notifications from 'expo-notifications'
 
   
 export default ChatScreen = ({navigation}) =>{
 
         const route = useRoute();
         const [messages, setMessages] = useState([]);
-        const {idEmissor, idReceptor, nameReceptor, surnameReceptor} = route.params;
+        const {
+          idEmissor, 
+          idReceptor, 
+          nameReceptor, 
+          surnameReceptor, 
+          pushNotificationToken,
+          nameEmissor,
+          surnameEmissor} = route.params;
 
 
         useLayoutEffect( ()=>{
@@ -41,10 +50,50 @@ export default ChatScreen = ({navigation}) =>{
             requestMessages();
         }, [])
         
-        const onSend = useCallback((messages = []) => {
+        const onSend = useCallback(async (messages = []) => {
             setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
             addDocIntoCollection(utils.getChatId(idEmissor,idReceptor), messages[0]);
-            ;
+
+            if ( pushNotificationToken === null ){
+              return;
+            }
+
+            token = (await Notifications.getExpoPushTokenAsync()).data;
+
+            const params = {
+              idEmissor: idReceptor,
+              idReceptor: idEmissor,
+              nameReceptor: nameEmissor,
+              surnameReceptor: surnameEmissor,
+              nameEmissor: nameReceptor,
+              surnameEmissor: surnameReceptor,
+              pushNotificationToken: token,
+            }
+
+            console.log(params);
+
+            const body = {
+              to: `ExponentPushToken[${pushNotificationToken}]`,
+              title: 'Spotifiuby',
+              body: `${nameEmissor} ${surnameEmissor} te ha enviado mensajes`,
+              data: {
+                  type: 'chat',
+                  screenName: 'ChatScreen',
+                  params: params
+              }
+            }
+
+
+            fetch('https://exp.host/--/api/v2/push/send',{
+              method: 'POST',
+              headers: constants.JSON_HEADER,
+              body: JSON.stringify(body)
+              
+            })
+            .then(res => res.json())
+            .then(res => console.log(res));
+
+            
           }, []);
         
         const renderSend = (props) =>{

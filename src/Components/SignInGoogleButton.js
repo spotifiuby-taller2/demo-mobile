@@ -29,10 +29,10 @@ export default SignInWithGoogle = (props) =>{
 
         try {
             result = await Google.logInAsync({ //return an object with result token and user
-            iosClientId: IOS_KEY, //From app.json
-            androidClientId: ANDROID_KEY, //From app.json
-            webClientId: WEB_KEY,
-            androidStandaloneAppClientId: ANDROID_STANDALONE_KEY
+                iosClientId: IOS_KEY, //From app.json
+                androidClientId: ANDROID_KEY, //From app.json
+                webClientId: WEB_KEY,
+                androidStandaloneAppClientId: ANDROID_STANDALONE_KEY
           });
         
         } catch ({ message }) {

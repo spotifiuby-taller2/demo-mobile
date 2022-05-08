@@ -3,7 +3,7 @@ import {getAuth, updateProfile, signOut} from 'firebase/auth'
 import {getStorage, ref, uploadBytes, getDownloadURL} from 'firebase/storage'
 import {postToGateway} from "../others/utils";
 import constants from '../others/constants';
-import {addDoc, collection, orderBy, getDocs, initializeFirestore, onSnapshot} from 'firebase/firestore';
+import {addDoc, collection, orderBy, initializeFirestore, onSnapshot} from 'firebase/firestore';
 
 
 
@@ -26,10 +26,14 @@ const firebaseConfigDev = {
     appId: "1:701624425016:web:6cb2157c5a2c0a34e1a4cd"
   };
 
+
 const firebaseConfig = (__DEV__)
                        ? firebaseConfigDev
                        : firebaseConfigProd;
-  
+
+
+
+
 const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)
 const storage = getStorage(app);
@@ -39,6 +43,7 @@ const db = initializeFirestore(app, {useFetchStreams: false});
 
 
 // storage
+
 const uploadImage = async (file, uid, setImage)=>{
 
     const url = `images/${uid}.png`
