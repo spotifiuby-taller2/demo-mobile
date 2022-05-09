@@ -1,29 +1,25 @@
 import {
   View,
   Text
-
 } from 'react-native';
 
 import React, {useEffect} from 'react'
 import {Button} from 'react-native-paper'
 import * as Google from 'expo-auth-session/providers/google';
-import * as WebBrowser from 'expo-web-browser';
-import {IOS_KEY, ANDROID_KEY, WEB_KEY, ANDROID_STANDALONE_KEY} from "@env"
+import {IOS_KEY, ANDROID_KEY, WEB_KEY} from "@env"
 import constants from '../others/constants'
 import {useAuthUser} from '../context/AuthContext';
 import {postToGateway} from "../others/utils";
 
 const {getAuth, signInWithCredential, GoogleAuthProvider} = require("firebase/auth");
 
-WebBrowser.maybeCompleteAuthSession();
-
-export default SignInWithGoogle = (props) => {
+const SignInWithGoogle = (props) => {
 
   const {signIn} = useAuthUser();
 
-  const [request, response, promptAsync] = Google.useAuthRequest({ //return an object with result token and user
-    iosClientId: IOS_KEY, //From app.json
-    androidClientId: ANDROID_KEY, //From app.json
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    iosClientId: IOS_KEY,
+    androidClientId: ANDROID_KEY,
     webClientId: WEB_KEY,
   });
 
@@ -31,7 +27,6 @@ export default SignInWithGoogle = (props) => {
     let isArtist = false;
     let isListener = false;
 
-    console.log(JSON.stringify(googleAuth));
     const credential = GoogleAuthProvider.credential(googleAuth.idToken, googleAuth.accessToken);
     const auth = getAuth();
 
@@ -76,10 +71,10 @@ export default SignInWithGoogle = (props) => {
   };
 
   useEffect(() => {
-    console.log(JSON.stringify(response));
     if (response?.type === 'success') {
       const {authentication} = response;
-      handleSignInWithGoogle(authentication);
+      handleSignInWithGoogle(authentication)
+        .catch(e => alert(`Error al autenticarse con google: ${JSON.stringify(e)}`));
     }
   }, [response]);
 
@@ -98,3 +93,4 @@ export default SignInWithGoogle = (props) => {
   );
 }
 
+export default SignInWithGoogle;

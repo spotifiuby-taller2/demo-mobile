@@ -1,13 +1,11 @@
-//import 'expo-dev-client';
+import 'expo-dev-client';
 import 'react-native-gesture-handler'
 import TrackPlayer, {Capability} from 'react-native-track-player';
 import React, {useEffect, useReducer, useMemo} from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import UploadSongScreen from './src/ContentScreens/UploadSongScreen';
 import SignInScreen from './src/AuthScreens/SignInScreen'
 import SignUpScreen from './src/AuthScreens/SignUpScreen'
-import NavigationLogInScreen from './src/AuthScreens/NavigationLogInScreen';
 import ForgotPasswordScreen from './src/AuthScreens/ForgotPasswordScreen'
 import PINScreen from './src/AuthScreens/PINScreen';
 import RequestExternalUserATypeScreen from './src/AuthScreens/RequestExternalUserATypeScreen';
@@ -31,7 +29,6 @@ const initialState = ()=>{
 
 const setupTrackPlayer = async () => {
   await TrackPlayer.setupPlayer();
-  /*
   await TrackPlayer.updateOptions({
     stopWithApp: true,
     capabilities: [
@@ -44,7 +41,6 @@ const setupTrackPlayer = async () => {
     ],
     compactCapabilities: [Capability.Play, Capability.Pause],
   });
-   */
 }
 
 const reducer = (state = initialState(), action = {})=>{

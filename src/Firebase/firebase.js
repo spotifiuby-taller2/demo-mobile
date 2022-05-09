@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app'
-import {getAuth, updateProfile, signOut, signInWithEmailAndPassword} from 'firebase/auth'
+import {getAuth, updateProfile, signOut} from 'firebase/auth'
 import {getStorage, ref, uploadBytes, getDownloadURL} from 'firebase/storage'
 import {postToGateway} from "../others/utils";
 import constants from '../others/constants';
@@ -28,7 +28,7 @@ const firebaseConfigDev = {
 const firebaseConfig = (__DEV__)
                        ? firebaseConfigProd
                        : firebaseConfigProd;
-  
+
 const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)
 const storage = getStorage(app);
@@ -54,13 +54,13 @@ const uploadImage = async (file, uid, setImage)=>{
     });
 
     let storageRef = ref(storage, url);
-    const snapshot =  await uploadBytes(storageRef, blob); 
+    const snapshot =  await uploadBytes(storageRef, blob);
 
     const photoURL = await getDownloadURL(storageRef);
 
     updateProfile(auth.currentUser,{photoURL});
     const requestBody={
-      redirectTo: constants.USERS_HOST 
+      redirectTo: constants.USERS_HOST
           + constants.PROFILE_PHOTO_URL
           + "?" + constants.USER_ID_QUERY_PARAM + uid
           + "&" + constants.PHOTO_URL_QUERY_PARAM + photoURL

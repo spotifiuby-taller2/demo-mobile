@@ -21,9 +21,9 @@ function getBiometricalMailAndPassword(biometricId){
 async function requestLocation(){
 
   try {
-    let { status } = await Location.requestPermissionsAsync();
+    let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
-      alert("No es posible contiuar con el registro si no habilita una ubicación");
+      alert("No es posible continuar con el registro si no habilita una ubicación");
       return null;
     }
 
@@ -31,7 +31,7 @@ async function requestLocation(){
 
   }
   catch (error) {
-    alert("Error: no se pudo acceder a la ubicación del dispositivo. Por favor, habilitela para poder registrarse");
+    alert("Error: no se pudo acceder a la ubicación del dispositivo. Por favor, habilítela para poder registrarse");
     return null
   }
 }
