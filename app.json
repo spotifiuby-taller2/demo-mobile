@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Spotifuiby",
-    "slug": "Spotifuiby",
+    "name": "Spotifuiby-chat",
+    "slug": "Spotifuiby-chat",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/SpotifiubyIcon.png",
@@ -20,6 +20,7 @@
       "supportsTablet": true
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "config": {
         "googleSignIn": {
           "apiKey": "AIzaSyB8DZnaX6HIBlkubONcCNs7mm56UvgWlao",

@@ -26,23 +26,28 @@ export default HomeNavStack = () =>{
 
 
     let registerForPushNotifications = async ()=>{
-
+      
+      alert(1);
       let token;
 
       if (Device.isDevice){
+        alert(2);
         
         const { status: existingStatus } = await Notifications.getPermissionsAsync();
         let finalStatus = existingStatus;
-
+        alert(3);
         if (existingStatus !== 'granted') {
           const { status } = await Notifications.requestPermissionsAsync();
           finalStatus = status;
         }
+        alert(4);
         if (finalStatus !== 'granted') {
           alert('No se pudo obterner un token para realizar push notifications');
           return;
         }
+        alert(5);
         token = (await Notifications.getExpoPushTokenAsync()).data;
+        alert(`push token: ${token}`);
         console.log(`push token: ${token}`);
         saveToken(token);
       }
