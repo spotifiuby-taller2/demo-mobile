@@ -11,7 +11,7 @@ const styles = StyleSheet.create( {
     name: nameStyle
 } )
 
-export default ContentChip = (props) => {
+export default AlbumChip = (props) => {
   return(
       <Chip style={styles.chip} onPress={
           ()=>{props.navigation

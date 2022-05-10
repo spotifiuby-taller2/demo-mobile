@@ -11,12 +11,12 @@ const styles = StyleSheet.create( {
     name: nameStyle
 } )
 
-export default ContentChip = (props) => {
+export default SongChip = (props) => {
   return(
-      <Chip style={styles.chip} onPress={
-          ()=>{props.navigation
-                    .navigate('ProfileScreen',{uid: props.song
-                                                         .id})
+      <Chip style={styles.chip} onPress={ () => {
+          props.navigation
+               .navigate('SongScreen', {id: props.song
+                                                 .id})
           } }>
 
           <View style={{flexDirection:'row', flexWrap: "wrap"}}>

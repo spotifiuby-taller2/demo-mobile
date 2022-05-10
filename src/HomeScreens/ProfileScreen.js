@@ -3,8 +3,8 @@ import {
     View,
     ScrollView,
     SafeAreaView,
-  } from 'react-native';
-import React, { useEffect, useState } from 'react'
+          } from 'react-native';
+        import React, { useEffect, useState } from 'react';
 import { Text, Chip } from 'react-native-paper'
 import { useRoute } from '@react-navigation/native';
 import constants from '../others/constants'

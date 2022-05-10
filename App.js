@@ -15,6 +15,9 @@ import { AuthContext } from './src/context/AuthContext';
 import * as SecureStore from 'expo-secure-store';
 import ContentScreen from "./src/HomeScreens/ContentScreen";
 import { auth, signOut} from './src/Firebase/firebase';
+import Menu from "./src/Components/Menu";
+import {SongListScreen} from "./src/HomeScreens/SongListScreen";
+import {SongScreen} from "./src/HomeScreens/SongScreen";
 
 const AuthStack = createNativeStackNavigator();
 
@@ -141,6 +144,8 @@ export default function App() {
             {
               ( userState.userToken === null )? (
                 <>
+
+                    <AuthStack.Screen name='SongLSongScreenistScreen' component={SongScreen} initialParams={{id:2}}/>
                   <AuthStack.Screen name='NavigatorlogInScreen' component={NavigationLogInScreen}/>
                   <AuthStack.Screen name='SignInScreen' component={SignInScreen} initialParams={{email: '', password: ''}} options={{ animationTypeForReplace: userState.isSignOut ? 'pop' : 'push'}}/>
                   <AuthStack.Screen name='SignUpScreen' component={SignUpScreen}/>

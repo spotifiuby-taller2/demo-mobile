@@ -3,7 +3,7 @@ import {getToGateway} from "../others/utils";
 import constants from "../others/constants";
 import {SafeAreaView, ScrollView, View} from "react-native";
 import {containerStyle} from "../styles/genericStyles";
-import ContentChip from "../Components/SongChip";
+import AlbumChip from "../Components/AlbumChip";
 
 const AlbumListScreen = ({navigation}) => {
     const [albumList, setAlbumList] = useState([]);
@@ -23,19 +23,22 @@ const AlbumListScreen = ({navigation}) => {
             });
         }
 
-        getEveryAlbum();
-    }, []);
+        navigation.addListener('focus',
+            ()=>{
+                getEveryAlbum();
+            });
+
+    }, [navigation]);
 
     return (
         <View style={containerStyle}>
             <SafeAreaView>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View>
-
                         {
                             albumList.map( (album, id) => {
                                 return (
-                                    <ContentChip id={id}
+                                    <AlbumChip id={id}
                                               key={id}
                                               song={album}
                                               navigation={navigation}/>

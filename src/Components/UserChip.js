@@ -10,7 +10,8 @@ import { useAuthUser } from '../context/AuthContext';
     
   export default UserChip = (props) =>{
         return(
-            <Chip style={styles.chip} onPress={()=>{props.navigation.navigate('ProfileScreen',{uid: props.user.id})}}>
+            <Chip style={styles.chip} onPress={ () => {
+                props.navigation.navigate('ProfileScreen',{uid: props.user.id})}}>
                 <View style={{flexDirection:'row', flexWrap: "wrap"}}>
                         <Avatar.Text 
                             style={{marginRight: 15, backgroundColor: '#ff4500'}}

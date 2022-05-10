@@ -65,7 +65,7 @@ export default RequestExternalUserATypeScreen = ({navigation}) => {
         }
     }
 
-        let goTONextScreen = (params) => {
+        let goTONextScreen = (paraendms) => {
             if (isListener) {
                 navigation.navigate('RequestMusicalPreferencesScreen', params);
             } else {
