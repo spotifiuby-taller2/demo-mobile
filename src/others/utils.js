@@ -21,7 +21,7 @@ function getBiometricalMailAndPassword(biometricId){
 async function requestLocation(){
 
   try {
-    let { status } = await Location.requestPermissionsAsync();
+    let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
       alert("No es posible contiuar con el registro si no habilita una ubicación");
       return null;
@@ -99,7 +99,7 @@ const getToGateway = (destiny,
 
 const validateFieldNotBlank = (fieldName, field, setField) => {
   const value = field.value;
-  if (value === '' || value === null || value === undefined) {
+  if (value === '' || value === null || value === undefined || value.length === 0 ) {
     setField({value, error: `El campo "${fieldName}" debe ser completado`});
     return false;
   }

@@ -42,6 +42,7 @@
     "react-native-gifted-chat": "0.16.3",
     "react-native-input-outline": "1.5.2",
     "react-native-paper": "4.11.2",
+    "react-native-paper-dropdown": "1.0.7",
     "react-native-reanimated": "2.3.3",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "3.10.2",

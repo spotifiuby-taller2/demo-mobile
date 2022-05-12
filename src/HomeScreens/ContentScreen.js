@@ -1,55 +1,53 @@
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  SafeAreaView
-} from 'react-native';
+import {StyleSheet, View,} from 'react-native';
 import React from 'react'
-import {BottomNavigation, Text} from "react-native-paper";
+import {BottomNavigation} from "react-native-paper";
 import {
-    buttonStyle,
-    buttonTextStyle,
-    containerStyle,
-    imageStyle,
-    inputStyle,
-    titleStyle
+  buttonStyle,
+  buttonTextStyle,
+  containerStyle,
+  imageStyle,
+  inputStyle,
+  titleStyle
 } from "../styles/genericStyles";
 import UploadSongScreen from "../ContentScreens/UploadSongScreen";
+import UploadAlbumScreen from '../ContentScreens/UploadAlbumScreen';
+
 
 const MusicRoute = () => <UploadSongScreen/>;
 
-const AlbumsRoute = () => <Text>Albums</Text>;
+const AlbumsRoute = () => <UploadAlbumScreen/>;
+
 
 const ContentScreen = () => {
-    const [index, setIndex] = React.useState(0);
+  const [index, setIndex] = React.useState(0);
 
-    const routes = [
-        {
-            key: 'music',
-            title: 'Canciones',
-            icon: 'music'
-        },
-        {
-            key: 'albums',
-            title: 'Álbumes',
-            icon: 'album'
-        }
-    ];
+  const routes = [
+    {
+      key: 'music',
+      title: 'Canciones',
+      icon: 'music'
+    },
+    {
+      key: 'albums',
+      title: 'Álbumes',
+      icon: 'album'
+    }
+  ];
 
-    const renderScene = BottomNavigation.SceneMap({
-        music: MusicRoute,
-        albums: AlbumsRoute,
-    });
+  const renderScene = BottomNavigation.SceneMap({
+    music: MusicRoute,
+    albums: AlbumsRoute,
+  });
 
-      return(
-        <View style={styles.container}>
-            <BottomNavigation
-                navigationState={{ index, routes }}
-                onIndexChange={setIndex}
-                renderScene={renderScene}
-            />
-        </View>
-      )
+  return (
+    <View style={styles.container}>
+      <BottomNavigation
+        navigationState={{index, routes}}
+        onIndexChange={setIndex}
+        renderScene={renderScene}
+      />
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
