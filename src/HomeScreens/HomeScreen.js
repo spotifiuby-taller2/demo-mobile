@@ -6,16 +6,28 @@ import {
   SafeAreaView,
   Alert
 } from 'react-native';
-import React from 'react'
+import React, { useEffect } from 'react'
 import imageSpotifiuby from '../../assets/SpotifiubyIcon.png'
 import { Title, Text,Button } from 'react-native-paper'
 import { useAuthUser } from '../context/AuthContext';
+import * as Notifications from 'expo-notifications'
+
+
   
-export default HomeScreen = () =>{
+export default HomeScreen = ({navigation}) =>{
 
       const {signOut} = useAuthUser();
 
+      useEffect(()=>{
+        Notifications.addNotificationResponseReceivedListener(notification => {
+            console.log(notification.notification.request.content.data);
+            const {type, params, screenName} = notification.notification.request.content.data;
   
+            navigation.navigate(screenName, params);
+      });
+      },[])
+
+
       return(
         <View style={styles.container}>
         <SafeAreaView>

@@ -115,6 +115,15 @@ async function checkAuthTokenExpirationTime(){
     return ( dif < 3600000);
 }
 
+function getChatId(idEmissor, idReceptor){
+
+  if ( idEmissor < idReceptor)
+      return `chat-${idEmissor}-${idReceptor}`;
+  
+  else
+      return `chat-${idReceptor}-${idEmissor}`;
+}
+
 export {
   getSHAOf,
   getBiometricalMailAndPassword,
@@ -124,4 +133,5 @@ export {
   getToGateway,
   validateFieldNotBlank,
   checkAuthTokenExpirationTime,
+  getChatId
 }

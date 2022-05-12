@@ -3,12 +3,14 @@ import { TouchableOpacity, StyleSheet } from 'react-native';
 import {Avatar} from 'react-native-paper'
 import * as ImagePicker from 'expo-image-picker'
 import { uploadImage, getCurrentUser } from '../Firebase/firebase';
+import { useAuthUser } from '../context/AuthContext';
 
 
 
 export default ProfilePicture = (props)=> {
 
     const [selectedImage, setSelectedImage] = useState(null);
+    const {userState} = useAuthUser();
 
 
     useEffect(()=>{
@@ -42,17 +44,17 @@ export default ProfilePicture = (props)=> {
             onPress={pickImage}
             mode='outlined'
             style={styles.button}
-
+            disabled={(props.uid !== userState.uid)}
             >
             {( selectedImage === null )?
                 (<Avatar.Text
                     style={styles.avatar}
-                    size={175}
+                    size={props.pictureSize}
                     label={`${props.name.charAt(0)}${props.surname.charAt(0)}`}
                 />)
             : (<Avatar.Image
                     style={styles.avatar}
-                    size={175}
+                    size={props.pictureSize}
                     source={{uri: selectedImage}}/>)}
       </TouchableOpacity>
     );

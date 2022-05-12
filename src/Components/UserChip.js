@@ -4,7 +4,6 @@ import {
   } from 'react-native';
 import React from 'react'
 import { Text, Chip, Avatar } from 'react-native-paper';
-import { useAuthUser } from '../context/AuthContext';
 
 /*user must be {name: '', surname: '', email:''}*/
     

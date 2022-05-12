@@ -6,7 +6,7 @@ import {
     ScrollView
   } from 'react-native';
   
-import React, {useReducer, useMemo, useEffect} from 'react'
+import React, {useReducer, useMemo} from 'react'
 import imageSpotifiuby from '../../assets/SpotifiubyImage.png'
 import { Button, Text, Title } from 'react-native-paper'
 import { useRoute } from '@react-navigation/native';
@@ -15,7 +15,6 @@ import { useAuthUser } from '../context/AuthContext';
 import { MusicalPreferencesContext } from '../context/MusicalPreferencesContext';
 import constants from "../others/constants";
 import {postToGateway} from "../others/utils";
-import { auth } from "../Firebase/firebase";
 const firebaseAuth = require("firebase/auth");
 
 
