@@ -101,6 +101,8 @@ import { useAuthUser } from '../context/AuthContext';
 
         },[navigation]);
 
+        console.log(userState.uid);
+        console.log(userState.userType);
 
         return(
           <View style={styles.container}>
@@ -163,7 +165,7 @@ import { useAuthUser } from '../context/AuthContext';
                 }
 
                 {
-                  (userState.userType === constants.ARTIST) &&
+                  (userState.uid === profile.id && userState.userType === constants.ARTIST) &&
 
                   (<Button
                       mode='contained'
