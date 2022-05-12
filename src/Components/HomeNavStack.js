@@ -1,6 +1,7 @@
-import { 
-    StyleSheet
-  } from 'react-native';
+import {
+  Platform,
+  StyleSheet
+} from 'react-native';
 import React, {useEffect, useState} from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../HomeScreens/HomeScreen';
@@ -42,7 +43,7 @@ export default HomeNavStack = () =>{
           return;
         }
 
-        token = (await Notifications.getExpoPushTokenAsync()).data;
+        token = (await Notifications.getExpoPushTokenAsync({experienceId: '@spotifiuby-t2/Spotifiuby'})).data;
 
         saveToken(token);
       }
@@ -51,14 +52,14 @@ export default HomeNavStack = () =>{
       }
 
       if (Platform.OS === 'android') {
-        Notifications.setNotificationChannelAsync('default', {
+        await Notifications.setNotificationChannelAsync('default', {
           name: 'default',
           importance: Notifications.AndroidImportance.MAX,
           vibrationPattern: [0, 250, 250, 250],
           lightColor: '#FF231F7C',
-        });
+        }).then(nc => console.log("notification channel set"));
       }
-    
+
       return token;
     }
 
@@ -68,12 +69,12 @@ export default HomeNavStack = () =>{
         str.indexOf('[') + 1,
         str.indexOf(']'),
       );
-      
+
       console.log(token);
       const requestBody = {
         token: token,
         redirectTo: constants.USERS_HOST + constants.PUSH_NOTIFICATION_TOKEN_URL
-             + "?" + constants.USER_ID_QUERY_PARAM + userState.uid 
+             + "?" + constants.USER_ID_QUERY_PARAM + userState.uid
       }
 
 
@@ -102,17 +103,17 @@ export default HomeNavStack = () =>{
         }
         getUserBasicInfo()
           .then(res => setUserBasicInfo(res.type, res.name, res.surname));
-      
-      
+
+
       registerForPushNotifications()
-          .then(token => 
+          .then(token =>
               {
                 setExpoPushToken(token);
               })
-      
-      
+
+
       },[])
-    
+
     /*Todas las pantallas de la Home van aca*/
     return(
         <HomeStack.Navigator screenOptions={{headerShown: false}}>
@@ -129,7 +130,7 @@ export default HomeNavStack = () =>{
 
       const styles = StyleSheet.create(
         { input: {
-            borderWidth: 2, 
+            borderWidth: 2,
             marginBottom: 15,
             marginTop: 15,
             backgroundColor: '#f5fcff',
@@ -144,12 +145,12 @@ export default HomeNavStack = () =>{
            },
            title: {textAlign: 'center',fontSize: 25, marginBottom: 35},
            button: {
-             backgroundColor: 'skyblue', 
-             paddingTop: 15, 
-             paddingBottom:15, 
-             width: 100, 
-             alignSelf: 'center', 
-             marginTop: 30, 
+             backgroundColor: 'skyblue',
+             paddingTop: 15,
+             paddingBottom:15,
+             width: 100,
+             alignSelf: 'center',
+             marginTop: 30,
              marginBottom:30,
              borderRadius: 10},
            buttonText: {textAlign: 'center', fontSize: 13},

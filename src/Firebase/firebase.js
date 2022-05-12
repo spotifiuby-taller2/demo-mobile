@@ -32,7 +32,7 @@ const firebaseConfig = (__DEV__)
 const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)
 const storage = getStorage(app);
-const db = initializeFirestore(app, {useFetchStreams: false});
+const db = initializeFirestore(app, {useFetchStreams: false, experimentalForceLongPolling: true});
 
 
 // storage
@@ -79,7 +79,7 @@ const getCurrentUser = () => {
 
 const addDocIntoCollection = async (collectionName, newDoc) => {
   try {
-    await addDoc(collection(db, collectionName), newDoc)
+    await addDoc(collection(db, collectionName), newDoc).then(r => console.log(JSON.stringify(r)));
   } catch (err) {
     alert(err);
   }

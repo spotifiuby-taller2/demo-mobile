@@ -1,5 +1,5 @@
-import { 
-    StyleSheet, 
+import {
+    StyleSheet,
     View,
     TouchableOpacity
   } from 'react-native';
@@ -15,16 +15,16 @@ import constants from '../others/constants';
 const utils = require("../others/utils");
 import * as Notifications from 'expo-notifications'
 
-  
+
 export default ChatScreen = ({navigation}) =>{
 
         const route = useRoute();
         const [messages, setMessages] = useState([]);
         const {
-          idEmissor, 
-          idReceptor, 
-          nameReceptor, 
-          surnameReceptor, 
+          idEmissor,
+          idReceptor,
+          nameReceptor,
+          surnameReceptor,
           pushNotificationToken,
           nameEmissor,
           surnameEmissor} = route.params;
@@ -49,16 +49,16 @@ export default ChatScreen = ({navigation}) =>{
 
             requestMessages();
         }, [])
-        
+
         const onSend = useCallback(async (messages = []) => {
             setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
-            addDocIntoCollection(utils.getChatId(idEmissor,idReceptor), messages[0]);
+            await addDocIntoCollection(utils.getChatId(idEmissor,idReceptor), messages[0]);
 
             if ( pushNotificationToken === null ){
               return;
             }
 
-            token = (await Notifications.getExpoPushTokenAsync()).data;
+            const token = (await Notifications.getExpoPushTokenAsync({experienceId: '@spotifiuby-t2/Spotifiuby'})).data;
 
             const params = {
               idEmissor: idReceptor,
@@ -88,22 +88,22 @@ export default ChatScreen = ({navigation}) =>{
               method: 'POST',
               headers: constants.JSON_HEADER,
               body: JSON.stringify(body)
-              
+
             })
             .then(res => res.json())
             .then(res => console.log(res));
 
-            
+
           }, []);
-        
+
         const renderSend = (props) =>{
             return(
                 <Send
                     {...props}>
                     <View>
-                        <MaterialCommunityIcons  
-                            name='send-circle' 
-                            size={45} 
+                        <MaterialCommunityIcons
+                            name='send-circle'
+                            size={45}
                             color='#1338be'/>
                     </View>
                 </Send>
@@ -115,7 +115,7 @@ export default ChatScreen = ({navigation}) =>{
                 <InputToolbar {...props} placeholder='Mensaje'/>
             );
         }
-    
+
         return(
             <View style={{backgroundColor: '#f5fcff', flex: 1}}>
             <View style={{backgroundColor: 'darkblue', height: 120}}>
@@ -123,7 +123,7 @@ export default ChatScreen = ({navigation}) =>{
                     <View style={{marginLeft: 13}}></View>
                     <ProfilePicture
                         uid={idReceptor}
-                        name={nameReceptor} 
+                        name={nameReceptor}
                         surname={surnameReceptor}
                         style={styles.avatar}
                         />
@@ -131,7 +131,7 @@ export default ChatScreen = ({navigation}) =>{
                         {`${nameReceptor} ${surnameReceptor}`}
                     </Text>
                 </View>
-                
+
             </View>
             <GiftedChat
                 messages={messages}
@@ -147,7 +147,7 @@ export default ChatScreen = ({navigation}) =>{
                     return (
                       <Bubble
                         {...props}
-              
+
                         textStyle={{
                           right: {
                             color: 'white',
@@ -168,12 +168,12 @@ export default ChatScreen = ({navigation}) =>{
                     );
                   }}
 
-                
+
           />
           </View>
         )
       }
-  
+
       const styles =StyleSheet.create(
         {
           avatar: {
