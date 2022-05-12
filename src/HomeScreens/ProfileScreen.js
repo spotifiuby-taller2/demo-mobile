@@ -101,9 +101,6 @@ import { useAuthUser } from '../context/AuthContext';
 
         },[navigation]);
 
-        console.log(userState.uid);
-        console.log(userState.userType);
-
         return(
           <View style={styles.container}>
           <SafeAreaView>
