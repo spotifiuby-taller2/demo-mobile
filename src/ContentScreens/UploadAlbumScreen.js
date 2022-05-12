@@ -1,4 +1,4 @@
-import {ScrollView, View} from "react-native";
+import {ScrollView, StyleSheet, View} from "react-native";
 import {Button, Divider, Text, TextInput, Title} from "react-native-paper";
 import React, {useState} from "react";
 import {
@@ -85,7 +85,7 @@ const UploadAlbumScreen = ({navigation}) => {
   }
 
   return (
-    <View style={containerStyle}>
+    <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Title style={titleStyle}>Subir nuevo album</Title>
 
@@ -153,7 +153,14 @@ const UploadAlbumScreen = ({navigation}) => {
           <Text style={buttonTextStyle}>{isLoading ? 'Subiendo...' : 'Subir'}</Text>
         </Button>
       </ScrollView>
-    </View>);
+    </View>
+  );
 }
 
+const styles = StyleSheet.create({
+  container: {
+    ...containerStyle,
+    paddingTop: 30
+  }
+})
 export default UploadAlbumScreen;

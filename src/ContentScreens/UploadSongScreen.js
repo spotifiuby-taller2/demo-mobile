@@ -67,51 +67,56 @@ const UploadSongScreen = () => {
     setIsLoading(false);
   }
 
-  return (<View style={styles.container}>
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <Title style={styles.title}>Subir nueva canción</Title>
-      <TextInput
-        name='Titulo'
-        label='Titulo*'
-        value={title.value}
-        onChangeText={newText => setTitle({value: newText, error: null})}
-        mode='outlined'
-        error={title.error !== null}/>
-      {title.error && (<Text style={{color: 'red'}}>{title.error}</Text>)}
-      <TextInput
-        name='Descripción'
-        label='Descripción'
-        value={description}
-        onChangeText={newText => setDescription(newText)}
-        mode='outlined'/>
-      <View style={{marginBottom: 5}}/>
-      <MultiSelection selectedElements={artists}
-                      placeholder={"Buscar artistas"}
-                      renderElement={artist => (<Text>{`${artist.name} ${artist.surname}`}</Text>)}
-                      getAllElements={() => getArtists().then(b => b.users)}
-                      elementFilter={filterArtist}
-                      elementCallback={{
-                        add: artist => setArtists([...artists, artist]),
-                        remove: artist => setArtists(artists.filter(a => a.id !== artist.id)),
-                        clear: () => setArtists([]),
-                      }}
-      />
-      <View style={{marginBottom: 5}}/>
-      <FilePicker title={'Elegir canción'} mimeType={'audio/*'} icon={'file-music'}
-                  setFileCallback={handleDocumentPick}/>
-      <Button mode='contained'
-              style={styles.button}
-              onPress={handleUpload}
-              loading={isLoading}
-              disabled={isLoading}>
-        <Text style={styles.buttonText}>{isLoading ? 'Subiendo...' : 'Subir'}</Text>
-      </Button>
-    </ScrollView>
-  </View>);
+  return (
+    <View style={styles.container}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Title style={styles.title}>Subir nueva canción</Title>
+        <TextInput
+          name='Titulo'
+          label='Titulo*'
+          value={title.value}
+          onChangeText={newText => setTitle({value: newText, error: null})}
+          mode='outlined'
+          error={title.error !== null}/>
+        {title.error && (<Text style={{color: 'red'}}>{title.error}</Text>)}
+        <TextInput
+          name='Descripción'
+          label='Descripción'
+          value={description}
+          onChangeText={newText => setDescription(newText)}
+          mode='outlined'/>
+        <View style={{marginBottom: 5}}/>
+        <MultiSelection selectedElements={artists}
+                        placeholder={"Buscar artistas"}
+                        renderElement={artist => (<Text>{`${artist.name} ${artist.surname}`}</Text>)}
+                        getAllElements={() => getArtists().then(b => b.users)}
+                        elementFilter={filterArtist}
+                        elementCallback={{
+                          add: artist => setArtists([...artists, artist]),
+                          remove: artist => setArtists(artists.filter(a => a.id !== artist.id)),
+                          clear: () => setArtists([]),
+                        }}
+        />
+        <View style={{marginBottom: 5}}/>
+        <FilePicker title={'Elegir canción'} mimeType={'audio/*'} icon={'file-music'}
+                    setFileCallback={handleDocumentPick}/>
+        <Button mode='contained'
+                style={styles.button}
+                onPress={handleUpload}
+                loading={isLoading}
+                disabled={isLoading}>
+          <Text style={styles.buttonText}>{isLoading ? 'Subiendo...' : 'Subir'}</Text>
+        </Button>
+      </ScrollView>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-  container: containerStyle,
+  container: {
+    ...containerStyle,
+    paddingTop: 30
+  },
   title: titleStyle,
   button: {
     ...buttonStyle,
