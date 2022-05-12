@@ -1,9 +1,9 @@
 import {requestToGateway} from '../others/utils';
-import {USERS_HOST} from '../others/constants';
+import constants from '../others/constants';
 
 
 const getArtists = () => {
-  return requestToGateway('GET', `${USERS_HOST}/users/artistlist`)
+  return requestToGateway('GET', constants.USERS_HOST + constants.APP_ARTIST_LIST_URL)
     .then(response => {
       if (response.status !== 200) {
         console.log(`Response error with status ${response.status}`)

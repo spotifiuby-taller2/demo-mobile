@@ -8,7 +8,6 @@ import UserListScreen from '../HomeScreens/UserListScreen';
 import 'react-native-gesture-handler'
 import {useAuthUser} from '../context/AuthContext'
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import ContentScreen from "../HomeScreens/ContentScreen";
 import ArtistsListTab from "./ArtistsListTab"
 import { checkAuthTokenExpirationTime } from '../others/utils'
     
@@ -41,7 +40,6 @@ export default Menu = () =>{
             <Drawer.Screen name='Perfil' component={ProfileScreen} initialParams={{uid: userState.uid}}/>
             <Drawer.Screen name='Usuarios' component={UserListScreen} />
             <Drawer.Screen name='Artistas' component={ArtistsListTab} />
-            <Drawer.Screen name='Crear contenido' component={ContentScreen} />
         </Drawer.Navigator>
     )
 }

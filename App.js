@@ -176,11 +176,10 @@ export default function App() {
                 <AuthStack.Screen name='HomeNavStack' component={HomeNavStack}/>
               )
             }
-              { /* <AuthStack.Screen name='UploadSong' component={UploadSongScreen}/> */ }
             </>
           </AuthStack.Navigator>
         </NavigationContainer>
         </PaperProvider>
       </AuthContext.Provider>
   );
-};
+}
