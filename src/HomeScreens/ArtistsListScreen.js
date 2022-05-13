@@ -1,53 +1,80 @@
-import {
-    View,
-    ScrollView,
-    SafeAreaView,
-  } from 'react-native';
-  import React, {useEffect, useState} from 'react'
-  import constants from '../others/constants'
+import {SafeAreaView, ScrollView, StyleSheet, View,} from 'react-native';
+import React, {useEffect, useState} from 'react'
+import constants from '../others/constants'
 import {getToGateway} from "../others/utils";
 import UserChip from '../Components/UserChip';
 import {containerStyle} from "../styles/genericStyles";
+import {Searchbar} from "react-native-paper";
 
-export default ArtistListScreen = ({navigation}) =>{
+export default ArtistListScreen = ({navigation}) => {
 
-    const [usersList, setList] = useState([]);
+  const [usersList, setList] = useState([]);
+  const [text, setText] = useState('')
 
-    useEffect(()=>{
-        
-        function getAllUsers(){
+  useEffect(() => {
 
-            getToGateway(constants.USERS_HOST + constants.APP_ARTIST_LIST_URL,
-                "").then(res => {
-                if (res.error !== undefined) {
-                    alert(res.error);
-                } else {
-                    setList(res.users);
-                }
-            });
+    function getAllUsers() {
+
+      getToGateway(constants.USERS_HOST + constants.APP_ARTIST_LIST_URL,
+        "").then(res => {
+        if (res.error !== undefined) {
+          alert(res.error);
+        } else {
+          setList(res.users);
         }
+      });
+    }
 
-        navigation.addListener('focus',
-            ()=>{
-                getAllUsers();
-            });
-        
-        },[navigation]);
+    navigation.addListener('focus',
+      () => {
+        getAllUsers();
+      });
 
-    return(
-        <View style={containerStyle}>
-            <SafeAreaView>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <View>
-                        {
-                            usersList.map( (user, id)=>{
-                                return (
-                                    <UserChip id={id} key={id} user={user} navigation={navigation}/>
-                                )})
-                        }
-                    </View>
-                </ScrollView>
-            </SafeAreaView>
-        </View>
-    )
+  }, [navigation]);
+
+
+  const filterArtists = text => {
+    text = text.toLowerCase();
+    return a => a.name.toLowerCase().includes(text) || a.surname.toLowerCase().includes(text);
+  }
+
+  return (
+    <View style={styles.container}>
+      <SafeAreaView>
+        <Searchbar onChangeText={setText}
+                   placeholder={"Buscar artistas"}
+                   inputStyle={{}}
+                   containerStyle={{}}
+                   inputContainerStyle={{}}
+        />
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View>
+            <View style={{marginBottom: 10}}/>
+            <ScrollView showsVerticalScrollIndicator={true}>
+              {
+                usersList
+                  .filter(filterArtists(text))
+                  .map((user, id) => {
+                  return (
+                    <UserChip id={id} key={id} user={user} navigation={navigation}/>
+                  )
+                })
+              }
+            </ScrollView>
+
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </View>
+  )
 }
+
+const styles = StyleSheet.create(
+  {
+    container: {
+      ...containerStyle,
+      backgroundColor: 'steelblue',
+      paddingTop: 5
+    }
+  }
+)
