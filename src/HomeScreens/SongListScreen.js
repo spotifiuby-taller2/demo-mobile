@@ -4,6 +4,7 @@ import constants from "../others/constants";
 import {SafeAreaView, ScrollView, View} from "react-native";
 import {containerStyle} from "../styles/genericStyles";
 import SongChip from "../Components/SongChip";
+import {Text} from "react-native-paper";
 
 const SongListScreen = ({navigation}) => {
     const [songList, setSongList] = useState([]);
@@ -30,7 +31,6 @@ const SongListScreen = ({navigation}) => {
 
     return (
         <View style={containerStyle}>
-            <SafeAreaView>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View>
                         {
@@ -44,7 +44,6 @@ const SongListScreen = ({navigation}) => {
                         }
                     </View>
                 </ScrollView>
-            </SafeAreaView>
         </View>
     )
 }
