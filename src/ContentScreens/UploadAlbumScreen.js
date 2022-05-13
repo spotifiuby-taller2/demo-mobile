@@ -6,7 +6,6 @@ import {
   buttonTextStyle,
   containerStyle,
   inputStyle,
-  spacerStyle,
   titleStyle
 } from '../styles/genericStyles';
 import FilePicker from "../Components/FilePicker";
