@@ -16,16 +16,42 @@ import EditProfileScreen from '../HomeScreens/EditProfileScreen';
 import ChatScreen from '../HomeScreens/ChatScreen';
 import * as Notifications from 'expo-notifications'
 import * as Device from 'expo-device';
+import TrackPlayer, {Capability} from 'react-native-track-player';
+
+const setupTrackPlayer = async () => {
+  await TrackPlayer.setupPlayer();
+  await TrackPlayer.updateOptions({
+    stopWithApp: true,
+    capabilities: [
+      Capability.Play,
+      Capability.Pause,
+      Capability.SkipToNext,
+      Capability.SkipToPrevious,
+      Capability.Stop,
+      Capability.SeekTo,
+    ],
+    compactCapabilities: [Capability.Play, Capability.Pause],
+  });
+  console.log("Track player set up correctly")
+}
 
 const HomeStack = createNativeStackNavigator();
 
-export default HomeNavStack = () =>{
+const HomeNavStack = () =>{
 
-    const {userState, setUserBasicInfo} = useAuthUser();
-    const [expoPushToken, setExpoPushToken] = useState('');
+  const {userState, setUserBasicInfo} = useAuthUser();
+  const [expoPushToken, setExpoPushToken] = useState('');
+
+  useEffect(() => {
+    setupTrackPlayer();
+    return async () => {
+      await TrackPlayer.destroy();
+      console.log("Track player destroyed correctly")
+    }
+  }, []);
 
 
-    let registerForPushNotifications = async ()=>{
+  let registerForPushNotifications = async ()=>{
       let token;
 
       if (Device.isDevice){
@@ -126,3 +152,5 @@ export default HomeNavStack = () =>{
         </HomeStack.Navigator>
     )
 }
+
+export default HomeNavStack;

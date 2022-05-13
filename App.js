@@ -1,6 +1,5 @@
 import 'expo-dev-client';
 import 'react-native-gesture-handler'
-import TrackPlayer, {Capability} from 'react-native-track-player';
 import React, {useEffect, useReducer, useMemo} from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -28,22 +27,6 @@ const initialState = ()=>{
       surname: null
   }
 };
-
-const setupTrackPlayer = async () => {
-  await TrackPlayer.setupPlayer();
-  await TrackPlayer.updateOptions({
-    stopWithApp: true,
-    capabilities: [
-      Capability.Play,
-      Capability.Pause,
-      Capability.SkipToNext,
-      Capability.SkipToPrevious,
-      Capability.Stop,
-      Capability.SeekTo,
-    ],
-    compactCapabilities: [Capability.Play, Capability.Pause],
-  });
-}
 
 const reducer = (state = initialState(), action = {})=>{
 
@@ -84,11 +67,6 @@ const reducer = (state = initialState(), action = {})=>{
 export default function App() {
 
   const [userState, dispatch] = useReducer(reducer, reducer());
-
-  useEffect(() => {
-    setupTrackPlayer();
-    return () => TrackPlayer.destroy();
-  }, []);
 
   useEffect(()=>{
     const bootstrapAsync = async ()=>{
