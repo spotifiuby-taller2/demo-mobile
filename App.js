@@ -14,6 +14,7 @@ import { Provider as PaperProvider } from 'react-native-paper';
 import { AuthContext } from './src/context/AuthContext';
 import * as SecureStore from 'expo-secure-store';
 import { auth, signOut} from './src/Firebase/firebase';
+import PlayerComponent from "./src/Components/PlayerComponent";
 
 const AuthStack = createNativeStackNavigator();
 
@@ -151,7 +152,7 @@ export default function App() {
                 </>
 
               ):(
-                <AuthStack.Screen name='HomeNavStack' component={HomeNavStack}/>
+                <AuthStack.Screen name='PlayerComponent' component={PlayerComponent}/>
               )
             }
             </>
