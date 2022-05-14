@@ -7,7 +7,7 @@ import { useAuthUser } from '../context/AuthContext';
 
 
 
-export default ProfilePicture = (props)=> {
+const ProfilePicture = (props)=> {
 
     const [selectedImage, setSelectedImage] = useState(null);
     const {userState} = useAuthUser();
@@ -71,3 +71,5 @@ const styles = StyleSheet.create(
         }
     }
 );
+
+export default ProfilePicture;

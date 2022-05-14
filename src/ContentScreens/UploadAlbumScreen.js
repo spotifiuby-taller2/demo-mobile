@@ -1,5 +1,5 @@
 import {ScrollView, StyleSheet, View} from "react-native";
-import {Button, Divider, Text, TextInput, Title} from "react-native-paper";
+import {Button, Text, TextInput, Title} from "react-native-paper";
 import React, {useState} from "react";
 import {
   buttonStyle,

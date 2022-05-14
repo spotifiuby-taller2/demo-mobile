@@ -36,7 +36,6 @@ export default FavoriteArtistListScreen = ({navigation}) => {
 
   const filterArtists = text => {
     text = text.toLowerCase();
-    console.log(text)
     return a => a.name.toLowerCase().includes(text) || a.surname.toLowerCase().includes(text);
   }
 

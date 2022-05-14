@@ -6,8 +6,7 @@ import UserChip from '../Components/UserChip';
 import {containerStyle} from "../styles/genericStyles";
 import {Searchbar} from "react-native-paper";
 
-export default ArtistListScreen = ({navigation}) => {
-
+const ArtistListScreen = ({navigation}) => {
   const [usersList, setList] = useState([]);
   const [text, setText] = useState('')
 
@@ -55,13 +54,12 @@ export default ArtistListScreen = ({navigation}) => {
                 usersList
                   .filter(filterArtists(text))
                   .map((user, id) => {
-                  return (
-                    <UserChip id={id} key={id} user={user} navigation={navigation}/>
-                  )
-                })
+                    return (
+                      <UserChip id={id} key={id} user={user} navigation={navigation}/>
+                    )
+                  })
               }
             </ScrollView>
-
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -78,3 +76,5 @@ const styles = StyleSheet.create(
     }
   }
 )
+
+export default ArtistListScreen;
