@@ -70,11 +70,10 @@ export default ChatScreen = ({navigation}) =>{
               pushNotificationToken: token,
             }
 
-            console.log(params);
-
             const body = {
               to: `ExponentPushToken[${pushNotificationToken}]`,
               title: 'Spotifiuby',
+              sound: 'default',
               body: `${nameEmissor} ${surnameEmissor} te ha enviado mensajes`,
               data: {
                   type: 'chat',

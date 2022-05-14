@@ -75,7 +75,7 @@ export default function App() {
         let userId;
 
     try{
-        userToken = await SecureStore.getItemAsync('authToken');
+        userToken = await SecureStore.getItemAsync('token');
         userId = await SecureStore.getItemAsync('uid');
     }
     catch(err){
@@ -102,15 +102,15 @@ export default function App() {
             let userToken;
             let userId;
 
-            try{
-                userToken = await SecureStore.getItemAsync('authToken');
 
+            try{
+                userToken = await SecureStore.getItemAsync('token');
                 if (! userToken){
-                    await SecureStore.setItemAsync('authToken', token);
-                    userToken = await SecureStore.getItemAsync('authToken');
-                    await SecureStore.setItemAsync('uid', uid);
-                    userId = await SecureStore.getItemAsync('uid');
-                    await SecureStore.setItemAsync('tokenTimestamp', JSON.stringify(Date.now()));
+                    await SecureStore.setItemAsync('token', token);
+                    userToken = await SecureStore.getItemAsync('token');
+                    await SecureStore.setItemAsync('userId', uid);
+                    userId = await SecureStore.getItemAsync('userId');
+                    await SecureStore.setItemAsync('signInTimestamp', JSON.stringify(Date.now()));
                 }
             }
             catch(err){
@@ -120,9 +120,9 @@ export default function App() {
             dispatch({type: 'SIGN_IN', token: userToken, uid: userId});
             },
         signOut: async ()=>{
-            await SecureStore.deleteItemAsync('authToken');
-            await SecureStore.deleteItemAsync('uid');
-            await SecureStore.deleteItemAsync('tokenTimestamp');
+            await SecureStore.deleteItemAsync('token');
+            await SecureStore.deleteItemAsync('userId');
+            await SecureStore.deleteItemAsync('signInTimestamp');
             await signOut(auth);
             dispatch({type: 'SIGN_OUT'});
         },
