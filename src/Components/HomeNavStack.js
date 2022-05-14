@@ -16,24 +16,7 @@ import EditProfileScreen from '../HomeScreens/EditProfileScreen';
 import ChatScreen from '../HomeScreens/ChatScreen';
 import * as Notifications from 'expo-notifications'
 import * as Device from 'expo-device';
-import TrackPlayer, {Capability} from 'react-native-track-player';
-
-const setupTrackPlayer = async () => {
-  await TrackPlayer.setupPlayer();
-  await TrackPlayer.updateOptions({
-    stopWithApp: true,
-    capabilities: [
-      Capability.Play,
-      Capability.Pause,
-      Capability.SkipToNext,
-      Capability.SkipToPrevious,
-      Capability.Stop,
-      Capability.SeekTo,
-    ],
-    compactCapabilities: [Capability.Play, Capability.Pause],
-  });
-  console.log("Track player set up correctly")
-}
+import NowPlayingBar from "./NowPlayingBar";
 
 const HomeStack = createNativeStackNavigator();
 
@@ -41,15 +24,6 @@ const HomeNavStack = () =>{
 
   const {userState, setUserBasicInfo} = useAuthUser();
   const [expoPushToken, setExpoPushToken] = useState('');
-
-  useEffect(() => {
-    setupTrackPlayer();
-    return async () => {
-      await TrackPlayer.destroy();
-      console.log("Track player destroyed correctly")
-    }
-  }, []);
-
 
   let registerForPushNotifications = async ()=>{
       let token;
@@ -141,7 +115,8 @@ const HomeNavStack = () =>{
 
     /*Todas las pantallas de la Home van aca*/
     return(
-        <HomeStack.Navigator screenOptions={{headerShown: false}}>
+        <>
+          <HomeStack.Navigator screenOptions={{headerShown: false}}>
             <HomeStack.Screen name='Menu' component={Menu} />
             <HomeStack.Screen name='HomeScreen' component={HomeScreen} />
             <HomeStack.Screen name='ProfileScreen' component={ProfileScreen} initialParams={{uid: userState.uid}}/>
@@ -149,7 +124,9 @@ const HomeNavStack = () =>{
             <HomeStack.Screen name='ContentScreen' component={ContentScreen} />
             <HomeStack.Screen name='EditProfileScreen' component={EditProfileScreen}/>
             <HomeStack.Screen name='ChatScreen' component={ChatScreen}/>
-        </HomeStack.Navigator>
+          </HomeStack.Navigator>
+          <NowPlayingBar />
+        </>
     )
 }
 

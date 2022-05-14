@@ -7,10 +7,9 @@ import {
 } from 'react-native';
 import React, {useEffect} from 'react'
 import imageSpotifiuby from '../../assets/SpotifiubyIcon.png'
-import {Title, Text, Button} from 'react-native-paper'
+import {Text, Button} from 'react-native-paper'
 import {useAuthUser} from '../context/AuthContext';
 import * as Notifications from 'expo-notifications'
-import TrackPlayer from "react-native-track-player";
 
 
 const HomeScreen = ({navigation}) => {
@@ -27,12 +26,6 @@ const HomeScreen = ({navigation}) => {
   }, [])
 
 
-  const track = {
-    url: 'https://firebasestorage.googleapis.com/v0/b/fir-firebase-acc6b.appspot.com/o/c33a901d-ce0c-4d76-a1c1-52dde342d07b?alt=media&token=14fa0c43-d859-4d7f-b1b7-e411eaba5037', // Load media from the network
-    title: 'Test song',
-    artist: 'test artist',
-  };
-
   return (
     <View style={styles.container}>
       <SafeAreaView>
@@ -44,13 +37,6 @@ const HomeScreen = ({navigation}) => {
           <Button style={styles.button} mode='contained' onPress={() => signOut()}>
             <Text>
               SALIR
-            </Text>
-          </Button>
-          <Button style={styles.button} mode='contained' onPress={() => {
-            TrackPlayer.add(track).then(_ => TrackPlayer.play())
-          }}>
-            <Text>
-              TEST PLAY
             </Text>
           </Button>
         </ScrollView>
