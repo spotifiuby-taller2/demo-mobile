@@ -33,11 +33,15 @@ const USERS_LIST_URL = USERS_URL + "/list";
 const APP_USERS_LIST_URL = USERS_URL + "/applist";
 const APP_ARTIST_LIST_URL = USERS_URL + "/artistlist";
 const ARTIST_QUERY = USERS_URL + "/artist";
+const EMISSOR_PARAM = "idEmissor=";
+const RECEIVER_PARAM = "idReceptor=";
 const ARTIST_NAME_PARAM = "name=";
 const APP_FAV_ARTIST_LIST_URL = USERS_URL + "/favartistlist";
 const REDIRECT_URL = "/redirect";
 const APP_FAV_ARTIST_URL = USERS_URL + "/favartist";
 const PUSH_NOTIFICATION_TOKEN_URL = PROFILE_URL + "/pushnotificationtoken";
+const NOTIFICATION_LIST_URL = USERS_URL + "/notificationlist"
+
 
 
 const SERVICES_HOST = (__DEV__)
@@ -56,6 +60,8 @@ const MY_API_KEY="13a6bcee5bd256b05e451bde47f45a68e8bee660777f349f15f493b2873999
 
 const LISTENER = "listener";
 const ARTIST = "artist";
+
+const DUPLICATE_NOTIFICATION_ERROR = 'SequelizeUniqueConstraintError: llave duplicada viola restricción de unicidad «notifications_pkey»';
 
 
 module.exports = {
@@ -91,5 +97,9 @@ module.exports = {
   ARTIST,
   ARTIST_QUERY,
   ARTIST_NAME_PARAM,
-  PUSH_NOTIFICATION_TOKEN_URL
+  PUSH_NOTIFICATION_TOKEN_URL,
+  NOTIFICATION_LIST_URL,
+  EMISSOR_PARAM,
+  RECEIVER_PARAM,
+  DUPLICATE_NOTIFICATION_ERROR
 }

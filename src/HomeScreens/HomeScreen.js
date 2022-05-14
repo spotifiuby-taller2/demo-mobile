@@ -11,6 +11,16 @@ import {Title, Text, Button} from 'react-native-paper'
 import {useAuthUser} from '../context/AuthContext';
 import * as Notifications from 'expo-notifications'
 import TrackPlayer from "react-native-track-player";
+import constants from '../others/constants'
+import { postToGateway } from '../others/utils';
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
 
 
 const HomeScreen = ({navigation}) => {
@@ -18,12 +28,34 @@ const HomeScreen = ({navigation}) => {
   const {signOut} = useAuthUser();
 
   useEffect(() => {
-    Notifications.addNotificationResponseReceivedListener(notification => {
-      console.log(notification.notification.request.content.data);
+
+    const subcriptionNotificationReceived = Notifications.addNotificationReceivedListener(notification=> {
+      const {type, params, screenName} = notification.request.content.data;
+      const body = {
+        idEmissor: params.idEmissor,
+        idReceptor: params.idReceptor,
+        redirectTo: constants.USERS_HOST + constants.NOTIFICATION_LIST_URL
+      }
+
+      postToGateway(body, 'POST')
+        .then(res => {
+          if ( res.error !== undefined && res.error !== constants.DUPLICATE_NOTIFICATION_ERROR  ){
+            alert(res.error);
+          }
+        })
+    })
+
+
+    const subcriptionNotificationClicked = Notifications.addNotificationResponseReceivedListener(notification => {
       const {type, params, screenName} = notification.notification.request.content.data;
 
       navigation.navigate(screenName, params);
     });
+
+    return () => {
+      subcriptionNotificationClicked.remove();
+      subcriptionNotificationReceived.remove();
+    };
   }, [])
 
 

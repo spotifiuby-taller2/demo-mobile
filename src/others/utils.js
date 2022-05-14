@@ -108,7 +108,7 @@ const validateFieldNotBlank = (fieldName, field, setField) => {
 
 async function checkAuthTokenExpirationTime(){
 
-    const begin = Number(await SecureStore.getItemAsync("tokenTimestamp"));
+    const begin = Number(await SecureStore.getItemAsync("signInTimestamp"));
     const now = Date.now()
     const dif = now - begin;
 

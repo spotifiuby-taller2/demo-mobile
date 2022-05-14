@@ -14,6 +14,7 @@ import { getToGateway, postToGateway } from '../others/utils';
 import constants from '../others/constants'
 import EditProfileScreen from '../HomeScreens/EditProfileScreen';
 import ChatScreen from '../HomeScreens/ChatScreen';
+import NotificationListScreen from '../HomeScreens/NotificationListScreen';
 import * as Notifications from 'expo-notifications'
 import * as Device from 'expo-device';
 
@@ -69,7 +70,6 @@ export default HomeNavStack = () =>{
         str.indexOf(']'),
       );
 
-      console.log(token);
       const requestBody = {
         token: token,
         redirectTo: constants.USERS_HOST + constants.PUSH_NOTIFICATION_TOKEN_URL
@@ -101,7 +101,7 @@ export default HomeNavStack = () =>{
                         + userState.uid);
         }
         getUserBasicInfo()
-          .then(res => setUserBasicInfo(res.type, res.name, res.surname));
+          .then(res =>setUserBasicInfo(res.type, res.name, res.surname));
 
 
       registerForPushNotifications()
@@ -123,6 +123,7 @@ export default HomeNavStack = () =>{
             <HomeStack.Screen name='ContentScreen' component={ContentScreen} />
             <HomeStack.Screen name='EditProfileScreen' component={EditProfileScreen}/>
             <HomeStack.Screen name='ChatScreen' component={ChatScreen}/>
+            <HomeStack.Screen name='NotificationListScreen' component={NotificationListScreen}/>
         </HomeStack.Navigator>
     )
 }

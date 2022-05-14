@@ -101,6 +101,7 @@ import { useAuthUser } from '../context/AuthContext';
 
         },[navigation]);
 
+        
         return(
           <View style={styles.container}>
           <SafeAreaView>
@@ -175,25 +176,35 @@ import { useAuthUser } from '../context/AuthContext';
                 { 
                   (userState.uid !== profile.id) &&
 
-                  (<Button 
-                      mode='contained'
-                      color='#fdfcff'
-                      style={{width: 210, alignSelf: 'center', marginTop: 30, marginBottom: 30}} 
-                      onPress={()=>{navigation.navigate('ChatScreen', 
-                        {
-                          idEmissor: userState.uid,
-                          idReceptor: profile.id,
-                          nameReceptor:  profile.name,
-                          surnameReceptor: profile.surname,
-                          nameEmissor: userState.name,
-                          surnameEmissor: userState.surname,
-                          pushNotificationToken: profile.pushNotificationToken
-                        })
-                        }}>
-                      <Text>Abrir Chat Privado</Text>
-                  </Button>)
+                  (
+                  <View>
+                    <Button 
+                        mode='contained'
+                        color='#fdfcff'
+                        style={{width: 210, alignSelf: 'center', marginTop: 30, marginBottom: 30}} 
+                        onPress={()=>{navigation.navigate('ChatScreen', 
+                          {
+                            idEmissor: userState.uid,
+                            idReceptor: profile.id,
+                            nameReceptor:  profile.name,
+                            surnameReceptor: profile.surname,
+                            nameEmissor: userState.name,
+                            surnameEmissor: userState.surname,
+                            pushNotificationToken: profile.pushNotificationToken
+                          })
+                          }}>
+                        <Text>Abrir Chat Privado</Text>
+                    </Button>
+                  </View>)
                 
                 }
+                 <Button 
+                        mode='contained'
+                        color='#fdfcff'
+                        style={{width: 210, alignSelf: 'center', marginTop: 30, marginBottom: 30}} 
+                        onPress={()=>{navigation.navigate('NotificationListScreen')}}>
+                        <Text>Notificaciones</Text>
+                </Button>
                 
 
               </View>
