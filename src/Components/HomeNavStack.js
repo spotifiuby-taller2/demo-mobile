@@ -1,5 +1,5 @@
 import {
-  Platform,
+  Platform, StyleSheet, View
 } from 'react-native';
 import React, {useEffect, useState} from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -115,8 +115,8 @@ const HomeNavStack = () =>{
 
     /*Todas las pantallas de la Home van aca*/
     return(
-        <>
-          <HomeStack.Navigator screenOptions={{headerShown: false}}>
+        <View style={styles.container}>
+          <HomeStack.Navigator style={styles.homeStack} screenOptions={{headerShown: false}}>
             <HomeStack.Screen name='Menu' component={Menu} />
             <HomeStack.Screen name='HomeScreen' component={HomeScreen} />
             <HomeStack.Screen name='ProfileScreen' component={ProfileScreen} initialParams={{uid: userState.uid}}/>
@@ -125,9 +125,22 @@ const HomeNavStack = () =>{
             <HomeStack.Screen name='EditProfileScreen' component={EditProfileScreen}/>
             <HomeStack.Screen name='ChatScreen' component={ChatScreen}/>
           </HomeStack.Navigator>
-          <NowPlayingBar />
-        </>
+          <NowPlayingBar style={styles.bar}/>
+        </View>
     )
 }
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  homeStack: {
+    flex: 20,
+  },
+  bar: {
+    flex: 1,
+  }
+});
 
 export default HomeNavStack;
