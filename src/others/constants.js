@@ -38,6 +38,7 @@ const APP_USERS_LIST_URL = USERS_URL + "/applist";
 
 const APP_ARTIST_LIST_URL = USERS_URL + "/artistlist";
 const APP_FAV_ARTIST_LIST_URL = USERS_URL + "/favartistlist";
+const FAV_SONG = "/favsong";
 
 const REDIRECT_URL = "/redirect";
 const APP_FAV_ARTIST_URL = USERS_URL + "/favartist";
@@ -59,7 +60,6 @@ const MY_API_KEY="13a6bcee5bd256b05e451bde47f45a68e8bee660777f349f15f493b2873999
 
 const LISTENER = "listener";
 const ARTIST = "artist";
-
 
 module.exports = {
   USERS_HOST,
@@ -91,5 +91,6 @@ module.exports = {
   LISTENER,
   ARTIST,
   ALBUM_URL,
-  PLAYLIST_URL
+  PLAYLIST_URL,
+  FAV_SONG
 }

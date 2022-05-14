@@ -1,12 +1,12 @@
-import {ScrollView, View} from "react-native";
+import {ScrollView, TouchableOpacity} from "react-native";
 import {Button, Text} from 'react-native-paper';
 import React, { useEffect, useState } from 'react';
-import {getToGateway} from "../others/utils";
+import {getToGateway, postToGateway} from "../others/utils";
 import * as constants from "../others/constants";
 import {useRoute} from "@react-navigation/native";
 import * as styles from "../styles/contentStyle";
 import ArtistChip from "../Components/ArtistChip";
-import {TouchableOpacity} from "react-native-gesture-handler";
+import {useAuthUser} from "../context/AuthContext";
 
 const SongScreen = ({navigation}) => {
     const [songId, setSongId] = useState("");
@@ -26,6 +26,8 @@ const SongScreen = ({navigation}) => {
     const [link, setLink] = useState("");
 
     const route = useRoute();
+
+    const {userState} = useAuthUser();
 
     useEffect( () => {
         async function getSong() {
@@ -54,8 +56,18 @@ const SongScreen = ({navigation}) => {
             }, [navigation]);
     }, [] );
 
-    const agregarAFavoritos = () => {
+    const addToFavorites = async () => {
+        const response = await postToGateway({
+                                                songId: songId,
+                                                userId: userState.uid,
+                                                redirectTo: constants.MEDIA_HOST + constants.FAV_SONG
+                                            });
 
+        if (response.error !== undefined) {
+            alert("No se pudo agregar la canción a favoritos");
+        } else {
+            alert("Agregada a favoritos");
+        }
     }
 
     return (
@@ -85,7 +97,7 @@ const SongScreen = ({navigation}) => {
 
             <TouchableOpacity
                 onPress={ () => {
-                    agregarAFavoritos()
+                    addToFavorites().then()
                 } }
                 style={styles.contentButtonStyle}>
                 <Text style={styles.emojiStyle}>❤</Text>
