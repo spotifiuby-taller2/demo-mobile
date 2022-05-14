@@ -1,71 +1,52 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {StyleSheet, View, Text, Image} from "react-native";
 import {IconButton, ProgressBar} from "react-native-paper";
-import TrackPlayer, {
-  State,
-  Event,
-  usePlaybackState,
-  useTrackPlayerEvents,
-  useProgress,
-} from "react-native-track-player";
 import TextTicker from "react-native-text-ticker";
 import SwipeableView from "./SwipeableView";
+import usePlayer from "../Hooks/usePlayer";
 
 const NowPlayingBar = ({goToPlayer}) => {
 
-  const playerState = usePlaybackState();
-  const isPlaying = playerState === State.Playing;
-  const [currentTrack, setCurrentTrack] = useState({});
-  const { position, _, duration } = useProgress()
-  // TODO: fetch fav state for track id
-  const [isFav, setIsFav] = useState(false);
-
-  useTrackPlayerEvents([Event.PlaybackTrackChanged], async event => {
-    if (event.nextTrack != null) {
-      const track = await TrackPlayer.getTrack(event.nextTrack);
-      setCurrentTrack(track);
-    }
-  });
-
+  const player = usePlayer();
   return (
     <View style={styles.container}>
       <View style={styles.horizontalLayout}>
         <SwipeableView
           style={styles.songInfoArea}
           onPress={() => goToPlayer()}
-          onSwipeLeft={() => TrackPlayer.skipToNext()}
-          onSwipeRight={() => TrackPlayer.skipToPrevious()}
+          onSwipeLeft={() => player.skipToNext()}
+          onSwipeRight={() => player.skipToPrevious()}
         >
-          <Image style={styles.artwork} source={{uri: currentTrack.artwork}}/>
+          <Image style={styles.artwork} source={{uri: player.currentTrack.artwork}}/>
           <View style={styles.songInfo}>
             <TextTicker style={{fontSize: 18, fontWeight: 'bold'}} scroll={false}>
-              {currentTrack?.title ?? ''}
+              {player.currentTrack?.title ?? ''}
             </TextTicker>
-            <Text style={{fontSize: 16}}>{currentTrack?.artist ?? ''}</Text>
+            <Text style={{fontSize: 16}}>{player.currentTrack?.artist ?? ''}</Text>
           </View>
         </SwipeableView>
         <View style={styles.buttonArea}>
           {
             // TODO: set fav song
-            isFav ? (
-              <IconButton icon='heart' onPress={() => setIsFav(false)}/>
+            player.isFav ? (
+              <IconButton icon='heart' onPress={() => player.setIsFav(false)}/>
             ) : (
-              <IconButton icon='heart-outline' onPress={() => setIsFav(true)}/>
+              <IconButton icon='heart-outline' onPress={() => player.setIsFav(true)}/>
             )
           }
           {
-            isPlaying ?
-              (<IconButton icon='pause' onPress={() => {
-                TrackPlayer.pause();
+            player.isPlaying ?
+              (<IconButton icon='pause' disabled={player.isLoading} onPress={() => {
+                player.pause();
               }} />) :
-              (<IconButton icon='play' onPress={() => {
-                TrackPlayer.play();
+              (<IconButton icon='play' disabled={player.isLoading} onPress={() => {
+                player.play();
               }}/>)
           }
         </View>
       </View>
       <ProgressBar style={styles.progressBar}
-                   progress={(position ?? 0)/(duration ?? 1) || 0}
+                   progress={(player.position ?? 0)/(player.duration ?? 1) || 0}
                    indeterminate={false}
       />
     </View>
