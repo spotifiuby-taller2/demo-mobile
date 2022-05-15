@@ -42,6 +42,7 @@ const usePlayer = () => {
     pause: () => TrackPlayer.pause(),
     skipToNext: () => TrackPlayer.skipToNext(),
     skipToPrevious: () => TrackPlayer.skipToPrevious(),
+    seekTo: (s) => TrackPlayer.seekTo(s),
   };
 }
 

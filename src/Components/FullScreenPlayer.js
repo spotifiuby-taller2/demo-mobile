@@ -3,6 +3,7 @@ import {StyleSheet, View, Image} from "react-native";
 import {IconButton, Text} from "react-native-paper";
 import usePlayer from "../Hooks/usePlayer";
 import TextTicker from "react-native-text-ticker";
+import SongProgressBar from "./SongProgressBar";
 
 const FullScreenPlayer = ({navigation}) => {
   const player = usePlayer();
@@ -20,6 +21,7 @@ const FullScreenPlayer = ({navigation}) => {
           {player.currentTrack?.title ?? ''}
         </TextTicker>
         <Text style={{fontSize: 22}}>{player.currentTrack?.artist ?? ''}</Text>
+        <SongProgressBar position={player.position} duration={player.duration} setPosition={player.seekTo}/>
         <View style={styles.musicControl}>
           <IconButton icon='skip-previous' size={50} disabled={player.isLoading} onPress={() => {
             player.skipToPrevious();
