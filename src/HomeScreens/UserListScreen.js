@@ -1,4 +1,4 @@
-import {SafeAreaView, ScrollView, StyleSheet, View,} from 'react-native';
+import {FlatList, SafeAreaView, StyleSheet, View} from 'react-native';
 import React, {useEffect, useState} from 'react'
 import constants from '../others/constants'
 import {getToGateway} from "../others/utils";
@@ -6,7 +6,7 @@ import UserChip from '../Components/UserChip';
 import {Searchbar} from "react-native-paper";
 import {containerStyle} from "../styles/genericStyles";
 
-export default UserListScreen = ({navigation}) => {
+const UserListScreen = ({navigation}) => {
 
   const [usersList, setList] = useState([]);
   const [text, setText] = useState('')
@@ -42,22 +42,15 @@ export default UserListScreen = ({navigation}) => {
                    containerStyle={{}}
                    inputContainerStyle={{}}
         />
-        <ScrollView showsVerticalScrollIndicator={false}>
           <View>
             <View style={{marginBottom: 10}}/>
-            <ScrollView showsVerticalScrollIndicator={true}>
               {
-                usersList
-                  .filter(filterUsers(text))
-                  .map((user, id) => {
-                      return (
-                        <UserChip id={id} key={id} user={user} navigation={navigation}/>
-                      )
-                    })
+                <FlatList
+                  data={usersList.filter(filterUsers(text))}
+                  renderItem={({item, id}) => <UserChip id={id} key={id} user={item} navigation={navigation}/>}
+                />
               }
-            </ScrollView>
           </View>
-        </ScrollView>
       </SafeAreaView>
     </View>
   )
@@ -73,3 +66,5 @@ const styles = StyleSheet.create(
     }
   }
 )
+
+export default UserListScreen;
