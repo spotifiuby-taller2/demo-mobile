@@ -1,8 +1,9 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import FullScreenPlayer from "./FullScreenPlayer";
 import HomeNavStack from "./HomeNavStack";
 import TrackPlayer, {Capability, RepeatMode} from "react-native-track-player";
+import LoaderScreen from "./LoaderScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -54,15 +55,21 @@ const setUpTrackPlayer = async () => {
 
 const PlayerComponent = () => {
 
+  const [initialized, setInitialized] = useState(false);
+
   useEffect(() => {
     setUpTrackPlayer()
       .then(() => TrackPlayer.add(tracks))
-      .then(() => console.log('queue set'));
+      .then(() => console.log('queue set'))
+      .then(() => setInitialized(true));
     return () => {
       TrackPlayer.destroy();
     }
   }, []);
 
+  if (!initialized) {
+    return <LoaderScreen/>;
+  }
   return (
     <Stack.Navigator mode='modal' screenOptions={{headerShown: false}}>
       <Stack.Screen name='Main' component={HomeNavStack}/>

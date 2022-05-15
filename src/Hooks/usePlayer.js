@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import TrackPlayer, {
   State,
   Event,
@@ -16,6 +16,12 @@ const usePlayer = () => {
   const {position, duration} = useProgress()
   // TODO: fetch fav state for track id
   const [isFav, setIsFav] = useState(false);
+
+  useEffect(() => {
+    TrackPlayer.getCurrentTrack()
+      .then(trackIndex => TrackPlayer.getTrack(trackIndex))
+      .then(track => setCurrentTrack(track));
+  }, [playerState]);
 
   useTrackPlayerEvents([Event.PlaybackTrackChanged], async event => {
     if (event.nextTrack != null) {
