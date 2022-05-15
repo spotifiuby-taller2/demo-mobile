@@ -18,6 +18,7 @@ import NotificationListScreen from '../HomeScreens/NotificationListScreen';
 import * as Notifications from 'expo-notifications'
 import * as Device from 'expo-device';
 import NowPlayingBar from "./NowPlayingBar";
+import VerificationAccountScreen from "../HomeScreens/VerificationAccountScreen";
 
 const HomeStack = createNativeStackNavigator();
 
@@ -125,6 +126,7 @@ const HomeNavStack = () =>{
             <HomeStack.Screen name='EditProfileScreen' component={EditProfileScreen}/>
             <HomeStack.Screen name='ChatScreen' component={ChatScreen}/>
             <HomeStack.Screen name='NotificationListScreen' component={NotificationListScreen}/>
+            <HomeStack.Screen name='VerificationAccountScreen' component={VerificationAccountScreen}/>
           </HomeStack.Navigator>
           <NowPlayingBar style={styles.bar}/>
         </View>

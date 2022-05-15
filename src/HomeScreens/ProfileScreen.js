@@ -40,12 +40,12 @@ const ProfileScreen = ({navigation}) => {
     rap: false,
     photoUrl: '',
     pushNotificationToken: '',
-    isVerified: false
+    isVerified: false,
+    verificationVideoUrl: ''
   }
 
   const [profile, setProfile] = useState(initialState);
 
-  console.log(route.params.uid)
   useEffect(() => {
     function getProfile(userId) {
       getToGateway(constants.USERS_HOST + constants.PROFILE_URL
@@ -79,7 +79,8 @@ const ProfileScreen = ({navigation}) => {
               rap: res.rap,
               photoUrl: res.photoUrl,
               pushNotificationToken: res.pushNotificationToken,
-              isVerified: res.isVerified
+              isVerified: res.isVerified,
+              verificationVideoUrl: res.verificationVideoUrl
             };
             setProfile(newState);
             setRenderButton(true);
@@ -91,8 +92,6 @@ const ProfileScreen = ({navigation}) => {
       () => {
         getProfile(route.params.uid);
       });
-
-
   }, [navigation]);
 
   return (
@@ -166,9 +165,8 @@ const ProfileScreen = ({navigation}) => {
                 <Text>Editar Tu Perfil</Text>
               </Button>)
             }
-
             {
-              (userState.uid === profile.id && userState.userType === constants.ARTIST) &&
+              (userState.uid === profile.id && profile.isArtist) &&
 
               (<Button
                 mode='contained'
@@ -182,7 +180,6 @@ const ProfileScreen = ({navigation}) => {
             }
             {
               (userState.uid !== profile.id) &&
-
               (
                 <View>
                   <Button
@@ -204,17 +201,29 @@ const ProfileScreen = ({navigation}) => {
                     <Text>Abrir Chat Privado</Text>
                   </Button>
                 </View>)
-
             }
             <Button
               mode='contained'
               color='#fdfcff'
-              style={{width: 210, alignSelf: 'center', marginTop: 30, marginBottom: 30}}
+              style={{width: 177, alignSelf: 'center', marginTop: 15, marginBottom: 30}}
               onPress={() => {
                 navigation.navigate('NotificationListScreen')
               }}>
               <Text>Notificaciones</Text>
             </Button>
+            {
+              (userState.uid === profile.id && profile.isArtist && !profile.isVerified &&
+                (profile.verificationVideoUrl === undefined || profile.verificationVideoUrl === null || profile.verificationVideoUrl.length === 0)) &&
+              (<Button
+                mode='contained'
+                color='#fdfcff'
+                style={{width: 177, alignSelf: 'center', marginTop: 15, marginBottom: 30}}
+                onPress={() => {
+                  navigation.navigate('VerificationAccountScreen')
+                }}>
+                <Text>Verificar cuenta</Text>
+              </Button>)
+            }
 
 
           </View>

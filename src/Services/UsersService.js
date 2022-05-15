@@ -13,4 +13,15 @@ const getArtists = () => {
     });
 }
 
-export {getArtists};
+const uploadVerificationVideo = body => {
+  return requestToGateway('PATCH', `${constants.USERS_HOST}${constants.PROFILE_VERIFICATION_VIDEO_URL}`, body)
+    .then(response => {
+      if (response.status !== 200) {
+        console.log(`Response error with status ${response.status}`)
+        throw response;
+      }
+      return response.json();
+    });
+}
+
+export {getArtists, uploadVerificationVideo};
