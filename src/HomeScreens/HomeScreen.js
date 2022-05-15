@@ -7,13 +7,12 @@ import {containerStyle} from "../styles/genericStyles";
 import SongChip from "../Components/SongChip";
 import {Text} from "react-native-paper";
 
-const HomeScreen = ( {navigation} ) => {
-    const [songs, setSongs] = useState([]);
-    const {userState} = useAuthUser();
-    const songsRef = useRef();
-
-
 const HomeScreen = ({navigation}) => {
+  const [songs, setSongs] = useState([]);
+
+  const {userState} = useAuthUser();
+
+  const songsRef = useRef();
 
   const {signOut} = useAuthUser();
 
