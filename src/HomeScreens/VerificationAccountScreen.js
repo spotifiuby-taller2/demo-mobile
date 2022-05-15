@@ -3,7 +3,7 @@ import {ScrollView, StyleSheet, View} from "react-native";
 import {Button, Text, Title} from "react-native-paper";
 import FilePicker from "../Components/FilePicker";
 import {buttonStyle, buttonTextStyle, containerStyle, titleStyle} from "../styles/genericStyles";
-import {uploadVideo} from "../Services/CloudStorageService";
+import {uploadFile} from "../Services/CloudStorageService";
 import {useAuthUser} from "../context/AuthContext";
 import {uploadVerificationVideo} from '../Services/UsersService'
 
@@ -31,7 +31,7 @@ const VerificationAccountScreen = () => {
     }
     setIsLoading(true);
     try {
-      const fileUrl = await file.contentPromise.then(uploadVideo);
+      const fileUrl = await file.contentPromise.then(uploadFile);
       await uploadVerificationVideo({
         userId: userState.uid,
         verificationVideoUrl: fileUrl,
