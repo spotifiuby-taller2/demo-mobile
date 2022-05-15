@@ -9,7 +9,6 @@ import React, {useState, useEffect} from 'react'
 import { Button } from 'react-native-paper'
 import { getToGateway, postToGateway } from '../others/utils';
 import constants from '../others/constants'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
   
 export default FollowArtistButton = (props) =>{
@@ -80,7 +79,7 @@ export default FollowArtistButton = (props) =>{
             (<View style={{marginTop: 30, alignSelf: 'center'}}>
             <Button
               mode="contained"
-              color={followed? "purple":"violet"}
+              color={followed? "#18A8D8":"#AFEEEE"}
               style={{marginBottom: 10, width: 163}}
               onPress={handlePress}
               >

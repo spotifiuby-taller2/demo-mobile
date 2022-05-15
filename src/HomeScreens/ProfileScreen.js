@@ -242,7 +242,7 @@ const styles =StyleSheet.create(
   {
     containerArtist: {
       flex: 1,
-      backgroundColor: '#00CCFF'
+      backgroundColor: '#B0E0E6' 
     },
     containerListener: {
         flex: 1,
