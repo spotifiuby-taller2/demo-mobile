@@ -103,7 +103,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
         
         return(
-          <View style={styles.container}>
+          <View style={profile.isArtist? styles.containerArtist : styles.containerListener}>
           <SafeAreaView>
             <ScrollView showsVerticalScrollIndicator={false}>
               <View>
@@ -174,26 +174,25 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
                   disabled={true}
                   />
                 <Text style={styles.name}>{profile.name} {profile.surname}</Text>
-                <Text style={styles.usertype}>{(profile.isArtist)? 'Artista': 'Oyente'}</Text>
 
                 {profile.isListener && 
                       (
                       <>
                       <Text style={styles.text}>Intereses Musicales</Text>
                       <View style={{display:'flex', flexDirection:'row', justifyContent:'center', flexWrap: 'wrap'}}>
-                        {profile.metal && (<Chip style={styles.chip}><Text>Metal</Text></Chip>)}
-                        {profile.rock && (<Chip style={styles.chip}><Text>Rock</Text></Chip>)}
-                        {profile.salsa && (<Chip style={styles.chip}><Text>Salsa</Text></Chip>)}
-                        {profile.blues && (<Chip style={styles.chip}><Text>Blues</Text></Chip>)}
-                        {profile.reggeaton && (<Chip style={styles.chip}><Text>Reggeaton</Text></Chip>)}
-                        {profile.jazz && (<Chip style={styles.chip}><Text>Jazz</Text></Chip>)}
-                        {profile.punk && (<Chip style={styles.chip}><Text>Punk</Text></Chip>)}
-                        {profile.rap && (<Chip style={styles.chip}><Text>Rap</Text></Chip>)}
-                        {profile.pop && (<Chip style={styles.chip}><Text>Pop</Text></Chip>)}
-                        {profile.indie && (<Chip style={styles.chip}><Text>Indie</Text></Chip>)}
-                        {profile.classic && (<Chip style={styles.chip}><Text>Clásica</Text></Chip>)}
-                        {profile.electronic && (<Chip style={styles.chip}><Text>Electronica</Text></Chip>)}
-                        {profile.others && (<Chip style={styles.chip}><Text>Otros</Text></Chip>)}
+                        {profile.metal && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>Metal</Text></Chip>)}
+                        {profile.rock && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>Rock</Text></Chip>)}
+                        {profile.salsa && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>Salsa</Text></Chip>)}
+                        {profile.blues && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>Blues</Text></Chip>)}
+                        {profile.reggeaton && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>Reggeaton</Text></Chip>)}
+                        {profile.jazz && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>Jazz</Text></Chip>)}
+                        {profile.punk && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>Punk</Text></Chip>)}
+                        {profile.rap && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>Rap</Text></Chip>)}
+                        {profile.pop && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>Pop</Text></Chip>)}
+                        {profile.indie && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>Indie</Text></Chip>)}
+                        {profile.classic && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>Clásica</Text></Chip>)}
+                        {profile.electronic && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>Electronica</Text></Chip>)}
+                        {profile.others && (<View><Chip style={styles.chip}><Text>Otros</Text></Chip></View>)}
                       </View>
                       </>)
                 }
@@ -241,9 +240,13 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
   
 const styles =StyleSheet.create(
   {
-    container: {
+    containerArtist: {
       flex: 1,
-      backgroundColor: '#f5fcff'},
+      backgroundColor: '#00CCFF'
+    },
+    containerListener: {
+        flex: 1,
+        backgroundColor: '#f5fcff'},
     avatar: {
       marginTop: 30,
       alignSelf: 'center',
