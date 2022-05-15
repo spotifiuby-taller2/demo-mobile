@@ -3,7 +3,7 @@ import {
   } from 'react-native';
 import React, {useEffect} from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from '../HomeScreens/HomeScreen';
+import {HomeScreen} from '../HomeScreens/HomeScreen';
 import ProfileScreen from '../HomeScreens/ProfileScreen';
 import 'react-native-gesture-handler'
 import {useAuthUser} from '../context/AuthContext'

@@ -2,7 +2,7 @@ import {
     StyleSheet
   } from 'react-native';
 import React, {useState, useEffect} from 'react'
-import HomeScreen from '../HomeScreens/HomeScreen';
+import {HomeScreen} from '../HomeScreens/HomeScreen';
 import ProfileScreen from '../HomeScreens/ProfileScreen';
 import UserListScreen from '../HomeScreens/UserListScreen';
 import 'react-native-gesture-handler'

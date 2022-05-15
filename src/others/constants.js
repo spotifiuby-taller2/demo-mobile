@@ -46,6 +46,7 @@ const APP_FAV_ARTIST_URL = USERS_URL + "/favartist";
 const SONGS_URL = "/songs";
 const ALBUM_URL = "/albums";
 const PLAYLIST_URL = "/playlists";
+const FAVORITE_SONGS = "/favoritesongs";
 
 const JSON_HEADER = {
   'Content-Type': 'application/json',
@@ -92,5 +93,6 @@ module.exports = {
   ARTIST,
   ALBUM_URL,
   PLAYLIST_URL,
-  FAV_SONG
+  FAV_SONG,
+  FAVORITE_SONGS
 }
