@@ -21,7 +21,7 @@ import NowPlayingBar from "./NowPlayingBar";
 
 const HomeStack = createNativeStackNavigator();
 
-const HomeNavStack = ({navigation}) =>{
+const HomeNavStack = () =>{
 
   const {userState, setUserBasicInfo} = useAuthUser();
   const [expoPushToken, setExpoPushToken] = useState('');
@@ -126,7 +126,7 @@ const HomeNavStack = ({navigation}) =>{
             <HomeStack.Screen name='ChatScreen' component={ChatScreen}/>
             <HomeStack.Screen name='NotificationListScreen' component={NotificationListScreen}/>
           </HomeStack.Navigator>
-          <NowPlayingBar style={styles.bar} goToPlayer={() => navigation.navigate('Player')}/>
+          <NowPlayingBar style={styles.bar}/>
         </View>
     )
 }

@@ -4,20 +4,21 @@ import {IconButton, ProgressBar} from "react-native-paper";
 import TextTicker from "react-native-text-ticker";
 import SwipeableView from "./SwipeableView";
 import usePlayer from "../Hooks/usePlayer";
+import {useNavigation} from "@react-navigation/native";
 
-const NowPlayingBar = ({goToPlayer}) => {
-
+const NowPlayingBar = () => {
+  const navigation = useNavigation();
   const player = usePlayer();
   return (
     <View style={styles.container}>
       <View style={styles.horizontalLayout}>
         <SwipeableView
           style={styles.songInfoArea}
-          onPress={() => goToPlayer()}
+          onPress={() => navigation.navigate('Player')}
           onSwipeLeft={() => player.skipToNext()}
           onSwipeRight={() => player.skipToPrevious()}
         >
-          <Image style={styles.artwork} source={{uri: player.currentTrack.artwork}}/>
+          {player.currentTrack && <Image style={styles.artwork} source={{uri: player.currentTrack.artwork}}/>}
           <View style={styles.songInfo}>
             <TextTicker style={{fontSize: 18, fontWeight: 'bold'}} scroll={false}>
               {player.currentTrack?.title ?? ''}
@@ -38,7 +39,7 @@ const NowPlayingBar = ({goToPlayer}) => {
             player.isPlaying ?
               (<IconButton icon='pause' disabled={player.isLoading} onPress={() => {
                 player.pause();
-              }} />) :
+              }}/>) :
               (<IconButton icon='play' disabled={player.isLoading} onPress={() => {
                 player.play();
               }}/>)
@@ -46,7 +47,7 @@ const NowPlayingBar = ({goToPlayer}) => {
         </View>
       </View>
       <ProgressBar style={styles.progressBar}
-                   progress={(player.position ?? 0)/(player.duration ?? 1) || 0}
+                   progress={(player.position ?? 0) / (player.duration ?? 1) || 0}
                    indeterminate={false}
       />
     </View>
