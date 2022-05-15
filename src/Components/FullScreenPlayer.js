@@ -11,13 +11,13 @@ const FullScreenPlayer = ({navigation}) => {
     <View style={styles.container}>
       <View style={styles.topBar}>
         <IconButton icon='chevron-down' size={32} onPress={() => navigation.goBack()}/>
-        <Text style={{fontSize: 20}}>{player.currentTrack.album || 'Unknown album'}</Text>
+        <Text style={{fontSize: 20}}>{player.currentTrack.album || ''}</Text>
       </View>
       <View style={styles.artworkContainer}>
         <Image style={styles.artwork} source={{uri: player.currentTrack.artwork}} />
       </View>
       <View style={styles.bottom}>
-        <TextTicker style={{fontSize: 24, fontWeight: 'bold'}} scroll={false}>
+        <TextTicker style={{fontSize: 24, fontWeight: 'bold'}} scroll={false} bounce={false}>
           {player.currentTrack?.title ?? ''}
         </TextTicker>
         <Text style={{fontSize: 22}}>{player.currentTrack?.artist ?? ''}</Text>
@@ -28,10 +28,10 @@ const FullScreenPlayer = ({navigation}) => {
           }}/>
           {
             player.isPlaying ?
-              (<IconButton icon='pause' size={50} disabled={player.isLoading} onPress={() => {
+              (<IconButton style={{backgroundColor: 'black'}} color={'white'} icon='pause' size={53} disabled={player.isLoading} onPress={() => {
                 player.pause();
               }}/>) :
-              (<IconButton icon='play' size={50} disabled={player.isLoading} onPress={() => {
+              (<IconButton style={{backgroundColor: 'black'}} color={'white'} icon='play' size={53} disabled={player.isLoading} onPress={() => {
                 player.play();
               }}/>)
           }
@@ -66,10 +66,13 @@ const styles = StyleSheet.create({
   },
   bottom: {
     flex: 4,
+    marginLeft: 25,
+    marginRight: 25,
   },
   musicControl: {
     flexDirection: 'row',
     justifyContent: 'center',
+    alignItems: 'center',
   },
 })
 

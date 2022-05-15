@@ -8,7 +8,7 @@ const formatSeconds = s => new Date(s * 1000).toISOString().substring(14, 19);
 const SongProgressBar = ({position, duration, setPosition}) => {
   return (
     <View style={styles.container}>
-      <View style={{flex: 1, alignItems: 'flex-end'}}>
+      <View>
         <Text>{formatSeconds(position)}</Text>
       </View>
       <View style={styles.sliderContainer}>
@@ -19,7 +19,7 @@ const SongProgressBar = ({position, duration, setPosition}) => {
           step={1}
         />
       </View>
-      <View style={{flex: 1, alignItems: 'flex-start'}}>
+      <View>
         <Text style={styles.seconds}>{formatSeconds(duration)}</Text>
       </View>
     </View>
@@ -33,8 +33,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   sliderContainer: {
-    flex: 4,
     margin: 3,
+    flexGrow: 1,
   },
 });
 
