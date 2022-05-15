@@ -4,6 +4,7 @@ import {Avatar} from 'react-native-paper'
 import * as ImagePicker from 'expo-image-picker'
 import { uploadImage, getCurrentUser } from '../Firebase/firebase';
 import { useAuthUser } from '../context/AuthContext';
+import { roundToNearestPixel } from 'react-native/Libraries/Utilities/PixelRatio';
 
 
 
@@ -44,7 +45,7 @@ export default ProfilePicture = (props)=> {
             onPress={pickImage}
             mode='outlined'
             style={styles.button}
-            disabled={(props.uid !== userState.uid)}
+            disabled={(props.uid !== userState.uid && props.disabled)}
             >
             {( selectedImage === null )?
                 (<Avatar.Text

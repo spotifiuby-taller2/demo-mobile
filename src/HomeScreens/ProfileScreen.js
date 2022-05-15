@@ -5,13 +5,15 @@ import {
     SafeAreaView,
   } from 'react-native';
 import React, { useEffect, useState } from 'react'
-import { Text, Chip, Button } from 'react-native-paper'
+import { Text, Chip, Button, FAB } from 'react-native-paper'
 import { useRoute } from '@react-navigation/native';
 import constants from '../others/constants'
 import {getToGateway} from "../others/utils";
 import ProfilePicture from '../Components/ProfilePicture';
 import FollowArtistButton from '../Components/FollowArtistButton';
 import { useAuthUser } from '../context/AuthContext';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+
 
 
   export default ProfileScreen = ({navigation}) =>{
@@ -65,8 +67,6 @@ import { useAuthUser } from '../context/AuthContext';
                       id: res.id,
                       name: res.name,
                       surname: res.surname,
-                      email: res.email,
-                      phoneNumber: res.phoneNumber,
                       isListener: res.isListener,
                       isArtist: res.isArtist,
                       metal: res.metal,
@@ -107,17 +107,74 @@ import { useAuthUser } from '../context/AuthContext';
           <SafeAreaView>
             <ScrollView showsVerticalScrollIndicator={false}>
               <View>
+
+                  { 
+                      (userState.uid === profile.id) &&
+
+                      (
+                        <View style={{justifyContent: 'flex-end', flexDirection:'row'}}>
+                          <Button 
+                              mode='text'
+                              style={{width: 70, alignSelf: 'center'}}
+                              onPress={()=>{navigation.navigate('EditProfileScreen', {profile: profile})}}>
+                              <MaterialCommunityIcons
+                                    name='account-edit'
+                                    size={35}
+                                    color='#388AD6'/>
+                          </Button>
+                          <Button 
+                            mode='text'
+                            style={{width: 30, alignSelf: 'center'}} 
+                            onPress={()=>{navigation.navigate('NotificationListScreen')}}>
+                            <MaterialCommunityIcons
+                                name='bell'
+                                size={30}
+                                color='#388AD6'/>
+                          </Button>
+                        </View>)
+                }
+
+                { 
+                  (userState.uid !== profile.id) &&
+
+                  (
+                  <View style={{justifyContent: 'flex-end', flexDirection:'row'}}>
+                    <Button 
+                        mode='text'
+                        color='#fdfcff'
+                        style={{width: 80, alignSelf: 'center'}} 
+                        onPress={()=>{navigation.navigate('ChatScreen', 
+                          {
+                            idEmissor: userState.uid,
+                            idReceptor: profile.id,
+                            nameReceptor:  profile.name,
+                            surnameReceptor: profile.surname,
+                            nameEmissor: userState.name,
+                            surnameEmissor: userState.surname,
+                            pushNotificationToken: profile.pushNotificationToken
+                          })
+                          }}>
+                          <MaterialCommunityIcons
+                            name='chat'
+                            size={45}
+                            color='#388AD6'/>
+                        
+                    </Button>
+                  </View>)
+                
+                }
+                
+
                 <ProfilePicture
                   uid={profile.id}
                   name={profile.name} 
                   surname={profile.surname}
                   style={styles.avatar}
                   pictureSize={175}
+                  disabled={true}
                   />
                 <Text style={styles.name}>{profile.name} {profile.surname}</Text>
                 <Text style={styles.usertype}>{(profile.isArtist)? 'Artista': 'Oyente'}</Text>
-                <Text style={styles.email}>{profile.email}</Text>
-                <Text style={styles.phone}>{profile.phoneNumber}</Text>
 
                 {profile.isListener && 
                       (
@@ -150,61 +207,29 @@ import { useAuthUser } from '../context/AuthContext';
                   )
                 }
 
-                { 
-                  (userState.uid === profile.id) &&
-
-                  (<Button 
-                      mode='contained'
-                      color='#fdfcff'
-                      style={{width: 177, alignSelf: 'center', marginTop: 30, marginBottom: 15}}
-                      onPress={()=>{navigation.navigate('EditProfileScreen', {profile: profile})}}>
-                      <Text>Editar Tu Perfil</Text>
-                  </Button>)
-                }
+                
 
                 {
                   (userState.uid === profile.id && userState.userType === constants.ARTIST) &&
 
-                  (<Button
-                      mode='contained'
-                      color='#fdfcff'
-                      style={{width: 177, alignSelf: 'center', marginTop: 15, marginBottom: 30}}
-                      onPress={()=>{navigation.navigate('ContentScreen')}}>
-                      <Text>Crear Contenido</Text>
-                  </Button>)
-                }
-                { 
-                  (userState.uid !== profile.id) &&
-
                   (
                   <View>
-                    <Button 
-                        mode='contained'
-                        color='#fdfcff'
-                        style={{width: 210, alignSelf: 'center', marginTop: 30, marginBottom: 30}} 
-                        onPress={()=>{navigation.navigate('ChatScreen', 
-                          {
-                            idEmissor: userState.uid,
-                            idReceptor: profile.id,
-                            nameReceptor:  profile.name,
-                            surnameReceptor: profile.surname,
-                            nameEmissor: userState.name,
-                            surnameEmissor: userState.surname,
-                            pushNotificationToken: profile.pushNotificationToken
-                          })
-                          }}>
-                        <Text>Abrir Chat Privado</Text>
-                    </Button>
-                  </View>)
-                
+                  <Button
+                      mode='contained'
+                      style={{backgroundColor: 'skyblue',height: 100, width:100, borderRadius: 50, alignSelf: 'center', justifyContent:'center',marginTop: 15, marginBottom: 30}}
+                      onPress={()=>{navigation.navigate('ContentScreen')}}>
+                        <MaterialCommunityIcons
+                                  name='plus'
+                                  size={50}
+                                  color='darkblue'
+                                  styles={{alignSelf: 'center'}}/>
+                  </Button>
+                  
+                  </View>
+                  )
                 }
-                 <Button 
-                        mode='contained'
-                        color='#fdfcff'
-                        style={{width: 210, alignSelf: 'center', marginTop: 30, marginBottom: 30}} 
-                        onPress={()=>{navigation.navigate('NotificationListScreen')}}>
-                        <Text>Notificaciones</Text>
-                </Button>
+                
+                    
                 
 
               </View>
