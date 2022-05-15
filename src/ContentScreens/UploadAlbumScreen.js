@@ -52,13 +52,8 @@ const UploadAlbumScreen = ({navigation}) => {
     }
     let fileUrl;
     if (file !== undefined && file != null) {
-      console.log(file)
-      const name = `${title}.png`;
-      console.log("file name: " + name)
+      const name = `${title.value}.png`;
       fileUrl = await uploadImage(file.uri, name);
-      //fileUrl = await file.contentPromise.then(res => {
-        //return uploadFile(res, name)
-      //});
     }
     setIsLoading(true);
     try {
@@ -66,7 +61,7 @@ const UploadAlbumScreen = ({navigation}) => {
         title: title.value,
         genre: genre.value,
         subscription: subscription.value,
-        artists: artists.value,
+        artists: artists.value.map(a => a.id),
         songs: songs.value.map(s => s.id),
         link: fileUrl
       });

@@ -1,5 +1,5 @@
 import {app} from '../Firebase/firebase';
-import {getStorage, ref, uploadBytes, getDownloadURL} from 'firebase/storage';
+import {getDownloadURL, getStorage, ref, uploadBytes} from 'firebase/storage';
 
 const storage = getStorage(app);
 
@@ -25,7 +25,7 @@ const uploadImage = async (file, name) => {
     xhr.send(null);
   });
   let storageRef = ref(storage, name);
-  uploadBytes(storageRef, blob);
+  await uploadBytes(storageRef, blob);
   return getDownloadURL(storageRef);
 }
 
