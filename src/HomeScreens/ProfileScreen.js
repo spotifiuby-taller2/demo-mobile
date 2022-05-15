@@ -5,7 +5,7 @@ import {
     SafeAreaView,
   } from 'react-native';
 import React, { useEffect, useState } from 'react'
-import { Text, Chip, Button } from 'react-native-paper'
+import { Text, Chip } from 'react-native-paper'
 import { useRoute } from '@react-navigation/native';
 import constants from '../others/constants'
 import {getToGateway} from "../others/utils";
@@ -15,7 +15,6 @@ import { useAuthUser } from '../context/AuthContext';
 
 
   export default ProfileScreen = ({navigation}) =>{
-
 
 
       const route = useRoute();
@@ -96,12 +95,12 @@ import { useAuthUser } from '../context/AuthContext';
             ()=>{
               getProfile(route.params.uid);
             });
-          
-          
+
+
 
         },[navigation]);
 
-        
+
         return(
           <View style={styles.container}>
           <SafeAreaView>
@@ -150,10 +149,10 @@ import { useAuthUser } from '../context/AuthContext';
                   )
                 }
 
-                { 
+                {
                   (userState.uid === profile.id) &&
 
-                  (<Button 
+                  (<Button
                       mode='contained'
                       color='#fdfcff'
                       style={{width: 177, alignSelf: 'center', marginTop: 30, marginBottom: 15}}
@@ -173,16 +172,16 @@ import { useAuthUser } from '../context/AuthContext';
                       <Text>Crear Contenido</Text>
                   </Button>)
                 }
-                { 
+                {
                   (userState.uid !== profile.id) &&
 
                   (
                   <View>
-                    <Button 
+                    <Button
                         mode='contained'
                         color='#fdfcff'
-                        style={{width: 210, alignSelf: 'center', marginTop: 30, marginBottom: 30}} 
-                        onPress={()=>{navigation.navigate('ChatScreen', 
+                        style={{width: 210, alignSelf: 'center', marginTop: 30, marginBottom: 30}}
+                        onPress={()=>{navigation.navigate('ChatScreen',
                           {
                             idEmissor: userState.uid,
                             idReceptor: profile.id,
@@ -196,16 +195,16 @@ import { useAuthUser } from '../context/AuthContext';
                         <Text>Abrir Chat Privado</Text>
                     </Button>
                   </View>)
-                
+
                 }
-                 <Button 
+                 <Button
                         mode='contained'
                         color='#fdfcff'
-                        style={{width: 210, alignSelf: 'center', marginTop: 30, marginBottom: 30}} 
+                        style={{width: 210, alignSelf: 'center', marginTop: 30, marginBottom: 30}}
                         onPress={()=>{navigation.navigate('NotificationListScreen')}}>
                         <Text>Notificaciones</Text>
                 </Button>
-                
+
 
               </View>
               </ScrollView>

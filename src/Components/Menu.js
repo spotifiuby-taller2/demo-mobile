@@ -2,18 +2,20 @@ import {
     StyleSheet
   } from 'react-native';
 import React, {useState, useEffect} from 'react'
-import HomeScreen from '../HomeScreens/HomeScreen';
+import {HomeScreen} from '../HomeScreens/HomeScreen';
 import ProfileScreen from '../HomeScreens/ProfileScreen';
 import UserListScreen from '../HomeScreens/UserListScreen';
 import 'react-native-gesture-handler'
 import {useAuthUser} from '../context/AuthContext'
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import ContentScreen from "../HomeScreens/ContentScreen";
+import {ExitScreen} from "../HomeScreens/ExitScreen";
 import ArtistsListTab from "./ArtistsListTab"
-import { checkAuthTokenExpirationTime } from '../others/utils'
+import { checkAuthTokenExpirationTime } from '../others/utils';
     
 const Drawer = createDrawerNavigator();
 
-export default Menu = () =>{
+export default Menu = () => {
 
     const {userState, signOut} = useAuthUser();
     const [isSignIn, setIsSignIn] = useState(true);
@@ -40,6 +42,8 @@ export default Menu = () =>{
             <Drawer.Screen name='Perfil' component={ProfileScreen} initialParams={{uid: userState.uid}}/>
             <Drawer.Screen name='Usuarios' component={UserListScreen} />
             <Drawer.Screen name='Artistas' component={ArtistsListTab} />
+            <Drawer.Screen name='Contenido' component={ContentScreen} />
+            <Drawer.Screen name='Salir' component={ExitScreen} />
         </Drawer.Navigator>
     )
 }

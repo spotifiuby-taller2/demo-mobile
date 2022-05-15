@@ -1,25 +1,26 @@
-import {StyleSheet, View,} from 'react-native';
+import { 
+  StyleSheet, 
+  View,
+  ScrollView,
+  SafeAreaView
+} from 'react-native';
 import React from 'react'
-import {BottomNavigation} from "react-native-paper";
+import {BottomNavigation, Text} from "react-native-paper";
 import {
-  buttonStyle,
-  buttonTextStyle,
-  containerStyle,
-  imageStyle,
-  inputStyle,
-  titleStyle
+    buttonStyle,
+    buttonTextStyle,
+    containerStyle,
+    imageStyle,
+    inputStyle,
+    titleStyle
 } from "../styles/genericStyles";
+
 import UploadSongScreen from "../ContentScreens/UploadSongScreen";
+
 import UploadAlbumScreen from '../ContentScreens/UploadAlbumScreen';
 
-
-const MusicRoute = () => <UploadSongScreen/>;
-
-const AlbumsRoute = () => <UploadAlbumScreen/>;
-
-
-const ContentScreen = () => {
-  const [index, setIndex] = React.useState(0);
+export default ContentScreen = () => {
+    const [index, setIndex] = React.useState(0);
 
   const routes = [
     {
@@ -50,13 +51,12 @@ const ContentScreen = () => {
   )
 }
 
-const styles = StyleSheet.create({
-  input: inputStyle,
-  container: containerStyle,
-  title: titleStyle,
-  button: buttonStyle,
-  buttonText: buttonTextStyle,
-  image: imageStyle
-});
-
-export default ContentScreen;
+const styles = StyleSheet.create(
+      { input: inputStyle,
+        container: containerStyle,
+         title: titleStyle,
+         button: buttonStyle,
+         buttonText: buttonTextStyle,
+         image: imageStyle
+      }
+   )

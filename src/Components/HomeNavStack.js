@@ -3,7 +3,7 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from '../HomeScreens/HomeScreen';
+import {HomeScreen} from '../HomeScreens/HomeScreen';
 import ProfileScreen from '../HomeScreens/ProfileScreen';
 import 'react-native-gesture-handler'
 import {useAuthUser} from '../context/AuthContext'
@@ -18,6 +18,7 @@ import NotificationListScreen from '../HomeScreens/NotificationListScreen';
 import * as Notifications from 'expo-notifications'
 import * as Device from 'expo-device';
 import NowPlayingBar from "./NowPlayingBar";
+import {SongScreen} from "../HomeScreens/SongScreen";
 
 const HomeStack = createNativeStackNavigator();
 
@@ -86,8 +87,6 @@ const HomeNavStack = () =>{
 
     }
 
-
-
     useEffect(()=>{
 
       if ( userState.userType !== null )
@@ -110,9 +109,9 @@ const HomeNavStack = () =>{
                 setExpoPushToken(token);
               })
 
-
-      },[])
-
+        
+    },[])
+    
     /*Todas las pantallas de la Home van aca*/
     return(
         <View style={styles.container}>
@@ -123,6 +122,7 @@ const HomeNavStack = () =>{
             <HomeStack.Screen name='ArtistsListTab' component={ArtistsListTab} />
             <HomeStack.Screen name='ContentScreen' component={ContentScreen} />
             <HomeStack.Screen name='EditProfileScreen' component={EditProfileScreen}/>
+            <HomeStack.Screen name='SongScreen' component={SongScreen} />
             <HomeStack.Screen name='ChatScreen' component={ChatScreen}/>
             <HomeStack.Screen name='NotificationListScreen' component={NotificationListScreen}/>
           </HomeStack.Navigator>
