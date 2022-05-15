@@ -1,13 +1,32 @@
 import {app} from '../Firebase/firebase';
 import {getStorage, ref, uploadBytes, getDownloadURL} from 'firebase/storage';
-import * as UUID from "uuid";
 
 const storage = getStorage(app);
 
-const uploadFile = file => {
-  const fileRef = ref(storage, UUID.v4());
+//video and music
+const uploadFile = (file, url) => {
+  const fileRef = ref(storage, url);
   return uploadBytes(fileRef, file)
     .then(() => getDownloadURL(fileRef));
 }
 
-export {uploadFile};
+//image
+const uploadImage = async (file, name) => {
+  const blob = await new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+      resolve(xhr.response);
+    };
+    xhr.onerror = function (e) {
+      reject(new TypeError("Network request failed"));
+    };
+    xhr.responseType = "blob";
+    xhr.open("GET", file, true);
+    xhr.send(null);
+  });
+  let storageRef = ref(storage, name);
+  uploadBytes(storageRef, blob);
+  return getDownloadURL(storageRef);
+}
+
+export {uploadFile, uploadImage};

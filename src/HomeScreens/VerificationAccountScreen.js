@@ -7,7 +7,7 @@ import {uploadFile} from "../Services/CloudStorageService";
 import {useAuthUser} from "../context/AuthContext";
 import {uploadVerificationVideo} from '../Services/UsersService'
 
-const VerificationAccountScreen = () => {
+const VerificationAccountScreen = ({navigation}) => {
 
   const [file, setFile] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +31,10 @@ const VerificationAccountScreen = () => {
     }
     setIsLoading(true);
     try {
-      const fileUrl = await file.contentPromise.then(uploadFile);
+      const name = file.name;
+      const fileUrl = await file.contentPromise.then(res =>{
+        return uploadFile(res, name)
+      });
       await uploadVerificationVideo({
         userId: userState.uid,
         verificationVideoUrl: fileUrl,

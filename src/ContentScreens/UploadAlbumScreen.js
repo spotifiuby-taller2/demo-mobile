@@ -1,15 +1,9 @@
 import {ScrollView, StyleSheet, View} from "react-native";
 import {Button, Text, TextInput, Title} from "react-native-paper";
 import React, {useState} from "react";
-import {
-  buttonStyle,
-  buttonTextStyle,
-  containerStyle,
-  inputStyle,
-  titleStyle
-} from '../styles/genericStyles';
+import {buttonStyle, buttonTextStyle, containerStyle, inputStyle, titleStyle} from '../styles/genericStyles';
 import FilePicker from "../Components/FilePicker";
-import {uploadFile} from "../Services/CloudStorageService";
+import {uploadImage} from "../Services/CloudStorageService";
 import {createAlbum, getSongsByArtist} from "../Services/MediaService";
 import {getArtists} from '../Services/UsersService';
 import {validateFieldNotBlank} from "../others/utils";
@@ -29,10 +23,6 @@ const UploadAlbumScreen = ({navigation}) => {
   const {userState, setUserType} = useAuthUser();
 
   const handleDocumentPick = (doc) => {
-    if (title.value === '') {
-      const name = doc.name.split('.')[0];
-      setTitle({value: name, error: null});
-    }
     setFile(doc);
   }
 
@@ -62,7 +52,13 @@ const UploadAlbumScreen = ({navigation}) => {
     }
     let fileUrl;
     if (file !== undefined && file != null) {
-      fileUrl = await file.contentPromise.then(uploadFile);
+      console.log(file)
+      const name = `${title}.png`;
+      console.log("file name: " + name)
+      fileUrl = await uploadImage(file.uri, name);
+      //fileUrl = await file.contentPromise.then(res => {
+        //return uploadFile(res, name)
+      //});
     }
     setIsLoading(true);
     try {
@@ -141,6 +137,8 @@ const UploadAlbumScreen = ({navigation}) => {
         />
         {songs.error && (<Text style={{color: 'red'}}>{songs.error}</Text>)}
         <View style={{marginBottom: 5}}/>
+
+
         <FilePicker title={'Elegir foto de portada'} mimeType={'image/*'} icon={'camera'}
                     setFileCallback={handleDocumentPick}/>
 

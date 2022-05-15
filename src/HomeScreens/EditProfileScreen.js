@@ -109,7 +109,7 @@ const reducer = (state, action = {})=>{
   };
 
 
-  export default EditProfileScreen = ({navigation}) =>{
+const EditProfileScreen = ({navigation}) =>{
 
 
       const route = useRoute();
@@ -182,10 +182,7 @@ const reducer = (state, action = {})=>{
               navigation.goBack();
             }
           })
-
       }
-
-      
 
         return(
           <View style={styles.container}>
@@ -411,3 +408,5 @@ const styles =StyleSheet.create(
     }
   }
 )
+
+export default EditProfileScreen;
