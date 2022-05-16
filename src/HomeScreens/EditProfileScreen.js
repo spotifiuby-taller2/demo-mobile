@@ -188,7 +188,7 @@ const reducer = (state, action = {})=>{
       
 
         return(
-          <View style={styles.container}>
+          <View style={profile.isArtist? styles.containerArtist : styles.containerListener}>
           <SafeAreaView>
             <ScrollView showsVerticalScrollIndicator={false}>
               <View>
@@ -326,9 +326,13 @@ const reducer = (state, action = {})=>{
   
 const styles =StyleSheet.create(
   {
-    container: {
+    containerArtist: {
       flex: 1,
-      backgroundColor: '#f5fcff'},
+      backgroundColor: '#B0E0E6' 
+    },
+    containerListener: {
+        flex: 1,
+        backgroundColor: '#f5fcff'},
     avatar: {
       marginTop: 30,
       alignSelf: 'center',
