@@ -13,7 +13,6 @@ import ProfilePicture from '../Components/ProfilePicture';
 import FollowArtistButton from '../Components/FollowArtistButton';
 import { useAuthUser } from '../context/AuthContext';
 
-
   export default ProfileScreen = ({navigation}) =>{
 
 
@@ -162,7 +161,7 @@ import { useAuthUser } from '../context/AuthContext';
                 }
 
                 {
-                  (userState.uid === profile.id && userState.userType === constants.ARTIST) &&
+                  (userState.uid === profile.id && profile.isArtist) &&
 
                   (<Button
                       mode='contained'
@@ -204,7 +203,6 @@ import { useAuthUser } from '../context/AuthContext';
                         onPress={()=>{navigation.navigate('NotificationListScreen')}}>
                         <Text>Notificaciones</Text>
                 </Button>
-
 
               </View>
               </ScrollView>
