@@ -73,7 +73,7 @@ const HomeScreen = ({navigation}) => {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View>
                     {
-                        (songsRef.current !== undefined) && (
+                        (songsRef.current !== undefined) && (Array.isArray(songsRef.current)) && (
                             songsRef.current.map( (song, id) => {
                                 return (
                                     <SongChip id={id}
@@ -91,7 +91,7 @@ const HomeScreen = ({navigation}) => {
 
     const styles = StyleSheet.create(
       { input: {
-          borderWidth: 2, 
+          borderWidth: 2,
           marginBottom: 15,
           marginTop: 15,
           backgroundColor: '#f5fcff',
@@ -106,12 +106,12 @@ const HomeScreen = ({navigation}) => {
          },
          title: {textAlign: 'center',fontSize: 25, marginBottom: 35},
          button: {
-           backgroundColor: 'skyblue', 
-           paddingTop: 15, 
-           paddingBottom:15, 
-           width: 100, 
-           alignSelf: 'center', 
-           marginTop: 30, 
+           backgroundColor: 'skyblue',
+           paddingTop: 15,
+           paddingBottom:15,
+           width: 100,
+           alignSelf: 'center',
+           marginTop: 30,
            marginBottom:30,
            borderRadius: 10},
          buttonText: {textAlign: 'center', fontSize: 13},
