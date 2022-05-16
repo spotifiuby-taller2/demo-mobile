@@ -4,6 +4,7 @@ import {IconButton, Text} from "react-native-paper";
 import usePlayer from "../Hooks/usePlayer";
 import TextTicker from "react-native-text-ticker";
 import SongProgressBar from "./SongProgressBar";
+import SwipeableView from "./SwipeableView";
 
 const FullScreenPlayer = ({navigation}) => {
   const player = usePlayer();
@@ -13,9 +14,13 @@ const FullScreenPlayer = ({navigation}) => {
         <IconButton icon='chevron-down' size={32} onPress={() => navigation.goBack()}/>
         <Text style={{fontSize: 20}}>{player.currentTrack.album || ''}</Text>
       </View>
-      <View style={styles.artworkContainer}>
+      <SwipeableView
+        style={styles.artworkContainer}
+        onSwipeLeft={() => player.skipToNext()}
+        onSwipeRight={() => player.skipToPrevious()}
+      >
         <Image style={styles.artwork} source={{uri: player.currentTrack.artwork}} />
-      </View>
+      </SwipeableView>
       <View style={styles.bottom}>
         <TextTicker style={{fontSize: 24, fontWeight: 'bold'}} scroll={false} bounce={false}>
           {player.currentTrack?.title ?? ''}
