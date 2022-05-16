@@ -8,10 +8,9 @@ import { Text, Chip, Avatar } from 'react-native-paper';
 /*user must be {name: '', surname: '', email:''}*/
     
   export default UserChip = (props) =>{
-
-                
         return(
-            <Chip style={styles.chip} onPress={()=>{props.navigation.navigate('ProfileScreen',{uid: props.user.id})}}>
+            <Chip style={styles.chip} onPress={ () => {
+                props.navigation.navigate('ProfileScreen',{uid: props.user.id})}}>
                 <View style={{flexDirection:'row', flexWrap: "wrap"}}>
                         <Avatar.Text 
                             style={{marginRight: 15, backgroundColor: 'steelblue'}}

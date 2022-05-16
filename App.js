@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SignInScreen from './src/AuthScreens/SignInScreen'
 import SignUpScreen from './src/AuthScreens/SignUpScreen'
+import NavigationLogInScreen from './src/AuthScreens/NavigationLogInScreen';
 import ForgotPasswordScreen from './src/AuthScreens/ForgotPasswordScreen'
 import PINScreen from './src/AuthScreens/PINScreen';
 import RequestExternalUserATypeScreen from './src/AuthScreens/RequestExternalUserATypeScreen';
@@ -13,7 +14,11 @@ import HomeNavStack from './src/Components/HomeNavStack';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { AuthContext } from './src/context/AuthContext';
 import * as SecureStore from 'expo-secure-store';
+import ContentScreen from "./src/HomeScreens/ContentScreen";
 import { auth, signOut} from './src/Firebase/firebase';
+import Menu from "./src/Components/Menu";
+import {SongListScreen} from "./src/HomeScreens/SongListScreen";
+import {SongScreen} from "./src/HomeScreens/SongScreen";
 
 const AuthStack = createNativeStackNavigator();
 
@@ -44,7 +49,7 @@ const reducer = (state = initialState(), action = {})=>{
           userToken: action.token,
           isSignOut: false
       }
-
+      
       case 'SIGN_OUT':
       return{
           ...state,
@@ -68,7 +73,7 @@ export default function App() {
 
   const [userState, dispatch] = useReducer(reducer, reducer());
 
-  useEffect(()=>{
+  useEffect( () => {
     const bootstrapAsync = async ()=>{
 
         let userToken;
@@ -84,14 +89,14 @@ export default function App() {
     }
 
     if ( userToken === null  ){
-      authContext.signOut();
+      await authContext.signOut();
     }
     else{
       dispatch({type: 'RESTORE_TOKEN', token: userToken, uid: userId});
     }
   }
 
-    bootstrapAsync();
+    bootstrapAsync().then();
   },[]);
 
   const authContext = useMemo(()=>{
@@ -149,7 +154,7 @@ export default function App() {
                   <AuthStack.Screen name='RequestMusicalPreferencesScreen' component={RequestMusicalPreferencesScreen}/>
                   <AuthStack.Screen name='RequestExternalUserATypeScreen' component={RequestExternalUserATypeScreen}/>
                 </>
-
+                
               ):(
                 <AuthStack.Screen name='HomeNavStack' component={HomeNavStack}/>
               )
@@ -160,4 +165,4 @@ export default function App() {
         </PaperProvider>
       </AuthContext.Provider>
   );
-}
+};

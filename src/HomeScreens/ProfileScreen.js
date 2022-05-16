@@ -5,7 +5,7 @@ import {
     SafeAreaView,
   } from 'react-native';
 import React, { useEffect, useState } from 'react'
-import { Text, Chip, Button, FAB } from 'react-native-paper'
+import {Text, Chip, Button} from 'react-native-paper'
 import { useRoute } from '@react-navigation/native';
 import constants from '../others/constants'
 import {getToGateway} from "../others/utils";
@@ -17,7 +17,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 
   export default ProfileScreen = ({navigation}) =>{
-
 
 
       const route = useRoute();
@@ -98,12 +97,12 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
             ()=>{
               getProfile(route.params.uid);
             });
-          
-          
+
+
 
         },[navigation]);
 
-        
+
         return(
           <View style={profile.isArtist? styles.containerArtist : styles.containerListener}>
           <SafeAreaView>
@@ -218,9 +217,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
                           idListener={userState.uid}
                           idArtist={profile.id}/>
                   )
-                }
-
-                
+                }                
 
                 {
                   (userState.uid === profile.id && userState.userType === constants.ARTIST) &&
@@ -241,9 +238,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
                   </View>
                   )
                 }
-                
-                    
-                
 
               </View>
               </ScrollView>

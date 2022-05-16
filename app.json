@@ -21,7 +21,6 @@
       "supportsTablet": true
     },
     "android": {
-      "googleServicesFile": "./google-services.json",
       "config": {
         "googleSignIn": {
           "apiKey": "AIzaSyB8DZnaX6HIBlkubONcCNs7mm56UvgWlao",
