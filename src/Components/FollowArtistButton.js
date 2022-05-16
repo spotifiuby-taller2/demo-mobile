@@ -78,7 +78,7 @@ export default FollowArtistButton = (props) =>{
             (<View style={{marginTop: 30, alignSelf: 'center'}}>
             <Button
               mode="contained"
-              color={followed? "coral":"red"}
+              color={followed? "#18A8D8":"#AFEEEE"}
               style={{marginBottom: 10, width: 163}}
               onPress={handlePress}
               >

@@ -12,16 +12,15 @@ export default ProfilePicture = (props)=> {
     const [selectedImage, setSelectedImage] = useState(null);
     const {userState} = useAuthUser();
 
-
     useEffect(()=>{
-        if ( getCurrentUser().photoURL ){
-            setSelectedImage(getCurrentUser().photoURL)
+        if ( props.photoUrl ){
+            setSelectedImage(props.photoUrl)
         }
         else{
             setSelectedImage(null);
         }
-    }, [selectedImage]);
-
+    }, []);
+    
     const pickImage = async  () =>{
         
         let result = await ImagePicker.launchImageLibraryAsync(
@@ -34,17 +33,19 @@ export default ProfilePicture = (props)=> {
         )
         
         if ( ! result.cancelled  ){
-            let url = uploadImage(result.uri, props.uid, setSelectedImage);
+            let url = await uploadImage(result.uri, props.uid, setSelectedImage);
         }      
         
     }
+
+    
 
     return(
         <TouchableOpacity
             onPress={pickImage}
             mode='outlined'
             style={styles.button}
-            disabled={(props.uid !== userState.uid)}
+            disabled={((props.uid !== userState.uid) || (props.disabled))}
             >
             {( selectedImage === null )?
                 (<Avatar.Text

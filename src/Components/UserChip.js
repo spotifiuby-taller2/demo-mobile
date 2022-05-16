@@ -13,7 +13,7 @@ import { Text, Chip, Avatar } from 'react-native-paper';
                 props.navigation.navigate('ProfileScreen',{uid: props.user.id})}}>
                 <View style={{flexDirection:'row', flexWrap: "wrap"}}>
                         <Avatar.Text 
-                            style={{marginRight: 15, backgroundColor: '#ff4500'}}
+                            style={{marginRight: 15, backgroundColor: 'steelblue'}}
                             label={`${props.user.name.charAt(0)}${props.user.surname.charAt(0)}`}
                             />
 
@@ -32,18 +32,18 @@ import { Text, Chip, Avatar } from 'react-native-paper';
       const styles = StyleSheet.create(
         { 
            chip:{
-             backgroundColor: 'darkblue',
+             backgroundColor: 'skyblue',
              marginTop: 5,
              height: 110
              ,
            },
            name:{
              fontSize: 19,
-             color: 'gold',
+             color: 'darkblue',
             
           },
            email: {
-             color: 'white',
+             color: 'black',
            }
           }
      )

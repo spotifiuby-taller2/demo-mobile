@@ -70,11 +70,12 @@ export default UserListScreen = ({navigation}) => {
 
 
 const styles = StyleSheet.create(
-    {
-        container: {
-            ...containerStyle,
-            backgroundColor: 'steelblue',
-            paddingTop: 5
-        }
+  {
+    container: {
+      ...containerStyle,
+      backgroundColor: '#f5fcff',
+      paddingTop: 5
+
     }
+  }
 )

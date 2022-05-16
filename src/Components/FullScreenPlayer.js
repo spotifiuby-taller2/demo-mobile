@@ -1,0 +1,84 @@
+import React from 'react'
+import {StyleSheet, View, Image} from "react-native";
+import {IconButton, Text} from "react-native-paper";
+import usePlayer from "../Hooks/usePlayer";
+import TextTicker from "react-native-text-ticker";
+import SongProgressBar from "./SongProgressBar";
+import SwipeableView from "./SwipeableView";
+
+const FullScreenPlayer = ({navigation}) => {
+  const player = usePlayer();
+  return (
+    <View style={styles.container}>
+      <View style={styles.topBar}>
+        <IconButton icon='chevron-down' size={32} onPress={() => navigation.goBack()}/>
+        <Text style={{fontSize: 20}}>{player.currentTrack.album || ''}</Text>
+      </View>
+      <SwipeableView
+        style={styles.artworkContainer}
+        onSwipeLeft={() => player.skipToNext()}
+        onSwipeRight={() => player.skipToPrevious()}
+      >
+        <Image style={styles.artwork} source={{uri: player.currentTrack.artwork}} />
+      </SwipeableView>
+      <View style={styles.bottom}>
+        <TextTicker style={{fontSize: 24, fontWeight: 'bold'}} scroll={false} bounce={false}>
+          {player.currentTrack?.title ?? ''}
+        </TextTicker>
+        <Text style={{fontSize: 22}}>{player.currentTrack?.artist ?? ''}</Text>
+        <SongProgressBar position={player.position} duration={player.duration} setPosition={player.seekTo}/>
+        <View style={styles.musicControl}>
+          <IconButton icon='skip-previous' size={50} disabled={player.isLoading} onPress={() => {
+            player.skipToPrevious();
+          }}/>
+          {
+            player.isPlaying ?
+              (<IconButton style={{backgroundColor: 'black'}} color={'white'} icon='pause' size={53} disabled={player.isLoading} onPress={() => {
+                player.pause();
+              }}/>) :
+              (<IconButton style={{backgroundColor: 'black'}} color={'white'} icon='play' size={53} disabled={player.isLoading} onPress={() => {
+                player.play();
+              }}/>)
+          }
+          <IconButton icon='skip-next' size={50} disabled={player.isLoading} onPress={() => {
+            player.skipToNext();
+          }}/>
+        </View>
+      </View>
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  container: {
+    marginLeft: 10,
+    marginRight: 10,
+    alignItems: 'stretch',
+    justifyContent: 'center',
+    flexGrow:1,
+  },
+  topBar: {
+    flexDirection: 'row',
+    flex: 1,
+    alignItems: 'center',
+  },
+  artworkContainer: {
+    flex: 7,
+  },
+  artwork: {
+    resizeMode: 'contain',
+    ...StyleSheet.absoluteFillObject,
+  },
+  bottom: {
+    flex: 4,
+    marginLeft: 25,
+    marginRight: 25,
+  },
+  musicControl: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+})
+
+export default FullScreenPlayer;
