@@ -89,14 +89,14 @@ export default function App() {
     }
 
     if ( userToken === null  ){
-      authContext.signOut();
+      await authContext.signOut();
     }
     else{
       dispatch({type: 'RESTORE_TOKEN', token: userToken, uid: userId});
     }
   }
 
-    bootstrapAsync();
+    bootstrapAsync().then();
   },[]);
 
   const authContext = useMemo(()=>{

@@ -6,6 +6,7 @@ import {
 import React, {useEffect} from 'react'
 import {Button} from 'react-native-paper'
 import * as Google from 'expo-auth-session/providers/google';
+// import * as GoogleSignIn from 'expo-auth-session';
 import {IOS_KEY, ANDROID_KEY, WEB_KEY} from "@env"
 import constants from '../others/constants'
 import {useAuthUser} from '../context/AuthContext';

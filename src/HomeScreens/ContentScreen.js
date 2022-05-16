@@ -1,10 +1,16 @@
-import { 
+import React from 'react'
+import {SongListScreen} from "./SongListScreen";
+import {AlbumListScreen} from "./AlbumListScreen";
+import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import {Avatar} from "react-native-paper";
+
+import {
   StyleSheet, 
   View,
   ScrollView,
   SafeAreaView
 } from 'react-native';
-import React from 'react'
+
 import {BottomNavigation, Text} from "react-native-paper";
 import {
     buttonStyle,
@@ -16,47 +22,28 @@ import {
 } from "../styles/genericStyles";
 
 import UploadSongScreen from "../ContentScreens/UploadSongScreen";
-
 import UploadAlbumScreen from '../ContentScreens/UploadAlbumScreen';
 
-export default ContentScreen = () => {
-    const [index, setIndex] = React.useState(0);
+export default ContentScreen = ({navigation}) => {
+    const ContentTab = createBottomTabNavigator();
 
-  const routes = [
-    {
-      key: 'music',
-      title: 'Canciones',
-      icon: 'music'
-    },
-    {
-      key: 'albums',
-      title: 'Álbumes',
-      icon: 'album'
-    }
-  ];
+    return (
+        <ContentTab.Navigator screenOptions={{headerShown: false}}>
+            <ContentTab.Screen
+                name="Canciones"
+                component={SongListScreen}
+                options={{
+                    tabBarIcon: () => (< Avatar.Icon size={30} icon='music'/>)
+                }}
+            />
 
-  const renderScene = BottomNavigation.SceneMap({
-    music: MusicRoute,
-    albums: AlbumsRoute,
-  });
-
-  return (
-    <View style={styles.container}>
-      <BottomNavigation
-        navigationState={{index, routes}}
-        onIndexChange={setIndex}
-        renderScene={renderScene}
-      />
-    </View>
-  )
+            <ContentTab.Screen
+                name="Álbumes"
+                component={AlbumListScreen}
+                options={{
+                    tabBarIcon: () => (< Avatar.Icon size={30} icon='album'/>)
+                }}
+            />
+        </ContentTab.Navigator>
+    );
 }
-
-const styles = StyleSheet.create(
-      { input: inputStyle,
-        container: containerStyle,
-         title: titleStyle,
-         button: buttonStyle,
-         buttonText: buttonTextStyle,
-         image: imageStyle
-      }
-   )

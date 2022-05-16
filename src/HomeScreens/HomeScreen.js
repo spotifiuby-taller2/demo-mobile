@@ -1,4 +1,4 @@
-import {SafeAreaView, View, ScrollView} from 'react-native';
+import {SafeAreaView, View, ScrollView, StyleSheet} from 'react-native';
 import React, {useEffect, useState, useRef} from 'react'
 import { useAuthUser } from '../context/AuthContext';
 import {getToGateway} from "../others/utils";
@@ -6,6 +6,7 @@ import constants from "../others/constants";
 import {containerStyle} from "../styles/genericStyles";
 import SongChip from "../Components/SongChip";
 import {Text} from "react-native-paper";
+import * as Notifications from 'expo-notifications';
 
 const HomeScreen = ({navigation}) => {
   const [songs, setSongs] = useState([]);
