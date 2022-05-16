@@ -193,10 +193,13 @@ const reducer = (state, action = {})=>{
             <ScrollView showsVerticalScrollIndicator={false}>
               <View>
                 <ProfilePicture
-                  uid={route.params.uid}
+                  uid={profile.id}
                   name={profile.name} 
                   surname={profile.surname}
                   style={styles.avatar}
+                  photoUrl={profile.photoUrl}
+                  pictureSize={175}
+                  disabled={false}
                   />
 
                 <View style={{flexDirection: 'row', alignSelf: 'center'}}>
@@ -215,24 +218,6 @@ const reducer = (state, action = {})=>{
                         styles={styles.name}/>
 
                 </View>
-                
-                <Text style={styles.usertype}>{(profile.isArtist)? 'Artista': 'Oyente'}</Text>
-                <Text style={styles.email}>{profile.email}</Text>
-
-
-                <EditProfileTextInput 
-                    label='Mail'
-                    name='email'
-                    input={profile.email}
-                    execute={dispatch}
-                    styles={styles.email}/>
-
-                <EditProfileTextInput 
-                    label='Telefono'
-                    name='phoneNumber'
-                    input={profile.phoneNumber}
-                    execute={dispatch}
-                    styles={styles.phone}/>
 
                 {profile.isListener && 
                       (
@@ -243,25 +228,25 @@ const reducer = (state, action = {})=>{
                             style={profile.metal? styles.chipSelected: styles.chipUnselected}
                             onPress={()=>{dispatch({type: 'metal'})} }
                             >
-                                <Text>Metal</Text>
+                                <Text>     Metal</Text>
                         </Chip>
                         <Chip 
                             style={profile.rock? styles.chipSelected: styles.chipUnselected}
                             onPress={()=>{dispatch({type: 'rock'})} }
                             >
-                                <Text>Rock</Text>
+                                <Text>      Rock</Text>
                         </Chip>
                         <Chip 
                             style={profile.salsa? styles.chipSelected: styles.chipUnselected}
                             onPress={()=>{dispatch({type: 'salsa'})} }
                             >
-                                <Text>Salsa</Text>
+                                <Text>      Salsa</Text>
                         </Chip>
                         <Chip 
                             style={profile.blues? styles.chipSelected: styles.chipUnselected}
                             onPress={()=>{dispatch({type: 'blues'})} }
                             >
-                                <Text>Blues</Text>
+                                <Text>     Blues</Text>
                         </Chip>
                         <Chip 
                             style={profile.reggeaton? styles.chipSelected: styles.chipUnselected}
@@ -273,37 +258,37 @@ const reducer = (state, action = {})=>{
                             style={profile.jazz? styles.chipSelected: styles.chipUnselected}
                             onPress={()=>{dispatch({type: 'jazz'})} }
                             >
-                                <Text>Jazz</Text>
+                                <Text>      Jazz</Text>
                         </Chip>
                         <Chip 
                             style={profile.punk? styles.chipSelected: styles.chipUnselected}
                             onPress={()=>{dispatch({type: 'punk'})} }
                             >
-                                <Text>Punk</Text>
+                                <Text>      Punk</Text>
                         </Chip>
                         <Chip 
                             style={profile.rap? styles.chipSelected: styles.chipUnselected}
                             onPress={()=>{dispatch({type: 'rap'})} }
                             >
-                                <Text>Rap</Text>
+                                <Text>      Rap</Text>
                         </Chip>
                         <Chip 
                             style={profile.pop? styles.chipSelected: styles.chipUnselected}
                             onPress={()=>{dispatch({type: 'pop'})} }
                             >
-                                <Text>Pop</Text>
+                                <Text>      Pop</Text>
                         </Chip>
                         <Chip 
                             style={profile.indie? styles.chipSelected: styles.chipUnselected}
                             onPress={()=>{dispatch({type: 'indie'})} }
                             >
-                                <Text>Indie</Text>
+                                <Text>     Indie</Text>
                         </Chip>
                         <Chip 
                             style={profile.classic? styles.chipSelected: styles.chipUnselected}
                             onPress={()=>{dispatch({type: 'classic'})} }
                             >
-                                <Text>Clásica</Text>
+                                <Text>    Clásica</Text>
                         </Chip>
                         <Chip 
                             style={profile.electronic? styles.chipSelected: styles.chipUnselected}
@@ -315,7 +300,7 @@ const reducer = (state, action = {})=>{
                             style={profile.others? styles.chipSelected: styles.chipUnselected}
                             onPress={()=>{dispatch({type: 'others'})} }
                             >
-                                <Text>Otros</Text>
+                                <Text>     Otros</Text>
                         </Chip>
                       </View>
                       </>)
@@ -324,10 +309,10 @@ const reducer = (state, action = {})=>{
                 <View>
                   <Button
                     mode='contained'
-                    color='#fdfcff'
-                    style={{width: 210, alignSelf: 'center', margin: 30}}
+                    color='skyblue'
+                    style={{width: 120, alignSelf: 'center', margin: 30}}
                     onPress={saveProfile}>
-                    <Text>Guardar Cambios</Text>
+                    <Text>Guardar</Text>
                   </Button>
                 </View>
                 
@@ -351,7 +336,7 @@ const styles =StyleSheet.create(
     },
     name: {
       width: 144, 
-      fontSize: 30, 
+      fontSize: 17, 
       height: 80, 
       alignSelf: 'center', 
       backgroundColor: '#f5fcff', 

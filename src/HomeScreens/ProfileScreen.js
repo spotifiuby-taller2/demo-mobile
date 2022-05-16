@@ -48,7 +48,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
         reggeaton: false,
         rap: false,
         photoUrl: '',
-        pushNotificationToken: ''
+        pushNotificationToken: '',
+        nFollowers: null
       }
 
       const [profile, setProfile] = useState(initialState);
@@ -83,7 +84,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
                       reggeaton: res.reggeaton,
                       rap: res.rap,
                       photoUrl: res.photoUrl,
-                      pushNotificationToken: res.pushNotificationToken
+                      pushNotificationToken: res.pushNotificationToken,
+                      nFollowers: res.nFollowers,
 
                   };
                   setProfile(newState);
@@ -163,36 +165,48 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
                   </View>)
                 
                 }
+                {
+                  renderButton && (
+                    <ProfilePicture
+                        uid={profile.id}
+                        name={profile.name} 
+                        surname={profile.surname}
+                        style={styles.avatar}
+                        pictureSize={175}
+                        photoUrl={profile.photoUrl}
+                        disabled={true}
+                      />
+                  )
+                }
                 
 
-                <ProfilePicture
-                  uid={profile.id}
-                  name={profile.name} 
-                  surname={profile.surname}
-                  style={styles.avatar}
-                  pictureSize={175}
-                  disabled={true}
-                  />
+                
                 <Text style={styles.name}>{profile.name} {profile.surname}</Text>
+
+                {
+                  (profile.isArtist && (
+                    <Text style={{fontSize: 20, alignSelf: 'center', color: 'steelblue'}}>{profile.nFollowers} Subcriptores</Text>
+                  ))
+                }
 
                 {profile.isListener && 
                       (
                       <>
                       <Text style={styles.text}>Intereses Musicales</Text>
                       <View style={{display:'flex', flexDirection:'row', justifyContent:'center', flexWrap: 'wrap'}}>
-                        {profile.metal && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>Metal</Text></Chip>)}
-                        {profile.rock && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>Rock</Text></Chip>)}
-                        {profile.salsa && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>Salsa</Text></Chip>)}
-                        {profile.blues && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>Blues</Text></Chip>)}
+                        {profile.metal && (<Chip style={styles.chip} textStyle={{textAlign:'center'}}><Text>     Metal</Text></Chip>)}
+                        {profile.rock && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>      Rock</Text></Chip>)}
+                        {profile.salsa && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>      Salsa</Text></Chip>)}
+                        {profile.blues && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>     Blues</Text></Chip>)}
                         {profile.reggeaton && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>Reggeaton</Text></Chip>)}
-                        {profile.jazz && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>Jazz</Text></Chip>)}
-                        {profile.punk && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>Punk</Text></Chip>)}
-                        {profile.rap && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>Rap</Text></Chip>)}
-                        {profile.pop && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>Pop</Text></Chip>)}
-                        {profile.indie && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>Indie</Text></Chip>)}
-                        {profile.classic && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>Clásica</Text></Chip>)}
+                        {profile.jazz && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>      Jazz</Text></Chip>)}
+                        {profile.punk && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>      Punk</Text></Chip>)}
+                        {profile.rap && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>      Rap</Text></Chip>)}
+                        {profile.pop && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>      Pop</Text></Chip>)}
+                        {profile.indie && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>     Indie</Text></Chip>)}
+                        {profile.classic && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>    Clásica</Text></Chip>)}
                         {profile.electronic && (<Chip style={styles.chip}><Text style={{textAlign:'center'}}>Electronica</Text></Chip>)}
-                        {profile.others && (<View><Chip style={styles.chip}><Text>Otros</Text></Chip></View>)}
+                        {profile.others && (<Chip style={styles.chip}><Text>     Otros</Text></Chip>)}
                       </View>
                       </>)
                 }
@@ -284,6 +298,7 @@ const styles =StyleSheet.create(
       marginEnd: 10,
       marginBottom: 10,
       marginTop: 0,
+      textAlign: 'center'
     },
     mucialPref: {
       alignSelf: 'center'
