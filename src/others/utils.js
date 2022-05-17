@@ -88,8 +88,10 @@ const getToGateway = (destiny,
         headers: constants.JSON_HEADER,
         body: JSON.stringify(body)
       }
-  ).then(response =>
-      response.json()
+  ).then(response => {
+          console.log(response);
+          return response.json()
+      }
   ).catch(error => {
     return {
       error: error.toString()

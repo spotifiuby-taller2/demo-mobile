@@ -14,14 +14,14 @@ const UserListScreen = ({navigation}) => {
   useEffect(() => {
     function getAllUsers() {
 
-      getToGateway(constants.USERS_HOST + constants.APP_USERS_LIST_URL,
-        "").then(res => {
-        if (res.error !== undefined) {
-          alert(res.error);
-        } else {
-          setList(res.users);
-        }
-      });
+      getToGateway(constants.USERS_HOST + constants.APP_USERS_LIST_URL, "")
+        .then(res => {
+          if (res.error !== undefined) {
+            alert(res.error);
+          } else {
+            setList(res.users);
+          }
+        });
     }
 
     getAllUsers();
@@ -42,15 +42,15 @@ const UserListScreen = ({navigation}) => {
                    containerStyle={{}}
                    inputContainerStyle={{}}
         />
-          <View>
-            <View style={{marginBottom: 10}}/>
-              {
-                <FlatList
-                  data={usersList.filter(filterUsers(text))}
-                  renderItem={({item, id}) => <UserChip id={id} key={id} user={item} navigation={navigation}/>}
-                />
-              }
-          </View>
+        <View>
+          <View style={{marginBottom: 10}}/>
+          {
+            <FlatList
+              data={usersList.filter(filterUsers(text))}
+              renderItem={({item, id}) => <UserChip id={id} key={id} user={item} navigation={navigation}/>}
+            />
+          }
+        </View>
       </SafeAreaView>
     </View>
   )
@@ -61,8 +61,9 @@ const styles = StyleSheet.create(
   {
     container: {
       ...containerStyle,
-      backgroundColor: 'steelblue',
+      backgroundColor: '#f5fcff',
       paddingTop: 5
+
     }
   }
 )

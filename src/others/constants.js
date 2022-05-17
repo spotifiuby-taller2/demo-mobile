@@ -1,9 +1,9 @@
 import {REACT_APP_USERS_HOST_DEV,
         REACT_APP_USERS_HOST_PROD,
         REACT_APP_SERVICES_HOST_DEV,
+        REACT_APP_SERVICES_HOST_PROD,
         REACT_APP_MEDIA_HOST_DEV,
-        REACT_APP_MEDIA_HOST_PROD,
-        REACT_APP_SERVICES_HOST_PROD} from "@env";
+        REACT_APP_MEDIA_HOST_PROD} from "@env"
 
 /* Backend hosts */
 const USERS_HOST = (__DEV__)
@@ -12,14 +12,17 @@ const USERS_HOST = (__DEV__)
 
 const MEDIA_HOST = (__DEV__) ? REACT_APP_MEDIA_HOST_DEV : REACT_APP_MEDIA_HOST_PROD;
 
+
+const SERVICES_HOST = (__DEV__)
+    ? REACT_APP_SERVICES_HOST_DEV
+    : REACT_APP_SERVICES_HOST_PROD;
+
 /* Backends paths */
 const SIGN_UP_URL = "/signup";
 const SIGN_IN_URL = "/signin";
 const SIGN_UP_END_URL = SIGN_UP_URL + "/end";
 const FORGOT_PASSWORD_URL = "/forgotpassword";
 const USERS_URL = "/users";
-const SONGS_URL = "/songs";
-const ALBUMS_URL = "/albums";
 const PROFILE_URL = USERS_URL + "/profile";
 const PROFILE_PHOTO_URL = PROFILE_URL + "/photo";
 const PROFILE_USER_BASIC_INFO_URL= PROFILE_URL + "/basicinfo";
@@ -38,20 +41,22 @@ const EMISSOR_PARAM = "idEmissor=";
 const RECEIVER_PARAM = "idReceptor=";
 const ARTIST_NAME_PARAM = "name=";
 const APP_FAV_ARTIST_LIST_URL = USERS_URL + "/favartistlist";
+const FAV_SONG = "/favsong";
+
 const REDIRECT_URL = "/redirect";
 const APP_FAV_ARTIST_URL = USERS_URL + "/favartist";
 const PUSH_NOTIFICATION_TOKEN_URL = PROFILE_URL + "/pushnotificationtoken";
 const NOTIFICATION_LIST_URL = USERS_URL + "/notificationlist"
 
-
-
-const SERVICES_HOST = (__DEV__)
-                      ? REACT_APP_SERVICES_HOST_DEV
-                      : REACT_APP_SERVICES_HOST_PROD;
+const SONGS_URL = "/songs";
+const ALBUM_URL = "/albums";
+const PLAYLIST_URL = "/playlists";
+const FAVORITE_SONGS = "/favoritesongs";
 
 const JSON_HEADER = {
   'Content-Type': 'application/json',
-  'Accept': 'application/json'
+  'Accept': 'application/json',
+  'Access-Control-Allow-Origin': '*'
 }
 
 /* Constants */
@@ -77,7 +82,7 @@ module.exports = {
   MUSICAL_PREF_URL,
   USERS_URL,
   SONGS_URL,
-  ALBUMS_URL,
+  ALBUM_URL,
   PROFILE_URL,
   USER_ID_QUERY_PARAM,
   USERS_LIST_URL,
@@ -94,14 +99,17 @@ module.exports = {
   LISTENER_ID_QUERY_PARAM,
   PROFILE_USER_BASIC_INFO_URL,
   LISTENER,
-  EDIT_PROFILE_URL,
   ARTIST,
+  EDIT_PROFILE_URL,
   ARTIST_QUERY,
-  ARTIST_NAME_PARAM,
-  PUSH_NOTIFICATION_TOKEN_URL,
-  NOTIFICATION_LIST_URL,
   EMISSOR_PARAM,
   RECEIVER_PARAM,
+  ARTIST_NAME_PARAM,
+  FAV_SONG,
+  PUSH_NOTIFICATION_TOKEN_URL,
+  NOTIFICATION_LIST_URL,
+  PLAYLIST_URL,
+  FAVORITE_SONGS,
   DUPLICATE_NOTIFICATION_ERROR,
   PROFILE_VERIFICATION_VIDEO_URL
 }

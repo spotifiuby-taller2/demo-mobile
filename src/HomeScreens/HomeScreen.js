@@ -1,34 +1,43 @@
-import {
-  StyleSheet,
-  View,
-  Image,
-  ScrollView,
-  SafeAreaView,
-} from 'react-native';
-import React, {useEffect} from 'react'
-import imageSpotifiuby from '../../assets/SpotifiubyIcon.png'
-import {Text, Button} from 'react-native-paper'
+import {ScrollView, StyleSheet, View} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react'
 import {useAuthUser} from '../context/AuthContext';
+import {getToGateway} from "../others/utils";
+import constants from "../others/constants";
+import {containerStyle} from "../styles/genericStyles";
+import SongChip from "../Components/SongChip";
 import * as Notifications from 'expo-notifications';
-import constants from '../others/constants';
-import { postToGateway } from '../others/utils';
-
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-  }),
-});
-
 
 const HomeScreen = ({navigation}) => {
+  const [songs, setSongs] = useState([]);
+
+  const {userState} = useAuthUser();
+
+  const songsRef = useRef();
 
   const {signOut} = useAuthUser();
 
   useEffect(() => {
+    function getFavoriteSongs() {
+      getToGateway(constants.MEDIA_HOST + constants.FAVORITE_SONGS
+        + "?userId="
+        + userState.uid)
+        .then((response) => {
+          if (response.error !== undefined) {
+            alert(response.error);
+            return;
+          }
 
-    const subcriptionNotificationReceived = Notifications.addNotificationReceivedListener(notification=> {
+          setSongs(response);
+        })
+      songsRef.current = songs;
+    }
+
+    navigation.addListener('focus',
+      () => {
+        getFavoriteSongs();
+      });
+
+    const subcriptionNotificationReceived = Notifications.addNotificationReceivedListener(notification => {
       const {type, params, screenName} = notification.request.content.data;
       const body = {
         idEmissor: params.idEmissor,
@@ -38,7 +47,7 @@ const HomeScreen = ({navigation}) => {
 
       postToGateway(body, 'POST')
         .then(res => {
-          if ( res.error !== undefined && res.error !== constants.DUPLICATE_NOTIFICATION_ERROR  ){
+          if (res.error !== undefined && res.error !== constants.DUPLICATE_NOTIFICATION_ERROR) {
             alert(res.error);
           }
         })
@@ -59,24 +68,25 @@ const HomeScreen = ({navigation}) => {
 
 
   return (
-    <View style={styles.container}>
-      <SafeAreaView>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View>
-            <Image source={imageSpotifiuby} style={styles.image}></Image>
-
-          </View>
-          <Button style={styles.button} mode='contained' onPress={() => signOut()}>
-            <Text>
-              SALIR
-            </Text>
-          </Button>
-        </ScrollView>
-      </SafeAreaView>
+    <View style={containerStyle} ref={songsRef}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View>
+          {
+            (songsRef.current !== undefined) && (Array.isArray(songsRef.current)) && (
+              songsRef.current.map((song, id) => {
+                return (
+                  <SongChip id={id}
+                            key={id}
+                            song={song}
+                            navigation={navigation}/>
+                )
+              }))
+          }
+        </View>
+      </ScrollView>
     </View>
   )
 }
-
 
 const styles = StyleSheet.create(
   {
@@ -99,7 +109,7 @@ const styles = StyleSheet.create(
       backgroundColor: 'skyblue',
       paddingTop: 15,
       paddingBottom: 15,
-      width: '100%',
+      width: 100,
       alignSelf: 'center',
       marginTop: 30,
       marginBottom: 30,
@@ -117,4 +127,6 @@ const styles = StyleSheet.create(
   }
 )
 
+
 export default HomeScreen;
+

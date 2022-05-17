@@ -10,7 +10,8 @@ const UserChip = props => {
       props.navigation.navigate('ProfileScreen', {uid: props.user.id})
     }}>
       <View style={{
-        flexDirection: 'row', flexWrap: "wrap",
+        flexDirection: 'row',
+        flexWrap: "wrap",
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
@@ -19,7 +20,7 @@ const UserChip = props => {
         <View style={{flexDirection: 'column', paddingRight: 10, paddingTop: 55, height: 110}}>
           <Avatar.Text
             size={56}
-            style={{backgroundColor: '#ff4500'}}
+            style={{backgroundColor: 'steelblue'}}
             label={`${props.user.name.charAt(0)}${props.user.surname.charAt(0)}`}
           />
         </View>
@@ -42,17 +43,17 @@ const UserChip = props => {
 const styles = StyleSheet.create(
   {
     chip: {
-      backgroundColor: 'darkblue',
+      backgroundColor: 'skyblue',
       marginTop: 5,
       height: 110,
     },
     name: {
       fontSize: 19,
-      color: 'gold',
+      color: 'darkblue',
       paddingLeft: 5
     },
     email: {
-      color: 'white',
+      color: 'black',
       paddingLeft: 5
     },
     icon: {

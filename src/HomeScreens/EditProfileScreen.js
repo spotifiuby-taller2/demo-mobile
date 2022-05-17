@@ -185,15 +185,18 @@ const EditProfileScreen = ({navigation}) =>{
       }
 
         return(
-          <View style={styles.container}>
+          <View style={profile.isArtist? styles.containerArtist : styles.containerListener}>
           <SafeAreaView>
             <ScrollView showsVerticalScrollIndicator={false}>
               <View>
                 <ProfilePicture
-                  uid={route.params.uid}
+                  uid={profile.id}
                   name={profile.name} 
                   surname={profile.surname}
                   style={styles.avatar}
+                  photoUrl={profile.photoUrl}
+                  pictureSize={175}
+                  disabled={false}
                   />
 
                 <View style={{flexDirection: 'row', alignSelf: 'center'}}>
@@ -212,24 +215,6 @@ const EditProfileScreen = ({navigation}) =>{
                         styles={styles.name}/>
 
                 </View>
-                
-                <Text style={styles.usertype}>{(profile.isArtist)? 'Artista': 'Oyente'}</Text>
-                <Text style={styles.email}>{profile.email}</Text>
-
-
-                <EditProfileTextInput 
-                    label='Mail'
-                    name='email'
-                    input={profile.email}
-                    execute={dispatch}
-                    styles={styles.email}/>
-
-                <EditProfileTextInput 
-                    label='Telefono'
-                    name='phoneNumber'
-                    input={profile.phoneNumber}
-                    execute={dispatch}
-                    styles={styles.phone}/>
 
                 {profile.isListener && 
                       (
@@ -240,25 +225,25 @@ const EditProfileScreen = ({navigation}) =>{
                             style={profile.metal? styles.chipSelected: styles.chipUnselected}
                             onPress={()=>{dispatch({type: 'metal'})} }
                             >
-                                <Text>Metal</Text>
+                                <Text>     Metal</Text>
                         </Chip>
                         <Chip 
                             style={profile.rock? styles.chipSelected: styles.chipUnselected}
                             onPress={()=>{dispatch({type: 'rock'})} }
                             >
-                                <Text>Rock</Text>
+                                <Text>      Rock</Text>
                         </Chip>
                         <Chip 
                             style={profile.salsa? styles.chipSelected: styles.chipUnselected}
                             onPress={()=>{dispatch({type: 'salsa'})} }
                             >
-                                <Text>Salsa</Text>
+                                <Text>      Salsa</Text>
                         </Chip>
                         <Chip 
                             style={profile.blues? styles.chipSelected: styles.chipUnselected}
                             onPress={()=>{dispatch({type: 'blues'})} }
                             >
-                                <Text>Blues</Text>
+                                <Text>     Blues</Text>
                         </Chip>
                         <Chip 
                             style={profile.reggeaton? styles.chipSelected: styles.chipUnselected}
@@ -270,37 +255,37 @@ const EditProfileScreen = ({navigation}) =>{
                             style={profile.jazz? styles.chipSelected: styles.chipUnselected}
                             onPress={()=>{dispatch({type: 'jazz'})} }
                             >
-                                <Text>Jazz</Text>
+                                <Text>      Jazz</Text>
                         </Chip>
                         <Chip 
                             style={profile.punk? styles.chipSelected: styles.chipUnselected}
                             onPress={()=>{dispatch({type: 'punk'})} }
                             >
-                                <Text>Punk</Text>
+                                <Text>      Punk</Text>
                         </Chip>
                         <Chip 
                             style={profile.rap? styles.chipSelected: styles.chipUnselected}
                             onPress={()=>{dispatch({type: 'rap'})} }
                             >
-                                <Text>Rap</Text>
+                                <Text>      Rap</Text>
                         </Chip>
                         <Chip 
                             style={profile.pop? styles.chipSelected: styles.chipUnselected}
                             onPress={()=>{dispatch({type: 'pop'})} }
                             >
-                                <Text>Pop</Text>
+                                <Text>      Pop</Text>
                         </Chip>
                         <Chip 
                             style={profile.indie? styles.chipSelected: styles.chipUnselected}
                             onPress={()=>{dispatch({type: 'indie'})} }
                             >
-                                <Text>Indie</Text>
+                                <Text>     Indie</Text>
                         </Chip>
                         <Chip 
                             style={profile.classic? styles.chipSelected: styles.chipUnselected}
                             onPress={()=>{dispatch({type: 'classic'})} }
                             >
-                                <Text>Clásica</Text>
+                                <Text>    Clásica</Text>
                         </Chip>
                         <Chip 
                             style={profile.electronic? styles.chipSelected: styles.chipUnselected}
@@ -312,7 +297,7 @@ const EditProfileScreen = ({navigation}) =>{
                             style={profile.others? styles.chipSelected: styles.chipUnselected}
                             onPress={()=>{dispatch({type: 'others'})} }
                             >
-                                <Text>Otros</Text>
+                                <Text>     Otros</Text>
                         </Chip>
                       </View>
                       </>)
@@ -321,10 +306,10 @@ const EditProfileScreen = ({navigation}) =>{
                 <View>
                   <Button
                     mode='contained'
-                    color='#fdfcff'
-                    style={{width: 210, alignSelf: 'center', margin: 30}}
+                    color='skyblue'
+                    style={{width: 120, alignSelf: 'center', margin: 30}}
                     onPress={saveProfile}>
-                    <Text>Guardar Cambios</Text>
+                    <Text>Guardar</Text>
                   </Button>
                 </View>
                 
@@ -338,9 +323,13 @@ const EditProfileScreen = ({navigation}) =>{
   
 const styles =StyleSheet.create(
   {
-    container: {
+    containerArtist: {
       flex: 1,
-      backgroundColor: '#f5fcff'},
+      backgroundColor: '#B0E0E6' 
+    },
+    containerListener: {
+        flex: 1,
+        backgroundColor: '#f5fcff'},
     avatar: {
       marginTop: 30,
       alignSelf: 'center',
@@ -348,7 +337,7 @@ const styles =StyleSheet.create(
     },
     name: {
       width: 144, 
-      fontSize: 30, 
+      fontSize: 17, 
       height: 80, 
       alignSelf: 'center', 
       backgroundColor: '#f5fcff', 

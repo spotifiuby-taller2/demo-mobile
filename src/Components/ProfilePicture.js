@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {Avatar} from 'react-native-paper'
 import * as ImagePicker from 'expo-image-picker'
-import {getCurrentUser, updateProfilePhoto} from '../Firebase/firebase';
+import {updateProfilePhoto} from '../Firebase/firebase';
 import {useAuthUser} from '../context/AuthContext';
 import constants from "../others/constants";
 import {postToGateway} from "../others/utils";
@@ -16,8 +16,8 @@ const ProfilePicture = (props) => {
 
 
   useEffect(() => {
-    if (getCurrentUser().photoURL) {
-      setSelectedImage(getCurrentUser().photoURL)
+    if (props.photoUrl) {
+      setSelectedImage(props.photoUrl)
     } else {
       setSelectedImage(null);
     }
@@ -53,7 +53,7 @@ const ProfilePicture = (props) => {
       onPress={pickImage}
       mode='outlined'
       style={styles.button}
-      disabled={(props.uid !== userState.uid)}
+      disabled={((props.uid !== userState.uid) || (props.disabled))}
     >
       {(selectedImage === null) ?
         (<Avatar.Text

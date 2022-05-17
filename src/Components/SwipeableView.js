@@ -6,11 +6,11 @@ const SwipeableView = ({style, children, onSwipeLeft, onSwipeRight, onPress}) =>
 
   const handleTouchEnd = (touchEndX) => {
     if (touchEndX > touchStartX) {
-      onSwipeRight();
+      onSwipeRight && onSwipeRight();
     } else if (touchEndX < touchStartX) {
-      onSwipeLeft();
+      onSwipeLeft && onSwipeLeft();
     } else {
-      onPress();
+      onPress && onPress();
     }
   }
 
