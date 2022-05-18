@@ -30,8 +30,8 @@ const UserChip = props => {
           {
             props.user.isVerified && props.user.isArtist &&
             <View style={{flexDirection: 'row'}}>
-              <Avatar.Icon icon="check-decagram" size={30} color={'white'} style={styles.icon}/>
-              <Text style={{color: 'white', paddingTop: 5}}>{'Artista verificado'}</Text>
+              <Avatar.Icon icon="check-decagram" size={30} color={'green'} style={styles.icon}/>
+              <Text style={{color: 'black', paddingTop: 5}}>{'Artista verificado'}</Text>
             </View>
           }
         </View>

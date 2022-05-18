@@ -89,7 +89,7 @@ const getToGateway = (destiny,
         body: JSON.stringify(body)
       }
   ).then(response => {
-          console.log(response);
+          console.log(JSON.stringify(response));
           return response.json()
       }
   ).catch(error => {

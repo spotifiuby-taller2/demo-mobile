@@ -81,7 +81,7 @@ const ProfileScreen = ({navigation}) => {
               pushNotificationToken: res.pushNotificationToken,
               isVerified: res.isVerified,
               verificationVideoUrl: res.verificationVideoUrl,
-              nFollowers: res.nFollowers,
+              nFollowers: res.nFollowers
             };
             setProfile(newState);
             setRenderButton(true);
@@ -271,7 +271,7 @@ const ProfileScreen = ({navigation}) => {
               (<Button
                 mode='contained'
                 color='#fdfcff'
-                style={{width: 177, alignSelf: 'center', marginTop: 15, marginBottom: 30}}
+                style={{width: 210, alignSelf: 'center', marginTop: 30, marginBottom: 30}}
                 onPress={() => {
                   navigation.navigate('VerificationAccountScreen')
                 }}>
