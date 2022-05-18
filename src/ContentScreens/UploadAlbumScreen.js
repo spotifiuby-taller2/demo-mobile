@@ -1,15 +1,9 @@
 import {ScrollView, StyleSheet, View} from "react-native";
-import {Button, Divider, Text, TextInput, Title} from "react-native-paper";
+import {Button, Text, TextInput, Title} from "react-native-paper";
 import React, {useState} from "react";
-import {
-  buttonStyle,
-  buttonTextStyle,
-  containerStyle,
-  inputStyle,
-  titleStyle
-} from '../styles/genericStyles';
+import {buttonStyle, buttonTextStyle, containerStyle, inputStyle, titleStyle} from '../styles/genericStyles';
 import FilePicker from "../Components/FilePicker";
-import {uploadFile} from "../Services/CloudStorageService";
+import {uploadImage} from "../Services/CloudStorageService";
 import {createAlbum, getSongsByArtist} from "../Services/MediaService";
 import {getArtists} from '../Services/UsersService';
 import {validateFieldNotBlank} from "../others/utils";
@@ -29,10 +23,6 @@ const UploadAlbumScreen = ({navigation}) => {
   const {userState, setUserType} = useAuthUser();
 
   const handleDocumentPick = (doc) => {
-    if (title.value === '') {
-      const name = doc.name.split('.')[0];
-      setTitle({value: name, error: null});
-    }
     setFile(doc);
   }
 
@@ -62,7 +52,8 @@ const UploadAlbumScreen = ({navigation}) => {
     }
     let fileUrl;
     if (file !== undefined && file != null) {
-      fileUrl = await file.contentPromise.then(uploadFile);
+      const name = `${title.value}.png`;
+      fileUrl = await uploadImage(file.uri, name);
     }
     setIsLoading(true);
     try {
@@ -70,7 +61,7 @@ const UploadAlbumScreen = ({navigation}) => {
         title: title.value,
         genre: genre.value,
         subscription: subscription.value,
-        artists: artists.value,
+        artists: artists.value.map(a => a.id),
         songs: songs.value.map(s => s.id),
         link: fileUrl
       });
@@ -141,6 +132,8 @@ const UploadAlbumScreen = ({navigation}) => {
         />
         {songs.error && (<Text style={{color: 'red'}}>{songs.error}</Text>)}
         <View style={{marginBottom: 5}}/>
+
+
         <FilePicker title={'Elegir foto de portada'} mimeType={'image/*'} icon={'camera'}
                     setFileCallback={handleDocumentPick}/>
 

@@ -146,6 +146,5 @@ const SongScreen = ({navigation}) => {
     );
 }
 
-export {
-    SongScreen
-}
+export default SongScreen;
+

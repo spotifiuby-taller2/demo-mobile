@@ -6,7 +6,7 @@ import { Avatar } from 'react-native-paper';
 
 const ArtistsTab = createBottomTabNavigator();
 
-export default ArtistsListTab = ({navigation}) => {
+const ArtistsListTab = ({navigation}) => {
   return (
     <ArtistsTab.Navigator screenOptions={{headerShown: false}}>
       <ArtistsTab.Screen 
@@ -27,3 +27,5 @@ export default ArtistsListTab = ({navigation}) => {
     </ArtistsTab.Navigator>
   );
 }
+
+export default ArtistsListTab;

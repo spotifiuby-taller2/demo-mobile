@@ -1,9 +1,6 @@
 import {initializeApp} from 'firebase/app'
-import {getAuth, updateProfile, signOut} from 'firebase/auth'
-import {getStorage, ref, uploadBytes, getDownloadURL} from 'firebase/storage'
-import {postToGateway} from "../others/utils";
-import constants from '../others/constants';
-import {addDoc, collection, orderBy, initializeFirestore, onSnapshot} from 'firebase/firestore';
+import {getAuth, signOut, updateProfile} from 'firebase/auth'
+import {addDoc, collection, initializeFirestore, onSnapshot, orderBy} from 'firebase/firestore';
 
 
 const firebaseConfig = {
@@ -17,46 +14,8 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)
-const storage = getStorage(app);
 const db = initializeFirestore(app, {useFetchStreams: false, experimentalForceLongPolling: true});
 
-
-// storage
-const uploadImage = async (file, uid, setImage)=>{
-
-  const url = `images/${uid}.png`
-  const blob = await new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.onload = function () {
-      resolve(xhr.response);
-    };
-    xhr.onerror = function (e) {
-      reject(new TypeError("Network request failed"));
-    };
-    xhr.responseType = "blob";
-    xhr.open("GET", file, true);
-    xhr.send(null);
-  });
-
-  let storageRef = ref(storage, url);
-  const snapshot = await uploadBytes(storageRef, blob);
-
-  const photoURL = await getDownloadURL(storageRef);
-
-  updateProfile(auth.currentUser, {photoURL});
-  const requestBody = {
-    redirectTo: constants.USERS_HOST
-      + constants.PROFILE_PHOTO_URL
-      + "?" + constants.USER_ID_QUERY_PARAM + uid
-      + "&" + constants.PHOTO_URL_QUERY_PARAM + photoURL
-  };
-
-  postToGateway(requestBody, 'PATCH')
-    .then(res => {
-      setImage(photoURL)
-    })
-
-}
 
 const getCurrentUser = () => {
   return auth.currentUser;
@@ -76,19 +35,21 @@ const getSnapshot = async (collectionName) => {
     (querySnapshot) => {
       return querySnapshot
     });
-
   return snapshot;
+}
 
+const updateProfilePhoto = (photoUrl) => {
+  updateProfile(auth.currentUser, {photoUrl});
 }
 
 export {
   auth,
-  uploadImage,
   signOut,
   getCurrentUser,
   firebaseConfig,
   db,
   addDocIntoCollection,
   getSnapshot,
-  orderBy
+  orderBy,
+  updateProfilePhoto
 };

@@ -15,10 +15,10 @@ const HomeScreen = ({navigation}) => {
 
   const {signOut} = useAuthUser();
 
-  useEffect(() => {
-    function getFavoriteSongs() {
-        getToGateway(constants.MEDIA_HOST + constants.FAVORITE_SONGS
-            + "?userId="
+  const getFavoriteSongs = async () => {
+        await getToGateway(constants.MEDIA_HOST + constants.FAVORITE_SONGS
+            + "?"
+            + constants.USER_ID_QUERY_PARAM
             + userState.uid)
             .then( (response) => {
                 if (response.error !== undefined) {
@@ -27,9 +27,10 @@ const HomeScreen = ({navigation}) => {
                 }
 
                 setSongs(response.songs);
-            } )
+            } );
     }
 
+  useEffect(() => {
     navigation.addListener('focus',
           () => {
               getFavoriteSongs();
@@ -50,7 +51,7 @@ const HomeScreen = ({navigation}) => {
                     alert(res.error);
                   }
                 })
-    } )
+         });
 
     const subcriptionNotificationClicked = Notifications.addNotificationResponseReceivedListener(notification => {
       const {type, params, screenName} = notification.notification.request.content.data;
@@ -62,7 +63,8 @@ const HomeScreen = ({navigation}) => {
       subcriptionNotificationClicked.remove();
       subcriptionNotificationReceived.remove();
     };
-  }, [navigation])
+  }, [navigation,
+      getFavoriteSongs]);
 
 
     return (
@@ -120,7 +122,7 @@ const HomeScreen = ({navigation}) => {
            marginTop: 50,
            marginBottom: 80
          }}
-   )
+   );
 
 
     export {

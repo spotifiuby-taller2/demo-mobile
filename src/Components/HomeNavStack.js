@@ -18,8 +18,9 @@ import NotificationListScreen from '../HomeScreens/NotificationListScreen';
 import * as Notifications from 'expo-notifications'
 import * as Device from 'expo-device';
 import NowPlayingBar from "./NowPlayingBar";
-import {SongScreen} from "../HomeScreens/SongScreen";
+import SongScreen from "../HomeScreens/SongScreen";
 import CreateContentScreen from "../HomeScreens/CreateContentScreen";
+import VerificationAccountScreen from "../HomeScreens/VerificationAccountScreen";
 
 const HomeStack = createNativeStackNavigator();
 
@@ -110,13 +111,14 @@ const HomeNavStack = () =>{
                 setExpoPushToken(token);
               })
 
-        
+
     },[])
-    
+
     /*Todas las pantallas de la Home van aca*/
     return(
         <View style={styles.container}>
-          <HomeStack.Navigator style={styles.homeStack} screenOptions={{headerShown: false}}>
+          <HomeStack.Navigator style={styles.homeStack}
+                               screenOptions={{headerShown: false}}>
             <HomeStack.Screen name='Menu' component={Menu} />
             <HomeStack.Screen name='HomeScreen' component={HomeScreen} />
             <HomeStack.Screen name='ProfileScreen' component={ProfileScreen} initialParams={{uid: userState.uid}}/>
@@ -127,12 +129,12 @@ const HomeNavStack = () =>{
             <HomeStack.Screen name='SongScreen' component={SongScreen} />
             <HomeStack.Screen name='ChatScreen' component={ChatScreen}/>
             <HomeStack.Screen name='NotificationListScreen' component={NotificationListScreen}/>
+            <HomeStack.Screen name='VerificationAccountScreen' component={VerificationAccountScreen}/>
           </HomeStack.Navigator>
           <NowPlayingBar style={styles.bar}/>
         </View>
     )
 }
-
 
 const styles = StyleSheet.create({
   container: {
