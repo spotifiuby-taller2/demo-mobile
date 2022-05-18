@@ -91,6 +91,7 @@ const ProfileScreen = ({navigation}) => {
 
     navigation.addListener('focus',
       () => {
+        setRenderButton(false);
         getProfile(route.params.uid);
       });
   }, [navigation]);
@@ -129,8 +130,27 @@ const ProfileScreen = ({navigation}) => {
                       size={30}
                       color='#388AD6'/>
                   </Button>
+
+                  {
+                    (userState.uid === profile.id && profile.isArtist && !profile.isVerified &&
+                      (profile.verificationVideoUrl === undefined || profile.verificationVideoUrl === null || profile.verificationVideoUrl.length === 0)) &&
+                    (<Button
+                      mode='text'
+                      color='#fdfcff'
+                      style={{width: 70, alignSelf: 'center'}}
+                      onPress={() => {
+                        navigation.navigate('VerificationAccountScreen')
+                      }}>
+                      <MaterialCommunityIcons
+                            name='account-check'
+                            size={35}
+                            color='#388AD6'/>
+                    </Button>)
+                  } 
+
                 </View>)
             }
+            
 
             {
               (userState.uid !== profile.id) &&
@@ -162,6 +182,7 @@ const ProfileScreen = ({navigation}) => {
                 </View>)
 
             }
+
             {
               renderButton && (
                 <ProfilePicture
@@ -256,28 +277,7 @@ const ProfileScreen = ({navigation}) => {
                 </View>
               )
             }
-            <Button
-              mode='contained'
-              color='#fdfcff'
-              style={{width: 210, alignSelf: 'center', marginTop: 30, marginBottom: 30}}
-              onPress={() => {
-                navigation.navigate('NotificationListScreen')
-              }}>
-              <Text>Notificaciones</Text>
-            </Button>
-            {
-              (userState.uid === profile.id && profile.isArtist && !profile.isVerified &&
-                (profile.verificationVideoUrl === undefined || profile.verificationVideoUrl === null || profile.verificationVideoUrl.length === 0)) &&
-              (<Button
-                mode='contained'
-                color='#fdfcff'
-                style={{width: 210, alignSelf: 'center', marginTop: 30, marginBottom: 30}}
-                onPress={() => {
-                  navigation.navigate('VerificationAccountScreen')
-                }}>
-                <Text>Verificar cuenta</Text>
-              </Button>)
-            }
+            
           </View>
         </ScrollView>
       </SafeAreaView>

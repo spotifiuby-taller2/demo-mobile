@@ -21,7 +21,7 @@ const ProfilePicture = (props) => {
     } else {
       setSelectedImage(null);
     }
-  }, [selectedImage]);
+  }, []);
 
   const pickImage = async () => {
 
@@ -40,10 +40,10 @@ const ProfilePicture = (props) => {
       const requestBody = {
         redirectTo: constants.USERS_HOST
           + constants.PROFILE_PHOTO_URL
-          + "?" + constants.USER_ID_QUERY_PARAM + props.uid
-          + "&" + constants.PHOTO_URL_QUERY_PARAM + photoURL
+          + "?" + constants.USER_ID_QUERY_PARAM + props.uid,
+          photoURL: photoURL
       };
-      await postToGateway(requestBody, 'PATCH')
+      postToGateway(requestBody, 'PATCH')
         .then(res => setSelectedImage(photoURL));
     }
   }
