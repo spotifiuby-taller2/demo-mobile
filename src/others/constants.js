@@ -29,6 +29,7 @@ const PROFILE_USER_BASIC_INFO_URL= PROFILE_URL + "/basicinfo";
 const MUSICAL_PREF_URL = PROFILE_URL + "/musicalpref";
 const EDIT_PROFILE_URL = USERS_URL + "/editprodile";
 const USER_ID_QUERY_PARAM = "userId=";
+const SONG_ID_PARAM = "songId=";
 const LISTENER_ID_QUERY_PARAM = "idListener=";
 const ARTIST_ID_QUERY_PARAM = "idArtist=";
 const PHOTO_URL_QUERY_PARAM = "photoUrl=";
@@ -41,6 +42,8 @@ const RECEIVER_PARAM = "idReceptor=";
 const ARTIST_NAME_PARAM = "name=";
 const APP_FAV_ARTIST_LIST_URL = USERS_URL + "/favartistlist";
 const FAV_SONG = "/favsong";
+const UNFAV_SONG = "/unfavsong";
+const CHECK_FAV_SONG = "/checkfav";
 
 const REDIRECT_URL = "/redirect";
 const APP_FAV_ARTIST_URL = USERS_URL + "/favartist";
@@ -109,5 +112,8 @@ module.exports = {
   NOTIFICATION_LIST_URL,
   PLAYLIST_URL,
   FAVORITE_SONGS,
-  DUPLICATE_NOTIFICATION_ERROR
+  DUPLICATE_NOTIFICATION_ERROR,
+  UNFAV_SONG,
+  CHECK_FAV_SONG,
+  SONG_ID_PARAM
 }

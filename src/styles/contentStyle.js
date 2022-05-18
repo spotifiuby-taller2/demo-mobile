@@ -36,10 +36,21 @@ const contentButtonStyle = {
     backgroundColor: 'white',
 };
 
+const pressedContentButtonStyle = {
+    width: 90,
+    height: 90,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    borderRadius: 90,
+    backgroundColor: 'lightblue',
+};
+
 export {
     contentTitleStyle,
     artistNameStyle,
     contentTextStyle,
     emojiStyle,
-    contentButtonStyle
+    contentButtonStyle,
+    pressedContentButtonStyle
 }
