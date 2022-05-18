@@ -1,4 +1,4 @@
-import {SafeAreaView, ScrollView, StyleSheet, View,} from 'react-native';
+import {SafeAreaView, StyleSheet, View,FlatList} from 'react-native';
 import React, {useEffect, useState} from 'react'
 import constants from '../others/constants'
 import {getToGateway} from "../others/utils";
@@ -6,8 +6,7 @@ import UserChip from '../Components/UserChip';
 import {containerStyle} from "../styles/genericStyles";
 import {Searchbar} from "react-native-paper";
 
-export default ArtistListScreen = ({navigation}) => {
-
+const ArtistListScreen = ({navigation}) => {
   const [usersList, setList] = useState([]);
   const [text, setText] = useState('')
 
@@ -47,23 +46,15 @@ export default ArtistListScreen = ({navigation}) => {
                    containerStyle={{}}
                    inputContainerStyle={{}}
         />
-        <ScrollView showsVerticalScrollIndicator={false}>
           <View>
             <View style={{marginBottom: 10}}/>
-            <ScrollView showsVerticalScrollIndicator={true}>
               {
-                usersList
-                  .filter(filterArtists(text))
-                  .map((user, id) => {
-                  return (
-                    <UserChip id={id} key={id} user={user} navigation={navigation}/>
-                  )
-                })
+                <FlatList
+                  data={usersList.filter(filterArtists(text))}
+                  renderItem={({item, id}) => <UserChip id={id} key={id} user={item} navigation={navigation}/>}
+                />
               }
-            </ScrollView>
-
           </View>
-        </ScrollView>
       </SafeAreaView>
     </View>
   )
@@ -78,3 +69,5 @@ const styles = StyleSheet.create(
     }
   }
 )
+
+export default ArtistListScreen;

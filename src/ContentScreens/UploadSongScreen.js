@@ -49,7 +49,10 @@ const UploadSongScreen = () => {
     }
     setIsLoading(true);
     try {
-      const fileUrl = await file.contentPromise.then(uploadFile);
+      const name = file.name;
+      const fileUrl = await file.contentPromise.then(res =>{
+        return uploadFile(res, name)
+      });
       const song = await createSong({
         title: title.value,
         link: fileUrl,

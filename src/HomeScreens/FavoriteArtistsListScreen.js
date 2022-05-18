@@ -1,4 +1,4 @@
-import {SafeAreaView, ScrollView, StyleSheet, View,} from 'react-native';
+import {FlatList, SafeAreaView, StyleSheet, View,} from 'react-native';
 import React, {useEffect, useState} from 'react'
 import constants from '../others/constants'
 import {getToGateway} from "../others/utils";
@@ -7,7 +7,7 @@ import {containerStyle} from "../styles/genericStyles";
 import {useAuthUser} from '../context/AuthContext';
 import {Searchbar} from "react-native-paper";
 
-export default FavoriteArtistListScreen = ({navigation}) => {
+const FavoriteArtistListScreen = ({navigation}) => {
 
   const [usersList, setList] = useState([]);
   const [text, setText] = useState('')
@@ -36,7 +36,6 @@ export default FavoriteArtistListScreen = ({navigation}) => {
 
   const filterArtists = text => {
     text = text.toLowerCase();
-    console.log(text)
     return a => a.name.toLowerCase().includes(text) || a.surname.toLowerCase().includes(text);
   }
 
@@ -49,22 +48,15 @@ export default FavoriteArtistListScreen = ({navigation}) => {
                    containerStyle={{}}
                    inputContainerStyle={{}}
         />
-        <ScrollView showsVerticalScrollIndicator={false}>
           <View>
             <View style={{marginBottom: 10}}/>
-            <ScrollView showsVerticalScrollIndicator={true}>
               {
-                usersList
-                  .filter(filterArtists(text))
-                  .map((user, id) => {
-                    return (
-                      <UserChip id={id} key={id} user={user} navigation={navigation}/>
-                    )
-                  })
+                <FlatList
+                  data={usersList.filter(filterArtists(text))}
+                  renderItem={({item, id}) => <UserChip id={id} key={id} user={item} navigation={navigation}/>}
+                />
               }
-            </ScrollView>
           </View>
-        </ScrollView>
       </SafeAreaView>
     </View>
   )
@@ -79,3 +71,5 @@ const styles = StyleSheet.create(
     }
   }
 )
+
+export default FavoriteArtistListScreen;
