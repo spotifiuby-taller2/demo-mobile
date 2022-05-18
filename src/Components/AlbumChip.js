@@ -1,5 +1,5 @@
-import { 
-    StyleSheet, 
+import {
+    StyleSheet,
     View
   } from 'react-native';
 import React from 'react'
@@ -16,7 +16,7 @@ export default AlbumChip = (props) => {
       <Chip style={styles.chip} onPress={
           ()=>{props.navigation
                     .navigate('ProfileScreen',{uid: props.album
-                                                         .id})
+                                                         .artists})
           } }>
 
           <View style={{flexDirection:'row', flexWrap: "wrap"}}>
