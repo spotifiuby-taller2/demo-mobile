@@ -15,7 +15,7 @@ const HomeScreen = ({navigation}) => {
 
   const {signOut} = useAuthUser();
 
-  const getFavoriteSongs = async () => {
+    const getFavoriteSongs = async () => {
         await getToGateway(constants.MEDIA_HOST + constants.FAVORITE_SONGS
             + "?"
             + constants.USER_ID_QUERY_PARAM
@@ -30,11 +30,16 @@ const HomeScreen = ({navigation}) => {
             } );
     }
 
-  useEffect(() => {
-    navigation.addListener('focus', async () => {
-              await getFavoriteSongs();
-          }, [navigation]);
+  useEffect( () => {
+      (async () => {
+          await getFavoriteSongs();
+      })();
 
+      return () => {
+      };
+  }, []);
+
+  useEffect( () => {
       const subcriptionNotificationReceived = Notifications.addNotificationReceivedListener(
           async notification=> {
               const {type, params, screenName} = notification.request.content.data;
@@ -58,12 +63,11 @@ const HomeScreen = ({navigation}) => {
       navigation.navigate(screenName, params);
     });
 
-    return () => {
+    return async () => {
       subcriptionNotificationClicked.remove();
       subcriptionNotificationReceived.remove();
     };
-  }, [navigation,
-      getFavoriteSongs]);
+  }, [navigation]);
 
 
     return (
