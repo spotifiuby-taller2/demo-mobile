@@ -10,7 +10,7 @@ import {getToGateway, postToGateway} from "../others/utils";
 import {useAuthUser} from '../context/AuthContext';
 
 
-export default NotificationListScreen = ({navigation}) =>{
+const NotificationListScreen = ({navigation}) =>{
 
     const [notificationsList, setList] = useState([]);
     const {userState} = useAuthUser();
@@ -76,3 +76,5 @@ export default NotificationListScreen = ({navigation}) =>{
         </View>
     )
 }
+
+export default NotificationListScreen;

@@ -153,7 +153,6 @@ export default RequestExternalUserATypeScreen = ({navigation}) => {
                 backgroundColor: '#f5fcff',
                 paddingLeft: 15,
                 paddingRight: 15,
-                marginTop: 30
             },
             title: {textAlign: 'center', fontSize: 25, marginBottom: 35},
             button: {

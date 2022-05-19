@@ -1,6 +1,7 @@
 import {StyleSheet, View} from 'react-native';
 import React from 'react'
 import {Avatar, Chip, Text} from 'react-native-paper';
+import ProfilePicture from './ProfilePicture'
 
 /*user must be {name: '', surname: '', email:''}*/
 
@@ -17,25 +18,28 @@ const UserChip = props => {
         alignItems: "center",
         height: 110
       }}>
-        <View style={{flexDirection: 'column', paddingRight: 10, paddingTop: 55, height: 110}}>
-          <Avatar.Text
-            size={56}
-            style={{backgroundColor: 'steelblue'}}
-            label={`${props.user.name.charAt(0)}${props.user.surname.charAt(0)}`}
-          />
+          <ProfilePicture
+                    uid={props.user.id}
+                    name={props.user.name}
+                    surname={props.user.surname}
+                    pictureSize={56}
+                    photoUrl={props.user.photoUrl}
+                    disabled={true}
+                    defaultImage={{marginTop: 100}}
+                    profilePicture={{marginTop: 7}}
+                  />
+
+          <View style={{flexDirection: 'column'}}>
+            <Text style={styles.name}>{props.user.name} {props.user.surname}</Text>
+            {
+              props.user.isVerified && props.user.isArtist &&
+              <View style={{flexDirection: 'row'}}>
+                <Avatar.Icon icon="check-decagram" size={30} color={'green'} style={styles.icon}/>
+                <Text style={{color: 'black', paddingTop: 5}}>{'Artista verificado'}</Text>
+              </View>
+            }
+          </View>
         </View>
-        <View style={{flexDirection: 'column', paddingLeft: 10, paddingTop: 55, height: 110}}>
-          <Text style={styles.name}>{props.user.name} {props.user.surname}</Text>
-          <Text style={styles.email}>{props.user.email}</Text>
-          {
-            props.user.isVerified && props.user.isArtist &&
-            <View style={{flexDirection: 'row'}}>
-              <Avatar.Icon icon="check-decagram" size={30} color={'green'} style={styles.icon}/>
-              <Text style={{color: 'black', paddingTop: 5}}>{'Artista verificado'}</Text>
-            </View>
-          }
-        </View>
-      </View>
     </Chip>
   )
 }
@@ -58,6 +62,9 @@ const styles = StyleSheet.create(
     },
     icon: {
       backgroundColor: 'transparent'
+    },
+    picture: {
+      marginStart: 150,
     }
   }
 )

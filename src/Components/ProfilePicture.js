@@ -21,7 +21,7 @@ const ProfilePicture = (props) => {
     } else {
       setSelectedImage(null);
     }
-  }, []);
+  }, [selectedImage]);
 
   const pickImage = async () => {
 
@@ -52,7 +52,7 @@ const ProfilePicture = (props) => {
     <TouchableOpacity
       onPress={pickImage}
       mode='outlined'
-      style={styles.button}
+      style={(selectedImage)? props.profilePicture: props.defaultImage}
       disabled={((props.uid !== userState.uid) || (props.disabled))}
     >
       {(selectedImage === null) ?

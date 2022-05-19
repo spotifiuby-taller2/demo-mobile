@@ -16,7 +16,7 @@ const utils = require("../others/utils");
 import * as Notifications from 'expo-notifications'
 
 
-export default ChatScreen = ({navigation}) =>{
+const ChatScreen = ({navigation}) =>{
 
         const route = useRoute();
         const [messages, setMessages] = useState([]);
@@ -182,3 +182,5 @@ export default ChatScreen = ({navigation}) =>{
           },
         }
       )
+
+      export default ChatScreen;

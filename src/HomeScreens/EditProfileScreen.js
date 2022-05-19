@@ -130,10 +130,6 @@ const EditProfileScreen = ({navigation}) =>{
           requestBody['surname'] = profile.surname;
         }
 
-        if ( route.params.profile.phoneNumber !== profile.phoneNumber ){
-          requestBody['phoneNumber'] = profile.phoneNumber;
-        }
-
         if ( route.params.metal !== profile.metal ){
           requestBody['metal'] = profile.metal;
         }

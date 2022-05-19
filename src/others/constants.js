@@ -68,6 +68,9 @@ const LISTENER = "listener";
 const ARTIST = "artist";
 
 const DUPLICATE_NOTIFICATION_ERROR = 'SequelizeUniqueConstraintError: llave duplicada viola restricción de unicidad «notifications_pkey»';
+const SS_TIMESTAMP_LABEL= (__DEV__)? "signInTimestamp_dev":"signInTimestamp_prod";
+const SS_ID_LABEL= (__DEV__)? "userId_dev":"userId_prod";
+const SS_TOKEN_LABEL= (__DEV__)? "token_dev":"token_prod";
 
 
 module.exports = {
@@ -111,5 +114,8 @@ module.exports = {
   PLAYLIST_URL,
   FAVORITE_SONGS,
   DUPLICATE_NOTIFICATION_ERROR,
-  PROFILE_VERIFICATION_VIDEO_URL
+  PROFILE_VERIFICATION_VIDEO_URL,
+  SS_ID_LABEL,
+  SS_TOKEN_LABEL,
+  SS_TIMESTAMP_LABEL
 }

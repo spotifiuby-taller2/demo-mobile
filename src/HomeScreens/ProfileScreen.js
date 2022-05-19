@@ -189,10 +189,11 @@ const ProfileScreen = ({navigation}) => {
                   uid={profile.id}
                   name={profile.name}
                   surname={profile.surname}
-                  style={styles.avatar}
                   pictureSize={175}
                   photoUrl={profile.photoUrl}
                   disabled={true}
+                  defaultStyle={styles.defaultImage}
+                  Imagestyle={styles.profilePicture}
                 />
               )
             }
@@ -205,7 +206,7 @@ const ProfileScreen = ({navigation}) => {
                   fontSize: 20,
                   alignSelf: 'center',
                   color: 'steelblue'
-                }}>{profile.nFollowers} Subcriptores</Text>
+                }}>{profile.nFollowers} Seguidores</Text>
               ))
             }
 
@@ -346,6 +347,16 @@ const styles = StyleSheet.create(
     icon: {
       backgroundColor: 'transparent',
       paddingTop: 5
+    },
+    defaultImage:{
+      marginTop: 30,
+      marginBottom: 40,
+      alignSelf: 'center',
+    },
+    profilePicture:{
+      marginTop: 30,
+      marginBottom: 40,
+      alignSelf: 'center',
     }
   }
 )
