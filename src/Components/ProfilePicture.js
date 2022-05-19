@@ -71,10 +71,6 @@ const ProfilePicture = (props) => {
 
 const styles = StyleSheet.create(
   {
-    button: {
-      marginTop: 30,
-      marginBottom: 40
-    },
     avatar: {
       alignSelf: 'center',
     }

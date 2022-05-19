@@ -8,6 +8,7 @@ import ProfilePicture from '../Components/ProfilePicture';
 import FollowArtistButton from '../Components/FollowArtistButton';
 import {useAuthUser} from '../context/AuthContext';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import LoaderScreen from "./../Components/LoaderScreen";
 
 
 const ProfileScreen = ({navigation}) => {
@@ -15,6 +16,7 @@ const ProfileScreen = ({navigation}) => {
   const route = useRoute();
   const {userState} = useAuthUser();
   const [renderButton, setRenderButton] = useState(false);
+  const [nameChanged, setNameChanged] = useState(false);
 
   const initialState = {
     id: '',
@@ -47,8 +49,18 @@ const ProfileScreen = ({navigation}) => {
   }
 
   const [profile, setProfile] = useState(initialState);
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
+    let isMounted = true;
+
+    if ( ! nameChanged ){
+      if ( route.params?.usingList ) 
+        navigation.setOptions({ headerShown: true, headerTitle: 'Perfil' });
+      if ( isMounted ) 
+        setNameChanged(true);
+  }
+
     function getProfile(userId) {
       getToGateway(constants.USERS_HOST + constants.PROFILE_URL
         + "?"
@@ -74,7 +86,7 @@ const ProfileScreen = ({navigation}) => {
               punk: res.punk,
               jazz: res.jazz,
               blues: res.blues,
-              others: res.other,
+              others: res.others,
               reggeaton: res.reggeaton,
               rap: res.rap,
               photoUrl: res.photoUrl,
@@ -83,20 +95,32 @@ const ProfileScreen = ({navigation}) => {
               verificationVideoUrl: res.verificationVideoUrl,
               nFollowers: res.nFollowers
             };
-            setProfile(newState);
-            setRenderButton(true);
+            if ( isMounted ){ 
+              setProfile(newState);
+              setRenderButton(true);
+              setInitialized(true);
+            }
           }
         })
     }
 
     navigation.addListener('focus',
       () => {
-        setRenderButton(false);
+        if ( isMounted )setRenderButton(false);
         getProfile(route.params.uid);
       });
+
+      navigation.addListener('blur',
+      () => {
+        if ( isMounted )setInitialized(false);
+      });
+    
+    return () =>{ isMounted = false }
   }, [navigation]);
 
-
+  if (!initialized) {
+    return <LoaderScreen/>;
+  }
   return (
     <View style={profile.isArtist ? styles.containerArtist : styles.containerListener}>
       <SafeAreaView>
@@ -349,13 +373,13 @@ const styles = StyleSheet.create(
       paddingTop: 5
     },
     defaultImage:{
-      marginTop: 30,
-      marginBottom: 40,
+      marginTop: 40,
+      marginBottom: 50,
       alignSelf: 'center',
     },
     profilePicture:{
-      marginTop: 30,
-      marginBottom: 40,
+      marginTop: 40,
+      marginBottom: 50,
       alignSelf: 'center',
     }
   }

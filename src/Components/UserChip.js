@@ -8,7 +8,7 @@ import ProfilePicture from './ProfilePicture'
 const UserChip = props => {
   return (
     <Chip style={styles.chip} onPress={() => {
-      props.navigation.navigate('ProfileScreen', {uid: props.user.id})
+      props.navigation.navigate('ProfileScreen', {uid: props.user.id, usingList: true})
     }}>
       <View style={{
         flexDirection: 'row',

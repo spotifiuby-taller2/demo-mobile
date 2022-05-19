@@ -4,7 +4,7 @@ import {
     ScrollView,
     SafeAreaView,
   } from 'react-native';
-import React, { useReducer } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import { Text, Chip, Button } from 'react-native-paper'
 import { useRoute } from '@react-navigation/native';
 import constants from '../others/constants'
@@ -111,6 +111,12 @@ const reducer = (state, action = {})=>{
 
 const EditProfileScreen = ({navigation}) =>{
 
+      useEffect(()=>{
+        navigation.setOptions({ headerShown: true, headerTitle: 'Editar Perfil' });
+      }, []);
+
+      
+
 
       const route = useRoute();
       const [profile, dispatch] = useReducer(reducer ,route.params.profile);
@@ -169,7 +175,17 @@ const EditProfileScreen = ({navigation}) =>{
         if ( route.params.others !== profile.others ){
           requestBody['other'] = profile.others;
         }
+
+        if ( requestBody?.name === '' ){
+          
+          alert("Campo nombre vacio.");  
+          return;
+        }
         
+        if ( requestBody?.surname === '' ){
+          alert("Campo apellido vacio.");  
+          return;
+        }
 
         postToGateway(requestBody,'PATCH')
           .then(res => {

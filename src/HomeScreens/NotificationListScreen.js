@@ -12,10 +12,13 @@ import {useAuthUser} from '../context/AuthContext';
 
 const NotificationListScreen = ({navigation}) =>{
 
+
     const [notificationsList, setList] = useState([]);
     const {userState} = useAuthUser();
+    const [nameChanged, setNameChanged] = useState(false);
 
     useEffect(()=>{
+        let isMounted = true;
         
         function getNotifications(){
 
@@ -25,17 +28,25 @@ const NotificationListScreen = ({navigation}) =>{
                 if (res.error !== undefined) {
                     alert(res.error);
                 } else {
-                    setList(res.notifications);
+                    if ( isMounted ) setList(res.notifications);
                 }
             });
         }
+
+        if ( ! nameChanged ){
+            navigation.setOptions({ headerShown: true, headerTitle: 'Notificaciones' });
+            if ( isMounted ) setNameChanged(true);
+        }
+        
+
 
         navigation.addListener('focus',
             ()=>{
                 getNotifications();
             });
         
-        },[navigation]);
+        return () => { isMounted = false; }
+        },[]);
 
     const openChat = (notification)=>{
 

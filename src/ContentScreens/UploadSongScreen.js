@@ -73,7 +73,7 @@ const UploadSongScreen = () => {
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Title style={styles.title}>Subir nueva canción</Title>
+        <Title style={styles.title}>Nueva Canción</Title>
         <TextInput
           name='Titulo'
           label='Titulo*'
