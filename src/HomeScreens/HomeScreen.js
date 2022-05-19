@@ -31,10 +31,9 @@ const HomeScreen = ({navigation}) => {
     }
 
   useEffect(() => {
-    navigation.addListener('focus',
-          () => {
-              getFavoriteSongs();
-          });
+    navigation.addListener('focus', async () => {
+              await getFavoriteSongs();
+          }, [navigation]);
 
       const subcriptionNotificationReceived = Notifications.addNotificationReceivedListener(
           async notification=> {

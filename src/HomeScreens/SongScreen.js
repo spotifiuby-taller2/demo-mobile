@@ -75,7 +75,7 @@ const SongScreen = ({navigation}) => {
                 await getSong();
                 await checkSongFav();
             }, [navigation]);
-    }, [] );
+    }, [navigation] );
 
     const removeFromFavorites = async () => {
         const response = await postToGateway({
