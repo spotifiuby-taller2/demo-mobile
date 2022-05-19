@@ -12,20 +12,20 @@ const FullScreenPlayer = ({navigation}) => {
     <View style={styles.container}>
       <View style={styles.topBar}>
         <IconButton icon='chevron-down' size={32} onPress={() => navigation.goBack()}/>
-        <Text style={{fontSize: 20}}>{player.currentTrack.album || ''}</Text>
+        <Text style={{fontSize: 20}}>{player.currentTrack?.album || ''}</Text>
       </View>
       <SwipeableView
         style={styles.artworkContainer}
         onSwipeLeft={() => player.skipToNext()}
         onSwipeRight={() => player.skipToPrevious()}
       >
-        <Image style={styles.artwork} source={{uri: player.currentTrack.artwork}} />
+        <Image style={styles.artwork} source={player.currentTrack?.artwork} />
       </SwipeableView>
       <View style={styles.bottom}>
         <TextTicker style={{fontSize: 24, fontWeight: 'bold'}} scroll={false} bounce={false}>
-          {player.currentTrack?.title ?? ''}
+          {player.currentTrack?.title ?? 'Unknown title'}
         </TextTicker>
-        <Text style={{fontSize: 22}}>{player.currentTrack?.artist ?? ''}</Text>
+        <Text style={{fontSize: 22}}>{player.currentTrack?.artist ?? 'Unknown artist'}</Text>
         <SongProgressBar position={player.position} duration={player.duration} setPosition={player.seekTo}/>
         <View style={styles.musicControl}>
           <IconButton icon='skip-previous' size={50} disabled={player.isLoading} onPress={() => {
@@ -67,6 +67,8 @@ const styles = StyleSheet.create({
   },
   artwork: {
     resizeMode: 'contain',
+    height: undefined,
+    width: undefined,
     ...StyleSheet.absoluteFillObject,
   },
   bottom: {

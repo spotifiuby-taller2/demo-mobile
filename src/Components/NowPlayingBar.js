@@ -18,12 +18,12 @@ const NowPlayingBar = () => {
           onSwipeLeft={() => player.skipToNext()}
           onSwipeRight={() => player.skipToPrevious()}
         >
-          {player.currentTrack && <Image style={styles.artwork} source={{uri: player.currentTrack.artwork}}/>}
+          {player.currentTrack && <Image style={styles.artwork} source={player.currentTrack?.artwork}/>}
           <View style={styles.songInfo}>
             <TextTicker style={{fontSize: 18, fontWeight: 'bold'}} scroll={false} bounce={false}>
-              {player.currentTrack?.title ?? ''}
+              {player.currentTrack?.title ?? 'Unknown song'}
             </TextTicker>
-            <Text style={{fontSize: 16}}>{player.currentTrack?.artist ?? ''}</Text>
+            <Text style={{fontSize: 16}}>{player.currentTrack?.artist ?? 'Unknown artist'}</Text>
           </View>
         </SwipeableView>
         <View style={styles.buttonArea}>

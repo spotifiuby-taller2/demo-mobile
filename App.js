@@ -15,6 +15,7 @@ import * as SecureStore from 'expo-secure-store';
 import {auth, signOut} from './src/Firebase/firebase';
 import PlayerComponent from "./src/Components/PlayerComponent";
 import constants from './src/others/constants'
+import Menu from "./src/Components/Menu";
 
 const AuthStack = createNativeStackNavigator();
 

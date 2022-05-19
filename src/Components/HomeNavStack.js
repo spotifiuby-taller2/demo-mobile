@@ -3,7 +3,7 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from '../HomeScreens/HomeScreen';
+import {HomeScreen} from '../HomeScreens/HomeScreen';
 import ProfileScreen from '../HomeScreens/ProfileScreen';
 import 'react-native-gesture-handler'
 import {useAuthUser} from '../context/AuthContext'
@@ -117,7 +117,8 @@ const HomeNavStack = () =>{
     /*Todas las pantallas de la Home van aca*/
     return(
         <View style={styles.container}>
-          <HomeStack.Navigator style={styles.homeStack} screenOptions={{headerShown: false}}>
+          <HomeStack.Navigator style={styles.homeStack}
+                               screenOptions={{headerShown: false}}>
             <HomeStack.Screen name='Menu' component={Menu} />
             <HomeStack.Screen name='HomeScreen' component={HomeScreen} />
             <HomeStack.Screen name='ProfileScreen' component={ProfileScreen} initialParams={{uid: userState.uid}}/>
@@ -134,7 +135,6 @@ const HomeNavStack = () =>{
         </View>
     )
 }
-
 
 const styles = StyleSheet.create({
   container: {

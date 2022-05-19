@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import HomeScreen from '../HomeScreens/HomeScreen';
+import {HomeScreen} from '../HomeScreens/HomeScreen';
 import ProfileScreen from '../HomeScreens/ProfileScreen';
 import UserListScreen from '../HomeScreens/UserListScreen';
 import 'react-native-gesture-handler'
@@ -27,7 +27,8 @@ const Menu = () => {
   /* Todas las pantallas del menu se agregan Aca*/
   return (
     <Drawer.Navigator
-      screenListeners={{
+        initialRouteName={'Inicio'}
+        screenListeners={{
         focus: async (e) => {
           if (!await checkAuthTokenExpirationTime()) {
             alert("Su token de sesión expiro.");

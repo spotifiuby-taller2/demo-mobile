@@ -167,7 +167,7 @@ const EditProfileScreen = ({navigation}) =>{
           requestBody['rap'] = profile.rap;
         }
         if ( route.params.others !== profile.others ){
-          requestBody['others'] = profile.others;
+          requestBody['other'] = profile.others;
         }
         
 

@@ -40,7 +40,7 @@ const AlbumListScreen = ({navigation}) => {
                                 return (
                                     <AlbumChip id={id}
                                               key={id}
-                                              song={album}
+                                              album={album}
                                               navigation={navigation}/>
                                 )})
                         }

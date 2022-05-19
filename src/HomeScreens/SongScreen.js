@@ -9,6 +9,8 @@ import ArtistChip from "../Components/ArtistChip";
 import {useAuthUser} from "../context/AuthContext";
 
 const SongScreen = ({navigation}) => {
+    const [hasSong, setHasSong] = useState(false);
+
     const [songId, setSongId] = useState("");
 
     const [title, setTitle] = useState("");
@@ -30,6 +32,24 @@ const SongScreen = ({navigation}) => {
     const {userState} = useAuthUser();
 
     useEffect( () => {
+        async function checkSongFav() {
+            const response = await getToGateway(constants.MEDIA_HOST + constants.CHECK_FAV_SONG
+                                            + "?"
+                                            + constants.USER_ID_QUERY_PARAM
+                                            + userState.uid
+                                            + "&"
+                                            + constants.SONG_ID_PARAM
+                                            + route.params
+                                                   .songId);
+
+            if (response.error !== undefined) {
+                alert("Hubo un error.");
+                return;
+            }
+
+            setHasSong(response.hasSong);
+        }
+
         async function getSong() {
             const song = await getToGateway(constants.MEDIA_HOST + constants.SONGS_URL
                                                            + "/"
@@ -53,20 +73,35 @@ const SongScreen = ({navigation}) => {
 
         navigation.addListener('focus', async () => {
                 await getSong();
+                await checkSongFav();
             }, [navigation]);
-    }, [] );
+    }, [navigation] );
 
-    const addToFavorites = async () => {
+    const removeFromFavorites = async () => {
         const response = await postToGateway({
                                                 songId: songId,
                                                 userId: userState.uid,
-                                                redirectTo: constants.MEDIA_HOST + constants.FAV_SONG
+                                                redirectTo: constants.MEDIA_HOST + constants.UNFAV_SONG
                                             });
+
+        if (response.error !== undefined) {
+            alert("No se pudo quitar la canción de favoritos");
+        } else {
+            setHasSong(false);
+        }
+    }
+
+    const addToFavorites = async () => {
+        const response = await postToGateway({
+            songId: songId,
+            userId: userState.uid,
+            redirectTo: constants.MEDIA_HOST + constants.FAV_SONG
+        });
 
         if (response.error !== undefined) {
             alert("No se pudo agregar la canción a favoritos");
         } else {
-            alert("Agregada a favoritos");
+            setHasSong(true);
         }
     }
 
@@ -97,9 +132,13 @@ const SongScreen = ({navigation}) => {
 
             <TouchableOpacity
                 onPress={ () => {
-                    addToFavorites().then()
+                    (hasSong)
+                        ? removeFromFavorites().then()
+                        : addToFavorites().then()
                 } }
-                style={styles.contentButtonStyle}>
+                style={ (hasSong)
+                        ? styles.pressedContentButtonStyle
+                        : styles.contentButtonStyle }>
                 <Text style={styles.emojiStyle}>❤</Text>
             </TouchableOpacity>
 
