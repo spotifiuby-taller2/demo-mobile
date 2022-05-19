@@ -6,8 +6,6 @@ import SwipeableView from "./SwipeableView";
 import usePlayer from "../Hooks/usePlayer";
 import {useNavigation} from "@react-navigation/native";
 
-const defaultArtwork = require('../../assets/music-placeholder.png')
-
 const NowPlayingBar = () => {
   const navigation = useNavigation();
   const player = usePlayer();
@@ -20,7 +18,7 @@ const NowPlayingBar = () => {
           onSwipeLeft={() => player.skipToNext()}
           onSwipeRight={() => player.skipToPrevious()}
         >
-          {player.currentTrack && <Image style={styles.artwork} source={player.currentTrack.artwork ? {uri: player.currentTrack.artwork} : defaultArtwork}/>}
+          {player.currentTrack && <Image style={styles.artwork} source={player.currentTrack?.artwork}/>}
           <View style={styles.songInfo}>
             <TextTicker style={{fontSize: 18, fontWeight: 'bold'}} scroll={false} bounce={false}>
               {player.currentTrack?.title ?? 'Unknown song'}
