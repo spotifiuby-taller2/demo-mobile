@@ -6,6 +6,8 @@ import React from 'react'
 import {Text, Avatar, IconButton} from 'react-native-paper';
 import usePlayer from "../Hooks/usePlayer";
 
+const defaultArtwork = require('../../assets/music-placeholder.png');
+
 const styles = StyleSheet.create(
   {
     container: {
@@ -38,7 +40,7 @@ const songToTrack = (song) => {
     url: song.link,
     title: song.title,
     artist: song.artist,
-    artwork: song.artwork,
+    artwork: song.artwork ? {uri: song.artwork } : defaultArtwork,
   }
 }
 

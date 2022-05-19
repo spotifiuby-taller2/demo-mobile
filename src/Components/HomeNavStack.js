@@ -5,8 +5,7 @@ import React, {useEffect, useState} from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {HomeScreen} from '../HomeScreens/HomeScreen';
 import ProfileScreen from '../HomeScreens/ProfileScreen';
-import 'react-native-gesture-handler'
-import {useAuthUser} from '../context/AuthContext'
+import {useAuthUser} from '../context/AuthContext';
 import Menu from './Menu';
 import ContentScreen from "../HomeScreens/ContentScreen";
 import ArtistsListTab from "../Components/ArtistsListTab";

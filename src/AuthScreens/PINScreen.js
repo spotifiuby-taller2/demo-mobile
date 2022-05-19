@@ -16,13 +16,14 @@ const PINScreen = ({navigation}) => {
   const route = useRoute();
   const [pin, setPin] = useState('');
   const [pinError, setPinError] = useState(null);
+  const [id, setId] = useState(route.params.tempId);
   const {signIn} = useAuthUser();
 
 
   let handleSignUp = () => {
 
     getToGateway(constants.USERS_HOST + constants.SIGN_UP_END_URL,
-      `/${route.params.tempId}/${pin}`)
+      `/${id}/${pin}`)
       .then((response) => {
         checkResponse(response);
       });
@@ -115,7 +116,6 @@ const styles = StyleSheet.create(
       backgroundColor: '#f5fcff',
       paddingLeft: 15,
       paddingRight: 15,
-      marginTop: 30
     },
     title: {textAlign: 'center', fontSize: 25, marginBottom: 35},
     button: {

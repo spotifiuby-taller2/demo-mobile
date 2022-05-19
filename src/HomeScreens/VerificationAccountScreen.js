@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {ScrollView, StyleSheet, View} from "react-native";
 import {Button, Text, Title} from "react-native-paper";
 import FilePicker from "../Components/FilePicker";
@@ -12,6 +12,10 @@ const VerificationAccountScreen = ({navigation}) => {
   const [file, setFile] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const {userState, setUserType} = useAuthUser();
+
+  useEffect(()=>{
+    navigation.setOptions({ headerShown: true, headerTitle: 'Verificar Cuenta' });
+  }, []);
 
   const validateFile = () => {
     if (file === null || file === undefined) {
@@ -50,7 +54,6 @@ const VerificationAccountScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Title style={styles.title}>Verificar cuenta</Title>
         <FilePicker title={'Elegir video de verificacion'} mimeType={'video/*'} icon={'file-video'}
                     setFileCallback={handleDocumentPick}/>
         <Button mode='contained'

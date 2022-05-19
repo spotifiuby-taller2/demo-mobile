@@ -10,12 +10,15 @@ import {getToGateway, postToGateway} from "../others/utils";
 import {useAuthUser} from '../context/AuthContext';
 
 
-export default NotificationListScreen = ({navigation}) =>{
+const NotificationListScreen = ({navigation}) =>{
+
 
     const [notificationsList, setList] = useState([]);
     const {userState} = useAuthUser();
+    const [nameChanged, setNameChanged] = useState(false);
 
     useEffect(()=>{
+        let isMounted = true;
         
         function getNotifications(){
 
@@ -25,17 +28,25 @@ export default NotificationListScreen = ({navigation}) =>{
                 if (res.error !== undefined) {
                     alert(res.error);
                 } else {
-                    setList(res.notifications);
+                    if ( isMounted ) setList(res.notifications);
                 }
             });
         }
+
+        if ( ! nameChanged ){
+            navigation.setOptions({ headerShown: true, headerTitle: 'Notificaciones' });
+            if ( isMounted ) setNameChanged(true);
+        }
+        
+
 
         navigation.addListener('focus',
             ()=>{
                 getNotifications();
             });
         
-        },[navigation]);
+        return () => { isMounted = false; }
+        },[]);
 
     const openChat = (notification)=>{
 
@@ -76,3 +87,5 @@ export default NotificationListScreen = ({navigation}) =>{
         </View>
     )
 }
+
+export default NotificationListScreen;

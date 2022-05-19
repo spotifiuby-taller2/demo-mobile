@@ -1,5 +1,4 @@
 import 'expo-dev-client';
-import 'react-native-gesture-handler'
 import React, {useEffect, useReducer, useMemo} from 'react'
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -14,6 +13,7 @@ import {AuthContext} from './src/context/AuthContext';
 import * as SecureStore from 'expo-secure-store';
 import {auth, signOut} from './src/Firebase/firebase';
 import PlayerComponent from "./src/Components/PlayerComponent";
+import constants from './src/others/constants'
 import Menu from "./src/Components/Menu";
 
 const AuthStack = createNativeStackNavigator();
@@ -76,8 +76,8 @@ export default function App() {
       let userId;
 
       try {
-        userToken = await SecureStore.getItemAsync('token');
-        userId = await SecureStore.getItemAsync('uid');
+        userToken = await SecureStore.getItemAsync(constants.SS_TOKEN_LABEL);
+        userId = await SecureStore.getItemAsync(constants.SS_ID_LABEL);
       } catch (err) {
         alert(err);
         return;
@@ -102,13 +102,13 @@ export default function App() {
 
 
         try {
-          userToken = await SecureStore.getItemAsync('token');
+          userToken = await SecureStore.getItemAsync(constants.SS_TOKEN_LABEL);
           if (!userToken) {
-            await SecureStore.setItemAsync('token', token);
-            userToken = await SecureStore.getItemAsync('token');
-            await SecureStore.setItemAsync('userId', uid);
-            userId = await SecureStore.getItemAsync('userId');
-            await SecureStore.setItemAsync('signInTimestamp', JSON.stringify(Date.now()));
+            await SecureStore.setItemAsync(constants.SS_TOKEN_LABEL, token);
+            userToken = await SecureStore.getItemAsync(constants.SS_TOKEN_LABEL);
+            await SecureStore.setItemAsync(constants.SS_ID_LABEL, uid);
+            userId = await SecureStore.getItemAsync(constants.SS_ID_LABEL);
+            await SecureStore.setItemAsync(constants.SS_TIMESTAMP_LABEL, JSON.stringify(Date.now()));
           }
         } catch (err) {
           alert(err);
@@ -117,9 +117,9 @@ export default function App() {
         dispatch({type: 'SIGN_IN', token: userToken, uid: userId});
       },
       signOut: async () => {
-        await SecureStore.deleteItemAsync('token');
-        await SecureStore.deleteItemAsync('userId');
-        await SecureStore.deleteItemAsync('signInTimestamp');
+        await SecureStore.deleteItemAsync(constants.SS_TOKEN_LABEL);
+        await SecureStore.deleteItemAsync(constants.SS_ID_LABEL);
+        await SecureStore.deleteItemAsync(constants.SS_TIMESTAMP_LABEL);
         await signOut(auth);
         dispatch({type: 'SIGN_OUT'});
       },

@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {Avatar} from "react-native-paper";
 
@@ -7,6 +7,10 @@ import UploadAlbumScreen from '../ContentScreens/UploadAlbumScreen';
 
 const CreateContentScreen = ({navigation}) => {
   const ContentTab = createBottomTabNavigator();
+
+  useEffect(()=>{
+    navigation.setOptions({ headerShown: true, headerTitle: 'Subir Contenido' });
+  }, []);
 
   return (
     <ContentTab.Navigator screenOptions={{headerShown: false}}>

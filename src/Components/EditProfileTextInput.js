@@ -3,8 +3,6 @@ import {TextInput} from 'react-native-paper';
 
 
 
-
-
 export default EditProfileTextInput = (props) =>{    
 
     return(

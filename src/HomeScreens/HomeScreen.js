@@ -5,7 +5,6 @@ import {getToGateway, postToGateway} from "../others/utils";
 import constants from "../others/constants";
 import {containerStyle} from "../styles/genericStyles";
 import SongChip from "../Components/SongChip";
-import {Text} from "react-native-paper";
 import * as Notifications from 'expo-notifications';
 
 const HomeScreen = ({navigation}) => {

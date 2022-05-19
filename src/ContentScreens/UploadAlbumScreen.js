@@ -77,7 +77,7 @@ const UploadAlbumScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Title style={titleStyle}>Subir nuevo album</Title>
+        <Title style={titleStyle}>Nuevo Album</Title>
 
         <TextInput
           name='Título'

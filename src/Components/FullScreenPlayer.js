@@ -6,22 +6,20 @@ import TextTicker from "react-native-text-ticker";
 import SongProgressBar from "./SongProgressBar";
 import SwipeableView from "./SwipeableView";
 
-const defaultArtwork = require('../../assets/music-placeholder.png')
-
 const FullScreenPlayer = ({navigation}) => {
   const player = usePlayer();
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
         <IconButton icon='chevron-down' size={32} onPress={() => navigation.goBack()}/>
-        <Text style={{fontSize: 20}}>{player.currentTrack.album || ''}</Text>
+        <Text style={{fontSize: 20}}>{player.currentTrack?.album || ''}</Text>
       </View>
       <SwipeableView
         style={styles.artworkContainer}
         onSwipeLeft={() => player.skipToNext()}
         onSwipeRight={() => player.skipToPrevious()}
       >
-        <Image style={styles.artwork} source={player.currentTrack.artwork ? {uri: player.currentTrack.artwork } : defaultArtwork} />
+        <Image style={styles.artwork} source={player.currentTrack?.artwork} />
       </SwipeableView>
       <View style={styles.bottom}>
         <TextTicker style={{fontSize: 24, fontWeight: 'bold'}} scroll={false} bounce={false}>
