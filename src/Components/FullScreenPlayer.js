@@ -6,6 +6,8 @@ import TextTicker from "react-native-text-ticker";
 import SongProgressBar from "./SongProgressBar";
 import SwipeableView from "./SwipeableView";
 
+const defaultArtwork = require('../../assets/music-placeholder.png')
+
 const FullScreenPlayer = ({navigation}) => {
   const player = usePlayer();
   return (
@@ -19,13 +21,13 @@ const FullScreenPlayer = ({navigation}) => {
         onSwipeLeft={() => player.skipToNext()}
         onSwipeRight={() => player.skipToPrevious()}
       >
-        <Image style={styles.artwork} source={{uri: player.currentTrack.artwork}} />
+        <Image style={styles.artwork} source={player.currentTrack.artwork ? {uri: player.currentTrack.artwork } : defaultArtwork} />
       </SwipeableView>
       <View style={styles.bottom}>
         <TextTicker style={{fontSize: 24, fontWeight: 'bold'}} scroll={false} bounce={false}>
-          {player.currentTrack?.title ?? ''}
+          {player.currentTrack?.title ?? 'Unknown title'}
         </TextTicker>
-        <Text style={{fontSize: 22}}>{player.currentTrack?.artist ?? ''}</Text>
+        <Text style={{fontSize: 22}}>{player.currentTrack?.artist ?? 'Unknown artist'}</Text>
         <SongProgressBar position={player.position} duration={player.duration} setPosition={player.seekTo}/>
         <View style={styles.musicControl}>
           <IconButton icon='skip-previous' size={50} disabled={player.isLoading} onPress={() => {
@@ -67,6 +69,8 @@ const styles = StyleSheet.create({
   },
   artwork: {
     resizeMode: 'contain',
+    height: undefined,
+    width: undefined,
     ...StyleSheet.absoluteFillObject,
   },
   bottom: {

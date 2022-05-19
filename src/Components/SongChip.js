@@ -1,9 +1,10 @@
 import {
-  StyleSheet,
+  StyleSheet, TouchableOpacity,
   View
 } from 'react-native';
 import React from 'react'
 import {Text, Avatar, IconButton} from 'react-native-paper';
+import usePlayer from "../Hooks/usePlayer";
 
 const styles = StyleSheet.create(
   {
@@ -30,11 +31,23 @@ const styles = StyleSheet.create(
   }
 )
 
+const songToTrack = (song) => {
+  console.log(JSON.stringify(song));
+  return {
+    id: song.id,
+    url: song.link,
+    title: song.title,
+    artist: song.artist,
+    artwork: song.artwork,
+  }
+}
+
 const SongChip = (props) => {
+  const player = usePlayer();
   return (
-    <View style={styles.container}>
-      <View style={styles.info}
-            onPress={() => console.log('test')}>
+    <TouchableOpacity style={styles.container}
+                      onPress={() => player.playList([songToTrack(props.song)])}>
+      <View style={styles.info}>
         <Avatar.Text
           style={{
             backgroundColor: '#ff4500',
@@ -51,7 +64,7 @@ const SongChip = (props) => {
                     });
                   }}
       />
-    </View>
+    </TouchableOpacity>
   )
 }
 
