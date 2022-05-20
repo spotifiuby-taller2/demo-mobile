@@ -37,7 +37,8 @@ const reducer = (state = initialState(), action = {}) => {
         ...state,
         uid: action.uid,
         userToken: action.token,
-      };
+        isSignOut: false
+  };
     case 'SIGN_IN':
       return {
         ...state,
