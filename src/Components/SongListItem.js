@@ -36,24 +36,21 @@ const styles = StyleSheet.create(
   }
 )
 
-const SongListItem = (props) => {
-  const track = props.song;
-  return (
-    <TouchableOpacity style={styles.container}
-                      onPress={() => props.play()}>
-      <View style={styles.info}>
-        <Image style={styles.artwork} source={track.artwork}/>
-        <Text style={styles.name}>{track.title}</Text>
-      </View>
-      <IconButton icon='dots-vertical'
-                  onPress={() => {
-                    props.navigation.navigate('SongScreen', {
-                      songId: track.id
-                    });
-                  }}
-      />
-    </TouchableOpacity>
-  )
-}
+const SongListItem = (props) => (
+  <TouchableOpacity style={styles.container}
+                    onPress={() => props.play()}>
+    <View style={styles.info}>
+      <Image style={styles.artwork} source={props.track.artwork}/>
+      <Text style={styles.name}>{props.track.title}</Text>
+    </View>
+    <IconButton icon='dots-vertical'
+                onPress={() => {
+                  props.navigation.navigate('SongScreen', {
+                    songId: props.track.id
+                  });
+                }}
+    />
+  </TouchableOpacity>
+);
 
 export default SongListItem;

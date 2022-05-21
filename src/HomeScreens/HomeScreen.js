@@ -83,7 +83,7 @@ const HomeScreen = ({navigation}) => {
                                 return (
                                     <SongListItem id={id}
                                                   key={id}
-                                                  song={song}
+                                                  track={song}
                                                   navigation={navigation}/>
                                 )
                             } ) )
