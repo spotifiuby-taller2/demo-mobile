@@ -1,56 +1,50 @@
 import React, {useEffect, useState} from 'react';
 import {getToGateway} from "../others/utils";
 import constants from "../others/constants";
-import {SafeAreaView, ScrollView, View} from "react-native";
+import {ScrollView, View} from "react-native";
 import {containerStyle} from "../styles/genericStyles";
 import AlbumChip from "../Components/AlbumChip";
 
 const AlbumListScreen = ({navigation}) => {
-    const [albumList, setAlbumList] = useState([]);
+  const [albumList, setAlbumList] = useState([]);
 
-    useEffect(() => {
-        function getEveryAlbum() {
-            getToGateway(constants.MEDIA_HOST + constants.ALBUM_URL,
-                "").then((response) => {
-                if (response.error !== undefined) {
-                    alert(response.error);
-                    return;
-                }
-
-                console.log(response);
-
-                setAlbumList(response);
-            });
+  useEffect(() => {
+    const getEveryAlbum = () => {
+      getToGateway(constants.MEDIA_HOST + constants.ALBUM_URL,
+        "").then((response) => {
+        if (response.error !== undefined) {
+          alert(response.error);
+          return;
         }
 
-        navigation.addListener('focus',
-            ()=>{
-                getEveryAlbum();
-            });
+        console.log(response);
 
-    }, [navigation]);
+        setAlbumList(response);
+      });
+    }
+    getEveryAlbum();
+  }, []);
 
-    return (
-        <View style={containerStyle}>
-            <SafeAreaView>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <View>
-                        {
-                            albumList.map( (album, id) => {
-                                return (
-                                    <AlbumChip id={id}
-                                              key={id}
-                                              album={album}
-                                              navigation={navigation}/>
-                                )})
-                        }
-                    </View>
-                </ScrollView>
-            </SafeAreaView>
+  return (
+    <View style={containerStyle}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View>
+          {
+            albumList.map((album, id) => {
+              return (
+                <AlbumChip id={id}
+                           key={id}
+                           album={album}
+                           navigation={navigation}/>
+              )
+            })
+          }
         </View>
-    )
+      </ScrollView>
+    </View>
+  )
 }
 
 export {
-    AlbumListScreen
+  AlbumListScreen
 }

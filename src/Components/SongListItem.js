@@ -12,20 +12,28 @@ const styles = StyleSheet.create(
       marginTop: 5,
       height: 80,
       flexDirection: 'row',
-      flexGrow: 1,
+      flex: 1,
       justifyContent: 'space-between',
       alignItems: 'center',
       borderRadius: 10,
     },
     info: {
       flexDirection: 'row',
-      flexGrow: 1,
+      flex: 20,
+      flexGrow: 10,
       justifyContent: 'flex-start',
       alignItems: 'center',
     },
-    name: {
+    textInfo: {
+      flexShrink: 1,
+    },
+    title: {
       fontSize: 19,
       color: 'black',
+    },
+    artist: {
+      fontSize: 16,
+      color: '#565656',
     },
     artwork: {
       height: 60,
@@ -41,9 +49,13 @@ const SongListItem = (props) => (
                     onPress={() => props.play()}>
     <View style={styles.info}>
       <Image style={styles.artwork} source={props.track.artwork}/>
-      <Text style={styles.name}>{props.track.title}</Text>
+      <View style={styles.textInfo}>
+        <Text numberOfLines={1} style={styles.title}>{props.track.title}</Text>
+        <Text numberOfLines={1} style={styles.artist}>{props.track.artist}</Text>
+      </View>
     </View>
     <IconButton icon='dots-vertical'
+                style={{flex: 1}}
                 onPress={() => {
                   props.navigation.navigate('SongScreen', {
                     songId: props.track.id

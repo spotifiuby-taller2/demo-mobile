@@ -70,11 +70,12 @@ const styles = StyleSheet.create({
   songInfoArea: {
     padding: 5,
     flexDirection: 'row',
-    maxWidth: '65%',
+    flexShrink: 1,
   },
   songInfo: {
     paddingLeft: 5,
     alignSelf: 'flex-start',
+    flexShrink: 1,
   },
   progressBar: {
     width: '95%',
@@ -83,6 +84,7 @@ const styles = StyleSheet.create({
   artwork: {
     height: 45,
     width: 45,
+    borderRadius: 8,
   },
   buttonArea: {
     flexDirection: 'row',
