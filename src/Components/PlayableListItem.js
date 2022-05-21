@@ -44,23 +44,19 @@ const styles = StyleSheet.create(
   }
 )
 
-const PlayableListItem = (props) => (
+const PlayableListItem = ({playableItem, play, moreInfoCallback}) => (
   <TouchableOpacity style={styles.container}
-                    onPress={() => props.play()}>
+                    onPress={() => play()}>
     <View style={styles.info}>
-      <Image style={styles.artwork} source={props.track.artwork}/>
+      <Image style={styles.artwork} source={playableItem.artwork}/>
       <View style={styles.textInfo}>
-        <Text numberOfLines={1} style={styles.title}>{props.track.title}</Text>
-        <Text numberOfLines={1} style={styles.artist}>{props.track.artist}</Text>
+        <Text numberOfLines={1} style={styles.title}>{playableItem.title}</Text>
+        <Text numberOfLines={1} style={styles.artist}>{playableItem.artist}</Text>
       </View>
     </View>
     <IconButton icon='dots-vertical'
                 style={{flex: 1}}
-                onPress={() => {
-                  props.navigation.navigate('SongScreen', {
-                    songId: props.track.id
-                  });
-                }}
+                onPress={() => moreInfoCallback()}
     />
   </TouchableOpacity>
 );

@@ -1,12 +1,24 @@
 import React, {useEffect, useState} from 'react';
-import {getToGateway} from "../others/utils";
+import {getToGateway, songToTrack} from "../others/utils";
 import constants from "../others/constants";
 import {ScrollView, View} from "react-native";
 import {containerStyle} from "../styles/genericStyles";
-import AlbumChip from "../Components/AlbumChip";
+import PlayableListItem from "../Components/PlayableListItem";
+import usePlayer from "../Hooks/usePlayer";
+import defaultArtwork from "../../assets/album-placeholder.png";
+
+const toPlayable = album => {
+  return {
+    title: album.title,
+    artwork: album.link ? {uri: album.link} : defaultArtwork,
+    artist: album.artist ?? 'Unknown artist',
+  };
+};
 
 const AlbumListScreen = ({navigation}) => {
   const [albumList, setAlbumList] = useState([]);
+
+  const player = usePlayer();
 
   useEffect(() => {
     const getEveryAlbum = () => {
@@ -16,11 +28,9 @@ const AlbumListScreen = ({navigation}) => {
           alert(response.error);
           return;
         }
-
-        console.log(response);
-
-        setAlbumList(response);
-      });
+        return response;
+      })
+        .then(albums => setAlbumList(albums));
     }
     getEveryAlbum();
   }, []);
@@ -32,10 +42,12 @@ const AlbumListScreen = ({navigation}) => {
           {
             albumList.map((album, id) => {
               return (
-                <AlbumChip id={id}
-                           key={id}
-                           album={album}
-                           navigation={navigation}/>
+                <PlayableListItem id={id}
+                                  key={id}
+                                  playableItem={toPlayable(album)}
+                                  play={() => player.playList(album.songs.map(songToTrack), 0)}
+                                  moreInfoCallback={() => console.log('more info')}/>
+
               )
             })
           }

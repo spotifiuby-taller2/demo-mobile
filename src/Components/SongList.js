@@ -3,17 +3,7 @@ import {ScrollView, View} from "react-native";
 import {containerStyle} from "../styles/genericStyles";
 import PlayableListItem from "./PlayableListItem";
 import usePlayer from "../Hooks/usePlayer";
-import defaultArtwork from "../../assets/music-placeholder.png";
-
-const songToTrack = (song) => {
-  return {
-    id: song.id,
-    url: song.link,
-    title: song.title,
-    artist: song.author,
-    artwork: song.artwork ? {uri: song.artwork} : defaultArtwork,
-  }
-}
+import {songToTrack} from "../others/utils";
 
 const SongList = ({navigation, songList}) => {
   const player = usePlayer();
@@ -27,9 +17,14 @@ const SongList = ({navigation, songList}) => {
               return (
                 <PlayableListItem id={id}
                                   key={id}
-                                  track={track}
-                                  navigation={navigation}
-                                  play={() => player.playList(songList.map(songToTrack), id)}/>
+                                  playableItem={track}
+                                  play={() => player.playList(tracks, id)}
+                                  moreInfoCallback={() => {
+                                    navigation.navigate('SongScreen', {
+                                      songId: track.id
+                                    });
+                                  }}
+                />
               )
             })
           }
