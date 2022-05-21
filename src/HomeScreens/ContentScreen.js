@@ -1,6 +1,6 @@
 import React from 'react'
 import SongListScreen from "./SongListScreen";
-import {AlbumListScreen} from "./AlbumListScreen";
+import AlbumListScreen from "./AlbumListScreen";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {Avatar} from "react-native-paper";
 

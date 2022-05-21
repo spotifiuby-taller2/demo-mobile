@@ -6,13 +6,7 @@ import TrackPlayer, {
   useTrackPlayerEvents,
   useProgress,
 } from "react-native-track-player";
-
-const playList = async (list, start) => {
-  await TrackPlayer.reset();
-  await TrackPlayer.add(list);
-  await TrackPlayer.skip(start);
-  await TrackPlayer.play();
-}
+import usePlayerAction from "./usePlayerAction";
 
 const usePlayer = () => {
 
@@ -23,6 +17,7 @@ const usePlayer = () => {
   const {position, duration} = useProgress()
   // TODO: fetch fav state for track id
   const [isFav, setIsFav] = useState(false);
+  const playerActions = usePlayerAction();
 
   useEffect(() => {
     TrackPlayer.getCurrentTrack()
@@ -45,12 +40,7 @@ const usePlayer = () => {
     duration,
     isFav,
     setIsFav,
-    play: () => TrackPlayer.play(),
-    pause: () => TrackPlayer.pause(),
-    skipToNext: () => TrackPlayer.skipToNext(),
-    skipToPrevious: () => TrackPlayer.skipToPrevious(),
-    seekTo: (s) => TrackPlayer.seekTo(s),
-    playList,
+    ...playerActions,
   };
 }
 

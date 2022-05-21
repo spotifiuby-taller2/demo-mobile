@@ -30,4 +30,9 @@ const getAllSongs = () => {
     .then(getBodyOrThrow);
 }
 
-export {createSong, createAlbum, getSongsByArtist, getAllSongs};
+const getAlbum = (albumId) => {
+  return requestToGateway('GET', `${constants.MEDIA_HOST}${constants.ALBUM_URL}/${albumId}`)
+    .then(getBodyOrThrow)
+}
+
+export {createSong, createAlbum, getSongsByArtist, getAllSongs, getAlbum};

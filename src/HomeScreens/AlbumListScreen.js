@@ -4,21 +4,21 @@ import constants from "../others/constants";
 import {ScrollView, View} from "react-native";
 import {containerStyle} from "../styles/genericStyles";
 import PlayableListItem from "../Components/PlayableListItem";
-import usePlayer from "../Hooks/usePlayer";
 import defaultArtwork from "../../assets/album-placeholder.png";
+import usePlayerAction from "../Hooks/usePlayerAction";
 
 const toPlayable = album => {
   return {
     title: album.title,
     artwork: album.link ? {uri: album.link} : defaultArtwork,
-    artist: album.artist ?? 'Unknown artist',
+    artist: album.artistNames ?? 'Unknown artists',
   };
 };
 
 const AlbumListScreen = ({navigation}) => {
   const [albumList, setAlbumList] = useState([]);
 
-  const player = usePlayer();
+  const player = usePlayerAction();
 
   useEffect(() => {
     const getEveryAlbum = () => {
@@ -46,7 +46,11 @@ const AlbumListScreen = ({navigation}) => {
                                   key={id}
                                   playableItem={toPlayable(album)}
                                   play={() => player.playList(album.songs.map(songToTrack), 0)}
-                                  moreInfoCallback={() => console.log('more info')}/>
+                                  moreInfoCallback={() => {
+                                    navigation.navigate('AlbumScreen', {
+                                      albumId: album.id
+                                    });
+                                  }}/>
 
               )
             })
@@ -57,6 +61,4 @@ const AlbumListScreen = ({navigation}) => {
   )
 }
 
-export {
-  AlbumListScreen
-}
+export default AlbumListScreen;

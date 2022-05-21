@@ -20,6 +20,7 @@ import NowPlayingBar from "./NowPlayingBar";
 import SongScreen from "../HomeScreens/SongScreen";
 import CreateContentScreen from "../HomeScreens/CreateContentScreen";
 import VerificationAccountScreen from "../HomeScreens/VerificationAccountScreen";
+import AlbumScreen from "../HomeScreens/AlbumScreen";
 
 const HomeStack = createNativeStackNavigator();
 
@@ -126,6 +127,7 @@ const HomeNavStack = () =>{
             <HomeStack.Screen name='CreateContentScreen' component={CreateContentScreen} />
             <HomeStack.Screen name='EditProfileScreen' component={EditProfileScreen}/>
             <HomeStack.Screen name='SongScreen' component={SongScreen} />
+            <HomeStack.Screen name='AlbumScreen' component={AlbumScreen} />
             <HomeStack.Screen name='ChatScreen' component={ChatScreen}/>
             <HomeStack.Screen name='NotificationListScreen' component={NotificationListScreen}/>
             <HomeStack.Screen name='VerificationAccountScreen' component={VerificationAccountScreen}/>

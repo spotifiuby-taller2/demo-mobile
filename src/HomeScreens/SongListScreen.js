@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {getAllSongs} from "../Services/MediaService";
-import SongListComponent from "../Components/SongList";
+import SongList from "../Components/SongList";
 
 const SongListScreen = ({navigation}) => {
   const [allSongs, setAllSongs] = useState([]);
@@ -9,7 +9,7 @@ const SongListScreen = ({navigation}) => {
     getAllSongs().then(setAllSongs);
   }, []);
 
-  return <SongListComponent songList={allSongs} navigation={navigation}/>;
+  return <SongList songList={allSongs} navigation={navigation}/>;
 }
 
 export default SongListScreen;
