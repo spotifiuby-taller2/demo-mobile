@@ -1,52 +1,25 @@
-import React, {useEffect, useState} from 'react';
-import {getToGateway} from "../others/utils";
-import constants from "../others/constants";
-import {SafeAreaView, ScrollView, View} from "react-native";
+import React from 'react';
+import {ScrollView, View} from "react-native";
 import {containerStyle} from "../styles/genericStyles";
 import SongChip from "../Components/SongChip";
 
-
-const SongListScreen = ({navigation}) => {
-    const [songList, setSongList] = useState([]);
-
-    useEffect(() => {
-        function getAllSongs() {
-            getToGateway(constants.MEDIA_HOST + constants.SONGS_URL)
-                .then((response) => {
-                if (response.error !== undefined) {
-                    alert(response.error);
-                    return;
-                }
-
-                setSongList(response);
-            });
+const SongListScreen = ({navigation, route}) => (
+  <View style={containerStyle}>
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <View>
+        {
+          route.params.songList.map((song, id) => {
+            return (
+              <SongChip id={id}
+                        key={id}
+                        song={song}
+                        navigation={navigation}/>
+            )
+          })
         }
+      </View>
+    </ScrollView>
+  </View>
+);
 
-        navigation.addListener('focus',
-            ()=>{
-                getAllSongs();
-            });
-    }, [navigation]);
-
-    return (
-        <View style={containerStyle}>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <View>
-                        {
-                            songList.map( (song, id) => {
-                                return (
-                                    <SongChip id={id}
-                                              key={id}
-                                              song={song}
-                                              navigation={navigation}/>
-                                )})
-                        }
-                    </View>
-                </ScrollView>
-        </View>
-    )
-}
-
-export {
-    SongListScreen
-}
+export default SongListScreen;
