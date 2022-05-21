@@ -7,10 +7,11 @@ import TrackPlayer, {
   useProgress,
 } from "react-native-track-player";
 
-const playList = async (list) => {
- await TrackPlayer.reset();
- await TrackPlayer.add(list);
- await TrackPlayer.play();
+const playList = async (list, start) => {
+  await TrackPlayer.reset();
+  await TrackPlayer.add(list);
+  await TrackPlayer.skip(start);
+  await TrackPlayer.play();
 }
 
 const usePlayer = () => {

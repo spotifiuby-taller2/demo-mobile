@@ -4,9 +4,6 @@ import {
 } from 'react-native';
 import React from 'react'
 import {Text, IconButton} from 'react-native-paper';
-import usePlayer from "../Hooks/usePlayer";
-
-const defaultArtwork = require('../../assets/music-placeholder.png');
 
 const styles = StyleSheet.create(
   {
@@ -39,22 +36,11 @@ const styles = StyleSheet.create(
   }
 )
 
-const songToTrack = (song) => {
-  return {
-    id: song.id,
-    url: song.link,
-    title: song.title,
-    artist: song.artist,
-    artwork: song.artwork ? {uri: song.artwork } : defaultArtwork,
-  }
-}
-
-const SongChip = (props) => {
-  const player = usePlayer();
-  const track = songToTrack(props.song);
+const SongListItem = (props) => {
+  const track = props.song;
   return (
     <TouchableOpacity style={styles.container}
-                      onPress={() => player.playList([track])}>
+                      onPress={() => props.play()}>
       <View style={styles.info}>
         <Image style={styles.artwork} source={track.artwork}/>
         <Text style={styles.name}>{track.title}</Text>
@@ -70,4 +56,4 @@ const SongChip = (props) => {
   )
 }
 
-export default SongChip;
+export default SongListItem;

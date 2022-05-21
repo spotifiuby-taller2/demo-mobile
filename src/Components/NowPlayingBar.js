@@ -23,7 +23,7 @@ const NowPlayingBar = () => {
             <TextTicker style={{fontSize: 18, fontWeight: 'bold'}} scroll={false} bounce={false}>
               {player.currentTrack?.title ?? 'Unknown song'}
             </TextTicker>
-            <Text style={{fontSize: 16}}>{player.currentTrack?.artist ?? 'Unknown artist'}</Text>
+            <Text numberOfLines={1} style={{fontSize: 16}}>{player.currentTrack?.artist ?? 'Unknown artist'}</Text>
           </View>
         </SwipeableView>
         <View style={styles.buttonArea}>

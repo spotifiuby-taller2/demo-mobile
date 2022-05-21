@@ -4,7 +4,7 @@ import { useAuthUser } from '../context/AuthContext';
 import {getToGateway, postToGateway} from "../others/utils";
 import constants from "../others/constants";
 import {containerStyle} from "../styles/genericStyles";
-import SongChip from "../Components/SongChip";
+import SongListItem from "../Components/SongListItem";
 import * as Notifications from 'expo-notifications';
 
 const HomeScreen = ({navigation}) => {
@@ -81,10 +81,10 @@ const HomeScreen = ({navigation}) => {
                         (songs !== undefined) && (Array.isArray(songs)) && (
                             songs.map( (song, id) => {
                                 return (
-                                    <SongChip id={id}
-                                              key={id}
-                                              song={song}
-                                              navigation={navigation}/>
+                                    <SongListItem id={id}
+                                                  key={id}
+                                                  song={song}
+                                                  navigation={navigation}/>
                                 )
                             } ) )
                     }
