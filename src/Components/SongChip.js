@@ -1,9 +1,9 @@
 import {
   StyleSheet, TouchableOpacity,
-  View
+  View, Image,
 } from 'react-native';
 import React from 'react'
-import {Text, Avatar, IconButton} from 'react-native-paper';
+import {Text, IconButton} from 'react-native-paper';
 import usePlayer from "../Hooks/usePlayer";
 
 const defaultArtwork = require('../../assets/music-placeholder.png');
@@ -30,11 +30,16 @@ const styles = StyleSheet.create(
       fontSize: 19,
       color: 'black',
     },
+    artwork: {
+      height: 60,
+      width: 60,
+      marginHorizontal: 10,
+      borderRadius: 10,
+    },
   }
 )
 
 const songToTrack = (song) => {
-  console.log(JSON.stringify(song));
   return {
     id: song.id,
     url: song.link,
@@ -46,23 +51,18 @@ const songToTrack = (song) => {
 
 const SongChip = (props) => {
   const player = usePlayer();
+  const track = songToTrack(props.song);
   return (
     <TouchableOpacity style={styles.container}
-                      onPress={() => player.playList([songToTrack(props.song)])}>
+                      onPress={() => player.playList([track])}>
       <View style={styles.info}>
-        <Avatar.Text
-          style={{
-            backgroundColor: '#ff4500',
-            marginHorizontal: 10,
-          }}
-          label={props.song.title}
-        />
-        <Text style={styles.name}>{props.song.title}</Text>
+        <Image style={styles.artwork} source={track.artwork}/>
+        <Text style={styles.name}>{track.title}</Text>
       </View>
       <IconButton icon='dots-vertical'
                   onPress={() => {
                     props.navigation.navigate('SongScreen', {
-                      songId: props.song.id
+                      songId: track.id
                     });
                   }}
       />
