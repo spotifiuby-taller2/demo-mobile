@@ -9,6 +9,7 @@ import FollowArtistButton from '../Components/FollowArtistButton';
 import {useAuthUser} from '../context/AuthContext';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import LoaderScreen from "./../Components/LoaderScreen";
+import Top3List from './../Components/Top3List'
 
 
 const ProfileScreen = ({navigation}) => {
@@ -124,7 +125,7 @@ const ProfileScreen = ({navigation}) => {
   return (
     <View style={profile.isArtist ? styles.containerArtist : styles.containerListener}>
       <SafeAreaView>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView>
           <View>
 
             {
@@ -302,9 +303,19 @@ const ProfileScreen = ({navigation}) => {
                 </View>
               )
             }
+            {
+              profile.id === userState.uid && profile.isListener && renderButton &&
+              (
+                <Top3List 
+                  title='Artistas Favoritos'
+                  endpoint={constants.APP_FAV_ARTIST_LIST_URL + "?" 
+                      + constants.USER_ID_QUERY_PARAM + profile.id}
+                  navigation={navigation}/>
+              )
+            }
             
           </View>
-        </ScrollView>
+          </ScrollView>
       </SafeAreaView>
     </View>
   )

@@ -3,7 +3,7 @@ import React from 'react'
 import {Avatar, Chip, Text} from 'react-native-paper';
 import ProfilePicture from './ProfilePicture'
 
-/*user must be {name: '', surname: '', email:''}*/
+/*user must be {name: '', surname: ''}*/
 
 const UserChip = props => {
   return (
@@ -49,7 +49,7 @@ const styles = StyleSheet.create(
     chip: {
       backgroundColor: 'skyblue',
       marginTop: 5,
-      height: 110,
+      height: 95,
     },
     name: {
       fontSize: 19,

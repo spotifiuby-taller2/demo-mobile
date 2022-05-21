@@ -41,6 +41,7 @@ const ARTIST_QUERY = USERS_URL + "/artist";
 const EMISSOR_PARAM = "idEmissor=";
 const RECEIVER_PARAM = "idReceptor=";
 const ARTIST_NAME_PARAM = "name=";
+const LIMIT_3_PARAM = "limit=3";
 const APP_FAV_ARTIST_LIST_URL = USERS_URL + "/favartistlist";
 const FAV_SONG = "/favsong";
 const UNFAV_SONG = "/unfavsong";
@@ -50,6 +51,7 @@ const REDIRECT_URL = "/redirect";
 const APP_FAV_ARTIST_URL = USERS_URL + "/favartist";
 const PUSH_NOTIFICATION_TOKEN_URL = PROFILE_URL + "/pushnotificationtoken";
 const NOTIFICATION_LIST_URL = USERS_URL + "/notificationlist"
+const TOP_3_FAV_ARTIST_URL = "/topfavartist"
 
 const SONGS_URL = "/songs";
 const ALBUM_URL = "/albums";
@@ -123,5 +125,7 @@ module.exports = {
   PROFILE_VERIFICATION_VIDEO_URL,
   SS_ID_LABEL,
   SS_TOKEN_LABEL,
-  SS_TIMESTAMP_LABEL
+  SS_TIMESTAMP_LABEL,
+  TOP_3_FAV_ARTIST_URL,
+  LIMIT_3_PARAM
 }

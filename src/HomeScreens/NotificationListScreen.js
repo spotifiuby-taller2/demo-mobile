@@ -40,12 +40,12 @@ const NotificationListScreen = ({navigation}) =>{
         
 
 
-        navigation.addListener('focus',
+        const unsubscribe = navigation.addListener('focus',
             ()=>{
                 getNotifications();
             });
         
-        return () => { isMounted = false; }
+        return () => { isMounted = false; return unsubscribe; }
         },[]);
 
     const openChat = (notification)=>{

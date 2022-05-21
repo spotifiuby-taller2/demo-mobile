@@ -9,7 +9,6 @@ import 'react-native-gesture-handler'
 import {useAuthUser} from '../context/AuthContext'
 import Menu from './Menu';
 import ContentScreen from "../HomeScreens/ContentScreen";
-import ArtistsListTab from "../Components/ArtistsListTab";
 import { getToGateway, postToGateway } from '../others/utils';
 import constants from '../others/constants'
 import EditProfileScreen from '../HomeScreens/EditProfileScreen';
@@ -21,6 +20,8 @@ import NowPlayingBar from "./NowPlayingBar";
 import SongScreen from "../HomeScreens/SongScreen";
 import CreateContentScreen from "../HomeScreens/CreateContentScreen";
 import VerificationAccountScreen from "../HomeScreens/VerificationAccountScreen";
+import FavoriteArtistListScreen from '../HomeScreens/FavoriteArtistsListScreen';
+import ArtistListScreen from '../HomeScreens/ArtistsListScreen';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -122,7 +123,8 @@ const HomeNavStack = () =>{
             <HomeStack.Screen name='Menu' component={Menu} />
             <HomeStack.Screen name='HomeScreen' component={HomeScreen} />
             <HomeStack.Screen name='ProfileScreen' component={ProfileScreen} initialParams={{uid: userState.uid}}/>
-            <HomeStack.Screen name='ArtistsListTab' component={ArtistsListTab} />
+            <HomeStack.Screen name='ArtistListScreen' component={ArtistListScreen} />
+            <HomeStack.Screen name='FavoriteArtistsListScreen' component={FavoriteArtistListScreen} />
             <HomeStack.Screen name='ContentScreen' component={ContentScreen} />
             <HomeStack.Screen name='CreateContentScreen' component={CreateContentScreen} />
             <HomeStack.Screen name='EditProfileScreen' component={EditProfileScreen}/>
