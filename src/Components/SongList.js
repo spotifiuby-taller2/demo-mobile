@@ -1,7 +1,7 @@
 import React from 'react'
 import {ScrollView, View} from "react-native";
 import {containerStyle} from "../styles/genericStyles";
-import SongListItem from "./SongListItem";
+import PlayableListItem from "./PlayableListItem";
 import usePlayer from "../Hooks/usePlayer";
 import defaultArtwork from "../../assets/music-placeholder.png";
 
@@ -25,11 +25,11 @@ const SongList = ({navigation, songList}) => {
           {
             tracks.map((track, id) => {
               return (
-                <SongListItem id={id}
-                              key={id}
-                              track={track}
-                              navigation={navigation}
-                              play={() => player.playList(songList.map(songToTrack), id)}/>
+                <PlayableListItem id={id}
+                                  key={id}
+                                  track={track}
+                                  navigation={navigation}
+                                  play={() => player.playList(songList.map(songToTrack), id)}/>
               )
             })
           }

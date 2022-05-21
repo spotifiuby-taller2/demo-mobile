@@ -44,7 +44,7 @@ const styles = StyleSheet.create(
   }
 )
 
-const SongListItem = (props) => (
+const PlayableListItem = (props) => (
   <TouchableOpacity style={styles.container}
                     onPress={() => props.play()}>
     <View style={styles.info}>
@@ -65,4 +65,4 @@ const SongListItem = (props) => (
   </TouchableOpacity>
 );
 
-export default SongListItem;
+export default PlayableListItem;
