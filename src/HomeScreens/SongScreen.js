@@ -1,5 +1,5 @@
 import {ScrollView, TouchableOpacity} from "react-native";
-import {Button, Text} from 'react-native-paper';
+import {Text} from 'react-native-paper';
 import React, { useEffect, useState } from 'react';
 import {getToGateway, postToGateway} from "../others/utils";
 import * as constants from "../others/constants";
@@ -57,7 +57,7 @@ const SongScreen = ({navigation}) => {
                                                                   .songId);
 
             if (song.error !== undefined) {
-                alert("No se pudo mostrar la canción.");
+                console.log(JSON.stringify(song.error));
                 return;
             }
 
