@@ -1,50 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import {getToGateway} from "../others/utils";
-import constants from "../others/constants";
-import {SafeAreaView, ScrollView, View} from "react-native";
-import {containerStyle} from "../styles/genericStyles";
-import SongChip from "../Components/SongChip";
-
+import {getAllSongs} from "../Services/MediaService";
+import SongList from "../Components/SongList";
 
 const SongListScreen = ({navigation}) => {
-    const [songList, setSongList] = useState([]);
+  const [allSongs, setAllSongs] = useState([]);
 
-    useEffect(() => {
-        function getAllSongs() {
-            getToGateway(constants.MEDIA_HOST + constants.SONGS_URL)
-                .then((response) => {
-                if (response.error !== undefined) {
-                    alert(response.error);
-                    return;
-                }
+  useEffect(() => {
+    return navigation.addListener('focus', async () => {
+      getAllSongs().then(setAllSongs);
+    });
+  }, [navigation]);
 
-                setSongList(response);
-            });
-        }
-
-        navigation.addListener('focus',
-            ()=>{
-                getAllSongs();
-            });
-    }, [navigation]);
-
-    return (
-        <View style={containerStyle}>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <View>
-                        {
-                            songList.map( (song, id) => {
-                                return (
-                                    <SongChip id={id}
-                                              key={id}
-                                              song={song}
-                                              navigation={navigation}/>
-                                )})
-                        }
-                    </View>
-                </ScrollView>
-        </View>
-    )
+  return <SongList songList={allSongs} navigation={navigation}/>;
 }
 
 export default SongListScreen;

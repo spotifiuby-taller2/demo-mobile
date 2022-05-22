@@ -1,54 +1,65 @@
 import React, {useEffect, useState} from 'react';
-import {getToGateway} from "../others/utils";
+import {getToGateway, songToTrack} from "../others/utils";
 import constants from "../others/constants";
-import {SafeAreaView, ScrollView, View} from "react-native";
+import {ScrollView, View} from "react-native";
 import {containerStyle} from "../styles/genericStyles";
-import AlbumChip from "../Components/AlbumChip";
+import PlayableListItem from "../Components/PlayableListItem";
+import defaultArtwork from "../../assets/album-placeholder.png";
+import usePlayerAction from "../Hooks/usePlayerAction";
+
+const toPlayable = album => {
+  return {
+    title: album.title,
+    artwork: album.link ? {uri: album.link} : defaultArtwork,
+    artist: album.artistNames ?? 'Unknown artists',
+  };
+};
 
 const AlbumListScreen = ({navigation}) => {
-    const [albumList, setAlbumList] = useState([]);
+  const [albumList, setAlbumList] = useState([]);
 
-    useEffect(() => {
-        function getEveryAlbum() {
-            getToGateway(constants.MEDIA_HOST + constants.ALBUM_URL,
-                "").then((response) => {
-                if (response.error !== undefined) {
-                    alert(response.error);
-                    return;
-                }
+  const player = usePlayerAction();
 
-                console.log(response);
-
-                setAlbumList(response);
-            });
+  useEffect(() => {
+    const getEveryAlbum = () => {
+      getToGateway(constants.MEDIA_HOST + constants.ALBUM_URL,
+        "").then((response) => {
+        if (response.error !== undefined) {
+          alert(response.error);
+          return;
         }
+        return response;
+      })
+        .then(albums => setAlbumList(albums));
+    }
+    getEveryAlbum();
+  }, []);
 
-        navigation.addListener('focus',
-            ()=>{
-                getEveryAlbum();
-            });
+  return (
+    <View style={containerStyle}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View>
+          {
+            albumList.map((album, id) => {
+              return (
+                <PlayableListItem id={id}
+                                  key={id}
+                                  playableItem={toPlayable(album)}
+                                  play={() => player.playList(album.songs.map(songToTrack), 0)}
+                                  moreInfoCallback={() => {
+                                    navigation.navigate('AlbumScreen', {
+                                      albumId: album.id
+                                    });
+                                  }}/>
 
-    }, [navigation]);
-
-    return (
-        <View style={containerStyle}>
-            <SafeAreaView>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <View>
-                        {
-                            albumList.map( (album, id) => {
-                                return (
-                                    <AlbumChip id={id}
-                                              key={id}
-                                              album={album}
-                                              navigation={navigation}/>
-                                )})
-                        }
-                    </View>
-                </ScrollView>
-            </SafeAreaView>
+              )
+            })
+          }
         </View>
-    )
+      </ScrollView>
+    </View>
+  )
 }
 
-export default AlbumListScreen
+
+export default AlbumListScreen;

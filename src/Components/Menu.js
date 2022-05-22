@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react'
 import {HomeScreen} from '../HomeScreens/HomeScreen';
 import ProfileScreen from '../HomeScreens/ProfileScreen';
 import UserListScreen from '../HomeScreens/UserListScreen';
-import 'react-native-gesture-handler'
 import {useAuthUser} from '../context/AuthContext'
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {checkAuthTokenExpirationTime} from '../others/utils'

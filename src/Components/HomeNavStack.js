@@ -5,8 +5,7 @@ import React, {useEffect, useState} from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {HomeScreen} from '../HomeScreens/HomeScreen';
 import ProfileScreen from '../HomeScreens/ProfileScreen';
-import 'react-native-gesture-handler'
-import {useAuthUser} from '../context/AuthContext'
+import {useAuthUser} from '../context/AuthContext';
 import Menu from './Menu';
 import ContentScreen from "../HomeScreens/ContentScreen";
 import { getToGateway, postToGateway } from '../others/utils';
@@ -20,10 +19,14 @@ import NowPlayingBar from "./NowPlayingBar";
 import SongScreen from "../HomeScreens/SongScreen";
 import CreateContentScreen from "../HomeScreens/CreateContentScreen";
 import VerificationAccountScreen from "../HomeScreens/VerificationAccountScreen";
+<<<<<<< HEAD
 import FavoriteArtistListScreen from '../HomeScreens/FavoriteArtistsListScreen';
 import ArtistListScreen from '../HomeScreens/ArtistsListScreen';
 import SongListScreen from '../HomeScreens/SongListScreen';
 import AlbumListScreen from '../HomeScreens/AlbumListScreen'
+=======
+import AlbumScreen from "../HomeScreens/AlbumScreen";
+>>>>>>> 8d156f9c677412f6a689169cbcb4dd89be3160d4
 
 const HomeStack = createNativeStackNavigator();
 
@@ -131,6 +134,7 @@ const HomeNavStack = () =>{
             <HomeStack.Screen name='CreateContentScreen' component={CreateContentScreen} />
             <HomeStack.Screen name='EditProfileScreen' component={EditProfileScreen}/>
             <HomeStack.Screen name='SongScreen' component={SongScreen} />
+            <HomeStack.Screen name='AlbumScreen' component={AlbumScreen} />
             <HomeStack.Screen name='ChatScreen' component={ChatScreen}/>
             <HomeStack.Screen name='NotificationListScreen' component={NotificationListScreen}/>
             <HomeStack.Screen name='VerificationAccountScreen' component={VerificationAccountScreen}/>

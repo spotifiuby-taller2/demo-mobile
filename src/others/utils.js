@@ -2,6 +2,7 @@ import sjcl from 'sjcl';
 import constants from './constants'
 import * as Location from "expo-location";
 import * as SecureStore from 'expo-secure-store';
+import defaultArtwork from "../../assets/music-placeholder.png";
 
 
 function getSHAOf(toHash) {
@@ -89,7 +90,6 @@ const getToGateway = (destiny,
         body: JSON.stringify(body)
       }
   ).then(response => {
-          console.log(JSON.stringify(response));
           return response.json()
       }
   ).catch(error => {
@@ -121,10 +121,20 @@ function getChatId(idEmissor, idReceptor){
 
   if ( idEmissor < idReceptor)
       return `chat-${idEmissor}-${idReceptor}`;
-  
+
   else
       return `chat-${idReceptor}-${idEmissor}`;
 }
+
+const songToTrack = (song) => {
+  return {
+    id: song.id,
+    url: song.link,
+    title: song.title,
+    artist: song.author,
+    artwork: song.artwork ? {uri: song.artwork} : defaultArtwork,
+  };
+};
 
 export {
   getSHAOf,
@@ -135,5 +145,6 @@ export {
   getToGateway,
   validateFieldNotBlank,
   checkAuthTokenExpirationTime,
-  getChatId
+  getChatId,
+  songToTrack,
 }

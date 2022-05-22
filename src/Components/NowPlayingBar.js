@@ -5,6 +5,7 @@ import TextTicker from "react-native-text-ticker";
 import SwipeableView from "./SwipeableView";
 import usePlayer from "../Hooks/usePlayer";
 import {useNavigation} from "@react-navigation/native";
+import FavouriteIconButton from "./FavouriteIconButton";
 
 const NowPlayingBar = () => {
   const navigation = useNavigation();
@@ -23,18 +24,11 @@ const NowPlayingBar = () => {
             <TextTicker style={{fontSize: 18, fontWeight: 'bold'}} scroll={false} bounce={false}>
               {player.currentTrack?.title ?? 'Unknown song'}
             </TextTicker>
-            <Text style={{fontSize: 16}}>{player.currentTrack?.artist ?? 'Unknown artist'}</Text>
+            <Text numberOfLines={1} style={{fontSize: 16}}>{player.currentTrack?.artist ?? 'Unknown artist'}</Text>
           </View>
         </SwipeableView>
         <View style={styles.buttonArea}>
-          {
-            // TODO: set fav song
-            player.isFav ? (
-              <IconButton icon='heart' onPress={() => player.setIsFav(false)}/>
-            ) : (
-              <IconButton icon='heart-outline' onPress={() => player.setIsFav(true)}/>
-            )
-          }
+          <FavouriteIconButton size={24} songId={player.currentTrack?.id}/>
           {
             player.isPlaying ?
               (<IconButton icon='pause' disabled={player.isLoading} onPress={() => {
@@ -70,11 +64,12 @@ const styles = StyleSheet.create({
   songInfoArea: {
     padding: 5,
     flexDirection: 'row',
-    maxWidth: '65%',
+    flexShrink: 1,
   },
   songInfo: {
     paddingLeft: 5,
     alignSelf: 'flex-start',
+    flexShrink: 1,
   },
   progressBar: {
     width: '95%',
@@ -83,6 +78,7 @@ const styles = StyleSheet.create({
   artwork: {
     height: 45,
     width: 45,
+    borderRadius: 8,
   },
   buttonArea: {
     flexDirection: 'row',

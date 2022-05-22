@@ -1,4 +1,4 @@
-import {SafeAreaView, StyleSheet, View,FlatList} from 'react-native';
+import {SafeAreaView, StyleSheet, View, FlatList} from 'react-native';
 import React, {useEffect, useState} from 'react'
 import constants from '../others/constants'
 import {getToGateway} from "../others/utils";
@@ -24,7 +24,7 @@ const ArtistListScreen = ({navigation}) => {
       });
     }
 
-    navigation.addListener('focus',
+    return navigation.addListener('focus',
       () => {
         getAllUsers();
       });
@@ -46,15 +46,15 @@ const ArtistListScreen = ({navigation}) => {
                    containerStyle={{}}
                    inputContainerStyle={{}}
         />
-          <View>
-            <View style={{marginBottom: 10}}/>
-              {
-                <FlatList
-                  data={usersList.filter(filterArtists(text))}
-                  renderItem={({item, id}) => <UserChip id={id} key={id} user={item} navigation={navigation}/>}
-                />
-              }
-          </View>
+        <View>
+          <View style={{marginBottom: 10}}/>
+          {
+            <FlatList
+              data={usersList.filter(filterArtists(text))}
+              renderItem={({item, id}) => <UserChip id={id} key={id} user={item} navigation={navigation}/>}
+            />
+          }
+        </View>
       </SafeAreaView>
     </View>
   )

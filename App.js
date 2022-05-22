@@ -1,5 +1,4 @@
 import 'expo-dev-client';
-import 'react-native-gesture-handler'
 import React, {useEffect, useReducer, useMemo} from 'react'
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -15,7 +14,6 @@ import * as SecureStore from 'expo-secure-store';
 import {auth, signOut} from './src/Firebase/firebase';
 import PlayerComponent from "./src/Components/PlayerComponent";
 import constants from './src/others/constants'
-import Menu from "./src/Components/Menu";
 
 const AuthStack = createNativeStackNavigator();
 
@@ -38,7 +36,8 @@ const reducer = (state = initialState(), action = {}) => {
         ...state,
         uid: action.uid,
         userToken: action.token,
-      };
+        isSignOut: false
+  };
     case 'SIGN_IN':
       return {
         ...state,
