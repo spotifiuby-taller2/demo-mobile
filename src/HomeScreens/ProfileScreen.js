@@ -316,9 +316,10 @@ const ProfileScreen = ({navigation}) => {
                 <Top3List 
                   title='Artistas Favoritos'
                   endpoint={constants.USERS_HOST + constants.APP_FAV_ARTIST_LIST_URL + "?" 
-                      + constants.USER_ID_QUERY_PARAM + profile.id}
+                      + constants.USER_ID_QUERY_PARAM + profile.id + "&"}
                   navigation={navigation}
-                  open='FavoriteArtistsListScreen'/>
+                  open='FavoriteArtistsListScreen'
+                  userList={true}/>
               )
             }
           </View>

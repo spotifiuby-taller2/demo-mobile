@@ -11,9 +11,10 @@ const ContentScreen = ({navigation}) => {
       <View>
         <Top3List
           title='Canciones'
-          endpoint={constants.MEDIA_HOST + constants.SONGS_URL}
+          endpoint={constants.MEDIA_HOST + constants.SONGS_URL + "?"}
           navigation={navigation}
           open='SongListScreen'
+          songList={true}
           />
       </View>
     </View>

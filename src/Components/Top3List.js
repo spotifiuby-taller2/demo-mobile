@@ -1,32 +1,52 @@
 import {StyleSheet, View, FlatList} from 'react-native';
-import React, {useEffect, useState} from 'react'
+import React, {useCallback, useState} from 'react'
 import {Button, Text} from 'react-native-paper';
 import { getToGateway } from '../others/utils';
 import constants from '../others/constants'
 import UserChip from './UserChip';
+import SongList from './SongList';
+import { useFocusEffect } from '@react-navigation/native';
+
 
 /*user must be {name: '', surname: '', email:''}*/
 
 const Top3List = props => {
 
     const [list, setList] = useState([]);
+    const [render, setRender] = useState(false);
 
 
-    useEffect(()=>{
+    useFocusEffect(
+        useCallback(()=>{
+
         getToGateway(props.endpoint 
-                + "&" + constants.LIMIT_3_PARAM)
+                + constants.LIMIT_3_PARAM)
             .then(res => 
                 {
                     if (res.error !== undefined) {
                         alert(res.error);
                     } else {
-                        setList(res.list);
+                        setRender(true);
+                        if ( props.userList )
+                            setList(res.list)
+
+                        else if (props.songList){
+                            setList(res)
+                        } 
                     }
                 })
 
-    },[]);
+        
 
+    }),[]);
 
+    if ( ! render ){
+        return(
+            <View>
+
+            </View>
+        )
+    }
     return (
         <View>
             {
@@ -34,9 +54,15 @@ const Top3List = props => {
                     <>
                         <Text style={styles.title}>{props.title}</Text>
                         {
-                            list.map((user, id)=>{
-                                return(<UserChip id={id} key={id} user={user} navigation={props.navigation}/>)
-                            })
+                            props.userList && (
+                                list.map((user, id)=>{
+                                    return(<UserChip id={id} key={id} user={user} navigation={props.navigation}/>)
+                                }))
+                        }
+                        {
+                            props.songList && (
+                                <SongList songList={list} navigation={props.navigation}/>
+                            )
                         }
                         <Button
                             mode='text'

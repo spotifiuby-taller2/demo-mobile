@@ -6,6 +6,8 @@ import {songToTrack} from "../others/utils";
 import usePlayerAction from "../Hooks/usePlayerAction";
 
 const SongList = ({navigation, songList}) => {
+  console.log("lista");
+  console.log(songList);
   const player = usePlayerAction();
   const tracks = songList.map(songToTrack);
   return (

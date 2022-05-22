@@ -92,7 +92,7 @@ const UploadSongScreen = () => {
         <MultiSelection selectedElements={artists}
                         placeholder={"Buscar artistas"}
                         renderElement={artist => (<Text>{`${artist.name} ${artist.surname}`}</Text>)}
-                        getAllElements={() => getArtists().then(b => b.users)}
+                        getAllElements={() => getArtists().then(b => b.list)}
                         elementFilter={filterArtist}
                         elementCallback={{
                           add: artist => setArtists([...artists, artist]),
