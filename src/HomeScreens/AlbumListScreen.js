@@ -51,6 +51,4 @@ const AlbumListScreen = ({navigation}) => {
     )
 }
 
-export {
-    AlbumListScreen
-}
+export default AlbumListScreen

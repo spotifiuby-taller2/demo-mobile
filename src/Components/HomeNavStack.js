@@ -22,6 +22,8 @@ import CreateContentScreen from "../HomeScreens/CreateContentScreen";
 import VerificationAccountScreen from "../HomeScreens/VerificationAccountScreen";
 import FavoriteArtistListScreen from '../HomeScreens/FavoriteArtistsListScreen';
 import ArtistListScreen from '../HomeScreens/ArtistsListScreen';
+import SongListScreen from '../HomeScreens/SongListScreen';
+import AlbumListScreen from '../HomeScreens/AlbumListScreen'
 
 const HomeStack = createNativeStackNavigator();
 
@@ -132,6 +134,8 @@ const HomeNavStack = () =>{
             <HomeStack.Screen name='ChatScreen' component={ChatScreen}/>
             <HomeStack.Screen name='NotificationListScreen' component={NotificationListScreen}/>
             <HomeStack.Screen name='VerificationAccountScreen' component={VerificationAccountScreen}/>
+            <HomeStack.Screen name='SongListScreen' component={SongListScreen}/>
+            <HomeStack.Screen name='AlbumListScreen' component={AlbumListScreen}/>
           </HomeStack.Navigator>
           <NowPlayingBar style={styles.bar}/>
         </View>

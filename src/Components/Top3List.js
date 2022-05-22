@@ -9,18 +9,18 @@ import UserChip from './UserChip';
 
 const Top3List = props => {
 
-    const [usersList, setUserList] = useState([]);
+    const [list, setList] = useState([]);
 
 
     useEffect(()=>{
-        getToGateway(constants.USERS_HOST + props.endpoint 
+        getToGateway(props.endpoint 
                 + "&" + constants.LIMIT_3_PARAM)
             .then(res => 
                 {
                     if (res.error !== undefined) {
                         alert(res.error);
                     } else {
-                        setUserList(res.users);
+                        setList(res.list);
                     }
                 })
 
@@ -30,18 +30,18 @@ const Top3List = props => {
     return (
         <View>
             {
-                usersList.length !== 0 && (
+                list.length !== 0 && (
                     <>
                         <Text style={styles.title}>{props.title}</Text>
                         {
-                            usersList.map((user, id)=>{
+                            list.map((user, id)=>{
                                 return(<UserChip id={id} key={id} user={user} navigation={props.navigation}/>)
                             })
                         }
                         <Button
                             mode='text'
                             style={styles.button}
-                            onPress={()=>{props.navigation.navigate('FavoriteArtistsListScreen')}}>
+                            onPress={()=>{props.navigation.navigate(props.open)}}>
                                 <Text style={{color: 'steelblue'}}>Ver mas</Text>
                         </Button>
                     </>

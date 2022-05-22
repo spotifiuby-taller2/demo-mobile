@@ -55,7 +55,7 @@ const SongChip = (props) => {
             backgroundColor: '#ff4500',
             marginHorizontal: 10,
           }}
-          label={props.song.title}
+          label={props.song.title.charAt(0)}
         />
         <Text style={styles.name}>{props.song.title}</Text>
       </View>

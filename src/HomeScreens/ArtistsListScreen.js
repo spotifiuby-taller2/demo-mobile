@@ -19,7 +19,7 @@ const ArtistListScreen = ({navigation}) => {
         if (res.error !== undefined) {
           alert(res.error);
         } else {
-          setList(res.users);
+          setList(res.list);
         }
       });
     }

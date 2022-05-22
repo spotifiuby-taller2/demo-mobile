@@ -47,6 +47,4 @@ const SongListScreen = ({navigation}) => {
     )
 }
 
-export {
-    SongListScreen
-}
+export default SongListScreen;

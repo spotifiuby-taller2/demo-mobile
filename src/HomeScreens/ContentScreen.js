@@ -1,30 +1,22 @@
 import React from 'react'
-import {SongListScreen} from "./SongListScreen";
-import {AlbumListScreen} from "./AlbumListScreen";
-import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
-import {Avatar} from "react-native-paper";
+import Top3List from '../Components/Top3List'
+import {View,} from 'react-native';
+import constants from '../others/constants'
+
 
 const ContentScreen = ({navigation}) => {
-  const ContentTab = createBottomTabNavigator();
 
   return (
-    <ContentTab.Navigator screenOptions={{headerShown: false}}>
-      <ContentTab.Screen
-        name="Canciones"
-        component={SongListScreen}
-        options={{
-          tabBarIcon: () => (< Avatar.Icon size={30} icon='music'/>)
-        }}
-      />
-
-      <ContentTab.Screen
-        name="Álbumes"
-        component={AlbumListScreen}
-        options={{
-          tabBarIcon: () => (< Avatar.Icon size={30} icon='album'/>)
-        }}
-      />
-    </ContentTab.Navigator>
+    <View>
+      <View>
+        <Top3List
+          title='Canciones'
+          endpoint={constants.MEDIA_HOST + constants.SONGS_URL}
+          navigation={navigation}
+          open='SongListScreen'
+          />
+      </View>
+    </View>
   );
 }
 

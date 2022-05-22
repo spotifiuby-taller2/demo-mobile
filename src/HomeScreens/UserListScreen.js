@@ -8,7 +8,7 @@ import {containerStyle} from "../styles/genericStyles";
 
 const UserListScreen = ({navigation}) => {
 
-  const [usersList, setList] = useState([]);
+  const [list, setList] = useState([]);
   const [text, setText] = useState('')
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const UserListScreen = ({navigation}) => {
           if (res.error !== undefined) {
             alert(res.error);
           } else {
-            setList(res.users);
+            setList(res.list);
           }
         });
     }
@@ -46,7 +46,7 @@ const UserListScreen = ({navigation}) => {
           <View style={{marginBottom: 10}}/>
           {
             <FlatList
-              data={usersList.filter(filterUsers(text))}
+              data={list.filter(filterUsers(text))}
               renderItem={({item, id}) => <UserChip id={id} key={id} user={item} navigation={navigation}/>}
             />
           }
