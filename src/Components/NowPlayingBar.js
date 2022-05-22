@@ -28,7 +28,7 @@ const NowPlayingBar = () => {
           </View>
         </SwipeableView>
         <View style={styles.buttonArea}>
-          <FavouriteIconButton songId={player.currentTrack?.id}/>
+          <FavouriteIconButton size={24} songId={player.currentTrack?.id}/>
           {
             player.isPlaying ?
               (<IconButton icon='pause' disabled={player.isLoading} onPress={() => {
