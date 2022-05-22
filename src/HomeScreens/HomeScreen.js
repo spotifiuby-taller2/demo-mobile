@@ -1,44 +1,28 @@
-import React, {useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import {useAuthUser} from '../context/AuthContext';
-import {getToGateway, postToGateway} from "../others/utils";
+import {postToGateway, songToTrack} from "../others/utils";
 import constants from "../others/constants";
 import * as Notifications from 'expo-notifications';
 import SongList from "../Components/SongList";
+import {getFavouriteSongs} from "../Services/MediaService";
+import usePlayerAction from "../Hooks/usePlayerAction";
+import {useFocusEffect} from "@react-navigation/native";
 
 const HomeScreen = ({navigation}) => {
   const [songs, setSongs] = useState([]);
+  const player = usePlayerAction();
 
   const {userState} = useAuthUser();
 
-  const getFavoriteSongs = async () => {
-    await getToGateway(constants.MEDIA_HOST + constants.FAVORITE_SONGS
-      + "?"
-      + constants.USER_ID_QUERY_PARAM
-      + userState.uid)
-      .then((response) => {
-        if (response.error !== undefined) {
-          alert(response.error);
-          return;
-        }
-
-        setSongs(response.songs);
+  useFocusEffect(useCallback(() => {
+    getFavouriteSongs(userState.uid)
+      .then(r => {
+        setSongs(r.songs);
+        player.initialize(r.songs.map(songToTrack));
       });
-  }
+  }, [navigation]))
 
   useEffect(() => {
-    (async () => {
-      await getFavoriteSongs();
-    })();
-
-    return () => {
-    };
-  }, []);
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', async () => {
-      await getFavoriteSongs();
-    });
-
     const subcriptionNotificationReceived = Notifications.addNotificationReceivedListener(
       async notification => {
         const {type, params, screenName} = notification.request.content.data;
@@ -65,7 +49,6 @@ const HomeScreen = ({navigation}) => {
     return () => {
       subcriptionNotificationClicked.remove();
       subcriptionNotificationReceived.remove();
-      unsubscribe();
     };
   }, [navigation]);
 
