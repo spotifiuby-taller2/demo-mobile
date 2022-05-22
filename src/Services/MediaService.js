@@ -32,7 +32,33 @@ const getAllSongs = () => {
 
 const getAlbum = (albumId) => {
   return requestToGateway('GET', `${constants.MEDIA_HOST}${constants.ALBUM_URL}/${albumId}`)
-    .then(getBodyOrThrow)
+    .then(getBodyOrThrow);
 }
 
-export {createSong, createAlbum, getSongsByArtist, getAllSongs, getAlbum};
+const getFavouriteSongs = (userId) => {
+  return requestToGateway('GET', `${constants.MEDIA_HOST}${constants.FAVORITE_SONGS}?userId=${userId}`)
+    .then(getBodyOrThrow);
+}
+
+const addFavouriteSong = (songId, userId) => {
+  return requestToGateway('POST', `${constants.MEDIA_HOST}${constants.FAV_SONG}`,
+    {songId, userId})
+    .then(getBodyOrThrow);
+}
+
+const removeFavouriteSong = (songId, userId) => {
+  return requestToGateway('POST', `${constants.MEDIA_HOST}${constants.UNFAV_SONG}`,
+    {songId, userId})
+    .then(getBodyOrThrow);
+}
+
+export {
+  createSong,
+  createAlbum,
+  getSongsByArtist,
+  getAllSongs,
+  getAlbum,
+  getFavouriteSongs,
+  addFavouriteSong,
+  removeFavouriteSong
+};

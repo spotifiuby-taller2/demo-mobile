@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {StyleSheet, View} from "react-native";
 import {Slider} from "@miblanchard/react-native-slider";
 import {Text} from "react-native-paper";
@@ -20,7 +20,7 @@ const SongProgressBar = ({position, duration, setPosition}) => {
         />
       </View>
       <View>
-        <Text style={styles.seconds}>{formatSeconds(duration)}</Text>
+        <Text>{formatSeconds(duration)}</Text>
       </View>
     </View>
   )

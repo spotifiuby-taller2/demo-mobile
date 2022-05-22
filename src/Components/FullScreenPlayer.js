@@ -5,6 +5,7 @@ import usePlayer from "../Hooks/usePlayer";
 import TextTicker from "react-native-text-ticker";
 import SongProgressBar from "./SongProgressBar";
 import SwipeableView from "./SwipeableView";
+import FavouriteIconButton from "./FavouriteIconButton";
 
 const FullScreenPlayer = ({navigation}) => {
   const player = usePlayer();
@@ -22,11 +23,18 @@ const FullScreenPlayer = ({navigation}) => {
         <Image style={styles.artwork} source={player.currentTrack?.artwork}/>
       </SwipeableView>
       <View style={styles.bottom}>
-        <TextTicker style={{fontSize: 24, fontWeight: 'bold'}} scroll={false} bounce={false}>
-          {player.currentTrack?.title ?? 'Unknown title'}
-        </TextTicker>
-        <TextTicker style={{fontSize: 22}} scroll={false}
-                    bounce={false}>{player.currentTrack?.artist ?? 'Unknown artist'}</TextTicker>
+        <View style={styles.infoRow}>
+          <View style={styles.infoText}>
+            <TextTicker style={{fontSize: 24, fontWeight: 'bold'}} scroll={false} bounce={false}>
+              {player.currentTrack?.title ?? 'Unknown title'}
+            </TextTicker>
+            <TextTicker style={{fontSize: 22}} scroll={false}
+                        bounce={false}>{player.currentTrack?.artist ?? 'Unknown artist'}</TextTicker>
+          </View>
+          <View style={styles.favourite}>
+            <FavouriteIconButton size={30} songId={player.currentTrack?.id}/>
+          </View>
+        </View>
         <SongProgressBar position={player.position} duration={player.duration} setPosition={player.seekTo}/>
         <View style={styles.musicControl}>
           <IconButton icon='skip-previous' size={50} disabled={player.isLoading} onPress={() => {
@@ -83,6 +91,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  infoRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  infoText: {
+    flexShrink: 1,
+  },
+  favourite: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    marginRight: -10,
   },
 })
 

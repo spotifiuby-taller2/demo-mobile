@@ -5,6 +5,7 @@ import TextTicker from "react-native-text-ticker";
 import SwipeableView from "./SwipeableView";
 import usePlayer from "../Hooks/usePlayer";
 import {useNavigation} from "@react-navigation/native";
+import FavouriteIconButton from "./FavouriteIconButton";
 
 const NowPlayingBar = () => {
   const navigation = useNavigation();
@@ -27,14 +28,7 @@ const NowPlayingBar = () => {
           </View>
         </SwipeableView>
         <View style={styles.buttonArea}>
-          {
-            // TODO: set fav song
-            player.isFav ? (
-              <IconButton icon='heart' onPress={() => player.setIsFav(false)}/>
-            ) : (
-              <IconButton icon='heart-outline' onPress={() => player.setIsFav(true)}/>
-            )
-          }
+          <FavouriteIconButton size={24} songId={player.currentTrack?.id}/>
           {
             player.isPlaying ?
               (<IconButton icon='pause' disabled={player.isLoading} onPress={() => {

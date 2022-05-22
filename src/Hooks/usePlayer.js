@@ -15,8 +15,6 @@ const usePlayer = () => {
   const isLoading = playerState === State.Connecting || playerState === State.Buffering;
   const [currentTrack, setCurrentTrack] = useState({});
   const {position, duration} = useProgress()
-  // TODO: fetch fav state for track id
-  const [isFav, setIsFav] = useState(false);
   const playerActions = usePlayerAction();
 
   useEffect(() => {
@@ -38,8 +36,6 @@ const usePlayer = () => {
     currentTrack,
     position,
     duration,
-    isFav,
-    setIsFav,
     ...playerActions,
   };
 }
