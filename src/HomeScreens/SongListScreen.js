@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {getAllSongs} from "../Services/MediaService";
 import SongList from "../Components/SongList";
-import {getToGateway} from "../others/utils";
-import * as constants from "../others/constants";
 
 const SongListScreen = ({navigation}) => {
   const [allSongs, setAllSongs] = useState([]);
