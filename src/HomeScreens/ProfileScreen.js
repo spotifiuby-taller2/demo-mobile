@@ -54,12 +54,12 @@ const ProfileScreen = ({navigation}) => {
   useEffect(() => {
     let isMounted = true;
 
-    if ( ! nameChanged ){
-      if ( route.params?.usingList ) 
-        navigation.setOptions({ headerShown: true, headerTitle: 'Perfil' });
-      if ( isMounted ) 
+    if (!nameChanged) {
+      if (route.params?.usingList)
+        navigation.setOptions({headerShown: true, headerTitle: 'Perfil'});
+      if (isMounted)
         setNameChanged(true);
-  }
+    }
 
     function getProfile(userId) {
       getToGateway(constants.USERS_HOST + constants.PROFILE_URL
@@ -95,7 +95,7 @@ const ProfileScreen = ({navigation}) => {
               verificationVideoUrl: res.verificationVideoUrl,
               nFollowers: res.nFollowers
             };
-            if ( isMounted ){ 
+            if (isMounted) {
               setProfile(newState);
               setRenderButton(true);
               setInitialized(true);
@@ -104,18 +104,22 @@ const ProfileScreen = ({navigation}) => {
         })
     }
 
-    navigation.addListener('focus',
+    const unsubscribeFocus = navigation.addListener('focus',
       () => {
-        if ( isMounted )setRenderButton(false);
+        if (isMounted) setRenderButton(false);
         getProfile(route.params.uid);
       });
 
-      navigation.addListener('blur',
+    const unsubscribeBlur = navigation.addListener('blur',
       () => {
-        if ( isMounted )setInitialized(false);
+        if (isMounted) setInitialized(false);
       });
-    
-    return () =>{ isMounted = false }
+
+    return () => {
+      isMounted = false;
+      unsubscribeFocus();
+      unsubscribeBlur();
+    }
   }, [navigation]);
 
   if (!initialized) {
@@ -166,15 +170,15 @@ const ProfileScreen = ({navigation}) => {
                         navigation.navigate('VerificationAccountScreen')
                       }}>
                       <MaterialCommunityIcons
-                            name='account-check'
-                            size={35}
-                            color='#388AD6'/>
+                        name='account-check'
+                        size={35}
+                        color='#388AD6'/>
                     </Button>)
-                  } 
+                  }
 
                 </View>)
             }
-            
+
 
             {
               (userState.uid !== profile.id) &&
@@ -235,38 +239,41 @@ const ProfileScreen = ({navigation}) => {
             }
 
             {profile.isListener &&
-            (
-              <>
-                <Text style={styles.text}>Intereses Musicales</Text>
-                <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap'}}>
-                  {profile.metal && (
-                    <Chip style={styles.chip} textStyle={{textAlign: 'center'}}><Text> Metal</Text></Chip>)}
-                  {profile.rock && (<Chip style={styles.chip}><Text style={{textAlign: 'center'}}> Rock</Text></Chip>)}
-                  {profile.salsa && (
-                    <Chip style={styles.chip}><Text style={{textAlign: 'center'}}> Salsa</Text></Chip>)}
-                  {profile.blues && (
-                    <Chip style={styles.chip}><Text style={{textAlign: 'center'}}> Blues</Text></Chip>)}
-                  {profile.reggeaton && (
-                    <Chip style={styles.chip}><Text style={{textAlign: 'center'}}>Reggeaton</Text></Chip>)}
-                  {profile.jazz && (<Chip style={styles.chip}><Text style={{textAlign: 'center'}}> Jazz</Text></Chip>)}
-                  {profile.punk && (<Chip style={styles.chip}><Text style={{textAlign: 'center'}}> Punk</Text></Chip>)}
-                  {profile.rap && (<Chip style={styles.chip}><Text style={{textAlign: 'center'}}> Rap</Text></Chip>)}
-                  {profile.pop && (<Chip style={styles.chip}><Text style={{textAlign: 'center'}}> Pop</Text></Chip>)}
-                  {profile.indie && (
-                    <Chip style={styles.chip}><Text style={{textAlign: 'center'}}> Indie</Text></Chip>)}
-                  {profile.classic && (
-                    <Chip style={styles.chip}><Text style={{textAlign: 'center'}}> Clásica</Text></Chip>)}
-                  {profile.electronic && (
-                    <Chip style={styles.chip}><Text style={{textAlign: 'center'}}>Electronica</Text></Chip>)}
-                  {profile.others && (<Chip style={styles.chip}><Text> Otros</Text></Chip>)}
-                </View>
-              </>)
+              (
+                <>
+                  <Text style={styles.text}>Intereses Musicales</Text>
+                  <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap'}}>
+                    {profile.metal && (
+                      <Chip style={styles.chip} textStyle={{textAlign: 'center'}}><Text> Metal</Text></Chip>)}
+                    {profile.rock && (
+                      <Chip style={styles.chip}><Text style={{textAlign: 'center'}}> Rock</Text></Chip>)}
+                    {profile.salsa && (
+                      <Chip style={styles.chip}><Text style={{textAlign: 'center'}}> Salsa</Text></Chip>)}
+                    {profile.blues && (
+                      <Chip style={styles.chip}><Text style={{textAlign: 'center'}}> Blues</Text></Chip>)}
+                    {profile.reggeaton && (
+                      <Chip style={styles.chip}><Text style={{textAlign: 'center'}}>Reggeaton</Text></Chip>)}
+                    {profile.jazz && (
+                      <Chip style={styles.chip}><Text style={{textAlign: 'center'}}> Jazz</Text></Chip>)}
+                    {profile.punk && (
+                      <Chip style={styles.chip}><Text style={{textAlign: 'center'}}> Punk</Text></Chip>)}
+                    {profile.rap && (<Chip style={styles.chip}><Text style={{textAlign: 'center'}}> Rap</Text></Chip>)}
+                    {profile.pop && (<Chip style={styles.chip}><Text style={{textAlign: 'center'}}> Pop</Text></Chip>)}
+                    {profile.indie && (
+                      <Chip style={styles.chip}><Text style={{textAlign: 'center'}}> Indie</Text></Chip>)}
+                    {profile.classic && (
+                      <Chip style={styles.chip}><Text style={{textAlign: 'center'}}> Clásica</Text></Chip>)}
+                    {profile.electronic && (
+                      <Chip style={styles.chip}><Text style={{textAlign: 'center'}}>Electronica</Text></Chip>)}
+                    {profile.others && (<Chip style={styles.chip}><Text> Otros</Text></Chip>)}
+                  </View>
+                </>)
             }
             {
               renderButton && (
                 <FollowArtistButton
                   openAsListener={(userState.userType === constants.LISTENER)
-                  && (profile.isArtist)}
+                    && (profile.isArtist)}
                   idListener={userState.uid}
                   idArtist={profile.id}/>
               )
@@ -302,7 +309,7 @@ const ProfileScreen = ({navigation}) => {
                 </View>
               )
             }
-            
+
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -372,12 +379,12 @@ const styles = StyleSheet.create(
       backgroundColor: 'transparent',
       paddingTop: 5
     },
-    defaultImage:{
+    defaultImage: {
       marginTop: 40,
       marginBottom: 50,
       alignSelf: 'center',
     },
-    profilePicture:{
+    profilePicture: {
       marginTop: 40,
       marginBottom: 50,
       alignSelf: 'center',

@@ -6,14 +6,10 @@ const SongListScreen = ({navigation}) => {
   const [allSongs, setAllSongs] = useState([]);
 
   useEffect(() => {
-    getAllSongs().then(setAllSongs);
-  }, []);
-
-  useEffect( () => {
-    navigation.addListener('focus', async () => {
+    return navigation.addListener('focus', async () => {
       getAllSongs().then(setAllSongs);
-    }, [navigation]);
-  }, [navigation] );
+    });
+  }, [navigation]);
 
   return <SongList songList={allSongs} navigation={navigation}/>;
 }

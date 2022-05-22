@@ -35,9 +35,9 @@ const HomeScreen = ({navigation}) => {
   }, []);
 
   useEffect(() => {
-    navigation.addListener('focus', async () => {
+    const unsubscribe = navigation.addListener('focus', async () => {
       await getFavoriteSongs();
-    }, [navigation]);
+    });
 
     const subcriptionNotificationReceived = Notifications.addNotificationReceivedListener(
       async notification => {
@@ -65,6 +65,7 @@ const HomeScreen = ({navigation}) => {
     return () => {
       subcriptionNotificationClicked.remove();
       subcriptionNotificationReceived.remove();
+      unsubscribe();
     };
   }, [navigation]);
 
