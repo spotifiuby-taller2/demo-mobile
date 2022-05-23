@@ -7,8 +7,6 @@ import constants from '../others/constants'
 const ContentScreen = ({navigation}) => {
 
   return (
-    <View>
-      <View>
         <Top3List
           title='Canciones'
           endpoint={constants.MEDIA_HOST + constants.SONGS_URL + "?"}
@@ -16,8 +14,6 @@ const ContentScreen = ({navigation}) => {
           open='SongListScreen'
           songList={true}
           />
-      </View>
-    </View>
   );
 }
 

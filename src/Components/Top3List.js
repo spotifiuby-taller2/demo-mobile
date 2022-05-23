@@ -19,9 +19,9 @@ const Top3List = props => {
     useFocusEffect(
         useCallback(()=>{
 
-        getToGateway(props.endpoint 
+        getToGateway(props.endpoint
                 + constants.LIMIT_3_PARAM)
-            .then(res => 
+            .then(res =>
                 {
                     if (res.error !== undefined) {
                         alert(res.error);
@@ -32,13 +32,12 @@ const Top3List = props => {
 
                         else if (props.songList){
                             setList(res)
-                        } 
+                        }
                     }
                 })
 
-        
 
-    }),[]);
+    }, []));
 
     if ( ! render ){
         return(
@@ -48,10 +47,10 @@ const Top3List = props => {
         )
     }
     return (
-        <View>
+        <View style={{flex:1, flexGrow: 1}}>
             {
                 list.length !== 0 && (
-                    <>
+                    <View style={{flex:1, flexGrow: 1}}>
                         <Text style={styles.title}>{props.title}</Text>
                         {
                             props.userList && (
@@ -61,7 +60,7 @@ const Top3List = props => {
                         }
                         {
                             props.songList && (
-                                <SongList songList={list} navigation={props.navigation}/>
+                                      <SongList songList={list} navigation={props.navigation}/>
                             )
                         }
                         <Button
@@ -70,7 +69,7 @@ const Top3List = props => {
                             onPress={()=>{props.navigation.navigate(props.open)}}>
                                 <Text style={{color: 'steelblue'}}>Ver mas</Text>
                         </Button>
-                    </>
+                    </View>
                 )
             }
         </View>
@@ -89,7 +88,7 @@ const styles = StyleSheet.create(
     button:{
         alignSelf: 'center',
         fontSize: 15,
-        
+
     },
   }
 )
