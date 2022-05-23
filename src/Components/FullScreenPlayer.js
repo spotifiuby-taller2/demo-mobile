@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
   },
   infoText: {
     flexShrink: 1,
+    flexGrow: 1,
   },
   favourite: {
     flexDirection: 'row',
