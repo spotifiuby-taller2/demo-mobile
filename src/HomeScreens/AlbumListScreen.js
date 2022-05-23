@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {getToGateway, songToTrack} from "../others/utils";
-import constants from "../others/constants";
+import {songToTrack} from "../others/utils";
 import {ScrollView, View} from "react-native";
 import {containerStyle} from "../styles/genericStyles";
 import PlayableListItem from "../Components/PlayableListItem";
 import defaultArtwork from "../../assets/album-placeholder.png";
 import usePlayerAction from "../Hooks/usePlayerAction";
+import {getArtists} from "../Services/UsersService";
+import {getAllAlbums} from "../Services/MediaService";
 
 const toPlayable = album => {
   return {
@@ -15,24 +16,30 @@ const toPlayable = album => {
   };
 };
 
+const enrichWithArtistNames = (albums, artists) => albums.map(album => enrichWithArtistName(album, artists));
+
+const enrichWithArtistName = (album, artists) => ({
+  ...album,
+  artistNames: album.artists
+    .map(artistId => artists.find(a => a.id === artistId))
+    .map(getUserName)
+    .join(', '),
+});
+
+const getUserName = user => `${user.name} ${user.surname}`
+
 const AlbumListScreen = ({navigation}) => {
   const [albumList, setAlbumList] = useState([]);
 
   const player = usePlayerAction();
 
   useEffect(() => {
-    const getEveryAlbum = () => {
-      getToGateway(constants.MEDIA_HOST + constants.ALBUM_URL,
-        "").then((response) => {
-        if (response.error !== undefined) {
-          alert(response.error);
-          return;
-        }
-        return response;
-      })
-        .then(albums => setAlbumList(albums));
+    const getAlbumsWithArtists = async () => {
+      const allAlbums = getAllAlbums();
+      const artists = await getArtists().then(r => r.list);
+      return allAlbums.then(albums => enrichWithArtistNames(albums, artists));
     }
-    getEveryAlbum();
+    getAlbumsWithArtists().then(albums => setAlbumList(albums));
   }, []);
 
   return (

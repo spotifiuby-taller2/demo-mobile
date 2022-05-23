@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
     padding: 5,
     flexDirection: 'row',
     flexShrink: 1,
+    flexGrow: 1,
   },
   songInfo: {
     paddingLeft: 5,

@@ -35,6 +35,11 @@ const getAlbum = (albumId) => {
     .then(getBodyOrThrow);
 }
 
+const getAllAlbums = () => {
+  return requestToGateway('GET', constants.MEDIA_HOST + constants.ALBUM_URL)
+    .then(getBodyOrThrow);
+}
+
 const getFavouriteSongs = (userId) => {
   return requestToGateway('GET', `${constants.MEDIA_HOST}${constants.FAVORITE_SONGS}?userId=${userId}`)
     .then(getBodyOrThrow);
@@ -58,7 +63,8 @@ export {
   getSongsByArtist,
   getAllSongs,
   getAlbum,
+  getAllAlbums,
   getFavouriteSongs,
   addFavouriteSong,
-  removeFavouriteSong
+  removeFavouriteSong,
 };
