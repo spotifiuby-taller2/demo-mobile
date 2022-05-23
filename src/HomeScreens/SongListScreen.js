@@ -5,6 +5,10 @@ import SongList from "../Components/SongList";
 const SongListScreen = ({navigation}) => {
   const [allSongs, setAllSongs] = useState([]);
 
+  useEffect(()=>{
+    navigation.setOptions({ headerShown: true, headerTitle: 'Canciones' });
+  }, []);
+
   useEffect(() => {
     return navigation.addListener('focus', async () => {
       getAllSongs().then(setAllSongs);

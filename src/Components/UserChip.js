@@ -49,7 +49,7 @@ const styles = StyleSheet.create(
     chip: {
       backgroundColor: 'skyblue',
       marginTop: 5,
-      height: 95,
+      height: 110,
     },
     name: {
       fontSize: 19,

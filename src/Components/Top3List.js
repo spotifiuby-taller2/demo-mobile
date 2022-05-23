@@ -88,6 +88,7 @@ const styles = StyleSheet.create(
     button:{
         alignSelf: 'center',
         fontSize: 15,
+        flex: 3
 
     },
   }

@@ -199,7 +199,8 @@ const ProfileScreen = ({navigation}) => {
                           surnameReceptor: profile.surname,
                           nameEmissor: userState.name,
                           surnameEmissor: userState.surname,
-                          pushNotificationToken: profile.pushNotificationToken
+                          pushNotificationToken: profile.pushNotificationToken,
+                          photoUrl: profile.photoUrl
                         })
                     }}>
                     <MaterialCommunityIcons

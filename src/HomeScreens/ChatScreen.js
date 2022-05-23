@@ -3,7 +3,7 @@ import {
     View,
     TouchableOpacity
   } from 'react-native';
-import React,{useState, useCallback, useLayoutEffect} from 'react'
+import React,{useState, useCallback, useLayoutEffect, useEffect} from 'react'
 import { Text } from 'react-native-paper'
 import {GiftedChat, Bubble, Send, InputToolbar} from 'react-native-gifted-chat'
 import { getCurrentUser, addDocIntoCollection, db} from '../Firebase/firebase';
@@ -27,7 +27,12 @@ const ChatScreen = ({navigation}) =>{
           surnameReceptor,
           pushNotificationToken,
           nameEmissor,
-          surnameEmissor} = route.params;
+          surnameEmissor,
+          photoUrl} = route.params;
+        
+        useEffect(()=>{
+            navigation.setOptions({ headerShown: true, headerTitle: 'Mensajes'});
+          }, []);
 
 
         useLayoutEffect( ()=>{
@@ -125,6 +130,9 @@ const ChatScreen = ({navigation}) =>{
                         name={nameReceptor}
                         surname={surnameReceptor}
                         style={styles.avatar}
+                        photoUrl={photoUrl}
+                        defaultImage={{marginTop: 10}}
+                        profilePicture={{marginTop: 10}}
                         />
                     <Text style={{marginTop: 50, marginLeft: 30, fontSize: 25, color: 'white'}}>
                         {`${nameReceptor} ${surnameReceptor}`}
