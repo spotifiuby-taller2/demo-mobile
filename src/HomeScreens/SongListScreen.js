@@ -9,6 +9,7 @@ const SongListScreen = ({navigation}) => {
     navigation.setOptions({ headerShown: true, headerTitle: 'Canciones' });
   }, []);
 
+  // TODO Warning: es asimétrico respecto de Favorite Song List Screen
   useEffect(() => {
     return navigation.addListener('focus', async () => {
       getAllSongs().then(setAllSongs);

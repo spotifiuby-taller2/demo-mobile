@@ -5,7 +5,7 @@ import usePlayer from "../Hooks/usePlayer";
 import TextTicker from "react-native-text-ticker";
 import SongProgressBar from "./SongProgressBar";
 import SwipeableView from "./SwipeableView";
-import FavouriteIconButton from "./FavouriteIconButton";
+import FavouriteSongIconButton from "./FavouriteSongIconButton";
 
 const FullScreenPlayer = ({navigation}) => {
   const player = usePlayer();
@@ -32,7 +32,7 @@ const FullScreenPlayer = ({navigation}) => {
                         bounce={false}>{player.currentTrack?.artist ?? 'Unknown artist'}</TextTicker>
           </View>
           <View style={styles.favourite}>
-            <FavouriteIconButton size={30} songId={player.currentTrack?.id}/>
+            <FavouriteSongIconButton size={30} songId={player.currentTrack?.id}/>
           </View>
         </View>
         <SongProgressBar position={player.position} duration={player.duration} setPosition={player.seekTo}/>

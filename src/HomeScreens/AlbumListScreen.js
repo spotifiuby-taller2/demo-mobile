@@ -39,7 +39,13 @@ const AlbumListScreen = ({navigation}) => {
       const artists = await getArtists().then(r => r.list);
       return allAlbums.then(albums => enrichWithArtistNames(albums, artists));
     }
-    getAlbumsWithArtists().then(albums => setAlbumList(albums));
+    getAlbumsWithArtists().then(albums => {
+      setAlbumList(albums);
+    });
+  }, []);
+
+  useEffect(()=>{
+    navigation.setOptions({ headerShown: true, headerTitle: 'Álbumes' });
   }, []);
 
   return (
@@ -67,6 +73,5 @@ const AlbumListScreen = ({navigation}) => {
     </View>
   )
 }
-
 
 export default AlbumListScreen;

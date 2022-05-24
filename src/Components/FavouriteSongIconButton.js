@@ -2,7 +2,7 @@ import React from "react";
 import {IconButton} from "react-native-paper";
 import {useFavouriteSongs} from "../context/FavouriteSongsProvider";
 
-const FavouriteIconButton = ({songId, size, style}) => {
+const FavouriteSongIconButton = ({songId, size, style}) => {
   const {isReady, isFavourite, toggleFavourite} = useFavouriteSongs();
 
   return (
@@ -15,4 +15,4 @@ const FavouriteIconButton = ({songId, size, style}) => {
   );
 }
 
-export default FavouriteIconButton;
+export default FavouriteSongIconButton;

@@ -13,7 +13,9 @@ export const FavouriteSongsProvider = ({children}) => {
   const refreshFavourites = () => {
     getFavouriteSongs(userState.uid)
       .then(r => setFavouriteSongs(r.songs))
+      .then(r => {console.log(r);return r})
       .then(() => setIsReady(true))
+      .then(() => console.log('here'))
       .catch(e => console.log(JSON.stringify(e)));
   }
 

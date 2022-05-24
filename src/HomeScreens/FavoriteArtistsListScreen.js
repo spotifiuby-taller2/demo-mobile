@@ -13,6 +13,10 @@ const FavoriteArtistListScreen = ({navigation}) => {
   const [text, setText] = useState('')
   const {userState} = useAuthUser();
 
+  useEffect(()=>{
+    navigation.setOptions({ headerShown: true, headerTitle: 'Tus Artistas Favoritos' });
+  }, []);
+
   useEffect(() => {
     function getAllUsers() {
 

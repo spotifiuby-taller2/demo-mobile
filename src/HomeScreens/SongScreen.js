@@ -5,7 +5,7 @@ import {getToGateway} from "../others/utils";
 import * as constants from "../others/constants";
 import * as styles from "../styles/contentStyle";
 import ArtistChip from "../Components/ArtistChip";
-import FavouriteIconButton from "../Components/FavouriteIconButton";
+import FavouriteSongIconButton from "../Components/FavouriteSongIconButton";
 
 const SongScreen = ({navigation, route}) => {
 
@@ -53,7 +53,7 @@ const SongScreen = ({navigation, route}) => {
       <Text>{"\n\n"}
       </Text>
 
-      <FavouriteIconButton style={{alignSelf: 'center'}} size={90} songId={song?.id}/>
+      <FavouriteSongIconButton style={{alignSelf: 'center'}} size={90} songId={song?.id}/>
 
     </ScrollView>
   );
