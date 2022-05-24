@@ -42,6 +42,10 @@ const AlbumListScreen = ({navigation}) => {
     getAlbumsWithArtists().then(albums => setAlbumList(albums));
   }, []);
 
+  useEffect(()=>{
+    navigation.setOptions({ headerShown: true, headerTitle: 'Álbumes' });
+  }, []);
+
   return (
     <View style={containerStyle}>
       <ScrollView showsVerticalScrollIndicator={false}>

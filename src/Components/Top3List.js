@@ -6,6 +6,11 @@ import constants from '../others/constants'
 import UserChip from './UserChip';
 import SongList from './SongList';
 import { useFocusEffect } from '@react-navigation/native';
+import {songToTrack} from "../others/utils";
+import usePlayerAction from "../Hooks/usePlayerAction";
+import PlayableListItem from "../Components/PlayableListItem";
+
+
 import {ScrollView} from "react-native-gesture-handler";
 
 
@@ -15,6 +20,15 @@ const Top3List = props => {
 
     const [list, setList] = useState([]);
     const [render, setRender] = useState(false);
+    const player = usePlayerAction();
+
+    const toPlayable = album => {
+        return {
+          title: album.title,
+          artwork: album.link ? {uri: album.link} : defaultArtwork,
+          artist: album.artistNames ?? 'Unknown artists',
+        };
+      };
 
 
     useFocusEffect(
@@ -31,7 +45,7 @@ const Top3List = props => {
                         if ( props.userList )
                             setList(res.list)
 
-                        else if (props.songList){
+                        else{
                             setList(res)
                         }
                     }
@@ -64,6 +78,23 @@ const Top3List = props => {
                                       <SongList songList={list} navigation={props.navigation}/>
                             )
                         }
+                        {
+                            props.albumList &&
+                                list.map((album, id) => {
+                                    return (
+                                        <PlayableListItem id={id}
+                                                        key={id}
+                                                        playableItem={toPlayable(album)}
+                                                        play={() => player.playList(album.songs.map(songToTrack), 0)}
+                                                        moreInfoCallback={() => {
+                                                            props.navigation.navigate('AlbumScreen', {
+                                                            albumId: album.id
+                                                            });
+                                                        }}/>
+
+                                    )
+                                    })
+                            }
                         <Button
                             mode='text'
                             style={styles.button}

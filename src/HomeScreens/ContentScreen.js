@@ -1,6 +1,5 @@
 import React from 'react'
 import Top3List from '../Components/Top3List'
-import {View,} from 'react-native';
 import constants from '../others/constants'
 import {ScrollView} from "react-native-gesture-handler";
 
@@ -22,7 +21,7 @@ const ContentScreen = ({navigation}) => {
             endpoint={constants.MEDIA_HOST + constants.ALBUM_URL + "?"}
             navigation={navigation}
             open='AlbumListScreen'
-            songList={true}
+            albumList={true}
         />
     </ScrollView>
   );

@@ -17,7 +17,7 @@ const FavouriteIconButton = ({songId, size, style}) => {
       return;
     }
     getFavouriteSongs(userState.uid)
-      .then(r => setIsFavourite(r.songs.map(s => s.id).includes(songId)))
+      .then(r => setIsFavourite(r.map(s => s.id).includes(songId)))
       .catch(e => console.log(JSON.stringify(e)));
   });
 

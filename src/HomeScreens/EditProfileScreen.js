@@ -12,7 +12,6 @@ import {postToGateway} from "../others/utils";
 import ProfilePicture from '../Components/ProfilePicture';
 import EditProfileTextInput from '../Components/EditProfileTextInput';
 
-
 const reducer = (state, action = {})=>{
 
     switch(action.type){
@@ -108,15 +107,10 @@ const reducer = (state, action = {})=>{
     return state;
   };
 
-
 const EditProfileScreen = ({navigation}) =>{
-
       useEffect(()=>{
         navigation.setOptions({ headerShown: true, headerTitle: 'Editar Perfil' });
       }, []);
-
-      
-
 
       const route = useRoute();
       const [profile, dispatch] = useReducer(reducer ,route.params.profile);
