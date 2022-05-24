@@ -2,12 +2,13 @@ import React from 'react'
 import Top3List from '../Components/Top3List'
 import {View,} from 'react-native';
 import constants from '../others/constants'
+import {ScrollView} from "react-native-gesture-handler";
 
 
 const ContentScreen = ({navigation}) => {
 
   return (
-    <View style={{backgroundColor: '#f5fcff', flex: 1, flexGrow: 1}}>
+    <ScrollView style={{backgroundColor: '#f5fcff'}}>
         <Top3List
           title='Canciones'
           endpoint={constants.MEDIA_HOST + constants.SONGS_URL + "?"}
@@ -15,8 +16,15 @@ const ContentScreen = ({navigation}) => {
           open='SongListScreen'
           songList={true}
           />
-    </View>
-        
+
+        <Top3List
+            title='Albumes'
+            endpoint={constants.MEDIA_HOST + constants.ALBUM_URL + "?"}
+            navigation={navigation}
+            open='AlbumListScreen'
+            songList={true}
+        />
+    </ScrollView>
   );
 }
 

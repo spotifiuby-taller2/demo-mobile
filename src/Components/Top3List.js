@@ -6,6 +6,7 @@ import constants from '../others/constants'
 import UserChip from './UserChip';
 import SongList from './SongList';
 import { useFocusEffect } from '@react-navigation/native';
+import {ScrollView} from "react-native-gesture-handler";
 
 
 /*user must be {name: '', surname: '', email:''}*/
@@ -47,7 +48,7 @@ const Top3List = props => {
         )
     }
     return (
-        <View style={{flex:1, flexGrow: 1}}>
+        <ScrollView style={{backgroundColor: '#f5fcff'}}>
             {
                 list.length !== 0 && (
                     <View style={{flex:1, flexGrow: 1}}>
@@ -72,7 +73,7 @@ const Top3List = props => {
                     </View>
                 )
             }
-        </View>
+        </ScrollView>
     )
 }
 
@@ -88,8 +89,7 @@ const styles = StyleSheet.create(
     button:{
         alignSelf: 'center',
         fontSize: 15,
-        flex: 3
-
+        flex: 1
     },
   }
 )
