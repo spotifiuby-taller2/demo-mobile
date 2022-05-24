@@ -48,6 +48,7 @@ export default FollowArtistButton = (props) =>{
           .then(res =>{
               if (res.error === undefined)
                 setFollowed(true)
+                props.follow();
               }
             )
       }
@@ -61,7 +62,8 @@ export default FollowArtistButton = (props) =>{
         postToGateway(requestBody, 'DELETE')
           .then(res => {
             if (res.error === undefined)
-              setFollowed(false)
+              setFollowed(false);
+              props.unFollow();
             }
           )
         

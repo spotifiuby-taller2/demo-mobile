@@ -18,6 +18,7 @@ const ProfileScreen = ({navigation}) => {
   const {userState} = useAuthUser();
   const [renderButton, setRenderButton] = useState(false);
   const [nameChanged, setNameChanged] = useState(false);
+  const [nFollowers, setNFollowers] = useState(null);
 
   const initialState = {
     id: '',
@@ -98,6 +99,7 @@ const ProfileScreen = ({navigation}) => {
             };
             if (isMounted) {
               setProfile(newState);
+              setNFollowers(res.nFollowers);
               setRenderButton(true);
               setInitialized(true);
             }
@@ -122,6 +124,15 @@ const ProfileScreen = ({navigation}) => {
       unsubscribeBlur();
     }
   }, [navigation]);
+
+
+  const followArtist = () =>{
+    setNFollowers(nFollowers + 1);
+  }
+
+  const unFollowArtist = () =>{
+    setNFollowers(nFollowers - 1);
+  }
 
   if (!initialized) {
     return <LoaderScreen/>;
@@ -236,7 +247,7 @@ const ProfileScreen = ({navigation}) => {
                   fontSize: 20,
                   alignSelf: 'center',
                   color: 'steelblue'
-                }}>{profile.nFollowers} Seguidores</Text>
+                }}>{nFollowers} Seguidores</Text>
               ))
             }
 
@@ -272,12 +283,14 @@ const ProfileScreen = ({navigation}) => {
                 </>)
             }
             {
-              renderButton && (
+              renderButton && profile.id !== userState.uid && (
                 <FollowArtistButton
                   openAsListener={(userState.userType === constants.LISTENER)
                     && (profile.isArtist)}
                   idListener={userState.uid}
-                  idArtist={profile.id}/>
+                  idArtist={profile.id}
+                  follow={followArtist}
+                  unFollow={unFollowArtist}/>
               )
             }
 

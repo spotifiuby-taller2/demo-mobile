@@ -4,7 +4,7 @@ import {postToGateway, songToTrack} from "../others/utils";
 import constants from "../others/constants";
 import * as Notifications from 'expo-notifications';
 import Top3List from '../Components/Top3List';
-import {View} from 'react-native';
+import {View, Text} from 'react-native';
 import {ScrollView} from "react-native-gesture-handler";
 
 const HomeScreen = ({navigation}) => {
@@ -44,8 +44,10 @@ const HomeScreen = ({navigation}) => {
 
     return (
         <ScrollView style={{backgroundColor: '#f5fcff'}}>
-
-
+            <Text style={{alignSelf: 'center', fontSize: 20, color: '#388AD6', margin: 20}}>
+                Bienvenido {userState.name} {userState.surname}
+            </Text>
+            
             <Top3List
                 title='Canciones favoritas'
                 endpoint={constants.MEDIA_HOST + constants.FAVORITE_SONGS

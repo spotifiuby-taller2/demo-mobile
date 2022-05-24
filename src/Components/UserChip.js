@@ -1,4 +1,4 @@
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, TouchableOpacity} from 'react-native';
 import React from 'react'
 import {Avatar, Chip, Text} from 'react-native-paper';
 import ProfilePicture from './ProfilePicture'
@@ -7,16 +7,11 @@ import ProfilePicture from './ProfilePicture'
 
 const UserChip = props => {
   return (
-    <Chip style={styles.chip} onPress={() => {
+    <TouchableOpacity style={styles.chip} onPress={() => {
       props.navigation.navigate('ProfileScreen', {uid: props.user.id, usingList: true})
     }}>
       <View style={{
         flexDirection: 'row',
-        flexWrap: "wrap",
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        height: 110
       }}>
           <ProfilePicture
                     uid={props.user.id}
@@ -25,11 +20,11 @@ const UserChip = props => {
                     pictureSize={56}
                     photoUrl={props.user.photoUrl}
                     disabled={true}
-                    defaultImage={{marginTop: 100}}
-                    profilePicture={{marginTop: 7}}
+                    defaultImage={{margin: 13}}
+                    profilePicture={{margin: 13}}
                   />
 
-          <View style={{flexDirection: 'column'}}>
+          <View style={{flexDirection: 'column', marginTop: 15}}>
             <Text style={styles.name}>{props.user.name} {props.user.surname}</Text>
             {
               props.user.isVerified && props.user.isArtist &&
@@ -40,16 +35,17 @@ const UserChip = props => {
             }
           </View>
         </View>
-    </Chip>
+    </TouchableOpacity>
   )
 }
 
 const styles = StyleSheet.create(
   {
     chip: {
-      backgroundColor: 'skyblue',
+      backgroundColor: 'lightblue',
       marginTop: 5,
-      height: 110,
+      height: 80,
+      borderRadius: 10,
     },
     name: {
       fontSize: 19,
