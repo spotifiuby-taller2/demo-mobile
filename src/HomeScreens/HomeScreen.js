@@ -3,24 +3,13 @@ import {useAuthUser} from '../context/AuthContext';
 import {postToGateway, songToTrack} from "../others/utils";
 import constants from "../others/constants";
 import * as Notifications from 'expo-notifications';
-import SongList from "../Components/SongList";
-import {getFavouriteSongs} from "../Services/MediaService";
-import usePlayerAction from "../Hooks/usePlayerAction";
-import {useFocusEffect} from "@react-navigation/native";
+import Top3List from '../Components/Top3List';
+import {View} from 'react-native';
 
 const HomeScreen = ({navigation}) => {
-  const [songs, setSongs] = useState([]);
-  const player = usePlayerAction();
+
 
   const {userState} = useAuthUser();
-
-  useFocusEffect(useCallback(() => {
-    getFavouriteSongs(userState.uid)
-      .then(r => {
-        setSongs(r.songs);
-        player.initialize(r.songs.map(songToTrack));
-      });
-  }, [navigation]))
 
   useEffect(() => {
     const subcriptionNotificationReceived = Notifications.addNotificationReceivedListener(
@@ -52,7 +41,17 @@ const HomeScreen = ({navigation}) => {
     };
   }, [navigation]);
 
-  return <SongList songList={songs} navigation={navigation}/>
+  return (
+    <View style={{backgroundColor: '#f5fcff', flex: 2, flexGrow: 1}}>
+            <Top3List
+              title='Canciones favoritas'
+              endpoint={constants.MEDIA_HOST + constants.FAVORITE_SONGS + "?" + constants.USER_ID_QUERY_PARAM + userState.uid + "&"}
+              navigation={navigation}
+              open='FavoriteSongListScreen'
+              songList={true}
+              />
+    </View>
+  )
 }
 
 export {
