@@ -4,6 +4,7 @@ import FullScreenPlayer from "./FullScreenPlayer";
 import HomeNavStack from "./HomeNavStack";
 import TrackPlayer, {Capability, RepeatMode} from "react-native-track-player";
 import LoaderScreen from "./LoaderScreen";
+import {FavouriteSongsProvider} from "../context/FavouriteSongsProvider";
 
 const Stack = createNativeStackNavigator();
 
@@ -44,10 +45,12 @@ const PlayerComponent = () => {
     return <LoaderScreen/>;
   }
   return (
-    <Stack.Navigator mode='modal' screenOptions={{headerShown: false}}>
-      <Stack.Screen name='Main' component={HomeNavStack}/>
-      <Stack.Screen name='Player' component={FullScreenPlayer}/>
-    </Stack.Navigator>
+    <FavouriteSongsProvider>
+      <Stack.Navigator mode='modal' screenOptions={{headerShown: false}}>
+        <Stack.Screen name='Main' component={HomeNavStack}/>
+        <Stack.Screen name='Player' component={FullScreenPlayer}/>
+      </Stack.Navigator>
+    </FavouriteSongsProvider>
   )
 }
 
