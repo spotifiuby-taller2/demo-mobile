@@ -2,20 +2,19 @@ import React from "react";
 import {createContext, useContext, useEffect, useState} from "react";
 import {addFavouriteSong, getFavouriteSongs, removeFavouriteSong} from "../Services/MediaService";
 import {useAuthUser} from "./AuthContext";
+import LoaderScreen from "../Components/LoaderScreen";
 
-export const FavouriteSongsContext = createContext(undefined);
+const FavouriteSongsContext = createContext(undefined);
 
 export const FavouriteSongsProvider = ({children}) => {
   const {userState} = useAuthUser();
-  const [favouriteSongs, setFavouriteSongs] = useState([]);
+  const [favouriteSongs, setFavouriteSongs] = useState(undefined);
   const [isReady, setIsReady] = useState(false);
 
   const refreshFavourites = () => {
     getFavouriteSongs(userState.uid)
-      .then(r => setFavouriteSongs(r.songs))
-      .then(r => {console.log(r);return r})
+      .then(r => setFavouriteSongs(r))
       .then(() => setIsReady(true))
-      .then(() => console.log('here'))
       .catch(e => console.log(JSON.stringify(e)));
   }
 
@@ -29,6 +28,10 @@ export const FavouriteSongsProvider = ({children}) => {
   const isFavourite = (songId) => favouriteSongs.map(s => s.id).includes(songId);
 
   useEffect(refreshFavourites, []);
+
+  if (favouriteSongs === undefined) {
+    return <LoaderScreen/>;
+  }
 
   return (
     <FavouriteSongsContext.Provider value={{favouriteSongs, isReady, isFavourite, refreshFavourites, toggleFavourite}}>
