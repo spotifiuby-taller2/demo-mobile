@@ -37,6 +37,7 @@ const PlayerComponent = () => {
     setUpTrackPlayer()
       .then(() => setInitialized(true));
     return () => {
+      console.log('Destroying track player');
       TrackPlayer.destroy();
     }
   }, []);
