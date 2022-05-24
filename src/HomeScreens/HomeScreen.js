@@ -1,26 +1,19 @@
-import React, {useCallback, useEffect, useState} from 'react'
-import {useAuthUser} from '../context/AuthContext';
+import React, {useCallback, useEffect} from 'react'
 import {postToGateway, songToTrack} from "../others/utils";
 import constants from "../others/constants";
 import * as Notifications from 'expo-notifications';
 import SongList from "../Components/SongList";
-import {getFavouriteSongs} from "../Services/MediaService";
 import usePlayerAction from "../Hooks/usePlayerAction";
 import {useFocusEffect} from "@react-navigation/native";
+import {useFavouriteSongs} from "../context/FavouriteSongsProvider";
 
 const HomeScreen = ({navigation}) => {
-  const [songs, setSongs] = useState([]);
+  const {favouriteSongs} = useFavouriteSongs();
   const player = usePlayerAction();
 
-  const {userState} = useAuthUser();
-
   useFocusEffect(useCallback(() => {
-    getFavouriteSongs(userState.uid)
-      .then(r => {
-        setSongs(r.songs);
-        player.initialize(r.songs.map(songToTrack));
-      });
-  }, [navigation]))
+    player.initialize(favouriteSongs.map(songToTrack));
+  }, []))
 
   useEffect(() => {
     const subcriptionNotificationReceived = Notifications.addNotificationReceivedListener(
@@ -52,7 +45,7 @@ const HomeScreen = ({navigation}) => {
     };
   }, [navigation]);
 
-  return <SongList songList={songs} navigation={navigation}/>
+  return <SongList songList={favouriteSongs} navigation={navigation}/>
 }
 
 export {
