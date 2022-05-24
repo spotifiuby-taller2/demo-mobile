@@ -1,23 +1,26 @@
 import {IconButton} from "react-native-paper";
 import React, {useEffect, useState} from "react";
-import {addFavouriteSong, getFavouriteSongs, removeFavouriteSong} from "../Services/MediaService";
+import {addFavoriteAlbum,
+        getFavoriteAlbums,
+        removeFavoriteAlbum} from "../Services/MediaService";
 import {useAuthUser} from "../context/AuthContext";
 
-const FavouriteIconButton = ({songId, size, style}) => {
+const FavouriteAlbumIconButton = ({albumId, size, style}) => {
   const [isFavourite, setIsFavourite] = useState(undefined);
   const {userState} = useAuthUser();
 
   const handle = (newIsFav) => {
-    const call = newIsFav ? addFavouriteSong : removeFavouriteSong;
-    call(songId, userState.uid).then(_ => setIsFavourite(newIsFav));
+    const call = newIsFav ? addFavoriteAlbum : removeFavoriteAlbum;
+    call(albumId, userState.uid).then(_ => setIsFavourite(newIsFav));
   }
 
   useEffect(() => {
-    if (!songId) {
+    if (!albumId) {
       return;
     }
-    getFavouriteSongs(userState.uid)
-      .then(r => setIsFavourite(r.map(s => s.id).includes(songId)))
+
+    getFavoriteAlbums(userState.uid)
+      .then(r => setIsFavourite(r.map(s => s.id).includes(albumId)))
       .catch(e => console.log(JSON.stringify(e)));
   });
 
@@ -30,4 +33,4 @@ const FavouriteIconButton = ({songId, size, style}) => {
   );
 }
 
-export default FavouriteIconButton;
+export default FavouriteAlbumIconButton;

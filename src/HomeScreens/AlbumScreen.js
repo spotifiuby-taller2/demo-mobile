@@ -5,6 +5,7 @@ import {Image, View, StyleSheet} from "react-native";
 import {Text} from "react-native-paper";
 import LoaderScreen from "../Components/LoaderScreen";
 import defaultArtwork from "../../assets/album-placeholder.png";
+import FavouriteAlbumIconButton from "../Components/FavouriteAlbumIconButton";
 
 const AlbumScreen = ({navigation, route}) => {
   const albumId = route.params.albumId;
@@ -24,6 +25,13 @@ const AlbumScreen = ({navigation, route}) => {
       <Text style={styles.title}>{album.title}</Text>
       <SongList navigation={navigation}
                 songList={album.songs ?? []}/>
+
+      <Text>{"\n\n"}
+      </Text>
+
+      <FavouriteAlbumIconButton style={{alignSelf: 'center'}}
+                                size={90}
+                                albumId={route.params.albumId}/>
     </View>
   )
 }

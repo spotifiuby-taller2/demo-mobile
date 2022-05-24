@@ -57,6 +57,23 @@ const removeFavouriteSong = (songId, userId) => {
     .then(getBodyOrThrow);
 }
 
+const getFavoriteAlbums = (userId) => {
+  return requestToGateway('GET', `${constants.MEDIA_HOST}${constants.FAVORITE_ALBUMS}?userId=${userId}`)
+      .then(getBodyOrThrow);
+}
+
+const addFavoriteAlbum = (albumId, userId) => {
+  return requestToGateway('POST', `${constants.MEDIA_HOST}${constants.FAV_ALBUM}`,
+      {albumId, userId})
+      .then(getBodyOrThrow);
+}
+
+const removeFavoriteAlbum = (albumId, userId) => {
+  return requestToGateway('POST', `${constants.MEDIA_HOST}${constants.UNFAV_ALBUM}`,
+      {albumId, userId})
+      .then(getBodyOrThrow);
+}
+
 export {
   createSong,
   createAlbum,
@@ -67,4 +84,7 @@ export {
   getFavouriteSongs,
   addFavouriteSong,
   removeFavouriteSong,
+  getFavoriteAlbums,
+  addFavoriteAlbum,
+  removeFavoriteAlbum
 };

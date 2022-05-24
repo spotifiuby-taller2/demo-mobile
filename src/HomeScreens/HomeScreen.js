@@ -44,6 +44,8 @@ const HomeScreen = ({navigation}) => {
 
     return (
         <ScrollView style={{backgroundColor: '#f5fcff'}}>
+
+
             <Top3List
                 title='Canciones favoritas'
                 endpoint={constants.MEDIA_HOST + constants.FAVORITE_SONGS
@@ -54,6 +56,18 @@ const HomeScreen = ({navigation}) => {
                 navigation={navigation}
                 open='FavoriteSongListScreen'
                 songList={true}
+            />
+
+            <Top3List
+                title='Albumes favoritos'
+                endpoint={constants.MEDIA_HOST + constants.FAVORITE_ALBUMS
+                + "?"
+                + constants.USER_ID_QUERY_PARAM
+                + userState.uid
+                + "&"}
+                navigation={navigation}
+                open='FavoriteAlbumListScreen'
+                albumList={true}
             />
         </ScrollView>
     );

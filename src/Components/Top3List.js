@@ -10,7 +10,7 @@ import {songToTrack} from "../others/utils";
 import usePlayerAction from "../Hooks/usePlayerAction";
 import PlayableListItem from "../Components/PlayableListItem";
 
-
+import defaultArtwork from "../../assets/album-placeholder.png";
 import {ScrollView} from "react-native-gesture-handler";
 
 

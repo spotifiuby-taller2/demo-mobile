@@ -46,6 +46,10 @@ const APP_FAV_ARTIST_LIST_URL = USERS_URL + "/favartistlist";
 const FAV_SONG = "/favsong";
 const UNFAV_SONG = "/unfavsong";
 const CHECK_FAV_SONG = "/checkfav";
+const FAV_ALBUM = "/favalbum";
+const UNFAV_ALBUM = "/unfavalbum";
+const CHECK_FAV_ALBUM = "/checkfavalbum";
+const FAVORITE_ALBUMS = "/favoritealbums";
 
 const REDIRECT_URL = "/redirect";
 const APP_FAV_ARTIST_URL = USERS_URL + "/favartist";
@@ -127,5 +131,6 @@ module.exports = {
   SS_TOKEN_LABEL,
   SS_TIMESTAMP_LABEL,
   TOP_3_FAV_ARTIST_URL,
-  LIMIT_3_PARAM
-}
+  LIMIT_3_PARAM,
+  FAV_ALBUM, UNFAV_ALBUM, CHECK_FAV_ALBUM, FAVORITE_ALBUMS
+};
