@@ -34,7 +34,6 @@ export const FavouriteSongsProvider = ({children}) => {
 
   useEffect(() => {
     if (favouriteSongs) {
-      console.log(`Initializing: ${JSON.stringify(favouriteSongs)}`);
       initialize(favouriteSongs.map(songToTrack));
     }
   }, [favouriteSongs])

@@ -1,20 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {songToTrack} from "../others/utils";
-import {ScrollView, View} from "react-native";
+import {FlatList, SafeAreaView, View} from "react-native";
 import {containerStyle} from "../styles/genericStyles";
 import PlayableListItem from "../Components/PlayableListItem";
 import defaultArtwork from "../../assets/album-placeholder.png";
 import usePlayerAction from "../Hooks/usePlayerAction";
 import {getArtists} from "../Services/UsersService";
 import {getAllAlbums} from "../Services/MediaService";
-
-const toPlayable = album => {
-  return {
-    title: album.title,
-    artwork: album.link ? {uri: album.link} : defaultArtwork,
-    artist: album.artistNames ?? 'Unknown artists',
-  };
-};
+import {Searchbar} from "react-native-paper";
 
 const enrichWithArtistNames = (albums, artists) => albums.map(album => enrichWithArtistName(album, artists));
 
@@ -30,7 +23,7 @@ const getUserName = user => `${user.name} ${user.surname}`
 
 const AlbumListScreen = ({navigation}) => {
   const [albumList, setAlbumList] = useState([]);
-
+  const [text, setText] = useState('')
   const player = usePlayerAction();
 
   useEffect(() => {
@@ -44,34 +37,54 @@ const AlbumListScreen = ({navigation}) => {
     });
   }, []);
 
-  useEffect(()=>{
-    navigation.setOptions({ headerShown: true, headerTitle: 'Álbumes' });
+  useEffect(() => {
+    navigation.setOptions({headerShown: true, headerTitle: 'Álbumes'});
   }, []);
 
-  return (
-    <View style={containerStyle}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View>
-          {
-            albumList.map((album, id) => {
-              return (
-                <PlayableListItem id={id}
-                                  key={id}
-                                  playableItem={toPlayable(album)}
-                                  play={() => player.playList(album.songs.map(songToTrack), 0)}
-                                  moreInfoCallback={() => {
-                                    navigation.navigate('AlbumScreen', {
-                                      albumId: album.id
-                                    });
-                                  }}/>
+  const toPlayable = album => {
+    return {
+      title: album.title,
+      artwork: album.link ? {uri: album.link} : defaultArtwork,
+      artist: album.artistNames ?? 'Unknown artists',
+    };
+  };
 
-              )
-            })
+  const filterAlbum = filterText => {
+    filterText = filterText.toLowerCase();
+    return s => s.title.toLowerCase().includes(filterText) || s.artistNames.toLowerCase().includes(filterText);
+  }
+
+  return (
+    <View style={{...containerStyle, marginTop: 10}}>
+      <SafeAreaView>
+        <Searchbar onChangeText={setText}
+                   placeholder={"Buscar albumes"}
+                   inputStyle={{}}
+                   containerStyle={{}}
+                   inputContainerStyle={{}}
+        />
+        <View>
+          <View style={{marginBottom: 10}}/>
+          {
+            <FlatList
+              data={albumList.filter(filterAlbum(text))}
+              renderItem={({item, index}) => <PlayableListItem id={index}
+                                                               key={index}
+                                                               playableItem={toPlayable(item)}
+                                                               play={() => player.playList(item.songs.map(songToTrack), 0)}
+                                                               moreInfoCallback={() => {
+                                                                 navigation.navigate('AlbumScreen', {
+                                                                   albumId: item.id
+                                                                 });
+                                                               }}
+              />
+              }
+            />
           }
         </View>
-      </ScrollView>
+      </SafeAreaView>
     </View>
-  )
+  );
 }
 
 export default AlbumListScreen;
