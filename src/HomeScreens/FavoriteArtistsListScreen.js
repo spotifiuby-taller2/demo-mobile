@@ -6,12 +6,14 @@ import UserChip from '../Components/UserChip';
 import {containerStyle} from "../styles/genericStyles";
 import {useAuthUser} from '../context/AuthContext';
 import {Searchbar} from "react-native-paper";
+import LoaderScreen from '../Components/LoaderScreen';
 
 const FavoriteArtistListScreen = ({navigation}) => {
 
   const [usersList, setList] = useState([]);
   const [text, setText] = useState('')
   const {userState} = useAuthUser();
+  const [loading, setLoading] = useState(true);
 
   useEffect(()=>{
     navigation.setOptions({ headerShown: true, headerTitle: 'Tus Artistas Favoritos' });
@@ -27,6 +29,7 @@ const FavoriteArtistListScreen = ({navigation}) => {
           alert(res.error);
         } else {
           setList(res.list);
+          setLoading(false);
         }
       });
     }
@@ -43,6 +46,9 @@ const FavoriteArtistListScreen = ({navigation}) => {
     return a => a.name.toLowerCase().includes(text) || a.surname.toLowerCase().includes(text);
   }
 
+  if (loading) {
+    return <LoaderScreen/>;
+  }
   return (
     <View style={styles.container}>
       <SafeAreaView>

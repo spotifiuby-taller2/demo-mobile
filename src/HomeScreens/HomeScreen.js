@@ -7,6 +7,14 @@ import Top3List from '../Components/Top3List';
 import {Text} from 'react-native';
 import {ScrollView} from "react-native-gesture-handler";
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
+
 const HomeScreen = ({navigation}) => {
 
 

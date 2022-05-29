@@ -5,10 +5,13 @@ import usePlayerAction from "../Hooks/usePlayerAction";
 import {useAuthUser} from "../context/AuthContext";
 import {useFocusEffect} from "@react-navigation/native";
 import {songToTrack} from "../others/utils";
+import LoaderScreen from '../Components/LoaderScreen';
 
 const FavoriteSongListScreen = ({navigation}) => {
   const {userState} = useAuthUser();
   const [songs, setSongs] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const player = usePlayerAction();
 
 
@@ -20,10 +23,14 @@ const FavoriteSongListScreen = ({navigation}) => {
     getFavouriteSongs(userState.uid)
       .then(res => {
         setSongs(res);
+        setLoading(false);
         player.initialize(res.map(songToTrack));
       });
   }, [navigation]))
 
+  if (loading) {
+    return <LoaderScreen/>;
+  }
   return <SongList songList={songs} navigation={navigation}/>;
 }
 

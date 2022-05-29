@@ -5,10 +5,12 @@ import {getToGateway} from "../others/utils";
 import UserChip from '../Components/UserChip';
 import {containerStyle} from "../styles/genericStyles";
 import {Searchbar} from "react-native-paper";
+import LoaderScreen from '../Components/LoaderScreen';
 
 const ArtistListScreen = ({navigation}) => {
   const [usersList, setList] = useState([]);
-  const [text, setText] = useState('')
+  const [text, setText] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
 
@@ -20,6 +22,7 @@ const ArtistListScreen = ({navigation}) => {
           alert(res.error);
         } else {
           setList(res.list);
+          setLoading(false);
         }
       });
     }
@@ -37,6 +40,9 @@ const ArtistListScreen = ({navigation}) => {
     return a => a.name.toLowerCase().includes(text) || a.surname.toLowerCase().includes(text);
   }
 
+  if (loading) {
+    return <LoaderScreen/>;
+  }
   return (
     <View style={styles.container}>
       <SafeAreaView>

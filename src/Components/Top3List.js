@@ -9,7 +9,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import {songToTrack} from "../others/utils";
 import usePlayerAction from "../Hooks/usePlayerAction";
 import PlayableListItem from "../Components/PlayableListItem";
-
+import LoaderScreen from './LoaderScreen';
 import defaultArtwork from "../../assets/album-placeholder.png";
 import {ScrollView} from "react-native-gesture-handler";
 
@@ -19,7 +19,8 @@ import {ScrollView} from "react-native-gesture-handler";
 const Top3List = props => {
 
     const [list, setList] = useState([]);
-    const [render, setRender] = useState(false);
+    const [loading, setLoading] = useState(true);
+    
     const player = usePlayerAction();
 
     const toPlayable = album => {
@@ -41,26 +42,23 @@ const Top3List = props => {
                     if (res.error !== undefined) {
                         alert(res.error);
                     } else {
-                        setRender(true);
                         if ( props.userList )
                             setList(res.list)
 
                         else{
                             setList(res)
                         }
+                        setLoading(false);
                     }
                 })
 
 
     }, []));
 
-    if ( ! render ){
-        return(
-            <View>
 
-            </View>
-        )
-    }
+    if (loading) {
+        return <LoaderScreen/>;
+      }
     return (
         <ScrollView style={{backgroundColor: '#f5fcff'}}>
             {

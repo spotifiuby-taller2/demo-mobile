@@ -8,6 +8,7 @@ import usePlayerAction from "../Hooks/usePlayerAction";
 import {getArtists} from "../Services/UsersService";
 import {getFavoriteAlbums} from "../Services/MediaService";
 import {useAuthUser} from "../context/AuthContext";
+import LoaderScreen from '../Components/LoaderScreen';
 
 const toPlayable = album => {
   return {
@@ -31,6 +32,7 @@ const getUserName = user => `${user.name} ${user.surname}`
 
 const FavoriteAlbumListScreen = ({navigation}) => {
   const [albumList, setAlbumList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const player = usePlayerAction();
 
@@ -44,6 +46,7 @@ const FavoriteAlbumListScreen = ({navigation}) => {
     }
     getAlbumsWithArtists().then(albums => {
       setAlbumList(albums);
+      setLoading(false);
     });
   }, [userState]);
 
@@ -51,6 +54,9 @@ const FavoriteAlbumListScreen = ({navigation}) => {
     navigation.setOptions({ headerShown: true, headerTitle: 'Álbumes Favoritos' });
   }, []);
 
+  if (loading) {
+    return <LoaderScreen/>;
+  }
   return (
       <View style={containerStyle}>
         <ScrollView showsVerticalScrollIndicator={false}>

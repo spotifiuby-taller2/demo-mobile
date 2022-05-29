@@ -7,6 +7,7 @@ import defaultArtwork from "../../assets/album-placeholder.png";
 import usePlayerAction from "../Hooks/usePlayerAction";
 import {getArtists} from "../Services/UsersService";
 import {getAllAlbums} from "../Services/MediaService";
+import LoaderScreen from '../Components/LoaderScreen';
 
 const toPlayable = album => {
   return {
@@ -30,6 +31,7 @@ const getUserName = user => `${user.name} ${user.surname}`
 
 const AlbumListScreen = ({navigation}) => {
   const [albumList, setAlbumList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const player = usePlayerAction();
 
@@ -41,6 +43,7 @@ const AlbumListScreen = ({navigation}) => {
     }
     getAlbumsWithArtists().then(albums => {
       setAlbumList(albums);
+      setLoading(false);
     });
   }, []);
 
@@ -48,6 +51,9 @@ const AlbumListScreen = ({navigation}) => {
     navigation.setOptions({ headerShown: true, headerTitle: 'Álbumes' });
   }, []);
 
+  if (loading) {
+    return <LoaderScreen/>;
+  }
   return (
     <View style={containerStyle}>
       <ScrollView showsVerticalScrollIndicator={false}>
