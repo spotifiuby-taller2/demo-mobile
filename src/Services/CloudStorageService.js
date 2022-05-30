@@ -4,8 +4,8 @@ import {getDownloadURL, getStorage, ref, uploadBytes} from 'firebase/storage';
 const storage = getStorage(app);
 
 //video and music
-const uploadFile = (file, url) => {
-  const fileRef = ref(storage, url);
+const uploadFile = (file, name) => {
+  const fileRef = ref(storage, name);
   return uploadBytes(fileRef, file)
     .then(() => getDownloadURL(fileRef));
 }

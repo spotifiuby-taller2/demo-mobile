@@ -152,7 +152,7 @@ const UploadAlbumScreen = () => {
                     setFileCallback={handleDocumentPick}/>
 
         <Button mode='contained'
-                style={buttonStyle}
+                style={styles.button}
                 onPress={handleUpload}
                 loading={isLoading}
                 disabled={isLoading}>
@@ -167,6 +167,10 @@ const styles = StyleSheet.create({
   container: {
     ...containerStyle,
     paddingTop: 30
-  }
+  },
+  button: {
+    ...buttonStyle,
+    width: 200,
+  },
 })
 export default UploadAlbumScreen;

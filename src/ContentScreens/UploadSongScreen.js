@@ -13,7 +13,7 @@ import SubscriptionDropDown from "../Components/SubscriptionDropDown";
 
 const UploadSongScreen = () => {
   const [title, setTitle] = useState({value: '', error: null});
-  const [description, setDescription] = useState();
+  const [description, setDescription] = useState('');
   const [artists, setArtists] = useState([]);
   const [genre, setGenre] = useState({value: '', error: null});
   const [subscription, setSubscription] = useState({value: '', error: null});
@@ -23,7 +23,7 @@ const UploadSongScreen = () => {
 
   const resetState = () => {
     setTitle({value: '', error: null});
-    setDescription(undefined);
+    setDescription('');
     setArtists([]);
     setGenre({value: '', error: null});
     setSubscription({value: '', error: null});
@@ -71,7 +71,7 @@ const UploadSongScreen = () => {
         return uploadFile(res, name);
       });
       const artworkUrlPromise = artworkFile?.contentPromise.then(res => {
-        return uploadFile(res, name);
+        return uploadFile(res, `artwork-${title.value}`);
       })
       const song = await createSong({
         title: title.value,

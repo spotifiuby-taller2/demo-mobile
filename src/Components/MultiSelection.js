@@ -17,7 +17,7 @@ const MultiSelection = props => {
           console.log(`Error fetching elements: ${JSON.stringify(e)}`);
           alert(`Error fetching elements: ${JSON.stringify(e)}`);
         });
-    }
+    };
     fetchAllElements();
   }, []);
 
