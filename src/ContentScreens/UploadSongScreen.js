@@ -8,12 +8,15 @@ import {uploadFile} from '../Services/CloudStorageService';
 import {createSong} from '../Services/MediaService';
 import {getArtists} from '../Services/UsersService';
 import MultiSelection from "../Components/MultiSelection";
+import GenreDropDown from "../Components/GenreDropDown";
+import SubscriptionDropDown from "../Components/SubscriptionDropDown";
 
 const UploadSongScreen = () => {
   const [title, setTitle] = useState({value: '', error: null});
   const [description, setDescription] = useState();
   const [artists, setArtists] = useState([]);
-  // TODO: genre and subscription optional fields
+  const [genre, setGenre] = useState({value: '', error: null});
+  const [subscription, setSubscription] = useState({value: '', error: null});
   const [file, setFile] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -21,6 +24,8 @@ const UploadSongScreen = () => {
     setTitle({value: '', error: null});
     setDescription(undefined);
     setArtists([]);
+    setGenre({value: '', error: null});
+    setSubscription({value: '', error: null});
     setFile(undefined);
     setIsLoading(false);
   }
@@ -95,6 +100,18 @@ const UploadSongScreen = () => {
           value={description}
           onChangeText={newText => setDescription(newText)}
           mode='outlined'/>
+        <GenreDropDown
+          name='Género'
+          value={genre.value}
+          setValue={newGenre => setGenre({value: newGenre, error: null})}
+        />
+        {genre.error && (<Text style={{color: 'red'}}>{genre.error}</Text>)}
+        <SubscriptionDropDown
+          name='Suscripción'
+          value={subscription.value}
+          setValue={newSubscription => setSubscription({value: newSubscription, error: null})}
+        />
+        {subscription.error && (<Text style={{color: 'red'}}>{subscription.error}</Text>)}
         <View style={{marginBottom: 5}}/>
         <MultiSelection selectedElements={artists}
                         placeholder={"Buscar artistas"}
