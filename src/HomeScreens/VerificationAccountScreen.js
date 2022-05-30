@@ -54,7 +54,7 @@ const VerificationAccountScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <FilePicker title={'Elegir video de verificacion'} mimeType={'video/*'} icon={'file-video'}
+        <FilePicker title={`${file ? 'Cambiar' : 'Elegir'} video de verificación`} mimeType={'video/*'} icon={'file-video'}
                     setFileCallback={handleDocumentPick}/>
         <Button mode='contained'
                 style={styles.button}

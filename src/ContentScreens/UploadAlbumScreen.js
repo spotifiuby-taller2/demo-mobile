@@ -144,7 +144,7 @@ const UploadAlbumScreen = () => {
         <View style={{marginBottom: 5}}/>
 
 
-        <FilePicker title={'Elegir foto de portada'} mimeType={'image/*'} icon={'camera'}
+        <FilePicker title={`${file ? 'Cambiar' : 'Elegir'} foto de portada`} mimeType={'image/*'} icon={'camera'}
                     setFileCallback={handleDocumentPick}/>
 
         <Button mode='contained'

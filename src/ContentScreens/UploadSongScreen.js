@@ -72,6 +72,8 @@ const UploadSongScreen = () => {
         artists: artists.map(a => a.id),
         description,
         author: artists.map(a => `${a.name} ${a.surname}`).join(', '),
+        genre,
+        subscription,
       });
       console.log(`Song created: ${JSON.stringify(song)}`);
       alert('Canción subida!');
@@ -125,7 +127,7 @@ const UploadSongScreen = () => {
                         }}
         />
         <View style={{marginBottom: 5}}/>
-        <FilePicker title={'Elegir canción'} mimeType={'audio/*'} icon={'file-music'}
+        <FilePicker title={`${file ? 'Cambiar' : 'Elegir'} canción`} mimeType={'audio/*'} icon={'file-music'}
                     setFileCallback={handleDocumentPick}/>
         <Button mode='contained'
                 style={styles.button}
