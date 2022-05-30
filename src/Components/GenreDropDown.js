@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import DropDown from 'react-native-paper-dropdown';
-const genreData = require('../data/genre.json');
+import genre from "../data/Genre"
 
 const GenreDropDown = (props) => {
-  const [genre, setGenre] = useState( '');
+  const [genreValue, setGenreValue] = useState( '');
   const [showDropDown, setShowDropDown] = useState(false);
 
   const setValues = (value) => {
-    setGenre(value);
+    setGenreValue(value);
     props.setValue(value);
   }
 
@@ -18,9 +18,9 @@ const GenreDropDown = (props) => {
       visible={showDropDown}
       showDropDown={() => setShowDropDown(true)}
       onDismiss={() => setShowDropDown(false)}
-      value={genre}
+      value={genreValue}
       setValue={newGenre => setValues(newGenre)}
-      list={genreData}
+      list={Object.values(genre)}
     />
   );
 }

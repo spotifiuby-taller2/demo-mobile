@@ -255,7 +255,7 @@ const EditProfileScreen = ({navigation}) =>{
                             style={profile.reggeaton? styles.chipSelected: styles.chipUnselected}
                             onPress={()=>{dispatch({type: 'reggeaton'})} }
                             >
-                                <Text>Reggeaton</Text>
+                                <Text>Reggaeton</Text>
                         </Chip>
                         <Chip 
                             style={profile.jazz? styles.chipSelected: styles.chipUnselected}

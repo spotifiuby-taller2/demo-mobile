@@ -265,7 +265,7 @@ const ProfileScreen = ({navigation}) => {
                     {profile.blues && (
                       <Chip style={styles.chip}><Text style={{textAlign: 'center'}}> Blues</Text></Chip>)}
                     {profile.reggeaton && (
-                      <Chip style={styles.chip}><Text style={{textAlign: 'center'}}>Reggeaton</Text></Chip>)}
+                      <Chip style={styles.chip}><Text style={{textAlign: 'center'}}>Reggaeton</Text></Chip>)}
                     {profile.jazz && (
                       <Chip style={styles.chip}><Text style={{textAlign: 'center'}}> Jazz</Text></Chip>)}
                     {profile.punk && (

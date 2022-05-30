@@ -74,6 +74,16 @@ const removeFavoriteAlbum = (albumId, userId) => {
       .then(getBodyOrThrow);
 }
 
+const getGenreAlbums = (genre) => {
+  return requestToGateway('GET', `${constants.MEDIA_HOST}${constants.ALBUM_URL}?genre=${genre}`)
+    .then(getBodyOrThrow);
+}
+
+const getGenreSongs = (genre) => {
+  return requestToGateway('GET', `${constants.MEDIA_HOST}${constants.SONGS_URL}?genre=${genre}`)
+    .then(getBodyOrThrow);
+}
+
 export {
   createSong,
   createAlbum,
@@ -86,5 +96,7 @@ export {
   removeFavouriteSong,
   getFavoriteAlbums,
   addFavoriteAlbum,
-  removeFavoriteAlbum
+  removeFavoriteAlbum,
+  getGenreSongs,
+  getGenreAlbums
 };
