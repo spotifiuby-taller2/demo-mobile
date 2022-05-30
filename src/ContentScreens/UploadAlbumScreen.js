@@ -76,12 +76,12 @@ const UploadAlbumScreen = () => {
         link: fileUrl
       });
       console.log(`Album created: ${JSON.stringify(album)}`);
+      resetState();
       alert('Album creado!');
     } catch (err) {
       console.log(JSON.stringify(err));
       alert('Ha ocurrido un error inesperado al crear el álbum, por favor intente más tarde');
     }
-    resetState();
   }
 
   return (

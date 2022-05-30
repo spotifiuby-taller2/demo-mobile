@@ -18,6 +18,7 @@ const UploadSongScreen = () => {
   const [genre, setGenre] = useState({value: '', error: null});
   const [subscription, setSubscription] = useState({value: '', error: null});
   const [file, setFile] = useState();
+  const [artworkFile, setArtworkFile] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
   const resetState = () => {
@@ -27,6 +28,7 @@ const UploadSongScreen = () => {
     setGenre({value: '', error: null});
     setSubscription({value: '', error: null});
     setFile(undefined);
+    setArtworkFile(undefined);
     setIsLoading(false);
   }
 
@@ -46,6 +48,8 @@ const UploadSongScreen = () => {
     let ok = true;
     if (!validateFile()) ok = false;
     if (!validateFieldNotBlank('Título', title, setTitle)) ok = false;
+    if (!validateFieldNotBlank('Genero', genre, setGenre)) ok = false;
+    if (!validateFieldNotBlank('Subscripción', subscription, setSubscription)) ok = false;
     return ok;
   }
 
@@ -63,25 +67,29 @@ const UploadSongScreen = () => {
     setIsLoading(true);
     try {
       const name = file.name;
-      const fileUrl = await file.contentPromise.then(res =>{
-        return uploadFile(res, name)
+      const fileUrlPromise = file.contentPromise.then(res =>{
+        return uploadFile(res, name);
       });
+      const artworkUrlPromise = artworkFile?.contentPromise.then(res => {
+        return uploadFile(res, name);
+      })
       const song = await createSong({
         title: title.value,
-        link: fileUrl,
+        link: await fileUrlPromise,
         artists: artists.map(a => a.id),
         description,
         author: artists.map(a => `${a.name} ${a.surname}`).join(', '),
-        genre,
-        subscription,
+        genre: genre.value,
+        subscription: subscription.value,
+        artwork: artworkUrlPromise ? await artworkUrlPromise : null,
       });
       console.log(`Song created: ${JSON.stringify(song)}`);
+      resetState();
       alert('Canción subida!');
     } catch (err) {
       console.log(JSON.stringify(err));
       alert('Ha ocurrido un error inesperado al subir la canción, por favor intente más tarde');
     }
-    resetState();
   }
 
   return (
@@ -131,6 +139,9 @@ const UploadSongScreen = () => {
         <View style={{marginBottom: 5}}/>
         <FilePicker title={`${file ? 'Cambiar' : 'Elegir'} canción`} mimeType={'audio/*'} icon={'file-music'}
                     setFileCallback={handleDocumentPick}/>
+        <View style={{marginBottom: 5}}/>
+        <FilePicker title={`${artworkFile ? 'Cambiar' : 'Elegir'} foto de portada`} mimeType={'image/*'} icon={'camera'}
+                    setFileCallback={setArtworkFile}/>
         <Button mode='contained'
                 style={styles.button}
                 onPress={handleUpload}

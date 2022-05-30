@@ -12,7 +12,6 @@ const MultiSelection = props => {
   useEffect(() => {
     const fetchAllElements = async () => {
       await props.getAllElements()
-        .then(elements => Array.from({ length: 30 }, () => elements).flat())
         .then(elements => setAllElements(elements))
         .catch(e => {
           console.log(`Error fetching elements: ${JSON.stringify(e)}`);
@@ -49,7 +48,8 @@ const MultiSelection = props => {
 
   return (
     <>
-      <Button style={styles.buttonStyle} onPress={showModal} icon={props.icon}>{props.buttonText ?? 'Seleccionar'}</Button>
+      <Button style={styles.buttonStyle} onPress={showModal}
+              icon={props.icon}>{props.buttonText ?? 'Seleccionar'}</Button>
       <Portal>
         <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.modal}>
           <Searchbar onChangeText={setText}
@@ -68,12 +68,16 @@ const MultiSelection = props => {
           <Button onPress={hideModal}>Cerrar</Button>
         </Modal>
       </Portal>
-      <View style={{maxHeight: 125, marginTop: 5, marginBottom: 5}}>
-        <ScrollView showsVerticalScrollIndicator={true}
-                    useReference={props.selectedElements}>
-          {props.selectedElements.map(renderSelectedChip)}
-        </ScrollView>
-      </View>
+      {
+        props.selectedElements.length > 0 && (
+          <View style={{maxHeight: 125, marginTop: 5, marginBottom: 5}}>
+            <ScrollView showsVerticalScrollIndicator={true}
+                        useReference={props.selectedElements}>
+              {props.selectedElements.map(renderSelectedChip)}
+            </ScrollView>
+          </View>
+        )
+      }
     </>
   )
 }
