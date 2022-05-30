@@ -17,6 +17,14 @@ const UploadSongScreen = () => {
   const [file, setFile] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
+  const resetState = () => {
+    setTitle({value: '', error: null});
+    setDescription(undefined);
+    setArtists([]);
+    setFile(undefined);
+    setIsLoading(false);
+  }
+
   const validateFile = () => {
     if (file === null || file === undefined) {
       alert('Debe seleccionar un archivo');
@@ -62,12 +70,11 @@ const UploadSongScreen = () => {
       });
       console.log(`Song created: ${JSON.stringify(song)}`);
       alert('Canción subida!');
-      // TODO: navigate to song list?
     } catch (err) {
       console.log(JSON.stringify(err));
       alert('Ha ocurrido un error inesperado al subir la canción, por favor intente más tarde');
     }
-    setIsLoading(false);
+    resetState();
   }
 
   return (
@@ -108,7 +115,7 @@ const UploadSongScreen = () => {
                 onPress={handleUpload}
                 loading={isLoading}
                 disabled={isLoading}>
-          <Text style={styles.buttonText}>{isLoading ? 'Subiendo...' : 'Subir'}</Text>
+          <Text style={styles.buttonText}>{isLoading ? 'Publicando...' : 'Publicar'}</Text>
         </Button>
       </ScrollView>
     </View>

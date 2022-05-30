@@ -12,7 +12,7 @@ import SubscriptionDropDown from "../Components/SubscriptionDropDown";
 import {useAuthUser} from "../context/AuthContext";
 import MultiSelection from "../Components/MultiSelection";
 
-const UploadAlbumScreen = ({navigation}) => {
+const UploadAlbumScreen = () => {
   const [title, setTitle] = useState({value: '', error: null});
   const [genre, setGenre] = useState({value: '', error: null});
   const [subscription, setSubscription] = useState({value: '', error: null});
@@ -20,10 +20,20 @@ const UploadAlbumScreen = ({navigation}) => {
   const [songs, setSongs] = useState({value: [], error: null});
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState();
-  const {userState, setUserType} = useAuthUser();
+  const {userState} = useAuthUser();
 
   const handleDocumentPick = (doc) => {
     setFile(doc);
+  }
+
+  const resetState = () => {
+    setTitle({value: '', error: null});
+    setGenre({value: '', error: null});
+    setSubscription({value: '', error: null});
+    setArtists({value: [], error: null});
+    setSongs({value: [], error: null});
+    setIsLoading(false);
+    setFile(undefined);
   }
 
   const fieldsAreValid = () => {
@@ -50,12 +60,12 @@ const UploadAlbumScreen = ({navigation}) => {
     if (!fieldsAreValid()) {
       return;
     }
+    setIsLoading(true);
     let fileUrl;
     if (file !== undefined && file != null) {
       const name = `${title.value}.png`;
       fileUrl = await uploadImage(file.uri, name);
     }
-    setIsLoading(true);
     try {
       const album = await createAlbum({
         title: title.value,
@@ -71,7 +81,7 @@ const UploadAlbumScreen = ({navigation}) => {
       console.log(JSON.stringify(err));
       alert('Ha ocurrido un error inesperado al crear el álbum, por favor intente más tarde');
     }
-    setIsLoading(false);
+    resetState();
   }
 
   return (
@@ -142,7 +152,7 @@ const UploadAlbumScreen = ({navigation}) => {
                 onPress={handleUpload}
                 loading={isLoading}
                 disabled={isLoading}>
-          <Text style={buttonTextStyle}>{isLoading ? 'Subiendo...' : 'Subir'}</Text>
+          <Text style={buttonTextStyle}>{isLoading ? 'Publicando...' : 'Publicar'}</Text>
         </Button>
       </ScrollView>
     </View>
