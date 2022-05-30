@@ -114,7 +114,9 @@ const UploadAlbumScreen = () => {
         {subscription.error && (<Text style={{color: 'red'}}>{subscription.error}</Text>)}
         <View style={{marginBottom: 5}}/>
         <MultiSelection selectedElements={artists.value}
-                        placeholder={"Buscar artistas"}
+                        searchPlaceholder={"Buscar artistas"}
+                        buttonText={"Seleccionar artistas"}
+                        icon={'account-music'}
                         renderElement={artist => (<Text>{`${artist.name} ${artist.surname}`}</Text>)}
                         getAllElements={() => getArtists().then(b => b.list)}
                         elementFilter={filterArtist}
@@ -130,7 +132,9 @@ const UploadAlbumScreen = () => {
         {artists.error && (<Text style={{color: 'red'}}>{artists.error}</Text>)}
         <View style={{marginBottom: 5}}/>
         <MultiSelection selectedElements={songs.value}
-                        placeholder={"Buscar canciones"}
+                        searchPlaceholder={"Buscar canciones"}
+                        buttonText={"Seleccionar canciones"}
+                        icon={'music-box-multiple-outline'}
                         renderElement={song => (<Text>{`${song.title}`}</Text>)}
                         getAllElements={() => getSongsByArtist(userState.uid)}
                         elementFilter={filterSong}

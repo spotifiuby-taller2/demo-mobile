@@ -116,7 +116,9 @@ const UploadSongScreen = () => {
         {subscription.error && (<Text style={{color: 'red'}}>{subscription.error}</Text>)}
         <View style={{marginBottom: 5}}/>
         <MultiSelection selectedElements={artists}
-                        placeholder={"Buscar artistas"}
+                        searchPlaceholder={"Buscar artistas"}
+                        buttonText={"Seleccionar artistas"}
+                        icon={'account-music'}
                         renderElement={artist => (<Text>{`${artist.name} ${artist.surname}`}</Text>)}
                         getAllElements={() => getArtists().then(b => b.list)}
                         elementFilter={filterArtist}
