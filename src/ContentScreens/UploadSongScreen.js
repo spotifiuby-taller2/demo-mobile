@@ -93,7 +93,7 @@ const UploadSongScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={containerStyle}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Title style={styles.title}>Nueva Canción</Title>
         <TextInput
@@ -155,10 +155,6 @@ const UploadSongScreen = () => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    ...containerStyle,
-    paddingTop: 30
-  },
   title: titleStyle,
   button: {
     ...buttonStyle,

@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from "react";
 import {ScrollView, StyleSheet, View} from "react-native";
-import {Button, Text, Title} from "react-native-paper";
+import {Button, Text} from "react-native-paper";
 import FilePicker from "../Components/FilePicker";
-import {buttonStyle, buttonTextStyle, containerStyle, titleStyle} from "../styles/genericStyles";
+import {buttonStyle, buttonTextStyle, containerStyle} from "../styles/genericStyles";
 import {uploadFile} from "../Services/CloudStorageService";
 import {useAuthUser} from "../context/AuthContext";
 import {uploadVerificationVideo} from '../Services/UsersService'
@@ -73,7 +73,6 @@ const styles = StyleSheet.create({
     ...containerStyle,
     paddingTop: 30
   },
-  title: titleStyle,
   button: {
     ...buttonStyle,
     width: 200,

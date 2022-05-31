@@ -84,7 +84,7 @@ const UploadAlbumScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={containerStyle}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Title style={titleStyle}>Nuevo Album</Title>
 
@@ -163,10 +163,6 @@ const UploadAlbumScreen = () => {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    ...containerStyle,
-    paddingTop: 30
-  },
   button: {
     ...buttonStyle,
     width: 200,
