@@ -3,7 +3,7 @@ import {Button, Text, TextInput, Title} from "react-native-paper";
 import React, {useState} from "react";
 import {buttonStyle, buttonTextStyle, containerStyle, inputStyle, titleStyle} from '../styles/genericStyles';
 import FilePicker from "../Components/FilePicker";
-import {uploadImage} from "../Services/CloudStorageService";
+import {uploadFile} from "../Services/CloudStorageService";
 import {createAlbum, getSongsByArtist} from "../Services/MediaService";
 import {getArtists} from '../Services/UsersService';
 import {validateFieldNotBlank} from "../others/utils";
@@ -21,10 +21,6 @@ const UploadAlbumScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState();
   const {userState} = useAuthUser();
-
-  const handleDocumentPick = (doc) => {
-    setFile(doc);
-  }
 
   const resetState = () => {
     setTitle({value: '', error: null});
@@ -61,10 +57,13 @@ const UploadAlbumScreen = () => {
       return;
     }
     setIsLoading(true);
-    let fileUrl;
-    if (file !== undefined && file != null) {
-      const name = `${title.value}.png`;
-      fileUrl = await uploadImage(file.uri, name);
+    let fileUrlPromise;
+    console.log(JSON.stringify(file));
+    if (file) {
+      fileUrlPromise = file.contentPromise.then(res => {
+        return uploadFile(res, `artwork-album-${title.value}`);
+      });
+      console.log(fileUrlPromise);
     }
     try {
       const album = await createAlbum({
@@ -73,7 +72,7 @@ const UploadAlbumScreen = () => {
         subscription: subscription.value,
         artists: artists.value.map(a => a.id),
         songs: songs.value.map(s => s.id),
-        link: fileUrl
+        link: await fileUrlPromise,
       });
       console.log(`Album created: ${JSON.stringify(album)}`);
       resetState();
@@ -149,7 +148,7 @@ const UploadAlbumScreen = () => {
 
 
         <FilePicker title={`${file ? 'Cambiar' : 'Elegir'} foto de portada`} mimeType={'image/*'} icon={'camera'}
-                    setFileCallback={handleDocumentPick}/>
+                    setFileCallback={setFile}/>
 
         <Button mode='contained'
                 style={styles.button}

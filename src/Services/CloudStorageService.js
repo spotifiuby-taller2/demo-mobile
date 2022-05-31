@@ -7,7 +7,11 @@ const storage = getStorage(app);
 const uploadFile = (file, name) => {
   const fileRef = ref(storage, name);
   return uploadBytes(fileRef, file)
-    .then(() => getDownloadURL(fileRef));
+    .then(async () => {
+      const url = await getDownloadURL(fileRef);
+      console.log(`Uploaded to firebase: ${url}`);
+      return url;
+    });
 }
 
 //image
