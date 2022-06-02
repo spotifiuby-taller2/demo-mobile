@@ -34,7 +34,6 @@ const styles = StyleSheet.create(
 )
 
 const songToTrack = (song) => {
-  console.log(JSON.stringify(song));
   return {
     id: song.id,
     url: song.link,

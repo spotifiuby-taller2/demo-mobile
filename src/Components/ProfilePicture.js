@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import {Avatar} from 'react-native-paper'
-import * as ImagePicker from 'expo-image-picker'
 import {updateProfilePhoto} from '../Firebase/firebase';
 import {useAuthUser} from '../context/AuthContext';
 import constants from "../others/constants";
 import {postToGateway} from "../others/utils";
-import {uploadImage} from "../Services/CloudStorageService"
+import {uploadFile} from "../Services/CloudStorageService"
+import {pickFile} from "../Services/FilePickerService";
 
 
 const ProfilePicture = (props) => {
@@ -25,26 +25,19 @@ const ProfilePicture = (props) => {
 
   const pickImage = async () => {
 
-    const result = await ImagePicker.launchImageLibraryAsync(
-      {
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1
-      }
-    )
+    const result = await pickFile('image/*');
     if (!result.cancelled) {
-      const name = `${props.uid}.png`
-      const photoURL = await uploadImage(result.uri, name);
+      const name = `${props.uid}.png`;
+      const photoURL = await uploadFile(await result.contentPromise, name);
       updateProfilePhoto(photoURL);
       const requestBody = {
         redirectTo: constants.USERS_HOST
           + constants.PROFILE_PHOTO_URL
           + "?" + constants.USER_ID_QUERY_PARAM + props.uid,
-          photoURL: photoURL
+          photoURL: photoURL,
       };
       postToGateway(requestBody, 'PATCH')
-        .then(res => setSelectedImage(photoURL));
+        .then(_ => setSelectedImage(photoURL));
     }
   }
 

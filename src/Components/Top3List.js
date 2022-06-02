@@ -1,17 +1,14 @@
-import {StyleSheet, View, FlatList} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import React, {useCallback, useState} from 'react'
-import {Button, Text} from 'react-native-paper';
-import { getToGateway } from '../others/utils';
+import {Text, Button} from 'react-native-paper';
+import {getToGateway, songToTrack} from '../others/utils';
 import constants from '../others/constants'
 import UserChip from './UserChip';
-import SongList from './SongList';
-import { useFocusEffect } from '@react-navigation/native';
-import {songToTrack} from "../others/utils";
+import {useFocusEffect} from '@react-navigation/native';
 import usePlayerAction from "../Hooks/usePlayerAction";
 import PlayableListItem from "../Components/PlayableListItem";
 import LoaderScreen from './LoaderScreen';
 import defaultArtwork from "../../assets/album-placeholder.png";
-import {ScrollView} from "react-native-gesture-handler";
 
 
 /*user must be {name: '', surname: '', email:''}*/
@@ -56,69 +53,81 @@ const Top3List = props => {
     }, []));
 
 
-    if (loading) {
-        return <LoaderScreen/>;
-      }
-    return (
-        <ScrollView style={{backgroundColor: '#f5fcff'}}>
+    
+  if (loading) {
+    return <LoaderScreen/>;
+  }
+  return (
+    <View style={{backgroundColor: '#f5fcff'}}>
+      {
+        list.length !== 0 && (
+          <View style={{flex: 1, flexGrow: 1}}>
+            <Text style={styles.title}>{props.title}</Text>
             {
-                list.length !== 0 && (
-                    <View style={{flex:1, flexGrow: 1}}>
-                        <Text style={styles.title}>{props.title}</Text>
-                        {
-                            props.userList && (
-                                list.map((user, id)=>{
-                                    return(<UserChip id={id} key={id} user={user} navigation={props.navigation}/>)
-                                }))
-                        }
-                        {
-                            props.songList && (
-                                      <SongList songList={list} navigation={props.navigation}/>
-                            )
-                        }
-                        {
-                            props.albumList &&
-                                list.map((album, id) => {
-                                    return (
-                                        <PlayableListItem id={id}
-                                                        key={id}
-                                                        playableItem={toPlayable(album)}
-                                                        play={() => player.playList(album.songs.map(songToTrack), 0)}
-                                                        moreInfoCallback={() => {
-                                                            props.navigation.navigate('AlbumScreen', {
-                                                            albumId: album.id
-                                                            });
-                                                        }}/>
-
-                                    )
-                                    })
-                            }
-                        <Button
-                            mode='text'
-                            style={styles.button}
-                            onPress={()=>{props.navigation.navigate(props.open)}}>
-                                <Text style={{color: 'steelblue'}}>Ver mas</Text>
-                        </Button>
-                    </View>
-                )
+              props.userList && (
+                list.map((user, id) => {
+                  return (<UserChip id={id} key={id} user={user} navigation={props.navigation}/>)
+                })
+              )
             }
-        </ScrollView>
-    )
+            {
+              props.songList && (
+                list.map(songToTrack).map((track, id) => {
+                  return (
+                    <PlayableListItem id={id}
+                                      key={id}
+                                      playableItem={track}
+                                      play={() => player.playList(list, id)}
+                                      moreInfoCallback={() => {
+                                        props.navigation.navigate('SongScreen', {songId: track.id});
+                                      }}
+                    />
+                  )
+                })
+              )
+            }
+            {
+              props.albumList && (
+                list.map((album, id) => {
+                  return (<PlayableListItem id={id}
+                                            key={id}
+                                            playableItem={toPlayable(album)}
+                                            play={() => player.playList(album.songs.map(songToTrack), 0)}
+                                            moreInfoCallback={() => {
+                                              props.navigation.navigate('AlbumScreen', {albumId: album.id});
+                                            }}
+                  />)
+                })
+              )
+            }
+            <Button
+              mode='text'
+              style={styles.button}
+              onPress={() => {
+                props.navigation.navigate(props.open)
+              }}>
+              <Text style={{color: 'steelblue'}}>Ver mas</Text>
+            </Button>
+          </View>
+        )
+      }
+    </View>
+  )
 }
 
 const styles = StyleSheet.create(
   {
     title: {
-        alignSelf: 'center',
-        fontSize: 18,
-        marginBottom: 13,
-        marginTop: 26,
-        color: 'steelblue'
+      alignSelf: 'center',
+      fontSize: 18,
+      marginBottom: 13,
+      marginTop: 26,
+      color: 'steelblue'
     },
-    button:{
-        alignSelf: 'center',
-        fontSize: 15,
-        flex: 1
+    button: {
+      alignSelf: 'center',
+      fontSize: 15,
+      flex: 1
     },
   }
 )

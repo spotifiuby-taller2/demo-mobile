@@ -14,7 +14,7 @@ const containerStyle = {
 const titleStyle = {
   textAlign: 'center',
   fontSize: 25,
-  marginBottom: 35
+  paddingVertical: 15,
 };
 
 const buttonStyle = {
