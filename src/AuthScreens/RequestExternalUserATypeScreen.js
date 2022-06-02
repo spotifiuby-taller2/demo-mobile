@@ -46,11 +46,8 @@ export default RequestExternalUserATypeScreen = ({navigation}) => {
         // El manejo de errores se puede reciclar de backoffice
         const response = await postToGateway(body);
 
-        console.log(response);
-        console.log(1)
 
         if (response.error !== undefined) {
-            console.log(2)
             alert(response.error);
         } else {
             if (body.signin === 'biometric') {
@@ -59,11 +56,9 @@ export default RequestExternalUserATypeScreen = ({navigation}) => {
                     body.email,
                     body.password)
                     .then(res => {
-                        console.log(3)
                         params['id'] = res.user.uid;
                         params['token'] = res._tokenResponse.idToken;
                         goTONextScreen(params);
-                        console.log(4)
                     })
                     .catch(err => alert(err));
             } else {
