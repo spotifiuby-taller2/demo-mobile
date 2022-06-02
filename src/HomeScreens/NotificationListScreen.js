@@ -90,13 +90,15 @@ const NotificationListScreen = ({navigation}) => {
                     }}
                     style={{
                       width: 330,
-                      height: 60,
-                      borderRadius: 15,
-                      alignContent: 'center',
+                      height: 40,
+                      borderRadius: 10,
                       backgroundColor: 'lightblue',
-                      margin: 10
+                      margin: 10,
+                      flexDirection: 'row',
+                      flexShrink: 1
+                      
                     }}>
-                    <Text>{notification.nameReceptor} {notification.surnameReceptor} te ha enviado un mensaje.</Text>
+                    <Text style={{flexWrap: 'wrap', fontSize: 10}}>{notification.nameReceptor} {notification.surnameReceptor} te ha enviado un mensaje.</Text>
                   </Button>
                 )
               })

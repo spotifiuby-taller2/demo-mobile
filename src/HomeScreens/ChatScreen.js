@@ -135,7 +135,7 @@ const ChatScreen = ({navigation}) =>{
                         defaultImage={{marginTop: 5}}
                         profilePicture={{marginTop: 5}}
                         />
-                    <Text style={{marginTop: 20, marginLeft: 30, fontSize: 25, color: 'white'}}>
+                    <Text style={{marginTop: 20, marginLeft: 55, fontSize: 20, color: 'white'}}>
                         {`${nameReceptor} ${surnameReceptor}`}
                     </Text>
                 </View>
