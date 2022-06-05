@@ -98,7 +98,6 @@ const HomeNavStack = () =>{
     }
 
     useEffect(()=>{
-
       if ( userState.userType !== null )
         return;
 
@@ -110,8 +109,8 @@ const HomeNavStack = () =>{
                         + userState.uid);
         }
         getUserBasicInfo()
-          .then(res =>setUserBasicInfo(res.type, res.name, res.surname));
-
+          .then(res =>{
+            setUserBasicInfo(res.type, res.name, res.surname, res.subscription)});
 
       registerForPushNotifications()
           .then(token =>
