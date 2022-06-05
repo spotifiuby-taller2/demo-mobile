@@ -50,8 +50,8 @@ const FAV_ALBUM = "/favalbum";
 const UNFAV_ALBUM = "/unfavalbum";
 const CHECK_FAV_ALBUM = "/checkfavalbum";
 const FAVORITE_ALBUMS = "/favoritealbums";
+const CHECK_URL = "/check";
 
-const REDIRECT_URL = "/redirect";
 const APP_FAV_ARTIST_URL = USERS_URL + "/favartist";
 const PUSH_NOTIFICATION_TOKEN_URL = PROFILE_URL + "/pushnotificationtoken";
 const NOTIFICATION_LIST_URL = USERS_URL + "/notificationlist"
@@ -81,16 +81,9 @@ const SS_TIMESTAMP_LABEL= (__DEV__)? "signInTimestamp_dev":"signInTimestamp_prod
 const SS_ID_LABEL= (__DEV__)? "userId_dev":"userId_prod";
 const SS_TOKEN_LABEL= (__DEV__)? "token_dev":"token_prod";
 
-
 module.exports = {
-  USERS_HOST,
-  MEDIA_HOST,
-  SIGN_UP_URL,
-  SIGN_IN_URL,
-  FORGOT_PASSWORD_URL,
-  JSON_HEADER,
-  SIGN_UP_END_URL,
-  MIN_LENGTH_PASSWORD,
+  USERS_HOST, MEDIA_HOST, SIGN_UP_URL, SIGN_IN_URL,
+  FORGOT_PASSWORD_URL, JSON_HEADER, SIGN_UP_END_URL, MIN_LENGTH_PASSWORD,
   MUSICAL_PREF_URL,
   USERS_URL,
   SONGS_URL,
@@ -101,7 +94,6 @@ module.exports = {
   APP_USERS_LIST_URL,
   SERVICES_HOST,
   MY_API_KEY,
-  REDIRECT_URL,
   APP_ARTIST_LIST_URL,
   PROFILE_PHOTO_URL,
   PHOTO_URL_QUERY_PARAM,
@@ -132,5 +124,6 @@ module.exports = {
   SS_TIMESTAMP_LABEL,
   TOP_3_FAV_ARTIST_URL,
   LIMIT_3_PARAM,
-  FAV_ALBUM, UNFAV_ALBUM, CHECK_FAV_ALBUM, FAVORITE_ALBUMS
+  FAV_ALBUM, UNFAV_ALBUM, CHECK_FAV_ALBUM, FAVORITE_ALBUMS,
+  CHECK_URL
 };
