@@ -8,6 +8,7 @@ import {getArtists} from "../Services/UsersService";
 import defaultArtwork from "../../assets/album-placeholder.png";
 import {FlatList, View} from "react-native";
 import PlayableListItem from "../Components/PlayableListItem";
+import subscription from "../data/Subscription";
 
 
 const getUserName = user => `${user.name} ${user.surname}`
@@ -23,10 +24,10 @@ const enrichWithArtistName = (album, artists) => ({
 });
 
 const GenreScreen = ({navigation, route}) => {
-  const {userState} = useAuthUser();
   const [songs, setSongs] = useState([]);
   const [albumList, setAlbumList] = useState([]);
   const player = usePlayerAction();
+  const {userState} = useAuthUser();
 
   useEffect(() => {
     navigation.setOptions({headerShown: true, headerTitle: route.params.genre.label});
@@ -35,14 +36,14 @@ const GenreScreen = ({navigation, route}) => {
   useFocusEffect(useCallback(() => {
     getGenreSongs(route.params.genre.value)
       .then(res => {
-        setSongs(res);
+        setSongs(res.filter(s => subscription[s.subscription].level <= subscription[userState.subscription].level));
         player.initialize(res.map(songToTrack));
       });
 
     const getAlbumsWithArtists = async () => {
       const genreAlbums = getGenreAlbums(route.params.genre.value);
       const artists = await getArtists().then(r => r.list);
-      return genreAlbums.then(albums => enrichWithArtistNames(albums, artists));
+      return genreAlbums.then(albums => enrichWithArtistNames(albums.filter(a => subscription[a.subscription].level <= subscription[userState.subscription].level), artists));
     }
     getAlbumsWithArtists().then(albums => {
       setAlbumList(albums);
