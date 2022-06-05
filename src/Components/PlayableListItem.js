@@ -54,9 +54,11 @@ const PlayableListItem = ({playableItem, play, moreInfoCallback}) => (
         <Text numberOfLines={1} style={styles.artist}>{playableItem.artist}</Text>
       </View>
     </View>
-    <IconButton icon='dots-vertical'
-                style={{flex: 1}}
-                onPress={() => moreInfoCallback()}
+    <IconButton 
+      icon='information'
+      style={{flex: 1, marginRight: 5}}
+      size={30}
+      onPress={() => moreInfoCallback()}
     />
   </TouchableOpacity>
 );

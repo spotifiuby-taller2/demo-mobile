@@ -5,7 +5,15 @@ import constants from "../others/constants";
 import * as Notifications from 'expo-notifications';
 import Top3List from '../Components/Top3List';
 import {Text} from 'react-native';
-import {ScrollView} from "react-native-gesture-handler";
+import {ScrollView} from "react-native";
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
 
 const HomeScreen = ({navigation}) => {
 

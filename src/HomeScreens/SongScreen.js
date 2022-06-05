@@ -4,8 +4,8 @@ import React, {useEffect, useState} from 'react';
 import {getToGateway} from "../others/utils";
 import * as constants from "../others/constants";
 import * as styles from "../styles/contentStyle";
-import ArtistChip from "../Components/ArtistChip";
 import FavouriteSongIconButton from "../Components/FavouriteSongIconButton";
+import UserChip from "../Components/UserChip";
 
 const SongScreen = ({navigation, route}) => {
 
@@ -25,7 +25,7 @@ const SongScreen = ({navigation, route}) => {
       return song;
     }
 
-    getSong().then(s => setSong(s));
+    getSong().then(s => {setSong(s); navigation.setOptions({ headerShown: true, headerTitle: s.title }); });
   }, []);
 
   return (
@@ -42,7 +42,7 @@ const SongScreen = ({navigation, route}) => {
       {
         song?.artists.map((user) => {
           return (
-            <ArtistChip id={user.id}
+            <UserChip id={user.id}
                         key={user.id}
                         user={user}
                         navigation={navigation}/>

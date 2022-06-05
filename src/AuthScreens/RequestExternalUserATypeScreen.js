@@ -46,6 +46,7 @@ export default RequestExternalUserATypeScreen = ({navigation}) => {
         // El manejo de errores se puede reciclar de backoffice
         const response = await postToGateway(body);
 
+
         if (response.error !== undefined) {
             alert(response.error);
         } else {
@@ -66,7 +67,7 @@ export default RequestExternalUserATypeScreen = ({navigation}) => {
         }
     }
 
-        let goTONextScreen = (paraendms) => {
+        let goTONextScreen = (params) => {
             if (isListener) {
                 navigation.navigate('RequestMusicalPreferencesScreen', params);
             } else {

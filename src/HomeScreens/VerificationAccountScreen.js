@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from "react";
 import {ScrollView, StyleSheet, View} from "react-native";
-import {Button, Text, Title} from "react-native-paper";
+import {Button, Text} from "react-native-paper";
 import FilePicker from "../Components/FilePicker";
-import {buttonStyle, buttonTextStyle, containerStyle, titleStyle} from "../styles/genericStyles";
+import {buttonStyle, buttonTextStyle, containerStyle} from "../styles/genericStyles";
 import {uploadFile} from "../Services/CloudStorageService";
 import {useAuthUser} from "../context/AuthContext";
 import {uploadVerificationVideo} from '../Services/UsersService'
@@ -54,7 +54,7 @@ const VerificationAccountScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <FilePicker title={'Elegir video de verificacion'} mimeType={'video/*'} icon={'file-video'}
+        <FilePicker title={`${file ? 'Cambiar' : 'Elegir'} video de verificación`} mimeType={'video/*'} icon={'file-video'}
                     setFileCallback={handleDocumentPick}/>
         <Button mode='contained'
                 style={styles.button}
@@ -73,7 +73,6 @@ const styles = StyleSheet.create({
     ...containerStyle,
     paddingTop: 30
   },
-  title: titleStyle,
   button: {
     ...buttonStyle,
     width: 200,

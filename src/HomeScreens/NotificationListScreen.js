@@ -8,6 +8,7 @@ import React, {useEffect, useState} from 'react'
 import constants from '../others/constants'
 import {getToGateway, postToGateway} from "../others/utils";
 import {useAuthUser} from '../context/AuthContext';
+import LoaderScreen from '../Components/LoaderScreen';
 
 
 const NotificationListScreen = ({navigation}) => {
@@ -16,6 +17,8 @@ const NotificationListScreen = ({navigation}) => {
   const [notificationsList, setList] = useState([]);
   const {userState} = useAuthUser();
   const [nameChanged, setNameChanged] = useState(false);
+  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     let isMounted = true;
@@ -28,7 +31,10 @@ const NotificationListScreen = ({navigation}) => {
         if (res.error !== undefined) {
           alert(res.error);
         } else {
-          if (isMounted) setList(res.notifications);
+          if (isMounted) {
+            setList(res.notifications);
+            setLoading(false);
+          }
         }
       });
     }
@@ -64,6 +70,9 @@ const NotificationListScreen = ({navigation}) => {
       })
   }
 
+  if (loading) {
+    return <LoaderScreen/>;
+  }
   return (
     <View>
       <SafeAreaView>
@@ -81,13 +90,15 @@ const NotificationListScreen = ({navigation}) => {
                     }}
                     style={{
                       width: 330,
-                      height: 60,
-                      borderRadius: 15,
-                      alignContent: 'center',
+                      height: 40,
+                      borderRadius: 10,
                       backgroundColor: 'lightblue',
-                      margin: 10
+                      margin: 10,
+                      flexDirection: 'row',
+                      flexShrink: 1
+                      
                     }}>
-                    <Text>{notification.nameReceptor} {notification.surnameReceptor} te ha enviado un mensaje.</Text>
+                    <Text style={{flexWrap: 'wrap', fontSize: 10}}>{notification.nameReceptor} {notification.surnameReceptor} te ha enviado un mensaje.</Text>
                   </Button>
                 )
               })

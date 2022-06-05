@@ -1,4 +1,4 @@
-import {IconButton} from "react-native-paper";
+import {IconButton, Colors} from "react-native-paper";
 import React, {useEffect, useState} from "react";
 import {addFavoriteAlbum,
         getFavoriteAlbums,
@@ -26,9 +26,19 @@ const FavouriteAlbumIconButton = ({albumId, size, style}) => {
 
   return (
     isFavourite ? (
-      <IconButton style={style} size={size} icon='heart' onPress={() => handle(false)}/>
+      <IconButton 
+        style={style} 
+        color={Colors.red300}
+        size={size} 
+        icon='heart' 
+        onPress={() => handle(false)}/>
     ) : (
-      <IconButton style={style} size={size} icon='heart-outline' onPress={() => handle(true)} disabled={isFavourite === undefined}/>
+      <IconButton 
+        style={style} 
+        color={Colors.red300}
+        size={size} 
+        icon='heart-outline' 
+        onPress={() => handle(true)} disabled={isFavourite === undefined}/>
     )
   );
 }

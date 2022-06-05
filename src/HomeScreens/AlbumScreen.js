@@ -6,13 +6,21 @@ import {Text} from "react-native-paper";
 import LoaderScreen from "../Components/LoaderScreen";
 import defaultArtwork from "../../assets/album-placeholder.png";
 import FavouriteAlbumIconButton from "../Components/FavouriteAlbumIconButton";
+import { ScrollView } from "react-native-gesture-handler";
 
 const AlbumScreen = ({navigation, route}) => {
   const albumId = route.params.albumId;
   const [album, setAlbum] = useState();
 
+  useEffect(()=>{
+    
+  }, []);
+
   useEffect(() => {
-    getAlbum(albumId).then(a => setAlbum(a));
+    getAlbum(albumId).then(a => {
+      setAlbum(a); 
+      navigation.setOptions({ headerShown: true, headerTitle: a.title });
+    });
   }, [])
 
   if (album === undefined) {
@@ -20,11 +28,16 @@ const AlbumScreen = ({navigation, route}) => {
   }
 
   return (
+    
     <View style={styles.container}>
+      <ScrollView>
       <Image source={album.link ? {uri: album.link} : defaultArtwork} style={styles.artwork}/>
       <Text style={styles.title}>{album.title}</Text>
-      <SongList navigation={navigation}
-                songList={album.songs ?? []}/>
+      
+        <SongList navigation={navigation}
+                  songList={album.songs ?? []}/>
+      
+      
 
       <Text>{"\n\n"}
       </Text>
@@ -32,6 +45,7 @@ const AlbumScreen = ({navigation, route}) => {
       <FavouriteAlbumIconButton style={{alignSelf: 'center'}}
                                 size={90}
                                 albumId={route.params.albumId}/>
+    </ScrollView>
     </View>
   )
 }
@@ -51,6 +65,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   artwork: {
+    marginTop: 20,
     resizeMode: 'contain',
     flex: 1,
   },

@@ -122,7 +122,7 @@ const ChatScreen = ({navigation}) =>{
 
         return(
             <View style={{backgroundColor: '#f5fcff', flex: 1}}>
-            <View style={{backgroundColor: 'darkblue', height: 120}}>
+            <View style={{backgroundColor: 'darkblue', height: 70}}>
                 <View style={{flexDirection: 'row'}}>
                     <View style={{marginLeft: 13}}></View>
                     <ProfilePicture
@@ -131,10 +131,11 @@ const ChatScreen = ({navigation}) =>{
                         surname={surnameReceptor}
                         style={styles.avatar}
                         photoUrl={photoUrl}
-                        defaultImage={{marginTop: 10}}
-                        profilePicture={{marginTop: 10}}
+                        pictureSize={60}
+                        defaultImage={{marginTop: 5}}
+                        profilePicture={{marginTop: 5}}
                         />
-                    <Text style={{marginTop: 50, marginLeft: 30, fontSize: 25, color: 'white'}}>
+                    <Text style={{marginTop: 20, marginLeft: 55, fontSize: 20, color: 'white'}}>
                         {`${nameReceptor} ${surnameReceptor}`}
                     </Text>
                 </View>

@@ -3,7 +3,7 @@ import {Button, Text, TextInput, Title} from "react-native-paper";
 import React, {useState} from "react";
 import {buttonStyle, buttonTextStyle, containerStyle, inputStyle, titleStyle} from '../styles/genericStyles';
 import FilePicker from "../Components/FilePicker";
-import {uploadImage} from "../Services/CloudStorageService";
+import {uploadFile} from "../Services/CloudStorageService";
 import {createAlbum, getSongsByArtist} from "../Services/MediaService";
 import {getArtists} from '../Services/UsersService';
 import {validateFieldNotBlank} from "../others/utils";
@@ -12,7 +12,7 @@ import SubscriptionDropDown from "../Components/SubscriptionDropDown";
 import {useAuthUser} from "../context/AuthContext";
 import MultiSelection from "../Components/MultiSelection";
 
-const UploadAlbumScreen = ({navigation}) => {
+const UploadAlbumScreen = () => {
   const [title, setTitle] = useState({value: '', error: null});
   const [genre, setGenre] = useState({value: '', error: null});
   const [subscription, setSubscription] = useState({value: '', error: null});
@@ -20,10 +20,16 @@ const UploadAlbumScreen = ({navigation}) => {
   const [songs, setSongs] = useState({value: [], error: null});
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState();
-  const {userState, setUserType} = useAuthUser();
+  const {userState} = useAuthUser();
 
-  const handleDocumentPick = (doc) => {
-    setFile(doc);
+  const resetState = () => {
+    setTitle({value: '', error: null});
+    setGenre({value: '', error: null});
+    setSubscription({value: '', error: null});
+    setArtists({value: [], error: null});
+    setSongs({value: [], error: null});
+    setIsLoading(false);
+    setFile(undefined);
   }
 
   const fieldsAreValid = () => {
@@ -50,12 +56,15 @@ const UploadAlbumScreen = ({navigation}) => {
     if (!fieldsAreValid()) {
       return;
     }
-    let fileUrl;
-    if (file !== undefined && file != null) {
-      const name = `${title.value}.png`;
-      fileUrl = await uploadImage(file.uri, name);
-    }
     setIsLoading(true);
+    let fileUrlPromise;
+    console.log(JSON.stringify(file));
+    if (file) {
+      fileUrlPromise = file.contentPromise.then(res => {
+        return uploadFile(res, `artwork-album-${title.value}`);
+      });
+      console.log(fileUrlPromise);
+    }
     try {
       const album = await createAlbum({
         title: title.value,
@@ -63,19 +72,19 @@ const UploadAlbumScreen = ({navigation}) => {
         subscription: subscription.value,
         artists: artists.value.map(a => a.id),
         songs: songs.value.map(s => s.id),
-        link: fileUrl
+        link: await fileUrlPromise,
       });
       console.log(`Album created: ${JSON.stringify(album)}`);
+      resetState();
       alert('Album creado!');
     } catch (err) {
       console.log(JSON.stringify(err));
       alert('Ha ocurrido un error inesperado al crear el álbum, por favor intente más tarde');
     }
-    setIsLoading(false);
   }
 
   return (
-    <View style={styles.container}>
+    <View style={containerStyle}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Title style={titleStyle}>Nuevo Album</Title>
 
@@ -104,7 +113,9 @@ const UploadAlbumScreen = ({navigation}) => {
         {subscription.error && (<Text style={{color: 'red'}}>{subscription.error}</Text>)}
         <View style={{marginBottom: 5}}/>
         <MultiSelection selectedElements={artists.value}
-                        placeholder={"Buscar artistas"}
+                        searchPlaceholder={"Buscar artistas"}
+                        buttonText={"Seleccionar artistas"}
+                        icon={'account-music'}
                         renderElement={artist => (<Text>{`${artist.name} ${artist.surname}`}</Text>)}
                         getAllElements={() => getArtists().then(b => b.list)}
                         elementFilter={filterArtist}
@@ -120,7 +131,9 @@ const UploadAlbumScreen = ({navigation}) => {
         {artists.error && (<Text style={{color: 'red'}}>{artists.error}</Text>)}
         <View style={{marginBottom: 5}}/>
         <MultiSelection selectedElements={songs.value}
-                        placeholder={"Buscar canciones"}
+                        searchPlaceholder={"Buscar canciones"}
+                        buttonText={"Seleccionar canciones"}
+                        icon={'music-box-multiple-outline'}
                         renderElement={song => (<Text>{`${song.title}`}</Text>)}
                         getAllElements={() => getSongsByArtist(userState.uid)}
                         elementFilter={filterSong}
@@ -134,15 +147,15 @@ const UploadAlbumScreen = ({navigation}) => {
         <View style={{marginBottom: 5}}/>
 
 
-        <FilePicker title={'Elegir foto de portada'} mimeType={'image/*'} icon={'camera'}
-                    setFileCallback={handleDocumentPick}/>
+        <FilePicker title={`${file ? 'Cambiar' : 'Elegir'} foto de portada`} mimeType={'image/*'} icon={'camera'}
+                    setFileCallback={setFile}/>
 
         <Button mode='contained'
-                style={buttonStyle}
+                style={styles.button}
                 onPress={handleUpload}
                 loading={isLoading}
                 disabled={isLoading}>
-          <Text style={buttonTextStyle}>{isLoading ? 'Subiendo...' : 'Subir'}</Text>
+          <Text style={buttonTextStyle}>{isLoading ? 'Publicando...' : 'Publicar'}</Text>
         </Button>
       </ScrollView>
     </View>
@@ -153,6 +166,10 @@ const styles = StyleSheet.create({
   container: {
     ...containerStyle,
     paddingTop: 30
+  },
+  button: {
+    ...buttonStyle,
+    width: 200,
   }
 })
 export default UploadAlbumScreen;

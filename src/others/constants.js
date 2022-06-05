@@ -1,9 +1,11 @@
-import {REACT_APP_USERS_HOST_DEV,
-        REACT_APP_USERS_HOST_PROD,
-        REACT_APP_SERVICES_HOST_DEV,
-        REACT_APP_SERVICES_HOST_PROD,
-        REACT_APP_MEDIA_HOST_DEV,
-        REACT_APP_MEDIA_HOST_PROD} from "@env"
+import {
+  REACT_APP_MEDIA_HOST_DEV,
+  REACT_APP_MEDIA_HOST_PROD,
+  REACT_APP_SERVICES_HOST_DEV,
+  REACT_APP_SERVICES_HOST_PROD,
+  REACT_APP_USERS_HOST_DEV,
+  REACT_APP_USERS_HOST_PROD
+} from "@env"
 
 /* Backend hosts */
 const USERS_HOST = (__DEV__)
@@ -25,8 +27,8 @@ const FORGOT_PASSWORD_URL = "/forgotpassword";
 const USERS_URL = "/users";
 const PROFILE_URL = USERS_URL + "/profile";
 const PROFILE_PHOTO_URL = PROFILE_URL + "/photo";
-const PROFILE_USER_BASIC_INFO_URL= PROFILE_URL + "/basicinfo";
-const PROFILE_VERIFICATION_VIDEO_URL= PROFILE_URL + "/verification/video";
+const PROFILE_USER_BASIC_INFO_URL = PROFILE_URL + "/basicinfo";
+const PROFILE_VERIFICATION_VIDEO_URL = PROFILE_URL + "/verification/video";
 const MUSICAL_PREF_URL = PROFILE_URL + "/musicalpref";
 const EDIT_PROFILE_URL = USERS_URL + "/editprodile";
 const USER_ID_QUERY_PARAM = "userId=";
@@ -71,15 +73,15 @@ const JSON_HEADER = {
 /* Constants */
 const MIN_LENGTH_PASSWORD = 10;
 
-const MY_API_KEY="13a6bcee5bd256b05e451bde47f45a68e8bee660777f349f15f493b2873999de";
+const MY_API_KEY = "13a6bcee5bd256b05e451bde47f45a68e8bee660777f349f15f493b2873999de";
 
 const LISTENER = "listener";
 const ARTIST = "artist";
 
 const DUPLICATE_NOTIFICATION_ERROR = 'SequelizeUniqueConstraintError: llave duplicada viola restricción de unicidad «notifications_pkey»';
-const SS_TIMESTAMP_LABEL= (__DEV__)? "signInTimestamp_dev":"signInTimestamp_prod";
-const SS_ID_LABEL= (__DEV__)? "userId_dev":"userId_prod";
-const SS_TOKEN_LABEL= (__DEV__)? "token_dev":"token_prod";
+const SS_TIMESTAMP_LABEL = (__DEV__) ? "signInTimestamp_dev" : "signInTimestamp_prod";
+const SS_ID_LABEL = (__DEV__) ? "userId_dev" : "userId_prod";
+const SS_TOKEN_LABEL = (__DEV__) ? "token_dev" : "token_prod";
 
 module.exports = {
   USERS_HOST, MEDIA_HOST, SIGN_UP_URL, SIGN_IN_URL,

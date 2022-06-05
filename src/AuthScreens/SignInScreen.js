@@ -125,18 +125,18 @@ export default SignInScreen = ({navigation}) =>{
                 
                 <Button 
                     mode='text'
-                    style={{backgroundColor:'#f5fcff', width: 120, alignSelf: 'center'}} 
+                    style={{backgroundColor:'#f5fcff', alignSelf: 'center'}}
                     onPress={()=>{navigation.navigate('SignUpScreen')}}>
                     
-                    <Text style={styles.forgotPasswordButton}>Registarse</Text>
+                    <Text style={styles.forgotPasswordButton}>Registrarse</Text>
                 </Button>
 
                 <Button 
                     mode='text'
-                    style={{backgroundColor:'#f5fcff', width: 220, alignSelf: 'center'}} 
+                    style={{backgroundColor:'#f5fcff', alignSelf: 'center'}}
                     onPress={()=>{navigation.navigate('ForgotPasswordScreen')}}>
                     
-                    <Text style={styles.forgotPasswordButton}>¿Olvido su contraseña?</Text>
+                    <Text style={styles.forgotPasswordButton}>¿Olvidó su contraseña?</Text>
                 </Button>
 
                 
@@ -177,5 +177,5 @@ export default SignInScreen = ({navigation}) =>{
          borderRadius: 10},
        buttonText: {textAlign: 'center', fontSize: 13},
        forgotPasswordButton: {textAlign: 'center', fontSize: 13, color: 'skyblue'},
-       image:{height:  150, width: 150, borderRadius: 200, resizeMode: 'contain', paddingTop: 200, marginLeft: 84}}
+       image:{height:  150, width: 150, borderRadius: 200, resizeMode: 'contain', paddingTop: 200, alignSelf: 'center'}}
  )
