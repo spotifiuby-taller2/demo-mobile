@@ -61,6 +61,7 @@ const SONGS_URL = "/songs";
 const ALBUM_URL = "/albums";
 const PLAYLIST_URL = "/playlists";
 const FAVORITE_SONGS = "/favoritesongs";
+const BAND_URL = USERS_URL + "/band"
 
 const JSON_HEADER = {
   'Content-Type': 'application/json',
@@ -132,5 +133,9 @@ module.exports = {
   SS_TIMESTAMP_LABEL,
   TOP_3_FAV_ARTIST_URL,
   LIMIT_3_PARAM,
-  FAV_ALBUM, UNFAV_ALBUM, CHECK_FAV_ALBUM, FAVORITE_ALBUMS
+  FAV_ALBUM, 
+  UNFAV_ALBUM, 
+  CHECK_FAV_ALBUM, 
+  FAVORITE_ALBUMS, 
+  BAND_URL
 };

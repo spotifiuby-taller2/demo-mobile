@@ -187,6 +187,22 @@ const ProfileScreen = ({navigation}) => {
                         color='#388AD6'/>
                     </Button>)
                   }
+                  {
+                    userState.uid === profile.id && profile.isArtist &&
+          
+                      (<Button
+                        mode='text'
+                        color='#fdfcff'
+                        style={{width: 70, alignSelf: 'center'}}
+                        onPress={() => {
+                          navigation.navigate('CreateBandScreen')
+                        }}>
+                        <MaterialCommunityIcons
+                          name='account-group'
+                          size={35}
+                          color='#388AD6'/>
+                      </Button>)
+                  }
 
                 </View>)
             }
