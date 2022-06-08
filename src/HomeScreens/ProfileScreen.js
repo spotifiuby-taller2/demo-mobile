@@ -1,6 +1,6 @@
 import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
 import React, {useEffect, useState} from 'react'
-import {Button, Chip, Text} from 'react-native-paper'
+import {Button, Chip, Text, Avatar} from 'react-native-paper'
 import {useRoute} from '@react-navigation/native';
 import constants from '../others/constants'
 import {getToGateway} from "../others/utils";
