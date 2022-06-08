@@ -1,6 +1,6 @@
 import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
 import React, {useEffect, useState} from 'react'
-import {Button, Chip, Text} from 'react-native-paper'
+import {Button, Chip, Text, Avatar} from 'react-native-paper'
 import {useRoute} from '@react-navigation/native';
 import constants from '../others/constants'
 import {getToGateway} from "../others/utils";
@@ -244,6 +244,15 @@ const ProfileScreen = ({navigation}) => {
             }
 
             <Text style={styles.name}>{profile.name} {profile.surname}</Text>
+
+            {
+              profile.isArtist && profile.isVerified && (
+                  <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+                    <Avatar.Icon icon="check-decagram" color={'green'} size={30}/>
+                      <Text style={styles.usertype}>{'Artista verificado'}</Text>
+                  </View>
+              )
+            }
 
             {
               (profile.isArtist && (
