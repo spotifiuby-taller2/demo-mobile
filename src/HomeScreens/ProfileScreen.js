@@ -246,6 +246,15 @@ const ProfileScreen = ({navigation}) => {
             <Text style={styles.name}>{profile.name} {profile.surname}</Text>
 
             {
+              profile.isArtist && profile.isVerified && (
+                  <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+                    <Avatar.Icon icon="check-decagram" color={'green'} size={30}/>
+                      <Text style={styles.usertype}>{'Artista verificado'}</Text>
+                  </View>
+              )
+            }
+
+            {
               (profile.isArtist && (
                 <Text style={{
                   fontSize: 20,

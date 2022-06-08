@@ -89,7 +89,7 @@ const postToGateway = (body,
         const gatewayResponse = await r.json();
 
         if (gatewayResponse.error !== undefined) {
-            return gatewayResponse.error;
+            return gatewayResponse;
         }
 
         return await fetch(body.redirectTo, {
@@ -121,6 +121,8 @@ const getToGateway = (destiny,
 
     const redirectTo = destiny + redirectParamsAux;
 
+    body.redirectTo = redirectTo;
+
     return fetch(constants.SERVICES_HOST + constants.CHECK_URL, {
             method: "POST",
             headers: constants.JSON_HEADER,
@@ -130,7 +132,7 @@ const getToGateway = (destiny,
         const gatewayResponse = await r.json();
 
         if (gatewayResponse.error !== undefined) {
-            return gatewayResponse.error;
+            return gatewayResponse;
         }
 
         return await fetch(redirectTo, {
