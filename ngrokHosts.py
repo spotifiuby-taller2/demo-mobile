@@ -19,9 +19,9 @@ load_dotenv(dotenv_path=ENV_FILE_TO_USE)
 
 # Después de cambiar el .env, se ejecuta en la misma carpeta donde esta este archivo
 # y toma los valores configurados
-mediaHost = os.getenv("REACT_APP_MEDIA_HOST_DEV").split("https://")[1]
-paymentsHost = os.getenv("REACT_APP_PAYMENT_HOST_DEV").split("https://")[1]
-userHost = os.getenv("REACT_APP_USERS_HOST_DEV").split("https://")[1]
+mediaHost = os.getenv("REACT_APP_MEDIA_HOST_DEV").split("http://")[1]
+paymentsHost = os.getenv("REACT_APP_PAYMENT_HOST_DEV").split("http://")[1]
+userHost = os.getenv("REACT_APP_USERS_HOST_DEV").split("http://")[1]
 
 database.update_one( { "apiKey": "938187f0c06221997960c36a7a85a30b2da2cb6e9a91962287a278c4ac1c7f8a" }, {"$set": {"name": "media", "apiKey": "938187f0c06221997960c36a7a85a30b2da2cb6e9a91962287a278c4ac1c7f8a", "active": True, "creationDate": "30/5/2022", "description": mediaHost} } )
 
