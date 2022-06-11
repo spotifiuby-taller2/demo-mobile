@@ -4,6 +4,7 @@ import constants from '../others/constants'
 import {ScrollView} from "react-native";
 import TopList from "../Components/TopList";
 import genre from "../data/Genre"
+import GenreChip from "../Components/GenreChip";
 
 const ContentScreen = ({navigation}) => {
 
@@ -18,7 +19,7 @@ const ContentScreen = ({navigation}) => {
       />
 
       <Top3List
-        title='Albumes'
+        title='Álbumes'
         endpoint={constants.MEDIA_HOST + constants.ALBUM_URL + "?"}
         navigation={navigation}
         open='AlbumListScreen'
@@ -26,11 +27,13 @@ const ContentScreen = ({navigation}) => {
       />
 
       <TopList
-      title={'Generos'}
+      title={'Géneros'}
       navigation={navigation}
       data={Object.values(genre)}
       max={3}
-      genreList={true}
+      renderDataItem={(genre, id) => {
+        return (<GenreChip id={id} key={id} genre={genre} navigation={navigation}/>)
+      }}
       open='GenreListScreen'
       />
 

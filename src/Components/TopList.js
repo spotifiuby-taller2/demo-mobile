@@ -9,11 +9,7 @@ const TopList = props => {
     <View style={{backgroundColor: '#f5fcff', flex:1, flexGrow: 1}}>
       <Text style={styles.title}>{props.title}</Text>
       {
-        props.genreList &&
-        (
-          props.data.slice(0, props.max).map((genre, id) => {
-            return (<GenreChip id={id} key={id} genre={genre} navigation={props.navigation}/>)
-          }))
+          props.data.slice(0, props.max).map(props.renderDataItem)
       }
       <Button
         mode='text'
