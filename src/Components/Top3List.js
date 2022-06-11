@@ -24,7 +24,7 @@ const Top3List = props => {
         return {
           title: album.title,
           artwork: album.link ? {uri: album.link} : defaultArtwork,
-          artist: album.artistNames ?? 'Unknown artists',
+          artist: album.artistNames ?? '',
         };
       };
 
@@ -53,7 +53,7 @@ const Top3List = props => {
     }, []));
 
 
-    
+
   if (loading) {
     return <LoaderScreen/>;
   }
@@ -77,7 +77,7 @@ const Top3List = props => {
                     <PlayableListItem id={id}
                                       key={id}
                                       playableItem={track}
-                                      play={() => player.playList(list, id)}
+                                      play={() => player.playList(list.map(songToTrack), id)}
                                       moreInfoCallback={() => {
                                         props.navigation.navigate('SongScreen', {songId: track.id});
                                       }}
