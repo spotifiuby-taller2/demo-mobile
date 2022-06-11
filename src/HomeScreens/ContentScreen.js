@@ -59,7 +59,6 @@ const ContentScreen = ({navigation}) => {
 
       <TopList
         title={'Playlists'}
-        navigation={navigation}
         data={playlists}
         renderDataItem={(playlist, id) => (
           <PlayableListItem id={id}
@@ -70,18 +69,17 @@ const ContentScreen = ({navigation}) => {
 
           />)}
         max={3}
-        open='PlaylistListScreen'
+        viewMoreCallback={() => navigation.navigate('PlaylistListScreen')}
       />
 
       <TopList
         title={'Géneros'}
-        navigation={navigation}
         data={Object.values(genre)}
         max={3}
         renderDataItem={(genre, id) => {
-          return (<GenreChip id={id} key={id} genre={genre} navigation={navigation}/>)
+          return <GenreChip id={id} key={id} genre={genre} navigation={navigation}/>
         }}
-        open='GenreListScreen'
+        viewMoreCallback={() => navigation.navigate('GenreListScreen')}
       />
 
     </ScrollView>

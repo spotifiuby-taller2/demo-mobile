@@ -14,9 +14,7 @@ const TopList = props => {
       <Button
         mode='text'
         style={styles.button}
-        onPress={() => {
-          props.navigation.navigate(props.open)
-        }}>
+        onPress={props.viewMoreCallback}>
         <Text style={{color: 'steelblue'}}>Ver mas</Text>
       </Button>
     </View>
