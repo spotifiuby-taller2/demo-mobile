@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react'
 import {Button, Chip, Text, Avatar} from 'react-native-paper'
 import {useRoute} from '@react-navigation/native';
 import constants from '../others/constants'
-import {getToGateway} from "../others/utils";
+import {getToGateway, playlistToPlayable, songToTrack} from "../others/utils";
 import ProfilePicture from '../Components/ProfilePicture';
 import FollowArtistButton from '../Components/FollowArtistButton';
 import {useAuthUser} from '../context/AuthContext';
@@ -11,6 +11,10 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import LoaderScreen from "./../Components/LoaderScreen";
 import Top3List from './../Components/Top3List';
 import subscription from "../data/Subscription";
+import {getPlaylistsByOwner} from "../Services/MediaService";
+import TopList from "../Components/TopList";
+import PlayableListItem from "../Components/PlayableListItem";
+import usePlayerAction from "../Hooks/usePlayerAction";
 
 
 const ProfileScreen = ({navigation}) => {
@@ -20,6 +24,7 @@ const ProfileScreen = ({navigation}) => {
   const [renderButton, setRenderButton] = useState(false);
   const [nameChanged, setNameChanged] = useState(false);
   const [nFollowers, setNFollowers] = useState(null);
+  const player = usePlayerAction();
 
   const initialState = {
     id: '',
@@ -64,13 +69,13 @@ const ProfileScreen = ({navigation}) => {
       setNameChanged(true);
     }
 
-    async function getProfile(userId) {
+    async function initializeProfile(userId) {
       setInitialized(false);
       await getToGateway(constants.USERS_HOST + constants.PROFILE_URL
         + "?"
         + constants.USER_ID_QUERY_PARAM
         + userId)
-        .then(res => {
+        .then(async res => {
           if (res.error !== undefined) {
             alert(res.error);
           } else {
@@ -103,15 +108,28 @@ const ProfileScreen = ({navigation}) => {
             setProfile(newState);
             setNFollowers(res.nFollowers);
             setRenderButton(true);
+            if (res.isListener) {
+              await getPlaylistsByOwner(userId)
+                .then(playlists => {
+                  if (userState.uid === userId) {
+                    console.log(`All playlists: ${JSON.stringify(playlists)}`)
+                    setPlaylists(playlists);
+                  } else {
+                    console.log(`Public playlists: ${JSON.stringify(playlists)}`)
+                    setPlaylists(playlists.filter(p => p.isCollaborative));
+                  }
+                })
+                .catch(err => console.log(JSON.stringify(err)));
+            }
+            setInitialized(true)
           }
         })
     }
 
     const unsubscribeFocus = navigation.addListener('focus',
-      async () => {
+      () => {
         setRenderButton(false);
-        await getProfile(route.params.uid);
-        setInitialized(true);
+        initializeProfile(route.params.uid);
       });
 
     return () => {
@@ -338,6 +356,24 @@ const ProfileScreen = ({navigation}) => {
                     Crear playlist
                   </Button>
                 </>
+              )
+            }
+            {
+              (profile.isListener && playlists.length > 0) && (
+                <TopList
+                  title={'Playlists'}
+                  data={playlists}
+                  renderDataItem={(playlist, id) => (
+                    <PlayableListItem id={id}
+                                      key={id}
+                                      playableItem={playlistToPlayable(playlist)}
+                                      play={() => player.playList(playlist.songs.map(songToTrack), 0)}
+                                      moreInfoCallback={() => navigation.navigate('PlaylistScreen', {playlistId: playlist.id})}
+
+                    />)}
+                  max={3}
+                  viewMoreCallback={() => navigation.navigate('PlaylistListScreen', {playlists: playlists})}
+                />
               )
             }
           </View>

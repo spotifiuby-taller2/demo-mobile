@@ -101,6 +101,11 @@ const getPlaylist = (id) => {
     .then(getBodyOrThrow);
 }
 
+const getPlaylistsByOwner = userId => {
+  return requestToGateway('GET', `${constants.MEDIA_HOST}${constants.PLAYLIST_URL}?owner=${userId}`)
+    .then(getBodyOrThrow);
+}
+
 export {
   createSong,
   createAlbum,
@@ -119,4 +124,5 @@ export {
   createPlaylist,
   getPublicPlaylists,
   getPlaylist,
+  getPlaylistsByOwner,
 };
