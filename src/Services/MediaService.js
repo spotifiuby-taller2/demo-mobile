@@ -84,6 +84,13 @@ const getGenreSongs = (genre) => {
     .then(getBodyOrThrow);
 }
 
+const createPlaylist = (playlist) => {
+  console.log(JSON.stringify(playlist));
+  return requestToGateway('POST', `${constants.MEDIA_HOST}${constants.PLAYLIST_URL}`,
+    playlist)
+    .then(getBodyOrThrow);
+}
+
 export {
   createSong,
   createAlbum,
@@ -98,5 +105,6 @@ export {
   addFavoriteAlbum,
   removeFavoriteAlbum,
   getGenreSongs,
-  getGenreAlbums
+  getGenreAlbums,
+  createPlaylist,
 };

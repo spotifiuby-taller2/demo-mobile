@@ -28,6 +28,7 @@ import FavoriteSongListScreen from '../HomeScreens/FavoriteSongListScreen';
 import FavoriteAlbumListScreen from "../HomeScreens/FavoriteAlbumListScreen";
 import GenreScreen from "../HomeScreens/GenreScreen";
 import GenreListScreen from "../HomeScreens/GenreListScreen";
+import CreatePlaylist from "../ContentScreens/CreatePlaylist";
 
 
 const HomeStack = createNativeStackNavigator();
@@ -145,6 +146,7 @@ const HomeNavStack = () =>{
             <HomeStack.Screen name='FavoriteAlbumListScreen' component={FavoriteAlbumListScreen}/>
             <HomeStack.Screen name='GenreScreen' component={GenreScreen}/>
             <HomeStack.Screen name='GenreListScreen' component={GenreListScreen}/>
+            <HomeStack.Screen name='CreatePlaylist' component={CreatePlaylist} initialParams={{userId: userState.uid}}/>
           </HomeStack.Navigator>
           <NowPlayingBar style={styles.bar}/>
         </View>

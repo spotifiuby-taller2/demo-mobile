@@ -341,6 +341,17 @@ const ProfileScreen = ({navigation}) => {
                   userList={true}/>
               )
             }
+            {
+              profile.isListener && (
+                // TODO: style
+                <Button
+                  onPress={() => {
+                    navigation.navigate('CreatePlaylist', {userId: userState.uid})
+                  }}>
+                  Crear playlist
+                </Button>
+              )
+            }
           </View>
         </ScrollView>
       </SafeAreaView>
