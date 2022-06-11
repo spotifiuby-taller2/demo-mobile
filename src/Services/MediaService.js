@@ -96,6 +96,11 @@ const getPublicPlaylists = () => {
     .then(playlists => playlists.filter(p => p.isCollaborative));
 }
 
+const getPlaylist = (id) => {
+  return requestToGateway('GET', `${constants.MEDIA_HOST}${constants.PLAYLIST_URL}/${id}`)
+    .then(getBodyOrThrow);
+}
+
 export {
   createSong,
   createAlbum,
@@ -113,4 +118,5 @@ export {
   getGenreAlbums,
   createPlaylist,
   getPublicPlaylists,
+  getPlaylist,
 };

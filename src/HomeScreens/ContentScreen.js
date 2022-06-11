@@ -66,7 +66,7 @@ const ContentScreen = ({navigation}) => {
                             key={id}
                             playableItem={toPlayable(playlist)}
                             play={() => player.playList(playlist.songs.map(songToTrack), 0)}
-                            moreInfoCallback={() => navigation.navigate('PlaylistScreen', {playlistId: id})}
+                            moreInfoCallback={() => navigation.navigate('PlaylistScreen', {playlistId: playlist.id})}
 
           />)}
         max={3}

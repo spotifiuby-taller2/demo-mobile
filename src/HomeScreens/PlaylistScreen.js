@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import SongList from "../Components/SongList";
-import {getAlbum} from "../Services/MediaService";
+import {getAlbum, getPlaylist} from "../Services/MediaService";
 import {Image, View, StyleSheet} from "react-native";
 import {Text} from "react-native-paper";
 import LoaderScreen from "../Components/LoaderScreen";
@@ -8,40 +8,32 @@ import defaultArtwork from "../../assets/album-placeholder.png";
 import FavouriteAlbumIconButton from "../Components/FavouriteAlbumIconButton";
 import { ScrollView } from "react-native-gesture-handler";
 
-const AlbumScreen = ({navigation, route}) => {
-  const albumId = route.params.albumId;
-  const [album, setAlbum] = useState();
+const PlaylistScreen = ({navigation, route}) => {
+  const playlistId = route.params.playlistId;
+  const [playlist, setPlaylist] = useState();
 
   useEffect(() => {
-    getAlbum(albumId).then(a => {
-      setAlbum(a);
-      navigation.setOptions({ headerShown: true, headerTitle: a.title });
+    getPlaylist(playlistId).then(p => {
+      setPlaylist(p);
+      navigation.setOptions({ headerShown: true, headerTitle: p.title });
     });
   }, [])
 
-  if (album === undefined) {
+  if (playlist === undefined) {
     return <LoaderScreen/>;
   }
 
   return (
-
     <View style={styles.container}>
       <ScrollView>
-      <Image source={album.link ? {uri: album.link} : defaultArtwork} style={styles.artwork}/>
-      <Text style={styles.title}>{album.title}</Text>
+        <Image source={playlist.artwork ? {uri: playlist.artwork} : defaultArtwork} style={styles.artwork}/>
+        <Text style={styles.title}>{playlist.title}</Text>
+        <Text>{playlist.description}</Text>
 
         <SongList navigation={navigation}
-                  songList={album.songs ?? []}/>
+                  songList={playlist.songs ?? []}/>
 
-
-
-      <Text>{"\n\n"}
-      </Text>
-
-      <FavouriteAlbumIconButton style={{alignSelf: 'center'}}
-                                size={90}
-                                albumId={route.params.albumId}/>
-    </ScrollView>
+      </ScrollView>
     </View>
   )
 }
@@ -67,4 +59,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AlbumScreen;
+export default PlaylistScreen;
