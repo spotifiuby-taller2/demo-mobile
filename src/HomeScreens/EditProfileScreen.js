@@ -234,13 +234,14 @@ const EditProfileScreen = ({navigation}) => {
               uid={profile.id}
               name={profile.name}
               surname={profile.surname}
-              style={styles.avatar}
-              photoUrl={profile.photoUrl}
               pictureSize={175}
+              photoUrl={profile.photoUrl}
               disabled={false}
+              defaultStyle={styles.defaultImage}
+              Imagestyle={styles.profilePicture}
             />
 
-            <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+            <View style={{flexDirection: 'row', alignSelf: 'center', marginTop:10}}>
               <EditProfileTextInput
                 label='Nombre'
                 name='name'
@@ -517,6 +518,16 @@ const styles = StyleSheet.create(
       alignSelf: 'center',
       justifyContent: 'space-around',
       backgroundColor: 'white'
+    },
+    defaultImage: {
+      marginTop: 40,
+      marginBottom: 50,
+      alignSelf: 'center',
+    },
+    profilePicture: {
+      marginTop: 40,
+      marginBottom: 50,
+      alignSelf: 'center',
     }
   }
 )

@@ -1,6 +1,5 @@
 import React from 'react'
-import {ScrollView, Text, View} from "react-native";
-import {containerStyle} from "../styles/genericStyles";
+import {ScrollView, View} from "react-native";
 import PlayableListItem from "./PlayableListItem";
 import {songToTrack} from "../others/utils";
 import usePlayerAction from "../Hooks/usePlayerAction";
@@ -9,7 +8,7 @@ const SongList = ({navigation, songList}) => {
   const player = usePlayerAction();
   const tracks = songList.map(songToTrack);
   return (
-      <ScrollView style={containerStyle} showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View>
           {
             tracks.map((track, id) => {

@@ -1,6 +1,6 @@
 import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
 import React, {useEffect, useState} from 'react'
-import {Button, Chip, Text, Avatar} from 'react-native-paper'
+import {Avatar, Button, Chip, Text} from 'react-native-paper'
 import {useRoute} from '@react-navigation/native';
 import constants from '../others/constants'
 import {getToGateway, playlistToPlayable, songToTrack} from "../others/utils";
@@ -256,10 +256,10 @@ const ProfileScreen = ({navigation}) => {
 
             {
               profile.isArtist && profile.isVerified && (
-                  <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-                    <Avatar.Icon icon="check-decagram" color={'green'} size={30}/>
-                      <Text style={styles.usertype}>{'Artista verificado'}</Text>
-                  </View>
+                <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+                  <Avatar.Icon icon="check-decagram" color={'green'} size={34} style={{backgroundColor: 'transparent'}}/>
+                  <Text style={styles.usertype}>{'Artista verificado'}</Text>
+                </View>
               )
             }
 
@@ -276,7 +276,10 @@ const ProfileScreen = ({navigation}) => {
             {profile.isListener &&
               (
                 <>
-                  <Text style={{...styles.text, marginTop: 26}}>Suscripción: {subscription[profile.subscription].label}</Text>
+                  <Text style={{
+                    ...styles.text,
+                    marginTop: 26
+                  }}>Suscripción: {subscription[profile.subscription].label}</Text>
                   <Text style={styles.text}>Intereses Musicales</Text>
                   <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap'}}>
                     {profile.metal && (<Chip style={styles.chip}><Text> Metal</Text></Chip>)}

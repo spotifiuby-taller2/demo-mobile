@@ -4,8 +4,7 @@ import {postToGateway} from "../others/utils";
 import constants from "../others/constants";
 import * as Notifications from 'expo-notifications';
 import Top3List from '../Components/Top3List';
-import {Text} from 'react-native';
-import {ScrollView} from "react-native";
+import {Text, ScrollView} from 'react-native';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({

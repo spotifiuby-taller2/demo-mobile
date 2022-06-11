@@ -14,6 +14,7 @@ const UserListScreen = ({navigation}) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+
     function getAllUsers() {
 
       getToGateway(constants.USERS_HOST + constants.APP_USERS_LIST_URL, "")
@@ -27,8 +28,11 @@ const UserListScreen = ({navigation}) => {
         });
     }
 
-    getAllUsers();
-  }, []);
+    return navigation.addListener('focus',
+      () => {
+        getAllUsers();
+      });
+    }, []);
 
 
   const filterUsers = text => {

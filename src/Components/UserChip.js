@@ -12,9 +12,7 @@ const UserChip = props => {
     <TouchableOpacity style={styles.chip} onPress={() => {
       props.navigation.navigate('ProfileScreen', {uid: props.user.id, usingList: true})
     }}>
-      <View style={{
-        flexDirection: 'row',
-      }}>
+      <View style={{flexDirection: 'row'}}>
           <ProfilePicture
                     uid={props.user.id}
                     name={props.user.name}
