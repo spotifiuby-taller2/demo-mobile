@@ -190,6 +190,13 @@ const songToTrack = (song) => {
   };
 };
 
+const playlistToPlayable = playlist => {
+  return {
+    title: playlist.title,
+    artwork: playlist.artwork ? {uri: playlist.artwork} : defaultArtwork,
+  };
+}
+
 export {
   getSHAOf,
   getBiometricalMailAndPassword,
@@ -201,4 +208,5 @@ export {
   checkAuthTokenExpirationTime,
   getChatId,
   songToTrack,
+  playlistToPlayable,
 }

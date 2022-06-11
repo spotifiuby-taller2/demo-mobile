@@ -6,11 +6,10 @@ import TopList from "../Components/TopList";
 import genre from "../data/Genre"
 import GenreChip from "../Components/GenreChip";
 import usePlayerAction from "../Hooks/usePlayerAction";
-import defaultArtwork from "../../assets/album-placeholder.png";
 import {useFocusEffect} from "@react-navigation/native";
 import {getPublicPlaylists} from "../Services/MediaService";
 import PlayableListItem from "../Components/PlayableListItem";
-import {songToTrack} from "../others/utils";
+import {playlistToPlayable, songToTrack} from "../others/utils";
 import LoaderScreen from "../Components/LoaderScreen";
 
 const ContentScreen = ({navigation}) => {
@@ -19,13 +18,6 @@ const ContentScreen = ({navigation}) => {
   const [loading, setLoading] = useState(true);
 
   const player = usePlayerAction();
-
-  const toPlayable = playlist => {
-    return {
-      title: playlist.title,
-      artwork: playlist.artwork ? {uri: playlist.artwork} : defaultArtwork,
-    };
-  };
 
   useFocusEffect(useCallback(() => {
     setLoading(true);
@@ -63,7 +55,7 @@ const ContentScreen = ({navigation}) => {
         renderDataItem={(playlist, id) => (
           <PlayableListItem id={id}
                             key={id}
-                            playableItem={toPlayable(playlist)}
+                            playableItem={playlistToPlayable(playlist)}
                             play={() => player.playList(playlist.songs.map(songToTrack), 0)}
                             moreInfoCallback={() => navigation.navigate('PlaylistScreen', {playlistId: playlist.id})}
 

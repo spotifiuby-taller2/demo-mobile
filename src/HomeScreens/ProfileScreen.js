@@ -53,20 +53,20 @@ const ProfileScreen = ({navigation}) => {
   }
 
   const [profile, setProfile] = useState(initialState);
+  const [playlists, setPlaylists] = useState([]);
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
-    let isMounted = true;
-
     if (!nameChanged) {
-      if (route.params?.usingList)
+      if (route.params?.usingList) {
         navigation.setOptions({headerShown: true, headerTitle: 'Perfil'});
-      if (isMounted)
-        setNameChanged(true);
+      }
+      setNameChanged(true);
     }
 
-    function getProfile(userId) {
-      getToGateway(constants.USERS_HOST + constants.PROFILE_URL
+    async function getProfile(userId) {
+      setInitialized(false);
+      await getToGateway(constants.USERS_HOST + constants.PROFILE_URL
         + "?"
         + constants.USER_ID_QUERY_PARAM
         + userId)
@@ -100,31 +100,22 @@ const ProfileScreen = ({navigation}) => {
               nFollowers: res.nFollowers,
               subscription: res.subscription
             };
-            if (isMounted) {
-              setProfile(newState);
-              setNFollowers(res.nFollowers);
-              setRenderButton(true);
-              setInitialized(true);
-            }
+            setProfile(newState);
+            setNFollowers(res.nFollowers);
+            setRenderButton(true);
           }
         })
     }
 
     const unsubscribeFocus = navigation.addListener('focus',
-      () => {
-        if (isMounted) setRenderButton(false);
-        getProfile(route.params.uid);
-      });
-
-    const unsubscribeBlur = navigation.addListener('blur',
-      () => {
-        if (isMounted) setInitialized(false);
+      async () => {
+        setRenderButton(false);
+        await getProfile(route.params.uid);
+        setInitialized(true);
       });
 
     return () => {
-      isMounted = false;
       unsubscribeFocus();
-      unsubscribeBlur();
     }
   }, [navigation]);
 
@@ -332,24 +323,21 @@ const ProfileScreen = ({navigation}) => {
             {
               profile.id === userState.uid && profile.isListener && renderButton &&
               (
-                <Top3List
-                  title='Artistas Favoritos'
-                  endpoint={constants.USERS_HOST + constants.APP_FAV_ARTIST_LIST_URL + "?"
-                    + constants.USER_ID_QUERY_PARAM + profile.id + "&"}
-                  navigation={navigation}
-                  open='FavoriteArtistsListScreen'
-                  userList={true}/>
-              )
-            }
-            {
-              profile.isListener && (
-                // TODO: style
-                <Button
-                  onPress={() => {
-                    navigation.navigate('CreatePlaylist', {userId: userState.uid})
-                  }}>
-                  Crear playlist
-                </Button>
+                <>
+                  <Top3List
+                    title='Artistas Favoritos'
+                    endpoint={constants.USERS_HOST + constants.APP_FAV_ARTIST_LIST_URL + "?"
+                      + constants.USER_ID_QUERY_PARAM + profile.id + "&"}
+                    navigation={navigation}
+                    open='FavoriteArtistsListScreen'
+                    userList={true}/>
+                  <Button
+                    onPress={() => {
+                      navigation.navigate('CreatePlaylist', {userId: userState.uid})
+                    }}>
+                    Crear playlist
+                  </Button>
+                </>
               )
             }
           </View>
