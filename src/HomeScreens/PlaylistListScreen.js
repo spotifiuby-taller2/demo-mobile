@@ -5,27 +5,18 @@ import {containerStyle} from "../styles/genericStyles";
 import PlayableListItem from "../Components/PlayableListItem";
 import defaultArtwork from "../../assets/album-placeholder.png";
 import usePlayerAction from "../Hooks/usePlayerAction";
-import {getPublicPlaylists} from "../Services/MediaService";
-import LoaderScreen from '../Components/LoaderScreen';
 import {Searchbar} from "react-native-paper";
+import {useRoute} from "@react-navigation/native";
 
 const PlaylistListScreen = ({navigation}) => {
-  const [playlistList, setPlaylistList] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const route = useRoute();
+  const {playlists} = route.params;
   const [text, setText] = useState('')
   const player = usePlayerAction();
 
   useEffect(() => {
-    getPublicPlaylists().then(playlists => {
-      setPlaylistList(playlists);
-      setLoading(false);
-    });
-  }, []);
-
-  useEffect(() => {
     navigation.setOptions({headerShown: true, headerTitle: 'Playlists'});
   }, []);
-
 
   const toPlayable = playlist => {
     return {
@@ -39,9 +30,6 @@ const PlaylistListScreen = ({navigation}) => {
     return a => a.title.toLowerCase().includes(filterText);
   }
 
-  if (loading) {
-    return <LoaderScreen/>;
-  }
   return (
     <View style={{...containerStyle, marginTop: 10}}>
       <SafeAreaView>
@@ -55,7 +43,7 @@ const PlaylistListScreen = ({navigation}) => {
           <View style={{marginBottom: 10}}/>
           {
             <FlatList
-              data={playlistList.filter(filterPlaylist(text))}
+              data={playlists.filter(filterPlaylist(text))}
               renderItem={({item, index}) => <PlayableListItem id={index}
                                                                key={index}
                                                                playableItem={toPlayable(item)}

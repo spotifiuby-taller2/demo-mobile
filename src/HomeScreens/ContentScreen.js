@@ -69,7 +69,7 @@ const ContentScreen = ({navigation}) => {
 
           />)}
         max={3}
-        viewMoreCallback={() => navigation.navigate('PlaylistListScreen')}
+        viewMoreCallback={() => navigation.navigate('PlaylistListScreen', {playlists: playlists})}
       />
 
       <TopList
