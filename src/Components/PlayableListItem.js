@@ -51,10 +51,10 @@ const PlayableListItem = ({playableItem, play, moreInfoCallback}) => (
       <Image style={styles.artwork} source={playableItem.artwork}/>
       <View style={styles.textInfo}>
         <Text numberOfLines={1} style={styles.title}>{playableItem.title}</Text>
-        <Text numberOfLines={1} style={styles.artist}>{playableItem.artist}</Text>
+        {playableItem.artist ? (<Text numberOfLines={1} style={styles.artist}>{playableItem.artist}</Text>) : null}
       </View>
     </View>
-    <IconButton 
+    <IconButton
       icon='information'
       style={{flex: 1, marginRight: 5}}
       size={30}

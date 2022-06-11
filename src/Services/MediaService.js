@@ -85,10 +85,15 @@ const getGenreSongs = (genre) => {
 }
 
 const createPlaylist = (playlist) => {
-  console.log(JSON.stringify(playlist));
   return requestToGateway('POST', `${constants.MEDIA_HOST}${constants.PLAYLIST_URL}`,
     playlist)
     .then(getBodyOrThrow);
+}
+
+const getPublicPlaylists = () => {
+  return requestToGateway('GET', `${constants.MEDIA_HOST}${constants.PLAYLIST_URL}`)
+    .then(getBodyOrThrow)
+    .then(playlists => playlists.filter(p => p.isCollaborative));
 }
 
 export {
@@ -107,4 +112,5 @@ export {
   getGenreSongs,
   getGenreAlbums,
   createPlaylist,
+  getPublicPlaylists,
 };
