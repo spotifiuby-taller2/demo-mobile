@@ -7,7 +7,7 @@ import {Searchbar} from "react-native-paper";
 import {containerStyle} from "../styles/genericStyles";
 import LoaderScreen from '../Components/LoaderScreen';
 
-const UserListScreen = ({navigation}) => {
+const BandMenbersListScreen = ({navigation}) => {
 
   const [list, setList] = useState([]);
   const [text, setText] = useState('');
@@ -16,7 +16,8 @@ const UserListScreen = ({navigation}) => {
   useEffect(() => {
     function getAllUsers() {
 
-      getToGateway(constants.USERS_HOST + constants.APP_USERS_LIST_URL, "")
+      getToGateway(constants.USERS_HOST + constants.BAND_URL + "?" 
+            + constants.USER_ID_QUERY_PARAM + profile.id, "")
         .then(res => {
           if (res.error !== undefined) {
             alert(res.error);
@@ -74,4 +75,4 @@ const styles = StyleSheet.create(
   }
 )
 
-export default UserListScreen;
+export default BandMenbersListScreen;

@@ -6,7 +6,6 @@ import React from 'react'
 import { Text, Chip, Avatar } from 'react-native-paper';
 import { useAuthUser } from '../context/AuthContext';
 
-/* User must have {name: '', surname: '', email:''} */
 
 const styles = StyleSheet.create(
     {
@@ -33,12 +32,12 @@ const styles = StyleSheet.create(
                             style={{marginRight: 16,
                                     marginBottom: -30,
                                     backgroundColor: '#ff4500'}}
-                            label={`${props.user.name.charAt(0)}${props.user.surname.charAt(0)}`}
+                            label={`${props.user.username.charAt(0)}`}
                             />
 
                         <View>
                             <Text style={styles.name}>{"\n"}
-                                {props.user.name} {props.user.surname}</Text>
+                                {props.user.username}</Text>
                         </View>
                 </View>
             </Chip>

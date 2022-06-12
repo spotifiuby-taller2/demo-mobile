@@ -53,7 +53,7 @@ const HomeScreen = ({navigation}) => {
     return (
         <ScrollView style={{backgroundColor: '#f5fcff'}}>
             <Text style={{alignSelf: 'center', fontSize: 20, color: '#388AD6', margin: 20}}>
-                Bienvenido {userState.name} {userState.surname}
+                Bienvenido {userState.username}
             </Text>
 
             <Top3List

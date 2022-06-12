@@ -22,8 +22,7 @@ const ProfileScreen = ({navigation}) => {
 
   const initialState = {
     id: '',
-    name: '',
-    surname: '',
+    username: '',
     email: '',
     phoneNumber: '',
     isListener: false,
@@ -47,7 +46,8 @@ const ProfileScreen = ({navigation}) => {
     pushNotificationToken: '',
     isVerified: false,
     verificationVideoUrl: '',
-    nFollowers: null
+    nFollowers: null,
+    nMembers: null,
   }
 
   const [profile, setProfile] = useState(initialState);
@@ -74,8 +74,7 @@ const ProfileScreen = ({navigation}) => {
           } else {
             const newState = {
               id: res.id,
-              name: res.name,
-              surname: res.surname,
+              username: res.username,
               isListener: res.isListener,
               isArtist: res.isArtist,
               metal: res.metal,
@@ -95,7 +94,8 @@ const ProfileScreen = ({navigation}) => {
               pushNotificationToken: res.pushNotificationToken,
               isVerified: res.isVerified,
               verificationVideoUrl: res.verificationVideoUrl,
-              nFollowers: res.nFollowers
+              nFollowers: res.nFollowers,
+              nMembers: res.nMembers
             };
             if (isMounted) {
               setProfile(newState);
@@ -188,7 +188,7 @@ const ProfileScreen = ({navigation}) => {
                     </Button>)
                   }
                   {
-                    userState.uid === profile.id && profile.isArtist &&
+                    userState.uid === profile.id && profile.isBand &&
           
                       (<Button
                         mode='text'
@@ -222,10 +222,8 @@ const ProfileScreen = ({navigation}) => {
                         {
                           idEmissor: userState.uid,
                           idReceptor: profile.id,
-                          nameReceptor: profile.name,
-                          surnameReceptor: profile.surname,
-                          nameEmissor: userState.name,
-                          surnameEmissor: userState.surname,
+                          usernameReceptor: profile.username,
+                          usernameEmissor: userState.username,
                           pushNotificationToken: profile.pushNotificationToken,
                           photoUrl: profile.photoUrl
                         })
@@ -244,8 +242,7 @@ const ProfileScreen = ({navigation}) => {
               renderButton && (
                 <ProfilePicture
                   uid={profile.id}
-                  name={profile.name}
-                  surname={profile.surname}
+                  username={profile.username}
                   pictureSize={175}
                   photoUrl={profile.photoUrl}
                   disabled={true}
@@ -255,7 +252,7 @@ const ProfileScreen = ({navigation}) => {
               )
             }
 
-            <Text style={styles.name}>{profile.name} {profile.surname}</Text>
+            <Text style={styles.name}>{profile.username}</Text>
 
             {
               (profile.isArtist && (
@@ -317,6 +314,7 @@ const ProfileScreen = ({navigation}) => {
                 <View>
                   <Button
                     mode='contained'
+                    disabled={(profile.nMembers === 0) && profile.isBand}
                     style={{
                       backgroundColor: 'skyblue',
                       height: 100,
@@ -328,15 +326,21 @@ const ProfileScreen = ({navigation}) => {
                       marginBottom: 30
                     }}
                     onPress={() => {
-                      navigation.navigate('CreateContentScreen')
-                    }}>
+                      navigation.navigate('CreateContentScreen');
+                    }}
+                    >
                     <MaterialCommunityIcons
                       name='plus'
                       size={50}
                       color='darkblue'
                       styles={{alignSelf: 'center'}}/>
                   </Button>
-
+                  {
+                    (profile.isBand) && (profile.nMembers === 0) (
+                      <Text style={{alignSelf: 'center', fontSize: 15}}>Una banda no podra subir contenido si no tiene al menos un integrante</Text>
+                    )
+                  }
+                  
                 </View>
               )
             }
@@ -349,6 +353,18 @@ const ProfileScreen = ({navigation}) => {
                       + constants.USER_ID_QUERY_PARAM + profile.id + "&"}
                   navigation={navigation}
                   open='FavoriteArtistsListScreen'
+                  userList={true}/>
+              )
+            }
+            {
+              profile.id === userState.uid && profile.isBand && renderButton &&
+              (
+                <Top3List 
+                  title='Integrantes'
+                  endpoint={constants.USERS_HOST + constants.BAND_URL + "?" 
+                      + constants.USER_ID_QUERY_PARAM + profile.id + "&"}
+                  navigation={navigation}
+                  open='BandMenbersListScreen'
                   userList={true}/>
               )
             }

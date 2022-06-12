@@ -10,8 +10,7 @@ import constants from "../others/constants"
 export default SignUpScreen = ({navigation}) => {
 
   const [id, setId] = useState('');
-  const [name, setName] = useState('');
-  const [surname, setSurname] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
@@ -22,10 +21,10 @@ export default SignUpScreen = ({navigation}) => {
   const [secureRepeatPassword, setSecureRepeatPassword] = useState(true);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [phoneNumberError, setPhoneNumberError] = useState(null);
-  const [nameError, setNameError] = useState(null);
-  const [surnameError, setSurnameError] = useState(null);
+  const [usernameError, setUsernameError] = useState(null);
   const [isListener, setIsListener] = useState(false);
   const [isArtist, setIsArtist] = useState(false);
+  const [isBand, setIsBand] = useState(false);
   const [userTypeError, setUserTypeError] = useState(null);
 
       let handleSignUp = async () => {
@@ -38,8 +37,7 @@ export default SignUpScreen = ({navigation}) => {
         let location = null;
 
           const requestBody = {
-              name: name,
-              surname: surname,
+              username: username,
               email: email,
               phoneNumber: phoneNumber,
               password: getSHAOf(getSHAOf(password)),
@@ -62,44 +60,44 @@ export default SignUpScreen = ({navigation}) => {
       requestBody['longitude'] = location.coords.longitude;
     }
 
-        requestBody['redirectTo'] = constants.USERS_HOST + constants.SIGN_UP_URL;
-        postToGateway(requestBody)
-                  .then((response) => {
-                      checkResponse(response);
-                  });
+    if ( isBand ){
+        requestBody["isArtist"] = true;
+    }
+
+    requestBody['redirectTo'] = constants.USERS_HOST + constants.SIGN_UP_URL;
+    postToGateway(requestBody)
+                .then((response) => {
+                    checkResponse(response);
+                });
+}
+
+
+
+
+    let checkResponse = (res) => {
+
+        if (res.id) {
+            setId(res.id);
         }
 
+            if (res.error === undefined || res.error === "Ya hay un usuario con ese mail pendiente de confirmación") {
+            navigation.navigate('PINScreen',
+                {
+                email: email,
+                password: getSHAOf(getSHAOf(password)),
+                isListener: isListener,
+                tempId: (id === '') ? res.id : id
+                });
 
-
-
-        let checkResponse = (res) => {
-
-              if (res.id) {
-                  setId(res.id);
-              }
-
-    if (res.error === undefined || res.error === "Ya hay un usuario con ese mail pendiente de confirmación") {
-      navigation.navigate('PINScreen',
-        {
-          email: email,
-          password: getSHAOf(getSHAOf(password)),
-          isListener: isListener,
-          tempId: (id === '') ? res.id : id
-        });
-
-    } else {
-      alert(res.error);
-    }
+        } else {
+            alert(res.error);
+        }
   }
 
   let validate = () => {
     let ok = true;
-    if (name === '') {
-      setNameError('Campo "Nombre" debe ser completado');
-      ok = false;
-    }
-    if (surname === '') {
-      setSurnameError('Campo "Apellido" debe ser completado');
+    if (username === '') {
+      setUsernameError('Campo "Nombre" debe ser completado');
       ok = false;
     }
 
@@ -136,7 +134,7 @@ export default SignUpScreen = ({navigation}) => {
       ok = false;
     }
 
-    if (!isArtist && !isListener) {
+    if (!isArtist && !isListener && !isBand) {
       setUserTypeError("Elija el tipo de usuario que desee ser");
       ok = false;
     }
@@ -154,35 +152,19 @@ export default SignUpScreen = ({navigation}) => {
                               <Title>Ingrese sus datos:</Title>
 
                               <TextInput
-                                  name='Name'
+                                  name='Username'
                                   label='Nombre*'
-                                  value={name}
+                                  value={username}
                                   onChangeText={(newText) => {
-                                      setName(newText);
-                                      setNameError(null);
+                                      setUsername(newText);
+                                      setUsernameError(null);
                                   }}
                                   mode='outlined'
-                                  error={nameError !== null}
+                                  error={usernameError !== null}
                                   style={styles.input}/>
 
-                              {nameError && (
-                                  <Text style={{color: 'red'}}>{nameError}</Text>
-                              )}
-
-                              <TextInput
-                                  name='Surname'
-                                  label='Apellido*'
-                                  value={surname}
-                                  onChangeText={(newText) => {
-                                      setSurname(newText);
-                                      setSurnameError(null);
-                                  }}
-                                  mode='outlined'
-                                  error={surnameError !== null}
-                                  style={styles.input}/>
-
-                              {surnameError && (
-                                  <Text style={{color: 'red'}}>{surnameError}</Text>
+                              {usernameError && (
+                                  <Text style={{color: 'red'}}>{usernameError}</Text>
                               )}
 
                               <TextInput
@@ -261,7 +243,7 @@ export default SignUpScreen = ({navigation}) => {
                               <Title style={{fontSize: 17, marginTop: 20}}>Tipo de usuario:</Title>
 
                               <View style={{flexDirection: 'row', marginTop: 10, paddingRight: 100}}>
-                                  <View style={{flexDirection: 'row', marginRight: 70}}>
+                                  <View style={{flexDirection: 'column', marginHorizontal: 10}}>
                                       <Title style={{fontSize: 14}}>Oyente</Title>
                                       <IconButton
                                           icon="headphones"
@@ -274,8 +256,8 @@ export default SignUpScreen = ({navigation}) => {
                                       />
                                   </View>
 
-                                  <View style={{flexDirection: 'row'}}>
-                                      <Title style={{fontSize: 14}}>Artista</Title>
+                                  <View style={{flexDirection: 'column', marginHorizontal: 10}}>
+                                      <Title style={{fontSize: 14, alignSelf: 'center'}}>Artista</Title>
                                       <IconButton
                                           icon='account'
                                           color={isArtist ? 'skyblue' : 'grey'}
@@ -286,6 +268,21 @@ export default SignUpScreen = ({navigation}) => {
                                           }}
                                       />
                                   </View>
+
+                                  <View style={{flexDirection: 'column', marginHorizontal: 10}}>
+                                        <Title style={{fontSize: 14, alignSelf: 'center'}}>Banda</Title>
+                                        <IconButton
+                                          icon='account-group'
+                                          color={isBand ? 'skyblue' : 'grey'}
+                                          size={50}
+                                          onPress={() => {
+                                              setIsBand(!isBand);
+                                              setUserTypeError(null);
+                                          }}
+                                        />
+                                  </View>
+
+                                  
                               </View>
                               {userTypeError && (
                                   <Text style={{color: 'red'}}>{userTypeError}</Text>

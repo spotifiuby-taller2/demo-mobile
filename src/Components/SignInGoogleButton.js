@@ -43,8 +43,7 @@ const SignInWithGoogle = (props) => {
     const requestBody = {
       token: response._tokenResponse.idToken,
       email: response._tokenResponse.email,
-      name: response._tokenResponse.firstName,
-      surname: response._tokenResponse.lastName,
+      username: `${response._tokenResponse.firstName} ${response._tokenResponse.lastName}`,
       link: "mobile",
       signin: "google",
       isArtist: isArtist,

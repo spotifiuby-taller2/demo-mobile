@@ -15,16 +15,11 @@ import EditProfileTextInput from '../Components/EditProfileTextInput';
 const reducer = (state, action = {})=>{
 
     switch(action.type){
-        case 'name':
+        case 'username':
         return{
             ...state,
-            name: action.value,
+            username: action.value,
         };
-        case 'surname':
-        return{
-            ...state,
-            surname: action.value,
-        }
   
         case 'phoneNumber':
         return{
@@ -122,12 +117,8 @@ const EditProfileScreen = ({navigation}) =>{
              + "?" + constants.USER_ID_QUERY_PARAM + profile.id
         };
 
-        if ( route.params.profile.name !== profile.name ){
-          requestBody['name'] = profile.name;
-        }
-
-        if ( route.params.profile.surname !== profile.surname ){
-          requestBody['surname'] = profile.surname;
+        if ( route.params.profile.username !== profile.username ){
+          requestBody['username'] = profile.name;
         }
 
         if ( route.params.metal !== profile.metal ){
@@ -170,14 +161,9 @@ const EditProfileScreen = ({navigation}) =>{
           requestBody['other'] = profile.others;
         }
 
-        if ( requestBody?.name === '' ){
+        if ( requestBody?.username === '' ){
           
           alert("Campo nombre vacio.");  
-          return;
-        }
-        
-        if ( requestBody?.surname === '' ){
-          alert("Campo apellido vacio.");  
           return;
         }
 
@@ -197,8 +183,7 @@ const EditProfileScreen = ({navigation}) =>{
               <View>
                 <ProfilePicture
                   uid={profile.id}
-                  name={profile.name} 
-                  surname={profile.surname}
+                  username={profile.username} 
                   style={styles.avatar}
                   photoUrl={profile.photoUrl}
                   pictureSize={175}
@@ -208,18 +193,10 @@ const EditProfileScreen = ({navigation}) =>{
                 <View style={{flexDirection: 'row', alignSelf: 'center'}}>
                     <EditProfileTextInput 
                         label='Nombre'
-                        name='name'
+                        name='username'
                         input={profile.name}
                         execute={dispatch}
                         styles={styles.name}/>
-                    
-                    <EditProfileTextInput 
-                        label='Apellido'
-                        name='surname'
-                        input={profile.surname}
-                        execute={dispatch}
-                        styles={styles.name}/>
-
                 </View>
 
                 {profile.isListener && 

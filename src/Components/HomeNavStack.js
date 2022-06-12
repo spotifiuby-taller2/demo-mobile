@@ -29,6 +29,7 @@ import FavoriteAlbumListScreen from "../HomeScreens/FavoriteAlbumListScreen";
 import GenreScreen from "../HomeScreens/GenreScreen";
 import GenreListScreen from "../HomeScreens/GenreListScreen";
 import CreateBandScreen from '../HomeScreens/CreateBandScreen'
+import BandMenbersListScreen from '../HomeScreens/BandMenbersListScreen';
 
 
 const HomeStack = createNativeStackNavigator();
@@ -111,7 +112,7 @@ const HomeNavStack = () =>{
                         + userState.uid);
         }
         getUserBasicInfo()
-          .then(res =>setUserBasicInfo(res.type, res.name, res.surname));
+          .then(res =>setUserBasicInfo(res.type, res.username));
 
 
       registerForPushNotifications()
@@ -148,6 +149,7 @@ const HomeNavStack = () =>{
             <HomeStack.Screen name='GenreScreen' component={GenreScreen}/>
             <HomeStack.Screen name='GenreListScreen' component={GenreListScreen}/>
             <HomeStack.Screen name='CreateBandScreen' component={CreateBandScreen}/>
+            <HomeStack.Screen name='BandMenbersListScreen' component={BandMenbersListScreen}/>
           </HomeStack.Navigator>
           <NowPlayingBar style={styles.bar}/>
         </View>

@@ -22,6 +22,7 @@ export default RequestExternalUserATypeScreen = ({navigation}) => {
 
     const [isArtist, setIsArtist] = useState(false);
     const [isListener, setIsListener] = useState(false);
+    const [isBand, setIsBand] = useState(false);
     const [userTypeError, setUserTypeError] = useState(null);
 
     let handleSend = async () => {
@@ -41,9 +42,13 @@ export default RequestExternalUserATypeScreen = ({navigation}) => {
 
         body['isListener'] = isListener;
         body['isArtist'] = isArtist;
+        body['isBand'] = isBand;
         body['redirectTo'] = constants.USERS_HOST + constants.SIGN_IN_URL;
 
-        // El manejo de errores se puede reciclar de backoffice
+        if ( isBand ){
+            body['isArtist'] = true;
+        }
+
         const response = await postToGateway(body);
 
 
@@ -120,6 +125,18 @@ export default RequestExternalUserATypeScreen = ({navigation}) => {
                                         size={50}
                                         onPress={() => {
                                             setIsArtist(!isArtist);
+                                            setUserTypeError(null);
+                                        }}
+                                    />
+                                </View>
+                                <View style={{flexDirection: 'row'}}>
+                                    <Title style={{fontSize: 14}}>Banda</Title>
+                                    <IconButton
+                                        icon='account-group'
+                                        color={isBand ? 'skyblue' : 'grey'}
+                                        size={50}
+                                        onPress={() => {
+                                            setIsBand(!isBand);
                                             setUserTypeError(null);
                                         }}
                                     />

@@ -4,9 +4,6 @@ import {Avatar, Text} from 'react-native-paper';
 import ProfilePicture from './ProfilePicture'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
-
-/*user must be {name: '', surname: ''}*/
-
 const UserChip = props => {
   return (
     <TouchableOpacity style={styles.chip} onPress={() => {
@@ -17,8 +14,7 @@ const UserChip = props => {
       }}>
           <ProfilePicture
                     uid={props.user.id}
-                    name={props.user.name}
-                    surname={props.user.surname}
+                    username={props.user.username}
                     pictureSize={56}
                     photoUrl={props.user.photoUrl}
                     disabled={true}
@@ -27,7 +23,7 @@ const UserChip = props => {
                   />
 
           <View style={{flexDirection: 'column', marginTop: 15}}>
-            <Text style={styles.name}>{props.user.name} {props.user.surname}</Text>
+            <Text style={styles.name}>{props.user.username}</Text>
             <View style={{flexDirection: 'row'}}>
               <MaterialCommunityIcons
                 name={props.user.isArtist? 'account-music': 'headphones'}

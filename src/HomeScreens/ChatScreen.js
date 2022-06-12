@@ -23,11 +23,9 @@ const ChatScreen = ({navigation}) =>{
         const {
           idEmissor,
           idReceptor,
-          nameReceptor,
-          surnameReceptor,
+          usernameReceptor,
           pushNotificationToken,
-          nameEmissor,
-          surnameEmissor,
+          usernameEmissor,
           photoUrl} = route.params;
         
         useEffect(()=>{
@@ -68,10 +66,8 @@ const ChatScreen = ({navigation}) =>{
             const params = {
               idEmissor: idReceptor,
               idReceptor: idEmissor,
-              nameReceptor: nameEmissor,
-              surnameReceptor: surnameEmissor,
-              nameEmissor: nameReceptor,
-              surnameEmissor: surnameReceptor,
+              usernameReceptor: usernameEmissor,
+              usernameEmissor: usernameReceptor,
               pushNotificationToken: token,
             }
 
@@ -79,7 +75,7 @@ const ChatScreen = ({navigation}) =>{
               to: `ExponentPushToken[${pushNotificationToken}]`,
               title: 'Spotifiuby',
               sound: 'default',
-              body: `${nameEmissor} ${surnameEmissor} te ha enviado mensajes`,
+              body: `${usernameEmissor} te ha enviado mensajes`,
               data: {
                   type: 'chat',
                   screenName: 'ChatScreen',
@@ -127,8 +123,7 @@ const ChatScreen = ({navigation}) =>{
                     <View style={{marginLeft: 13}}></View>
                     <ProfilePicture
                         uid={idReceptor}
-                        name={nameReceptor}
-                        surname={surnameReceptor}
+                        username={usernameReceptor}
                         style={styles.avatar}
                         photoUrl={photoUrl}
                         pictureSize={60}
@@ -136,7 +131,7 @@ const ChatScreen = ({navigation}) =>{
                         profilePicture={{marginTop: 5}}
                         />
                     <Text style={{marginTop: 20, marginLeft: 55, fontSize: 20, color: 'white'}}>
-                        {`${nameReceptor} ${surnameReceptor}`}
+                        {`${usernameReceptor}`}
                     </Text>
                 </View>
 

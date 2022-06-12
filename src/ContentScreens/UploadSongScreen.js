@@ -41,7 +41,7 @@ const UploadSongScreen = () => {
   }
   const filterArtist = text => {
     text = text.toLowerCase();
-    return a => a.name.toLowerCase().includes(text) || a.surname.toLowerCase().includes(text);
+    return a => a.username.toLowerCase().includes(text);
   }
 
   const fieldsAreValid = () => {
@@ -78,7 +78,7 @@ const UploadSongScreen = () => {
         link: await fileUrlPromise,
         artists: artists.map(a => a.id),
         description,
-        author: artists.map(a => `${a.name} ${a.surname}`).join(', '),
+        author: artists.map(a => `${a.username}`).join(', '),
         genre: genre.value,
         subscription: subscription.value,
         artwork: artworkUrlPromise ? await artworkUrlPromise : null,
@@ -127,7 +127,7 @@ const UploadSongScreen = () => {
                         searchPlaceholder={"Buscar artistas"}
                         buttonText={"Seleccionar artistas"}
                         icon={'account-music'}
-                        renderElement={artist => (<Text>{`${artist.name} ${artist.surname}`}</Text>)}
+                        renderElement={artist => (<Text>{`${artist.username}`}</Text>)}
                         getAllElements={() => getArtists().then(b => b.list)}
                         elementFilter={filterArtist}
                         elementCallback={{

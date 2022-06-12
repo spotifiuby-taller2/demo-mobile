@@ -98,7 +98,7 @@ const NotificationListScreen = ({navigation}) => {
                       flexShrink: 1
                       
                     }}>
-                    <Text style={{flexWrap: 'wrap', fontSize: 10}}>{notification.nameReceptor} {notification.surnameReceptor} te ha enviado un mensaje.</Text>
+                    <Text style={{flexWrap: 'wrap', fontSize: 10}}>{notification.usernameReceptor} te ha enviado un mensaje.</Text>
                   </Button>
                 )
               })

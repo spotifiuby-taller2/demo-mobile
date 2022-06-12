@@ -11,8 +11,6 @@ import LoaderScreen from './LoaderScreen';
 import defaultArtwork from "../../assets/album-placeholder.png";
 
 
-/*user must be {name: '', surname: '', email:''}*/
-
 const Top3List = props => {
 
     const [list, setList] = useState([]);

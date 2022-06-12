@@ -52,7 +52,7 @@ const ProfilePicture = (props) => {
         (<Avatar.Text
           style={styles.avatar}
           size={props.pictureSize}
-          label={`${props.name.charAt(0)}${props.surname.charAt(0)}`}
+          label={`${props.username.charAt(0)}`}
         />)
         : (<Avatar.Image
           style={styles.avatar}
