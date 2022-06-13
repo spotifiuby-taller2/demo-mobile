@@ -84,6 +84,28 @@ const getGenreSongs = (genre) => {
     .then(getBodyOrThrow);
 }
 
+const createPlaylist = (playlist) => {
+  return requestToGateway('POST', `${constants.MEDIA_HOST}${constants.PLAYLIST_URL}`,
+    playlist)
+    .then(getBodyOrThrow);
+}
+
+const getPublicPlaylists = () => {
+  return requestToGateway('GET', `${constants.MEDIA_HOST}${constants.PLAYLIST_URL}`)
+    .then(getBodyOrThrow)
+    .then(playlists => playlists.filter(p => p.isCollaborative));
+}
+
+const getPlaylist = (id) => {
+  return requestToGateway('GET', `${constants.MEDIA_HOST}${constants.PLAYLIST_URL}/${id}`)
+    .then(getBodyOrThrow);
+}
+
+const getPlaylistsByOwner = userId => {
+  return requestToGateway('GET', `${constants.MEDIA_HOST}${constants.PLAYLIST_URL}?owner=${userId}`)
+    .then(getBodyOrThrow);
+}
+
 export {
   createSong,
   createAlbum,
@@ -98,5 +120,9 @@ export {
   addFavoriteAlbum,
   removeFavoriteAlbum,
   getGenreSongs,
-  getGenreAlbums
+  getGenreAlbums,
+  createPlaylist,
+  getPublicPlaylists,
+  getPlaylist,
+  getPlaylistsByOwner,
 };

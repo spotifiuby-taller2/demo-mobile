@@ -27,6 +27,7 @@ const SignInWithGoogle = (props) => {
   let handleSignInWithGoogle = async (googleAuth) => {
     let isArtist = false;
     let isListener = false;
+    let isBand = false;
 
     const credential = GoogleAuthProvider.credential(googleAuth.idToken, googleAuth.accessToken);
     const auth = getAuth();
@@ -48,6 +49,7 @@ const SignInWithGoogle = (props) => {
       signin: "google",
       isArtist: isArtist,
       isListener: isListener,
+      isBand: isBand,
       redirectTo: constants.USERS_HOST + constants.SIGN_IN_URL,
     };
 

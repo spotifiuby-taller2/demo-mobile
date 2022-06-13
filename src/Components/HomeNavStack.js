@@ -30,6 +30,9 @@ import GenreScreen from "../HomeScreens/GenreScreen";
 import GenreListScreen from "../HomeScreens/GenreListScreen";
 import CreateBandScreen from '../HomeScreens/CreateBandScreen'
 import BandMenbersListScreen from '../HomeScreens/BandMenbersListScreen';
+import CreatePlaylist from "../ContentScreens/CreatePlaylist";
+import PlaylistListScreen from "../HomeScreens/PlaylistListScreen";
+import PlaylistScreen from "../HomeScreens/PlaylistScreen";
 
 
 const HomeStack = createNativeStackNavigator();
@@ -100,7 +103,6 @@ const HomeNavStack = () =>{
     }
 
     useEffect(()=>{
-
       if ( userState.userType !== null )
         return;
 
@@ -112,7 +114,7 @@ const HomeNavStack = () =>{
                         + userState.uid);
         }
         getUserBasicInfo()
-          .then(res =>setUserBasicInfo(res.type, res.username));
+          .then(res =>setUserBasicInfo(res.type, res.username,res.subscription));
 
 
       registerForPushNotifications()
@@ -150,6 +152,9 @@ const HomeNavStack = () =>{
             <HomeStack.Screen name='GenreListScreen' component={GenreListScreen}/>
             <HomeStack.Screen name='CreateBandScreen' component={CreateBandScreen}/>
             <HomeStack.Screen name='BandMenbersListScreen' component={BandMenbersListScreen}/>
+            <HomeStack.Screen name='CreatePlaylist' component={CreatePlaylist} initialParams={{userId: userState.uid}}/>
+            <HomeStack.Screen name='PlaylistListScreen' component={PlaylistListScreen}/>
+            <HomeStack.Screen name='PlaylistScreen' component={PlaylistScreen} />
           </HomeStack.Navigator>
           <NowPlayingBar style={styles.bar}/>
         </View>

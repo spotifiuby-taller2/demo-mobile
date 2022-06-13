@@ -6,18 +6,24 @@ import UserChip from '../Components/UserChip';
 import {Searchbar} from "react-native-paper";
 import {containerStyle} from "../styles/genericStyles";
 import LoaderScreen from '../Components/LoaderScreen';
+import { useAuthUser } from '../context/AuthContext';
 
 const BandMenbersListScreen = ({navigation}) => {
 
   const [list, setList] = useState([]);
   const [text, setText] = useState('');
   const [loading, setLoading] = useState(true);
+  const {userState} = useAuthUser();
+
+  useEffect(() => {
+    navigation.setOptions({headerShown: true, headerTitle: 'Integrantes'});
+  }, []);
 
   useEffect(() => {
     function getAllUsers() {
 
       getToGateway(constants.USERS_HOST + constants.BAND_URL + "?" 
-            + constants.USER_ID_QUERY_PARAM + profile.id, "")
+            + constants.USER_ID_QUERY_PARAM + userState.uid, "")
         .then(res => {
           if (res.error !== undefined) {
             alert(res.error);

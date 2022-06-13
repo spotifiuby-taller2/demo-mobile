@@ -83,7 +83,7 @@ export default RequestExternalUserATypeScreen = ({navigation}) => {
         let validate = () => {
             
             let isValid = true
-            if (!isArtist && !isListener) {
+            if (!isArtist && !isListener && !isBand ) {
                 setUserTypeError("Elija el tipo de usuario que desee ser")
                 isValid = false;
             }
@@ -104,7 +104,7 @@ export default RequestExternalUserATypeScreen = ({navigation}) => {
                             <Title style={{fontSize: 17, marginTop: 20}}>Tipo de usuario:</Title>
 
                             <View style={{flexDirection: 'row', marginTop: 10, paddingRight: 100}}>
-                                <View style={{flexDirection: 'row', marginRight: 70}}>
+                                <View style={{flexDirection: 'column', marginHorizontal: 13}}>
                                     <Title style={{fontSize: 14}}>Oyente</Title>
                                     <IconButton
                                         icon="headphones"
@@ -116,8 +116,10 @@ export default RequestExternalUserATypeScreen = ({navigation}) => {
                                         }}
                                     />
                                 </View>
+                                    
 
-                                <View style={{flexDirection: 'row'}}>
+
+                                <View style={{flexDirection: 'column', marginHorizontal: 13}}>
                                     <Title style={{fontSize: 14}}>Artista</Title>
                                     <IconButton
                                         icon='account'
@@ -129,7 +131,7 @@ export default RequestExternalUserATypeScreen = ({navigation}) => {
                                         }}
                                     />
                                 </View>
-                                <View style={{flexDirection: 'row'}}>
+                                <View style={{flexDirection: 'column', marginHorizontal: 13}}>
                                     <Title style={{fontSize: 14}}>Banda</Title>
                                     <IconButton
                                         icon='account-group'

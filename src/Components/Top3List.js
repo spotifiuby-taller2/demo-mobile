@@ -1,6 +1,6 @@
 import {StyleSheet, View} from 'react-native';
 import React, {useCallback, useState} from 'react'
-import {Text, Button} from 'react-native-paper';
+import {Button, Text} from 'react-native-paper';
 import {getToGateway, songToTrack} from '../others/utils';
 import constants from '../others/constants'
 import UserChip from './UserChip';
@@ -9,54 +9,55 @@ import usePlayerAction from "../Hooks/usePlayerAction";
 import PlayableListItem from "../Components/PlayableListItem";
 import LoaderScreen from './LoaderScreen';
 import defaultArtwork from "../../assets/album-placeholder.png";
-
+import SongList from "./SongList";
+import {containerStyle} from "../styles/genericStyles";
+import { useAuthUser } from '../context/AuthContext';
 
 const Top3List = props => {
 
-    const [list, setList] = useState([]);
-    const [loading, setLoading] = useState(true);
-    
-    const player = usePlayerAction();
+  const [list, setList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const {userState} = useAuthUser();
 
-    const toPlayable = album => {
-        return {
-          title: album.title,
-          artwork: album.link ? {uri: album.link} : defaultArtwork,
-          artist: album.artistNames ?? 'Unknown artists',
-        };
-      };
+  const player = usePlayerAction();
+
+  const toPlayable = album => {
+    return {
+      title: album.title,
+      artwork: album.link ? {uri: album.link} : defaultArtwork,
+      artist: album.artistNames ?? '',
+    };
+  };
 
 
-    useFocusEffect(
-        useCallback(()=>{
+  useFocusEffect(
+    useCallback(() => {
 
-        getToGateway(props.endpoint
-                + constants.LIMIT_3_PARAM)
-            .then(res =>
-                {
-                    if (res.error !== undefined) {
-                        alert(res.error);
-                    } else {
-                        if ( props.userList )
-                            setList(res.list)
+      getToGateway(props.endpoint
+        + constants.LIMIT_3_PARAM)
+        .then(res => {
+          if (res.error !== undefined) {
+            alert(res.error);
+          } else {
+            if (props.userList)
+              setList(res.list)
 
-                        else{
-                            setList(res)
-                        }
-                        setLoading(false);
-                    }
-                })
+            else {
+              setList(res)
+            }
+            setLoading(false);
+          }
+        })
 
 
     }, []));
 
 
-    
   if (loading) {
     return <LoaderScreen/>;
   }
   return (
-    <View style={{backgroundColor: '#f5fcff'}}>
+    <View style={{...containerStyle, backgroundColor: props.color}}>
       {
         list.length !== 0 && (
           <View style={{flex: 1, flexGrow: 1}}>
@@ -69,20 +70,8 @@ const Top3List = props => {
               )
             }
             {
-              props.songList && (
-                list.map(songToTrack).map((track, id) => {
-                  return (
-                    <PlayableListItem id={id}
-                                      key={id}
-                                      playableItem={track}
-                                      play={() => player.playList(list, id)}
-                                      moreInfoCallback={() => {
-                                        props.navigation.navigate('SongScreen', {songId: track.id});
-                                      }}
-                    />
-                  )
-                })
-              )
+              props.songList &&
+              (<SongList navigation={props.navigation} songList={list}/>)
             }
             {
               props.albumList && (

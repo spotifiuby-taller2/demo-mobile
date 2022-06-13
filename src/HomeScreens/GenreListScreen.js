@@ -30,7 +30,7 @@ const GenreListScreen = ({navigation}) => {
                    containerStyle={{}}
                    inputContainerStyle={{}}
         />
-        <View style={{marginBottom:10,marginTop:10}}>
+        <View style={{marginBottom: 10, marginTop: 10}}>
           {genreList.filter(filterGenre(text)).map((genreValue, id) => {
               return <GenreChip id={id} key={id} genre={genreValue} navigation={navigation}/>
             }

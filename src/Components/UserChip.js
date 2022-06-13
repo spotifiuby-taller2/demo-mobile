@@ -9,9 +9,7 @@ const UserChip = props => {
     <TouchableOpacity style={styles.chip} onPress={() => {
       props.navigation.navigate('ProfileScreen', {uid: props.user.id, usingList: true})
     }}>
-      <View style={{
-        flexDirection: 'row',
-      }}>
+      <View style={{flexDirection: 'row'}}>
           <ProfilePicture
                     uid={props.user.id}
                     username={props.user.username}
@@ -26,7 +24,7 @@ const UserChip = props => {
             <Text style={styles.name}>{props.user.username}</Text>
             <View style={{flexDirection: 'row'}}>
               <MaterialCommunityIcons
-                name={props.user.isArtist? 'account-music': 'headphones'}
+                name={props.user.isBand? 'account-group': (props.user.isArtist? 'account-music': 'headphones')}
                 size={30}
                 color='#388AD6'/>
               {
@@ -34,7 +32,6 @@ const UserChip = props => {
                   (
                     <>
                       <Avatar.Icon icon="check-decagram" size={30} color={'green'} style={styles.icon}/>
-                      <Text style={{color: 'black', paddingTop: 5}}>{'Artista verificado'}</Text>
                     </>)
                 
               }
@@ -50,7 +47,7 @@ const UserChip = props => {
 const styles = StyleSheet.create(
   {
     chip: {
-      backgroundColor: 'lightblue',
+      backgroundColor: '#9acef8',
       marginTop: 5,
       height: 80,
       borderRadius: 10,

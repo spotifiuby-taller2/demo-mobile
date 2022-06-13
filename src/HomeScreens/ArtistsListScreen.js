@@ -37,7 +37,7 @@ const ArtistListScreen = ({navigation}) => {
 
   const filterArtists = text => {
     text = text.toLowerCase();
-    return a => a.name.toLowerCase().includes(text) || a.surname.toLowerCase().includes(text);
+    return a => a.username.toLowerCase().includes(text);
   }
 
   if (loading) {

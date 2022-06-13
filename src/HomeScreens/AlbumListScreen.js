@@ -8,16 +8,9 @@ import usePlayerAction from "../Hooks/usePlayerAction";
 import {getArtists} from "../Services/UsersService";
 import {getAllAlbums} from "../Services/MediaService";
 import LoaderScreen from '../Components/LoaderScreen';
-
-const toPlayable = album => {
-  return {
-    title: album.title,
-    artwork: album.link ? {uri: album.link} : defaultArtwork,
-    artist: album.artistNames ?? 'Unknown artists',
-  };
-};
-
 import {Searchbar} from "react-native-paper";
+import subscription from "../data/Subscription";
+import {useAuthUser} from "../context/AuthContext";
 
 const enrichWithArtistNames = (albums, artists) => albums.map(album => enrichWithArtistName(album, artists));
 
@@ -36,6 +29,7 @@ const AlbumListScreen = ({navigation}) => {
   const [loading, setLoading] = useState(true);
   const [text, setText] = useState('')
   const player = usePlayerAction();
+  const {userState} = useAuthUser();
 
   useEffect(() => {
     const getAlbumsWithArtists = async () => {
@@ -64,7 +58,8 @@ const AlbumListScreen = ({navigation}) => {
 
   const filterAlbum = filterText => {
     filterText = filterText.toLowerCase();
-    return s => s.title.toLowerCase().includes(filterText) || s.artistNames.toLowerCase().includes(filterText);
+    return a => subscription[a.subscription].level <= subscription[userState.subscription].level &&
+      (a.title.toLowerCase().includes(filterText) || a.artistNames.toLowerCase().includes(filterText));
   }
 
   if (loading) {

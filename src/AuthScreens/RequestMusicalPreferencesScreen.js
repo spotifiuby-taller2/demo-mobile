@@ -130,8 +130,7 @@ const reducer = (state = initialState(), action = {})=>{
       },[musicalPrefs]);
 
 
-      let handleSend = () =>{
-
+      let handleSend = () => {
         const requestBody={
           musicalPref: musicalPrefs,
           redirectTo: constants.USERS_HOST + constants.MUSICAL_PREF_URL
@@ -142,8 +141,8 @@ const reducer = (state = initialState(), action = {})=>{
 
         postToGateway(requestBody,
               'PATCH')
-          .then( res => {
-              checkResponse(res)
+          .then( async res => {
+              await checkResponse(res)
           });
       }
 

@@ -37,66 +37,120 @@ async function requestLocation(){
   }
 }
 
-const requestToGateway = (verb, redirectURL, body = {}) => {
-  body.verbRedirect = verb;
-  body.apiKey = constants.MY_API_KEY;
-  body.redirectTo = redirectURL;
+const requestToGateway = (verb,
+                          redirectURL,
+                          body = {}) => {
+    body.verbRedirect = verb;
+    body.apiKey = constants.MY_API_KEY;
+    body.redirectTo = redirectURL;
 
-  return fetch(constants.SERVICES_HOST + constants.REDIRECT_URL, {
-      method: "POST",
-      headers: constants.JSON_HEADER,
-      body: JSON.stringify(body)
+    const response = fetch(constants.SERVICES_HOST + constants.CHECK_URL, {
+            method: "POST",
+            headers: constants.JSON_HEADER,
+            body: JSON.stringify(body)
+        }
+    ).then(r => r.json())
+     .catch(e => {
+         return {
+         status: "444",
+         error: e.toString()
+     } });
+
+    if (response.error !== undefined) {
+        return response;
     }
-  );
+
+    if (verb === "GET") {
+        return fetch(redirectURL, {
+                method: "GET",
+                headers: constants.JSON_HEADER
+            }
+        );
+    }
+
+    return fetch(redirectURL, {
+                method: verb,
+                headers: constants.JSON_HEADER,
+                body: JSON.stringify(body)
+    } );
 }
 
 // response.json() is a promise
 const postToGateway = (body,
                        verb = "POST") => {
-  body.verbRedirect = verb;
-  body.apiKey = constants.MY_API_KEY;
+    body.apiKey = constants.MY_API_KEY;
 
-  return fetch(constants.SERVICES_HOST + constants.REDIRECT_URL, {
-        method: "POST",
-        headers: constants.JSON_HEADER,
-        body: JSON.stringify(body)
-      }
-  ).then(response =>
-      response.json()
-  ).catch(error => {
-    let errorToShow = error.toString();
+    return fetch(constants.SERVICES_HOST + constants.CHECK_URL, {
+            method: "POST",
+            headers: constants.JSON_HEADER,
+            body: JSON.stringify(body)
+        }
+    ).then(async r => {
+        const gatewayResponse = await r.json();
 
-    if (errorToShow.includes("JSON")) {
-        errorToShow = "La app no puede enviar la solicitud."
-    }
+        if (gatewayResponse.error !== undefined) {
+            return gatewayResponse;
+        }
 
-    return {
-      error: errorToShow
-    };
-  } );
+        return await fetch(body.redirectTo, {
+            method: verb,
+            headers: constants.JSON_HEADER,
+            body: JSON.stringify(body)
+        } )
+            .then(async response => {
+                return await response.json();
+            }).catch(err => {
+                return {
+                    error: err.toString()
+                }
+            } );
+    } ).catch(error => {
+        return {
+            error: error.toString()
+        };
+    } );
 }
 
 const getToGateway = (destiny,
                       redirectParams) => {
-  const body = {}
-  body.redirectParams = redirectParams
-  body.verbRedirect = "GET";
-  body.redirectTo = destiny;
-  body.apiKey = constants.MY_API_KEY;
+    const body = {}
+    body.apiKey = constants.MY_API_KEY;
 
-  return fetch(constants.SERVICES_HOST + constants.REDIRECT_URL, {
-        method: "POST",
-        headers: constants.JSON_HEADER,
-        body: JSON.stringify(body)
-      }
-  ).then(response => {
-          return response.json()
-      }
-  ).catch(error => {
-    return {
-      error: error.toString()
-    };
-  } );
+    const redirectParamsAux = redirectParams !== undefined ? redirectParams
+        : "";
+
+    const redirectTo = destiny + redirectParamsAux;
+
+    body.redirectTo = redirectTo;
+
+    return fetch(constants.SERVICES_HOST + constants.CHECK_URL, {
+            method: "POST",
+            headers: constants.JSON_HEADER,
+            body: JSON.stringify(body)
+        }
+    ).then(async r => {
+        const gatewayResponse = await r.json();
+
+        if (gatewayResponse.error !== undefined) {
+            return gatewayResponse;
+        }
+
+        return await fetch(redirectTo, {
+            method: "GET",
+            headers: constants.JSON_HEADER
+        } )
+            .then(async response => {
+                return await response.json();
+            }).catch(err => {
+                return {
+                    error: err.toString()
+                }
+            } );
+    } ).catch(error => {
+        return {
+            error: error.toString()
+        };
+    } );
 }
 
 const validateFieldNotBlank = (fieldName, field, setField) => {
@@ -136,6 +190,13 @@ const songToTrack = (song) => {
   };
 };
 
+const playlistToPlayable = playlist => {
+  return {
+    title: playlist.title,
+    artwork: playlist.artwork ? {uri: playlist.artwork} : defaultArtwork,
+  };
+}
+
 export {
   getSHAOf,
   getBiometricalMailAndPassword,
@@ -147,4 +208,5 @@ export {
   checkAuthTokenExpirationTime,
   getChatId,
   songToTrack,
+  playlistToPlayable,
 }

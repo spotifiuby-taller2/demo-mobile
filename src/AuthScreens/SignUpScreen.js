@@ -44,6 +44,7 @@ export default SignUpScreen = ({navigation}) => {
               repeatPassword: getSHAOf(getSHAOf(repeatPassword)),
               isArtist: isArtist,
               isListener: isListener,
+              isBand: isBand,
               link: "mobile",
               isExternal: false,
           };

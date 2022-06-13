@@ -116,7 +116,7 @@ const UploadAlbumScreen = () => {
                         searchPlaceholder={"Buscar artistas"}
                         buttonText={"Seleccionar artistas"}
                         icon={'account-music'}
-                        renderElement={artist => (<Text>{`${artist.name} ${artist.surname}`}</Text>)}
+                        renderElement={artist => (<Text>{`${artist.username}`}</Text>)}
                         getAllElements={() => getArtists().then(b => b.list)}
                         elementFilter={filterArtist}
                         elementCallback={{

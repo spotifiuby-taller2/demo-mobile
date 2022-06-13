@@ -24,6 +24,7 @@ const initialState = () => {
     isSignOut: true,
     userType: null,
     username: null,
+    subscription:null,
   }
 };
 
@@ -57,7 +58,8 @@ const reducer = (state = initialState(), action = {}) => {
       return {
         ...state,
         username: action.username,
-        userType: action.userType
+        userType: action.userType,
+        subscription: action.userSubscription
       }
   }
   return state;
@@ -121,8 +123,8 @@ export default function App() {
         await signOut(auth);
         dispatch({type: 'SIGN_OUT'});
       },
-      setUserBasicInfo: (userType, username) => {
-        dispatch({type: 'SET_USER_BASIC_INFO', userType: userType, username: username})
+      setUserBasicInfo: (userType, username, userSubscription) => {
+        dispatch({type: 'SET_USER_BASIC_INFO', userType: userType, username: username, userSubscription: userSubscription})
       }
     });
 
