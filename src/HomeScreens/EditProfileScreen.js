@@ -227,9 +227,11 @@ const EditProfileScreen = ({navigation}) => {
               photoUrl={profile.photoUrl}
               pictureSize={175}
               disabled={false}
+              defaultStyle={styles.defaultImage}
+              Imagestyle={styles.profilePicture}
             />
 
-            <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+            <View style={{flexDirection: 'row', alignSelf: 'center', marginTop: 10}}>
               <EditProfileTextInput
                 label='Nombre'
                 name='username'
