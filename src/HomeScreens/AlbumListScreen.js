@@ -11,6 +11,7 @@ import LoaderScreen from '../Components/LoaderScreen';
 import {Searchbar} from "react-native-paper";
 import subscription from "../data/Subscription";
 import {useAuthUser} from "../context/AuthContext";
+import UserChip from "../Components/UserChip";
 
 const enrichWithArtistNames = (albums, artists) => albums.map(album => enrichWithArtistName(album, artists));
 
@@ -74,23 +75,22 @@ const AlbumListScreen = ({navigation}) => {
                    containerStyle={{}}
                    inputContainerStyle={{}}
         />
-        <View>
-          <View style={{marginBottom: 10}}/>
+
+        <View style={{marginBottom: 10, marginTop: 10}}>
           {
-            <FlatList
-              data={albumList.filter(filterAlbum(text))}
-              renderItem={({item, index}) => <PlayableListItem id={index}
-                                                               key={index}
-                                                               playableItem={toPlayable(item)}
-                                                               play={() => player.playList(item.songs.map(songToTrack), 0)}
-                                                               moreInfoCallback={() => {
-                                                                 navigation.navigate('AlbumScreen', {
-                                                                   albumId: item.id
-                                                                 });
-                                                               }}
-              />
+            albumList.filter(filterAlbum(text)).map((album, id) => {
+                return <PlayableListItem id={id}
+                                         key={id}
+                                         playableItem={toPlayable(album)}
+                                         play={() => player.playList(album.songs.map(songToTrack), 0)}
+                                         moreInfoCallback={() => {
+                                           navigation.navigate('AlbumScreen', {
+                                             albumId: album.id
+                                           });
+                                         }}
+                />
               }
-            />
+            )
           }
         </View>
       </SafeAreaView>
