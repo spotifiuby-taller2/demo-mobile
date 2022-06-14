@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {songToTrack} from "../others/utils";
-import {FlatList, SafeAreaView, View} from "react-native";
+import {SafeAreaView, View} from "react-native";
 import {containerStyle} from "../styles/genericStyles";
 import PlayableListItem from "../Components/PlayableListItem";
 import defaultArtwork from "../../assets/album-placeholder.png";
@@ -11,7 +11,6 @@ import LoaderScreen from '../Components/LoaderScreen';
 import {Searchbar} from "react-native-paper";
 import subscription from "../data/Subscription";
 import {useAuthUser} from "../context/AuthContext";
-import UserChip from "../Components/UserChip";
 
 const enrichWithArtistNames = (albums, artists) => albums.map(album => enrichWithArtistName(album, artists));
 
