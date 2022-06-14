@@ -28,7 +28,6 @@ const PlaylistScreen = ({navigation, route}) => {
       <ScrollView>
         <Image source={playlist.artwork ? {uri: playlist.artwork} : defaultArtwork} style={styles.artwork}/>
         <Text style={styles.title}>{playlist.title}</Text>
-        <Text>{playlist.description}</Text>
 
         <SongList navigation={navigation}
                   songList={playlist.songs ?? []}/>
