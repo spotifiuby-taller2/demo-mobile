@@ -27,7 +27,7 @@ const ListComponent = (usersList,
                                 }>
                                     <View style={{flexDirection:'row'}}>
                                         <View >
-                                            <Text>{user.name} {user.surname}</Text>
+                                            <Text>{user.username}</Text>
                                         </View>
                                     </View>
                                 </Chip>

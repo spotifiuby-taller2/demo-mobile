@@ -22,7 +22,7 @@ const enrichWithArtistName = (album, artists) => ({
     .join(', '),
 });
 
-const getUserName = user => `${user.name} ${user.surname}`
+const getUserName = user => `${user.username}`
 
 const AlbumListScreen = ({navigation}) => {
   const [albumList, setAlbumList] = useState([]);

@@ -11,7 +11,7 @@ import PlayableListItem from "../Components/PlayableListItem";
 import subscription from "../data/Subscription";
 
 
-const getUserName = user => `${user.name} ${user.surname}`
+const getUserName = user => `${user.username}`
 
 const enrichWithArtistNames = (albums, artists) => albums.map(album => enrichWithArtistName(album, artists));
 
