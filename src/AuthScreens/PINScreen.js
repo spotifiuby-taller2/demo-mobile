@@ -130,7 +130,7 @@ const styles = StyleSheet.create(
     },
     description: {textAlign: 'center', fontSize: 13},
     buttonText: {textAlign: 'center', fontSize: 13},
-    image: {height: 150, width: 150, borderRadius: 200, resizeMode: 'contain', paddingTop: 200, marginLeft: 84}
+    image: {height: 150, width: 150, borderRadius: 200, resizeMode: 'contain', paddingTop: 200, alignSelf: 'center'}
   }
 )
 
