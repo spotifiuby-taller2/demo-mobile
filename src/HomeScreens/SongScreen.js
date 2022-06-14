@@ -1,11 +1,12 @@
-import {ScrollView} from "react-native";
+import {FlatList, StyleSheet, View} from "react-native";
 import {Text} from 'react-native-paper';
 import React, {useEffect, useState} from 'react';
 import {getToGateway} from "../others/utils";
 import * as constants from "../others/constants";
-import * as styles from "../styles/contentStyle";
+import {contentTextStyle, contentTitleStyle} from "../styles/contentStyle";
 import FavouriteSongIconButton from "../Components/FavouriteSongIconButton";
 import UserChip from "../Components/UserChip";
+import {containerStyle} from "../styles/genericStyles";
 
 const SongScreen = ({navigation, route}) => {
 
@@ -25,39 +26,42 @@ const SongScreen = ({navigation, route}) => {
       return song;
     }
 
-    getSong().then(s => {setSong(s); navigation.setOptions({ headerShown: true, headerTitle: s.title }); });
+    getSong().then(s => {
+      setSong(s);
+      navigation.setOptions({headerShown: true, headerTitle: s.title});
+    });
   }, []);
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <Text>{"\n\n\n"}
-      </Text>
-
-      <Text style={styles.contentTitleStyle}>{song?.title}
-      </Text>
-
-      <Text style={styles.contentTextStyle}>Artistas
-      </Text>
-
+    <View style={styles.container}>
+      <Text style={contentTitleStyle}>{song?.title}</Text>
+      <Text style={contentTextStyle}>Artistas</Text>
       {
-        song?.artists.map((user) => {
-          return (
-            <UserChip id={user.id}
-                        key={user.id}
-                        user={user}
-                        navigation={navigation}/>
-          )
-        })
+        <FlatList
+          data={song?.artists}
+          renderItem={({item, id}) => <UserChip id={id} key={id} user={item} navigation={navigation}/>}
+        />
       }
+      <FavouriteSongIconButton style={styles.favouriteIcon} size={90} songId={song?.id}/>
+    </View>
 
-      <Text>{"\n\n"}
-      </Text>
-
-      <FavouriteSongIconButton style={{alignSelf: 'center'}} size={90} songId={song?.id}/>
-
-    </ScrollView>
   );
 }
+
+const styles = StyleSheet.create(
+  {
+    container: {
+      ...containerStyle,
+      backgroundColor: '#f5fcff',
+      paddingTop: 5
+    },
+    favouriteIcon: {
+      alignSelf: 'center',
+      marginTop: 10,
+      marginBottom: 10
+    }
+  }
+)
 
 export default SongScreen;
 
