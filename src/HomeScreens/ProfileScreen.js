@@ -109,10 +109,6 @@ const ProfileScreen = ({navigation}) => {
             setProfile(newState);
             setNFollowers(res.nFollowers);
             setRenderButton(true);
-            
-            if (res.isBand && res.nMembers === 0){
-              alert("Una banda no podra subir contenido si no tiene al menos 1 integrante.")
-            }
 
             if (res.isListener) {
               await getPlaylistsByOwner(userId)
@@ -166,7 +162,12 @@ const ProfileScreen = ({navigation}) => {
               (userState.uid === profile.id) &&
 
               (
-                <View style={{justifyContent: 'flex-end', alignItems: 'center', flexDirection: 'row', alignContent: 'flex-end'}}>
+                <View style={{
+                  justifyContent: 'flex-end',
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  alignContent: 'flex-end'
+                }}>
                   <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <Button
                       mode='text'
@@ -180,19 +181,19 @@ const ProfileScreen = ({navigation}) => {
                     </Button>
                     {
                       userState.uid === profile.id && profile.isBand &&
-            
-                        (<Button
-                          mode='text'
-                          color='#fdfcff'
-                          style={{width: 70, alignSelf: 'center'}}
-                          onPress={() => {
-                            navigation.navigate('CreateBandScreen')
-                          }}>
-                          <MaterialCommunityIcons
-                            name='account-group'
-                            size={35}
-                            color='#388AD6'/>
-                        </Button>)
+
+                      (<Button
+                        mode='text'
+                        color='#fdfcff'
+                        style={{width: 70, alignSelf: 'center'}}
+                        onPress={() => {
+                          navigation.navigate('CreateBandScreen')
+                        }}>
+                        <MaterialCommunityIcons
+                          name='account-group'
+                          size={35}
+                          color='#388AD6'/>
+                      </Button>)
                     }
 
                     {
@@ -351,15 +352,23 @@ const ProfileScreen = ({navigation}) => {
                     onPress={() => {
                       navigation.navigate('CreateContentScreen');
                     }}
-                    >
+                  >
                     <MaterialCommunityIcons
                       name='plus'
                       size={50}
                       color='darkblue'
                       styles={{alignSelf: 'center'}}/>
                   </Button>
-                  
-                  
+                  }
+
+                  {
+                    profile.nMembers === 0 && profile.isBand &&
+                    (
+                      <Text style={{color: 'red'}}>Una banda no podrá subir contenido si no tiene al menos 1 integrante.</Text>
+                    )
+                  }
+
+
                 </View>
               )
             }
@@ -405,10 +414,10 @@ const ProfileScreen = ({navigation}) => {
             {
               profile.id === userState.uid && profile.isBand && renderButton &&
               (
-                <Top3List 
+                <Top3List
                   title='Integrantes'
-                  endpoint={constants.USERS_HOST + constants.BAND_URL + "?" 
-                      + constants.USER_ID_QUERY_PARAM + profile.id + "&"}
+                  endpoint={constants.USERS_HOST + constants.BAND_URL + "?"
+                    + constants.USER_ID_QUERY_PARAM + profile.id + "&"}
                   navigation={navigation}
                   open='BandMenbersListScreen'
                   userList={true}
