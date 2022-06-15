@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {songToTrack} from "../others/utils";
-import {SafeAreaView, View} from "react-native";
+import {SafeAreaView, View, ScrollView} from "react-native";
 import {containerStyle} from "../styles/genericStyles";
 import PlayableListItem from "../Components/PlayableListItem";
 import defaultArtwork from "../../assets/album-placeholder.png";
@@ -66,7 +66,7 @@ const AlbumListScreen = ({navigation}) => {
     return <LoaderScreen/>;
   }
   return (
-    <View style={{...containerStyle, marginTop: 10}}>
+    <ScrollView style={{...containerStyle, marginTop: 10}}>
       <SafeAreaView>
         <Searchbar onChangeText={setText}
                    placeholder={"Buscar albumes"}
@@ -74,7 +74,6 @@ const AlbumListScreen = ({navigation}) => {
                    containerStyle={{}}
                    inputContainerStyle={{}}
         />
-
         <View style={{marginBottom: 10, marginTop: 10}}>
           {
             albumList.filter(filterAlbum(text)).map((album, id) => {
@@ -93,7 +92,7 @@ const AlbumListScreen = ({navigation}) => {
           }
         </View>
       </SafeAreaView>
-    </View>
+    </ScrollView>
   );
 }
 

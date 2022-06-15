@@ -45,13 +45,13 @@ const styles = StyleSheet.create(
 )
 
 const PlayableListItem = ({playableItem, play, moreInfoCallback}) => (
-  <TouchableOpacity style={styles.container}
-                    onPress={() => play()}>
+  <TouchableOpacity style={styles.container} onPress={() => play()}>
     <View style={styles.info}>
       <Image style={styles.artwork} source={playableItem.artwork}/>
       <View style={styles.textInfo}>
         <Text numberOfLines={1} style={styles.title}>{playableItem.title}</Text>
         {playableItem.artist ? (<Text numberOfLines={1} style={styles.artist}>{playableItem.artist}</Text>) : null}
+        {playableItem.artistNames ? (<Text numberOfLines={1} style={styles.artist}>{playableItem.artistNames}</Text>) : null}
       </View>
     </View>
     <IconButton

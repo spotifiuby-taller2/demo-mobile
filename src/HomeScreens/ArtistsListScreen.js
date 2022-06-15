@@ -1,4 +1,4 @@
-import {SafeAreaView, StyleSheet, View} from 'react-native';
+import {SafeAreaView, StyleSheet, ScrollView, View} from 'react-native';
 import React, {useEffect, useState} from 'react'
 import constants from '../others/constants'
 import {getToGateway} from "../others/utils";
@@ -8,13 +8,13 @@ import {Searchbar} from "react-native-paper";
 import LoaderScreen from '../Components/LoaderScreen';
 
 const ArtistListScreen = ({navigation}) => {
-  const [usersList, setList] = useState([]);
+  const [artistList, setList] = useState([]);
   const [text, setText] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
 
-    function getAllUsers() {
+    function getAllArtist() {
 
       getToGateway(constants.USERS_HOST + constants.APP_ARTIST_LIST_URL,
         "").then(res => {
@@ -29,7 +29,7 @@ const ArtistListScreen = ({navigation}) => {
 
     return navigation.addListener('focus',
       () => {
-        getAllUsers();
+        getAllArtist();
       });
 
   }, [navigation]);
@@ -44,7 +44,7 @@ const ArtistListScreen = ({navigation}) => {
     return <LoaderScreen/>;
   }
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <SafeAreaView>
         <Searchbar onChangeText={setText}
                    placeholder={"Buscar artistas"}
@@ -54,14 +54,14 @@ const ArtistListScreen = ({navigation}) => {
         />
         <View style={{marginBottom: 10, marginTop: 10}}>
           {
-            usersList.filter(filterArtists(text)).map((artist, id) => {
-                return <UserChip id={id} key={id} genre={artist} navigation={navigation}/>
+            artistList.filter(filterArtists(text)).map((artist, id) => {
+                return <UserChip id={id} key={id} user={artist} navigation={navigation}/>
               }
             )
           }
         </View>
       </SafeAreaView>
-    </View>
+    </ScrollView>
   )
 }
 

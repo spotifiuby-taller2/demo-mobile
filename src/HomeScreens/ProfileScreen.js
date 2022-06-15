@@ -376,6 +376,12 @@ const ProfileScreen = ({navigation}) => {
               profile.id === userState.uid && profile.isListener && renderButton &&
               (
                 <>
+                  <Button
+                    onPress={() => {
+                      navigation.navigate('CreatePlaylist', {userId: userState.uid})
+                    }}>
+                    Crear playlist
+                  </Button>
                   <Top3List
                     title='Artistas Favoritos'
                     endpoint={constants.USERS_HOST + constants.APP_FAV_ARTIST_LIST_URL + "?"
@@ -384,12 +390,7 @@ const ProfileScreen = ({navigation}) => {
                     open='FavoriteArtistsListScreen'
                     userList={true}
                     color={'#f5fcff'}/>
-                  <Button
-                    onPress={() => {
-                      navigation.navigate('CreatePlaylist', {userId: userState.uid})
-                    }}>
-                    Crear playlist
-                  </Button>
+
                 </>
               )
             }

@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from "react";
 import SongList from "../Components/SongList";
-import {getAlbum, getPlaylist} from "../Services/MediaService";
+import {getPlaylist} from "../Services/MediaService";
 import {Image, View, StyleSheet} from "react-native";
 import {Text} from "react-native-paper";
 import LoaderScreen from "../Components/LoaderScreen";
 import defaultArtwork from "../../assets/album-placeholder.png";
-import FavouriteAlbumIconButton from "../Components/FavouriteAlbumIconButton";
 import { ScrollView } from "react-native-gesture-handler";
 
 const PlaylistScreen = ({navigation, route}) => {
@@ -27,11 +26,7 @@ const PlaylistScreen = ({navigation, route}) => {
     <View style={styles.container}>
       <ScrollView>
         <Image source={playlist.artwork ? {uri: playlist.artwork} : defaultArtwork} style={styles.artwork}/>
-        <Text style={styles.title}>{playlist.title}</Text>
-
-        <SongList navigation={navigation}
-                  songList={playlist.songs ?? []}/>
-
+        <SongList navigation={navigation} songList={playlist.songs ?? []}/>
       </ScrollView>
     </View>
   )

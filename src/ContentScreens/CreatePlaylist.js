@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {validateFieldNotBlank} from "../others/utils";
 import {ScrollView, StyleSheet, View} from "react-native";
 import {buttonStyle, buttonTextStyle, containerStyle, inputStyle, titleStyle} from "../styles/genericStyles";
@@ -9,7 +9,7 @@ import FilePicker from "../Components/FilePicker";
 import {uploadFile} from "../Services/CloudStorageService";
 import {useRoute} from "@react-navigation/native";
 
-const CreatePlaylist = () => {
+const CreatePlaylist = ({navigation}) => {
   const route = useRoute();
   const {userId} = route.params;
   const [title, setTitle] = useState({value: '', error: null});
@@ -18,6 +18,11 @@ const CreatePlaylist = () => {
   const [artworkFile, setArtworkFile] = useState();
   const [isPublic, setIsPublic] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(()=>{
+    navigation.setOptions({ headerShown: true, headerTitle: 'Crear Playlist' });
+  }, []);
+
 
   const resetState = () => {
     setTitle({value: '', error: null});
@@ -91,7 +96,7 @@ const CreatePlaylist = () => {
           value={description}
           onChangeText={newText => setDescription(newText)}
           mode='outlined'/>
-        <View style={{marginBottom: 5}}/>
+        <View style={{marginBottom: 10}}/>
         <MultiSelection selectedElements={songs.value}
                         searchPlaceholder={"Buscar canciones"}
                         buttonText={"Seleccionar canciones"}
