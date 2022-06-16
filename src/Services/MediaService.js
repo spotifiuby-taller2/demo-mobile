@@ -101,6 +101,11 @@ const getPlaylist = (id) => {
     .then(getBodyOrThrow);
 }
 
+const setPlaylistStatus = (data) => {
+  return requestToGateway('POST', `${constants.MEDIA_HOST}${constants.PLAYLIST_STATUS_URL}`, data)
+      .then(getBodyOrThrow);
+}
+
 const getPlaylistsByOwner = userId => {
   return requestToGateway('GET', `${constants.MEDIA_HOST}${constants.PLAYLIST_URL}?owner=${userId}`)
     .then(getBodyOrThrow);
@@ -120,9 +125,6 @@ export {
   addFavoriteAlbum,
   removeFavoriteAlbum,
   getGenreSongs,
-  getGenreAlbums,
-  createPlaylist,
-  getPublicPlaylists,
-  getPlaylist,
-  getPlaylistsByOwner,
+  getGenreAlbums, createPlaylist, getPublicPlaylists, getPlaylist,
+  getPlaylistsByOwner, setPlaylistStatus
 };
