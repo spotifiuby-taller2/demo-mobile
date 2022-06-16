@@ -49,7 +49,11 @@ const Top3List = props => {
       getToGateway(props.endpoint + constants.LIMIT_3_PARAM)
         .then(res => {
           if (res.error !== undefined) {
-            alert(res.error);
+            console.log(res.error)
+            if(res.error.toLowerCase().includes('no autorizado')){
+              setList([]);
+              alert(res.error);
+            }
           } else {
             if (props.userList) {
               setList(res.list)

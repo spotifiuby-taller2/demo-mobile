@@ -24,7 +24,9 @@ const ContentScreen = ({navigation}) => {
     getPublicPlaylists()
       .then(setPlaylists)
       .then(_ => setLoading(false))
-      .catch(e => console.log(JSON.stringify(e)));
+      .catch(e => {
+        if(JSON.stringify(e).includes('401')) alert("No Autorizado");
+        });
   }, []))
 
   if (loading) {

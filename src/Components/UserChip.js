@@ -1,10 +1,14 @@
 import {StyleSheet, View, TouchableOpacity} from 'react-native';
-import React from 'react'
+import React, {useEffect} from 'react'
 import {Avatar, Text} from 'react-native-paper';
 import ProfilePicture from './ProfilePicture'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const UserChip = props => {
+
+  useEffect(() => {
+  }, []);
+
   return (
     <TouchableOpacity style={styles.chip} onPress={() => {
       props.navigation.navigate('ProfileScreen', {uid: props.user.id, usingList: true})
