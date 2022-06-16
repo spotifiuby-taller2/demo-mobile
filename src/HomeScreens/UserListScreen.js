@@ -1,4 +1,4 @@
-import {FlatList, SafeAreaView, StyleSheet, View} from 'react-native';
+import {SafeAreaView, StyleSheet, ScrollView, View} from 'react-native';
 import React, {useEffect, useState} from 'react'
 import constants from '../others/constants'
 import {getToGateway} from "../others/utils";
@@ -32,7 +32,7 @@ const UserListScreen = ({navigation}) => {
       () => {
         getAllUsers();
       });
-    }, []);
+  }, []);
 
 
   const filterUsers = text => {
@@ -44,7 +44,7 @@ const UserListScreen = ({navigation}) => {
     return <LoaderScreen/>;
   }
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <SafeAreaView>
         <Searchbar onChangeText={setText}
                    placeholder={"Buscar usuarios"}
@@ -52,17 +52,16 @@ const UserListScreen = ({navigation}) => {
                    containerStyle={{}}
                    inputContainerStyle={{}}
         />
-        <View>
-          <View style={{marginBottom: 10}}/>
+        <View style={{marginBottom: 10, marginTop: 10}}>
           {
-            <FlatList
-              data={list.filter(filterUsers(text))}
-              renderItem={({item, id}) => <UserChip id={id} key={id} user={item} navigation={navigation}/>}
-            />
+            list.filter(filterUsers(text)).map((user, id) => {
+                return <UserChip id={id} key={id} user={user} navigation={navigation}/>
+              }
+            )
           }
         </View>
       </SafeAreaView>
-    </View>
+    </ScrollView>
   )
 }
 

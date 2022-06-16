@@ -12,18 +12,18 @@ import {useAuthUser} from "../context/AuthContext";
 
 const reducer = (state, action = {}) => {
 
-    switch(action.type){
-        case 'username':
-        return{
-            ...state,
-            username: action.value,
-        };
-  
-        case 'phoneNumber':
-        return{
-          ...state,
-          phoneNumber: action.value
-        }
+  switch (action.type) {
+    case 'username':
+      return {
+        ...state,
+        username: action.value,
+      };
+
+    case 'phoneNumber':
+      return {
+        ...state,
+        phoneNumber: action.value
+      }
 
     case 'phoneNumber':
       return {
@@ -150,7 +150,7 @@ const EditProfileScreen = ({navigation}) => {
         + "?" + constants.USER_ID_QUERY_PARAM + profile.id
     };
 
-    if ( route.params.profile.username !== profile.username ){
+    if (route.params.profile.username !== profile.username) {
       requestBody['username'] = profile.username;
     }
 
@@ -206,9 +206,8 @@ const EditProfileScreen = ({navigation}) => {
       .then(res => {
           if (res.error === undefined) {
             const userSubscription = requestBody?.subscription !== undefined ? requestBody.subscription : userState.subscription;
-            const userName = requestBody?.name !== undefined ? requestBody.name : userState.name;
-            const userSurname = requestBody?.surname !== undefined ? requestBody.surname : userState.surname;
-            setUserBasicInfo(userState.usertype, userName, userSurname, userSubscription);
+            const userName = requestBody?.username !== undefined ? requestBody.username : userState.username;
+            setUserBasicInfo(userState.usertype, userName, userSubscription);
             alert(res.status);
             navigation.goBack();
           }
@@ -216,28 +215,30 @@ const EditProfileScreen = ({navigation}) => {
       )
   }
 
-        return(
-          <View style={profile.isArtist? styles.containerArtist : styles.containerListener}>
-          <SafeAreaView>
-            <ScrollView showsVerticalScrollIndicator={false}>
-              <View>
-                <ProfilePicture
-                  uid={profile.id}
-                  username={profile.username} 
-                  style={styles.avatar}
-                  photoUrl={profile.photoUrl}
-                  pictureSize={175}
-                  disabled={false}
-                  />
+  return (
+    <View style={profile.isArtist ? styles.containerArtist : styles.containerListener}>
+      <SafeAreaView>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View>
+            <ProfilePicture
+              uid={profile.id}
+              username={profile.username}
+              style={styles.avatar}
+              photoUrl={profile.photoUrl}
+              pictureSize={175}
+              disabled={false}
+              defaultStyle={styles.defaultImage}
+              Imagestyle={styles.profilePicture}
+            />
 
-                <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-                    <EditProfileTextInput 
-                        label='Nombre'
-                        name='username'
-                        input={profile.username}
-                        execute={dispatch}
-                        styles={styles.name}/>
-                </View>
+            <View style={{flexDirection: 'row', alignSelf: 'center', marginTop: 10}}>
+              <EditProfileTextInput
+                label='Nombre'
+                name='username'
+                input={profile.username}
+                execute={dispatch}
+                styles={styles.name}/>
+            </View>
             {profile.isListener &&
               (
                 <>

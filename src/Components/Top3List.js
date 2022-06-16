@@ -11,13 +11,28 @@ import LoaderScreen from './LoaderScreen';
 import defaultArtwork from "../../assets/album-placeholder.png";
 import SongList from "./SongList";
 import {containerStyle} from "../styles/genericStyles";
-import { useAuthUser } from '../context/AuthContext';
+import {getArtists} from "../Services/UsersService";
+
+
+const getAlbumsWithArtists = async (allAlbums) => {
+  const artists = await getArtists().then(r => r.list);
+  return allAlbums.map(album => enrichWithArtistName(album, artists));
+}
+
+const enrichWithArtistName = (album, artists) => ({
+  ...album,
+  artistNames: album.artists
+    .map(artistId => artists.find(a => a.id === artistId))
+    .map(getUserName)
+    .join(', '),
+});
+
+const getUserName = user => `${user.username}`
 
 const Top3List = props => {
 
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
-  const {userState} = useAuthUser();
 
   const player = usePlayerAction();
 
@@ -29,20 +44,25 @@ const Top3List = props => {
     };
   };
 
-
   useFocusEffect(
     useCallback(() => {
-
-      getToGateway(props.endpoint
-        + constants.LIMIT_3_PARAM)
+      getToGateway(props.endpoint + constants.LIMIT_3_PARAM)
         .then(res => {
           if (res.error !== undefined) {
-            alert(res.error);
+            console.log(res.error)
+            if(res.error.toLowerCase().includes('no autorizado')){
+              setList([]);
+              alert(res.error);
+            }
           } else {
-            if (props.userList)
+            if (props.userList) {
               setList(res.list)
-
-            else {
+            }
+            else if (props.albumList) {
+              getAlbumsWithArtists(res).then(albums => {
+                setList(albums)
+              });
+            } else {
               setList(res)
             }
             setLoading(false);

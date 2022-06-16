@@ -6,23 +6,23 @@ import defaultArtwork from "../../assets/music-placeholder.png";
 
 
 function getSHAOf(toHash) {
-    const myBitArray = sjcl.hash.sha256.hash(toHash)
-    const myHash = sjcl.codec.hex.fromBits(myBitArray)
-    return myHash;
+  const myBitArray = sjcl.hash.sha256.hash(toHash)
+  const myHash = sjcl.codec.hex.fromBits(myBitArray)
+  return myHash;
 }
 
-function getBiometricalMailAndPassword(biometricId){
+function getBiometricalMailAndPassword(biometricId) {
 
-  const email = biometricId.slice(1,19) + "@gmail.com";
-  const password = biometricId.slice(20,37);
+  const email = biometricId.slice(1, 19) + "@gmail.com";
+  const password = biometricId.slice(20, 37);
 
-  return {email: email, password : password};
+  return {email: email, password: password};
 }
 
-async function requestLocation(){
+async function requestLocation() {
 
   try {
-    let { status } = await Location.requestForegroundPermissionsAsync();
+    let {status} = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
       alert("No es posible continuar con el registro si no habilita una ubicación");
       return null;
@@ -30,154 +30,160 @@ async function requestLocation(){
 
     return await Location.getCurrentPositionAsync({});
 
-  }
-  catch (error) {
+  } catch (error) {
     alert("Error: no se pudo acceder a la ubicación del dispositivo. Por favor, habilítela para poder registrarse");
     return null
   }
 }
 
-const requestToGateway = (verb,
+const requestToGateway = async (verb,
                           redirectURL,
                           body = {}) => {
-    body.verbRedirect = verb;
-    body.apiKey = constants.MY_API_KEY;
-    body.redirectTo = redirectURL;
+  body.verbRedirect = verb;
+  body.apiKey = constants.MY_API_KEY;
+  body.redirectTo = redirectURL;
 
-    const response = fetch(constants.SERVICES_HOST + constants.CHECK_URL, {
-            method: "POST",
-            headers: constants.JSON_HEADER,
-            body: JSON.stringify(body)
-        }
-    ).then(r => r.json())
-     .catch(e => {
-         return {
-         status: "444",
-         error: e.toString()
-     } });
-
-    if (response.error !== undefined) {
-        return response;
+  let response = {};
+  await fetch(constants.SERVICES_HOST + constants.CHECK_URL, {
+      method: "POST",
+      headers: constants.JSON_HEADER,
+      body: JSON.stringify(body)
     }
+  ).then(async r => {
+    response = await r.json()
+  })
+    .catch(e => {
+      response = {
+        status: "444",
+        error: e.toString()
+      }
+    });
+  console.log(" request to gateway json:" + JSON.stringify(response))
 
-    if (verb === "GET") {
-        return fetch(redirectURL, {
-                method: "GET",
-                headers: constants.JSON_HEADER
-            }
-        );
-    }
+  if (response.error !== undefined) {
+    response.status = 401;
+    return response;
+  }
 
+  if (verb === "GET") {
     return fetch(redirectURL, {
-                method: verb,
-                headers: constants.JSON_HEADER,
-                body: JSON.stringify(body)
-    } );
+        method: "GET",
+        headers: constants.JSON_HEADER
+      }
+    );
+  }
+
+  return fetch(redirectURL, {
+    method: verb,
+    headers: constants.JSON_HEADER,
+    body: JSON.stringify(body)
+  });
 }
 
 // response.json() is a promise
 const postToGateway = (body,
                        verb = "POST") => {
-    body.apiKey = constants.MY_API_KEY;
+  body.apiKey = constants.MY_API_KEY;
 
-    return fetch(constants.SERVICES_HOST + constants.CHECK_URL, {
-            method: "POST",
-            headers: constants.JSON_HEADER,
-            body: JSON.stringify(body)
-        }
-    ).then(async r => {
-        const gatewayResponse = await r.json();
+  return fetch(constants.SERVICES_HOST + constants.CHECK_URL, {
+      method: "POST",
+      headers: constants.JSON_HEADER,
+      body: JSON.stringify(body)
+    }
+  ).then(async r => {
+    const gatewayResponse = await r.json();
+    console.log(" post to gateway json:" + JSON.stringify(gatewayResponse))
+    if (gatewayResponse.error !== undefined) {
+      return gatewayResponse;
+    }
 
-        if (gatewayResponse.error !== undefined) {
-            return gatewayResponse;
-        }
-
-        return await fetch(body.redirectTo, {
-            method: verb,
-            headers: constants.JSON_HEADER,
-            body: JSON.stringify(body)
-        } )
-            .then(async response => {
-                return await response.json();
-            }).catch(err => {
-                return {
-                    error: err.toString()
-                }
-            } );
-    } ).catch(error => {
+    return await fetch(body.redirectTo, {
+      method: verb,
+      headers: constants.JSON_HEADER,
+      body: JSON.stringify(body)
+    })
+      .then(async response => {
+        return await response.json();
+      }).catch(err => {
         return {
-            error: error.toString()
-        };
-    } );
+          error: err.toString()
+        }
+      });
+  }).catch(error => {
+    return {
+      error: error.toString()
+    };
+  });
 }
 
 const getToGateway = (destiny,
                       redirectParams) => {
-    const body = {}
-    body.apiKey = constants.MY_API_KEY;
+  const body = {}
+  body.apiKey = constants.MY_API_KEY;
 
-    const redirectParamsAux = redirectParams !== undefined ? redirectParams
-        : "";
+  const redirectParamsAux = redirectParams !== undefined ? redirectParams
+    : "";
 
-    const redirectTo = destiny + redirectParamsAux;
+  const redirectTo = destiny + redirectParamsAux;
 
-    body.redirectTo = redirectTo;
+  body.redirectTo = redirectTo;
 
-    return fetch(constants.SERVICES_HOST + constants.CHECK_URL, {
-            method: "POST",
-            headers: constants.JSON_HEADER,
-            body: JSON.stringify(body)
-        }
-    ).then(async r => {
-        const gatewayResponse = await r.json();
+  return fetch(constants.SERVICES_HOST + constants.CHECK_URL, {
+      method: "POST",
+      headers: constants.JSON_HEADER,
+      body: JSON.stringify(body)
+    }
+  ).then(async r => {
+    const gatewayResponse = await r.json();
+    console.log(" get to gateway json:" + JSON.stringify(gatewayResponse))
 
-        if (gatewayResponse.error !== undefined) {
-            return gatewayResponse;
-        }
+    if (gatewayResponse.error !== undefined) {
+      return gatewayResponse;
+    }
 
-        return await fetch(redirectTo, {
-            method: "GET",
-            headers: constants.JSON_HEADER
-        } )
-            .then(async response => {
-                return await response.json();
-            }).catch(err => {
-                return {
-                    error: err.toString()
-                }
-            } );
-    } ).catch(error => {
+    return await fetch(redirectTo, {
+      method: "GET",
+      headers: constants.JSON_HEADER
+    })
+      .then(async response => {
+        return await response.json();
+      }).catch(err => {
         return {
-            error: error.toString()
-        };
-    } );
+          error: err.toString()
+        }
+      });
+  }).catch(error => {
+    return {
+      error: error.toString()
+    };
+  });
 }
 
 const validateFieldNotBlank = (fieldName, field, setField) => {
   const value = field.value;
-  if (value === '' || value === null || value === undefined || value.length === 0 ) {
+  if (value === '' || value === null || value === undefined || value.length === 0) {
     setField({value, error: `El campo "${fieldName}" debe ser completado`});
     return false;
   }
   return true;
 }
 
-async function checkAuthTokenExpirationTime(){
+async function checkAuthTokenExpirationTime() {
 
-    const begin = Number(await SecureStore.getItemAsync(constants.SS_TIMESTAMP_LABEL));
-    const now = Date.now()
-    const dif = now - begin;
+  const begin = Number(await SecureStore.getItemAsync(constants.SS_TIMESTAMP_LABEL));
+  const now = Date.now()
+  const dif = now - begin;
 
-    return ( dif < 3600000);
+  return (dif < 3600000);
 }
 
-function getChatId(idEmissor, idReceptor){
+function getChatId(idEmissor, idReceptor) {
 
-  if ( idEmissor < idReceptor)
-      return `chat-${idEmissor}-${idReceptor}`;
+  if (idEmissor < idReceptor)
+    return `chat-${idEmissor}-${idReceptor}`;
 
   else
-      return `chat-${idReceptor}-${idEmissor}`;
+    return `chat-${idReceptor}-${idEmissor}`;
 }
 
 const songToTrack = (song) => {

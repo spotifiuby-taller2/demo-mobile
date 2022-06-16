@@ -18,7 +18,10 @@ export const FavouriteSongsProvider = ({children}) => {
     getFavouriteSongs(userState.uid)
       .then(r => setFavouriteSongs(r))
       .then(() => setIsReady(true))
-      .catch(e => console.log(JSON.stringify(e)));
+      .catch(e => {
+        setFavouriteSongs([])
+        setIsReady(true)
+        console.log(JSON.stringify(e))});
   }
 
   const toggleFavourite = (songId) => {

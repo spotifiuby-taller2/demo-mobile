@@ -11,17 +11,7 @@ import {pickFile} from "../Services/FilePickerService";
 
 const ProfilePicture = (props) => {
 
-  const [selectedImage, setSelectedImage] = useState(null);
   const {userState} = useAuthUser();
-
-
-  useEffect(() => {
-    if (props.photoUrl) {
-      setSelectedImage(props.photoUrl)
-    } else {
-      setSelectedImage(null);
-    }
-  }, [selectedImage]);
 
   const pickImage = async () => {
 
@@ -37,7 +27,7 @@ const ProfilePicture = (props) => {
           photoURL: photoURL,
       };
       postToGateway(requestBody, 'PATCH')
-        .then(_ => setSelectedImage(photoURL));
+        .then(_ => console.log("Updated photo url"));
     }
   }
 
@@ -45,10 +35,10 @@ const ProfilePicture = (props) => {
     <TouchableOpacity
       onPress={pickImage}
       mode='outlined'
-      style={(selectedImage)? props.profilePicture: props.defaultImage}
+      style={(props.photoUrl)? props.profilePicture: props.defaultImage}
       disabled={((props.uid !== userState.uid) || (props.disabled))}
     >
-      {(selectedImage === null) ?
+      {(props.photoUrl === null) ?
         (<Avatar.Text
           style={styles.avatar}
           size={props.pictureSize}
@@ -57,7 +47,7 @@ const ProfilePicture = (props) => {
         : (<Avatar.Image
           style={styles.avatar}
           size={props.pictureSize}
-          source={{uri: selectedImage}}/>)}
+          source={{uri: props.photoUrl}}/>)}
     </TouchableOpacity>
   );
 }

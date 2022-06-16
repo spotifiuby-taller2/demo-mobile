@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {songToTrack} from "../others/utils";
-import {FlatList, SafeAreaView, View} from "react-native";
+import {SafeAreaView, View, ScrollView} from "react-native";
 import {containerStyle} from "../styles/genericStyles";
 import PlayableListItem from "../Components/PlayableListItem";
 import defaultArtwork from "../../assets/album-placeholder.png";
@@ -22,7 +22,7 @@ const enrichWithArtistName = (album, artists) => ({
     .join(', '),
 });
 
-const getUserName = user => `${user.name} ${user.surname}`
+const getUserName = user => `${user.username}`
 
 const AlbumListScreen = ({navigation}) => {
   const [albumList, setAlbumList] = useState([]);
@@ -66,7 +66,7 @@ const AlbumListScreen = ({navigation}) => {
     return <LoaderScreen/>;
   }
   return (
-    <View style={{...containerStyle, marginTop: 10}}>
+    <ScrollView style={{...containerStyle, marginTop: 10}}>
       <SafeAreaView>
         <Searchbar onChangeText={setText}
                    placeholder={"Buscar albumes"}
@@ -74,27 +74,25 @@ const AlbumListScreen = ({navigation}) => {
                    containerStyle={{}}
                    inputContainerStyle={{}}
         />
-        <View>
-          <View style={{marginBottom: 10}}/>
+        <View style={{marginBottom: 10, marginTop: 10}}>
           {
-            <FlatList
-              data={albumList.filter(filterAlbum(text))}
-              renderItem={({item, index}) => <PlayableListItem id={index}
-                                                               key={index}
-                                                               playableItem={toPlayable(item)}
-                                                               play={() => player.playList(item.songs.map(songToTrack), 0)}
-                                                               moreInfoCallback={() => {
-                                                                 navigation.navigate('AlbumScreen', {
-                                                                   albumId: item.id
-                                                                 });
-                                                               }}
-              />
+            albumList.filter(filterAlbum(text)).map((album, id) => {
+                return <PlayableListItem id={id}
+                                         key={id}
+                                         playableItem={toPlayable(album)}
+                                         play={() => player.playList(album.songs.map(songToTrack), 0)}
+                                         moreInfoCallback={() => {
+                                           navigation.navigate('AlbumScreen', {
+                                             albumId: album.id
+                                           });
+                                         }}
+                />
               }
-            />
+            )
           }
         </View>
       </SafeAreaView>
-    </View>
+    </ScrollView>
   );
 }
 
