@@ -131,7 +131,7 @@ const ProfileScreen = ({navigation}) => {
     const unsubscribeFocus = navigation.addListener('focus',
       () => {
         setRenderButton(false);
-        initializeProfile(route.params.uid);
+        initializeProfile(route.params.uid).then();
       });
 
     return () => {
@@ -260,6 +260,7 @@ const ProfileScreen = ({navigation}) => {
 
             {
               renderButton && (
+                  <View>
                 <ProfilePicture
                   uid={profile.id}
                   username={profile.username}
@@ -269,10 +270,13 @@ const ProfileScreen = ({navigation}) => {
                   defaultStyle={styles.defaultImage}
                   Imagestyle={styles.profilePicture}
                 />
+                    </View>
               )
             }
 
+            <View>
             <Text style={styles.name}>{profile.username}</Text>
+            </View>
 
             {
               profile.isArtist && profile.isVerified && (
@@ -285,16 +289,18 @@ const ProfileScreen = ({navigation}) => {
 
             {
               (profile.isArtist && (
+                <View>
                 <Text style={{
                   fontSize: 20,
                   alignSelf: 'center',
                   color: 'steelblue'
                 }}>{nFollowers} Seguidores</Text>
+                </View>
               ))
             }
 
             {profile.isListener &&
-              (
+            (
                 <>
                   <Text style={{
                     ...styles.text,
@@ -317,17 +323,20 @@ const ProfileScreen = ({navigation}) => {
                     {profile.others && (<Chip style={styles.chip}><Text> Otros</Text></Chip>)}
                   </View>
                 </>
-              )
+            )
             }
+
             {
               renderButton && profile.id !== userState.uid && (
-                <FollowArtistButton
-                  openAsListener={(userState.userType === constants.LISTENER)
-                    && (profile.isArtist)}
-                  idListener={userState.uid}
-                  idArtist={profile.id}
-                  follow={followArtist}
-                  unFollow={unFollowArtist}/>
+                  <View>
+                    <FollowArtistButton
+                        openAsListener={(userState.userType === constants.LISTENER)
+                        && (profile.isArtist)}
+                        idListener={userState.uid}
+                        idArtist={profile.id}
+                        follow={followArtist}
+                        unFollow={unFollowArtist}/>
+                  </View>
               )
             }
 
@@ -335,96 +344,101 @@ const ProfileScreen = ({navigation}) => {
               (userState.uid === profile.id && profile.isArtist) &&
 
               (
-                <View>
-                  <Button
-                    mode='contained'
-                    disabled={(profile.nMembers === 0) && profile.isBand}
-                    style={{
-                      backgroundColor: 'skyblue',
-                      height: 100,
-                      width: 100,
-                      borderRadius: 50,
-                      alignSelf: 'center',
-                      justifyContent: 'center',
-                      marginTop: 15,
-                      marginBottom: 30
-                    }}
-                    onPress={() => {
-                      navigation.navigate('CreateContentScreen');
-                    }}
-                  >
-                    <MaterialCommunityIcons
-                      name='plus'
-                      size={50}
-                      color='darkblue'
-                      styles={{alignSelf: 'center'}}/>
-                  </Button>
-                  }
+                  <View>
 
-                  {
-                    profile.nMembers === 0 && profile.isBand &&
-                    (
-                      <Text style={{color: 'red'}}>Una banda no podrá subir contenido si no tiene al menos 1 integrante.</Text>
-                    )
-                  }
+                    <View>
+                      <Button
+                          mode='contained'
+                          disabled={(profile.nMembers === 0) && profile.isBand}
+                          style={{
+                            backgroundColor: 'skyblue',
+                            height: 100,
+                            width: 100,
+                            borderRadius: 50,
+                            alignSelf: 'center',
+                            justifyContent: 'center',
+                            marginTop: 15,
+                            marginBottom: 30
+                          }}
+                          onPress={() => {
+                            navigation.navigate('CreateContentScreen');
+                          }}
+                      >
+                        <MaterialCommunityIcons
+                            name='plus'
+                            size={50}
+                            color='darkblue'
+                            styles={{alignSelf: 'center'}}/>
+                      </Button>
+                    </View>
 
+                    {
+                      (profile.nMembers === 0 && profile.isBand) &&
+                      (
+                          <View>
+                            <Text style={{color: 'red'}}>Una banda no podrá subir contenido si no tiene al menos 1 integrante.</Text>
+                          </View>
+                      )
+                    }
 
-                </View>
+                  </View>
               )
             }
+
             {
               profile.id === userState.uid && profile.isListener && renderButton &&
               (
-                <>
-                  <Button
-                    onPress={() => {
-                      navigation.navigate('CreatePlaylist', {userId: userState.uid})
-                    }}>
-                    Crear playlist
-                  </Button>
-                  <Top3List
-                    title='Artistas Favoritos'
-                    endpoint={constants.USERS_HOST + constants.APP_FAV_ARTIST_LIST_URL + "?"
-                      + constants.USER_ID_QUERY_PARAM + profile.id + "&"}
-                    navigation={navigation}
-                    open='FavoriteArtistsListScreen'
-                    userList={true}
-                    color={'#f5fcff'}/>
+                  <>
+                    <Button
+                        onPress={() => {
+                          navigation.navigate('CreatePlaylist', {userId: userState.uid})
+                        }}>
+                      Crear playlist
+                    </Button>
+                    <Top3List
+                        title='Artistas Favoritos'
+                        endpoint={constants.USERS_HOST + constants.APP_FAV_ARTIST_LIST_URL + "?"
+                        + constants.USER_ID_QUERY_PARAM + profile.id + "&"}
+                        navigation={navigation}
+                        open='FavoriteArtistsListScreen'
+                        userList={true}
+                        color={'#f5fcff'}/>
 
-                </>
+                  </>
               )
             }
             {
               (profile.isListener && playlists.length > 0) && (
-                <TopList
-                  title={'Playlists'}
-                  data={playlists}
-                  renderDataItem={(playlist, id) => (
-                    <PlayableListItem id={id}
-                                      key={id}
-                                      playableItem={playlistToPlayable(playlist)}
-                                      play={() => player.playList(playlist.songs.map(songToTrack), 0)}
-                                      moreInfoCallback={() => navigation.navigate('PlaylistScreen', {playlistId: playlist.id})}
+                  <TopList
+                      title={'Playlists'}
+                      data={playlists}
+                      renderDataItem={(playlist, id) => (
+                          <PlayableListItem id={id}
+                                            key={id}
+                                            playableItem={playlistToPlayable(playlist)}
+                                            play={() => player.playList(playlist.songs.map(songToTrack), 0)}
+                                            moreInfoCallback={() => navigation.navigate('PlaylistScreen', {playlistId: playlist.id})}
 
-                    />)}
-                  max={3}
-                  viewMoreCallback={() => navigation.navigate('PlaylistListScreen', {playlists: playlists})}
-                />
+                          />)}
+                      max={3}
+                      viewMoreCallback={() => navigation.navigate('PlaylistListScreen', {playlists: playlists})}
+                  />
               )
             }
             {
               profile.id === userState.uid && profile.isBand && renderButton &&
               (
-                <Top3List
-                  title='Integrantes'
-                  endpoint={constants.USERS_HOST + constants.BAND_URL + "?"
-                    + constants.USER_ID_QUERY_PARAM + profile.id + "&"}
-                  navigation={navigation}
-                  open='BandMenbersListScreen'
-                  userList={true}
-                  color={'#B0E0E6'}/>
+                  <Top3List
+                      title='Integrantes'
+                      endpoint={constants.USERS_HOST + constants.BAND_URL + "?"
+                      + constants.USER_ID_QUERY_PARAM + profile.id + "&"}
+                      navigation={navigation}
+                      open='BandMenbersListScreen'
+                      userList={true}
+                      color={'#B0E0E6'}/>
               )
             }
+
           </View>
         </ScrollView>
       </SafeAreaView>

@@ -58,7 +58,7 @@ const requestToGateway = async (verb,
         error: e.toString()
       }
     });
-  console.log(" request to gateway json:" + JSON.stringify(response))
+  // console.log(" request to gateway json:" + JSON.stringify(response))
 
   if (response.error !== undefined) {
     response.status = 401;
@@ -92,7 +92,8 @@ const postToGateway = (body,
     }
   ).then(async r => {
     const gatewayResponse = await r.json();
-    console.log(" post to gateway json:" + JSON.stringify(gatewayResponse))
+    // console.log(" post to gateway json:" + JSON.stringify(gatewayResponse))
+
     if (gatewayResponse.error !== undefined) {
       return gatewayResponse;
     }
@@ -135,7 +136,7 @@ const getToGateway = (destiny,
     }
   ).then(async r => {
     const gatewayResponse = await r.json();
-    console.log(" get to gateway json:" + JSON.stringify(gatewayResponse))
+    // console.log(" get to gateway json:" + JSON.stringify(gatewayResponse))
 
     if (gatewayResponse.error !== undefined) {
       return gatewayResponse;
