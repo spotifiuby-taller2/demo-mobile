@@ -1,18 +1,20 @@
 import React, {useEffect, useState} from "react";
 import SongList from "../Components/SongList";
 import {getPlaylist, setPlaylistStatus} from "../Services/MediaService";
-import {Image, View, StyleSheet} from "react-native";
-import {Button, RadioButton, Text} from "react-native-paper";
+import {Image, StyleSheet, View} from "react-native";
+import {Button, Text} from "react-native-paper";
 import LoaderScreen from "../Components/LoaderScreen";
 import defaultArtwork from "../../assets/album-placeholder.png";
-import { ScrollView } from "react-native-gesture-handler";
+import {ScrollView} from "react-native-gesture-handler";
 import {buttonStyle, buttonTextStyle} from "../styles/genericStyles";
-import {BlankLine} from "../ContentScreens/BlankLine";
+import {useAuthUser} from "../context/AuthContext";
+
 
 const PlaylistScreen = ({navigation, route}) => {
   const playlistId = route.params.playlistId;
   const [playlist, setPlaylist] = useState();
   const [isPublic, setIsPublic] = useState(false);
+  const {userState} = useAuthUser();
 
   useEffect(() => {
     getPlaylist(playlistId).then(p => {
@@ -20,24 +22,24 @@ const PlaylistScreen = ({navigation, route}) => {
 
       setIsPublic(p.isCollaborative);
 
-      navigation.setOptions({ headerShown: true, headerTitle: p.title });
+      navigation.setOptions({headerShown: true, headerTitle: p.title});
     });
   }, [])
 
   const handleStatusChange = async () => {
     const data = {
       id: playlistId,
-      isPublic: ! isPublic,
+      isPublic: !isPublic,
     }
 
     await setPlaylistStatus(data)
-        .then(res => {
-          setIsPublic(! isPublic);
-        } )
-        .catch(err => {
-              alert(err.error.toString());
-            }
-        );
+      .then(res => {
+        setIsPublic(!isPublic);
+      })
+      .catch(err => {
+          alert(err.error.toString());
+        }
+      );
   }
 
   if (playlist === undefined) {
@@ -47,27 +49,32 @@ const PlaylistScreen = ({navigation, route}) => {
   return (
     <View style={styles.container}>
       <ScrollView>
+        <View>
+          <Text style={{
+            textAlign: 'left',
+            padding: 15,
+            fontSize: 25
+          }}>{'Canciones'}</Text>
 
-        <Text style={{
-          textAlign: 'left',
-          padding: 15,
-          fontSize: 25}}>{'Canciones'}</Text>
+          <Image source={playlist.artwork ? {uri: playlist.artwork} : defaultArtwork} style={styles.artwork}/>
+          <SongList navigation={navigation} songList={playlist.songs ?? []}/>
+        </View>
 
-        <Image source={playlist.artwork ? {uri: playlist.artwork} : defaultArtwork} style={styles.artwork}/>
-        <SongList navigation={navigation} songList={playlist.songs ?? []}/>
-
-        <BlankLine/>
-
-        <Button mode='contained'
-                style={styles.button}
-                onPress={handleStatusChange}>
+        <View>
           {
-            (isPublic) ?
-                <Text style={buttonTextStyle}>{'Hacer privada'}</Text>
-                :
-                <Text style={buttonTextStyle}>{'Hacer pública'}</Text>
+            (userState.uid === playlist.owner) &&
+            (<Button mode='contained'
+                     style={styles.button}
+                     onPress={handleStatusChange}>
+              {
+                (isPublic) ?
+                  <Text style={buttonTextStyle}>{'Hacer privada'}</Text>
+                  :
+                  <Text style={buttonTextStyle}>{'Hacer pública'}</Text>
+              }
+            </Button>)
           }
-        </Button>
+        </View>
       </ScrollView>
     </View>
   )
@@ -92,10 +99,10 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     flex: 1,
   },
-    button: {
-...buttonStyle,
-      width: 200,
-}
+  button: {
+    ...buttonStyle,
+    width: 200,
+  }
 });
 
 export default PlaylistScreen;
