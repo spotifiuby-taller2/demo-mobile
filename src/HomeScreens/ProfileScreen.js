@@ -372,15 +372,15 @@ const ProfileScreen = ({navigation}) => {
                       </Button>
                     </View>
 
-                    {
-                      (profile.nMembers === 0 && profile.isBand) &&
-                      (
-                          <View>
-                            <Text style={{color: 'red'}}>Una banda no podrá subir contenido si no tiene al menos 1 integrante.</Text>
-                          </View>
-                      )
-                    }
+                  </View>
+              )
+            }
 
+            {
+              (profile.nMembers === 0 && profile.isBand) &&
+              (
+                  <View>
+                    <Text style={{color: 'red'}}>Una banda no podrá subir contenido si no tiene al menos 1 integrante.</Text>
                   </View>
               )
             }
