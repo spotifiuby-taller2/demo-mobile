@@ -64,6 +64,7 @@ const CreatePlaylist = ({navigation}) => {
       console.log(`Playlist created: ${JSON.stringify(song)}`);
       resetState();
       alert('Playlist creada!');
+      navigation.goBack();
     } catch (err) {
       console.log(JSON.stringify(err));
       alert('Ha ocurrido un error inesperado al crear la playlist, por favor intente más tarde');
@@ -101,7 +102,7 @@ const CreatePlaylist = ({navigation}) => {
                         searchPlaceholder={"Buscar canciones"}
                         buttonText={"Seleccionar canciones"}
                         icon={'music-box-multiple-outline'}
-                        renderElement={song => (<Text>{`${song.title}`}</Text>)}
+                        renderElement={song => (<Text>{`${song.title} - ${song.author}`}</Text>)}
                         getAllElements={getAllSongs}
                         elementFilter={filterSong}
                         elementCallback={{

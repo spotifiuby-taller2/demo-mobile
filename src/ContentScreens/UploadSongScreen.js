@@ -10,6 +10,8 @@ import {getArtists} from '../Services/UsersService';
 import MultiSelection from "../Components/MultiSelection";
 import GenreDropDown from "../Components/GenreDropDown";
 import SubscriptionDropDown from "../Components/SubscriptionDropDown";
+import { useRoute } from '@react-navigation/native';
+
 
 const UploadSongScreen = () => {
   const [title, setTitle] = useState({value: '', error: null});
@@ -20,6 +22,7 @@ const UploadSongScreen = () => {
   const [file, setFile] = useState();
   const [artworkFile, setArtworkFile] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const route = useRoute();
 
   const resetState = () => {
     setTitle({value: '', error: null});
@@ -86,6 +89,7 @@ const UploadSongScreen = () => {
       console.log(`Song created: ${JSON.stringify(song)}`);
       resetState();
       alert('Canción subida!');
+      route.params.navigation.goBack();
     } catch (err) {
       console.log(JSON.stringify(err));
       alert('Ha ocurrido un error inesperado al subir la canción, por favor intente más tarde');

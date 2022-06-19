@@ -11,6 +11,7 @@ import GenreDropDown from "../Components/GenreDropDown";
 import SubscriptionDropDown from "../Components/SubscriptionDropDown";
 import {useAuthUser} from "../context/AuthContext";
 import MultiSelection from "../Components/MultiSelection";
+import { useRoute } from '@react-navigation/native';
 
 const UploadAlbumScreen = () => {
   const [title, setTitle] = useState({value: '', error: null});
@@ -21,6 +22,7 @@ const UploadAlbumScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState();
   const {userState} = useAuthUser();
+  const route = useRoute();
 
   const resetState = () => {
     setTitle({value: '', error: null});
@@ -77,6 +79,7 @@ const UploadAlbumScreen = () => {
       console.log(`Album created: ${JSON.stringify(album)}`);
       resetState();
       alert('Album creado!');
+      route.params.navigation.goBack();
     } catch (err) {
       console.log(JSON.stringify(err));
       alert('Ha ocurrido un error inesperado al crear el álbum, por favor intente más tarde');
@@ -134,7 +137,7 @@ const UploadAlbumScreen = () => {
                         searchPlaceholder={"Buscar canciones"}
                         buttonText={"Seleccionar canciones"}
                         icon={'music-box-multiple-outline'}
-                        renderElement={song => (<Text>{`${song.title}`}</Text>)}
+                        renderElement={song => (<Text>{`${song.title} - ${song.author}`}</Text>)}
                         getAllElements={() => getSongsByArtist(userState.uid)}
                         elementFilter={filterSong}
                         elementCallback={{

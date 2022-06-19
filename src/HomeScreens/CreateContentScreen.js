@@ -17,6 +17,7 @@ const CreateContentScreen = ({navigation}) => {
       <ContentTab.Screen
         name="Canciones"
         component={UploadSongScreen}
+        initialParams={{navigation: navigation}}
         options={{
           tabBarIcon: () => (< Avatar.Icon size={30} icon='music'/>)
         }}
@@ -25,6 +26,7 @@ const CreateContentScreen = ({navigation}) => {
       <ContentTab.Screen
         name="Albumes"
         component={UploadAlbumScreen}
+        initialParams={{navigation: navigation}}
         options={{
           tabBarIcon: () => (< Avatar.Icon size={30} icon='album'/>)
         }}

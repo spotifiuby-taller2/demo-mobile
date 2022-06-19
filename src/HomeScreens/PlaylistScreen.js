@@ -8,6 +8,8 @@ import defaultArtwork from "../../assets/album-placeholder.png";
 import {ScrollView} from "react-native-gesture-handler";
 import {buttonStyle, buttonTextStyle} from "../styles/genericStyles";
 import {useAuthUser} from "../context/AuthContext";
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+
 
 
 const PlaylistScreen = ({navigation, route}) => {
@@ -68,10 +70,16 @@ const PlaylistScreen = ({navigation, route}) => {
                      onPress={handleStatusChange}>
               {
                 (isPublic) ?
-                  <Text style={buttonTextStyle}>{'Hacer privada'}</Text>
+                      <MaterialCommunityIcons
+                        name='lock-open'
+                        size={50}
+                        color='#388AD6'/>
                   :
-                  <Text style={buttonTextStyle}>{'Hacer pública'}</Text>
-              }
+                        <MaterialCommunityIcons
+                          name='lock'
+                          size={50}
+                          color='#388AD6'/>
+                }
             </Button>)
           }
         </View>
@@ -101,7 +109,7 @@ const styles = StyleSheet.create({
   },
   button: {
     ...buttonStyle,
-    width: 200,
+    width: 100,
   }
 });
 
