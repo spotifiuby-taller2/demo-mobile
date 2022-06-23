@@ -53,6 +53,7 @@ const UNFAV_ALBUM = "/unfavalbum";
 const CHECK_FAV_ALBUM = "/checkfavalbum";
 const FAVORITE_ALBUMS = "/favoritealbums";
 const CHECK_URL = "/check";
+const REDIRECT_URL = "/redirect";
 
 const APP_FAV_ARTIST_URL = USERS_URL + "/favartist";
 const PUSH_NOTIFICATION_TOKEN_URL = PROFILE_URL + "/pushnotificationtoken";
@@ -130,5 +131,5 @@ module.exports = {
   LIMIT_3_PARAM,
   FAV_ALBUM, 
   UNFAV_ALBUM, CHECK_FAV_ALBUM, FAVORITE_ALBUMS, BAND_URL,
-  CHECK_URL, PLAYLIST_STATUS_URL
+  CHECK_URL, PLAYLIST_STATUS_URL, REDIRECT_URL
 };
