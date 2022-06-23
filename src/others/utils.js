@@ -36,128 +36,67 @@ async function requestLocation() {
   }
 }
 
-const requestToGateway = async (verb,
-                          redirectURL,
-                          body = {}) => {
+const requestToGateway = (verb, redirectURL, body = {}) => {
   body.verbRedirect = verb;
   body.apiKey = constants.MY_API_KEY;
   body.redirectTo = redirectURL;
 
-  let response = {};
-  await fetch(constants.SERVICES_HOST + constants.CHECK_URL, {
-      method: "POST",
-      headers: constants.JSON_HEADER,
-      body: JSON.stringify(body)
-    }
-  ).then(async r => {
-    response = await r.json()
-  })
-    .catch(e => {
-      response = {
-        status: "444",
-        error: e.toString()
+  return fetch(constants.SERVICES_HOST + constants.REDIRECT_URL, {
+        method: "POST",
+        headers: constants.JSON_HEADER,
+        body: JSON.stringify(body)
       }
-    });
-  // console.log(" request to gateway json:" + JSON.stringify(response))
-
-  if (response.error !== undefined) {
-    response.status = 401;
-    return response;
-  }
-
-  if (verb === "GET") {
-    return fetch(redirectURL, {
-        method: "GET",
-        headers: constants.JSON_HEADER
-      }
-    );
-  }
-
-  return fetch(redirectURL, {
-    method: verb,
-    headers: constants.JSON_HEADER,
-    body: JSON.stringify(body)
-  });
+  );
 }
 
 // response.json() is a promise
 const postToGateway = (body,
                        verb = "POST") => {
+  body.verbRedirect = verb;
   body.apiKey = constants.MY_API_KEY;
 
-  return fetch(constants.SERVICES_HOST + constants.CHECK_URL, {
-      method: "POST",
-      headers: constants.JSON_HEADER,
-      body: JSON.stringify(body)
-    }
-  ).then(async r => {
-    const gatewayResponse = await r.json();
-    // console.log(" post to gateway json:" + JSON.stringify(gatewayResponse))
+  return fetch(constants.SERVICES_HOST + constants.REDIRECT_URL, {
+        method: "POST",
+        headers: constants.JSON_HEADER,
+        body: JSON.stringify(body)
+      }
+  ).then(response => {
+       return response.json()
+      }
+  ).catch(error => {
+    let errorToShow = error.toString();
 
-    if (gatewayResponse.error !== undefined) {
-      return gatewayResponse;
+    if (errorToShow.includes("JSON")) {
+      errorToShow = "La app no puede enviar la solicitud."
     }
 
-    return await fetch(body.redirectTo, {
-      method: verb,
-      headers: constants.JSON_HEADER,
-      body: JSON.stringify(body)
-    })
-      .then(async response => {
-        return await response.json();
-      }).catch(err => {
-        return {
-          error: err.toString()
-        }
-      });
-  }).catch(error => {
     return {
-      error: error.toString()
+      error: errorToShow
     };
-  });
+  } );
 }
 
 const getToGateway = (destiny,
                       redirectParams) => {
   const body = {}
+  body.redirectParams = redirectParams
+  body.verbRedirect = "GET";
+  body.redirectTo = destiny;
   body.apiKey = constants.MY_API_KEY;
 
-  const redirectParamsAux = redirectParams !== undefined ? redirectParams
-    : "";
-
-  const redirectTo = destiny + redirectParamsAux;
-
-  body.redirectTo = redirectTo;
-
-  return fetch(constants.SERVICES_HOST + constants.CHECK_URL, {
-      method: "POST",
-      headers: constants.JSON_HEADER,
-      body: JSON.stringify(body)
-    }
-  ).then(async r => {
-    const gatewayResponse = await r.json();
-    // console.log(" get to gateway json:" + JSON.stringify(gatewayResponse))
-
-    if (gatewayResponse.error !== undefined) {
-      return gatewayResponse;
-    }
-
-    return await fetch(redirectTo, {
-      method: "GET",
-      headers: constants.JSON_HEADER
-    })
-      .then(async response => {
-        return await response.json();
-      }).catch(err => {
-        return {
-          error: err.toString()
-        }
-      });
-  }).catch(error => {
+  return fetch(constants.SERVICES_HOST + constants.REDIRECT_URL, {
+        method: "POST",
+        headers: constants.JSON_HEADER,
+        body: JSON.stringify(body)
+      }
+  ).then(response => {
+        return response.json()
+      }
+  ).catch(error => {
     return {
       error: error.toString()
     };
-  });
+  } );
 }
 
 const validateFieldNotBlank = (fieldName, field, setField) => {

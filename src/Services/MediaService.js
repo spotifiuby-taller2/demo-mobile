@@ -2,10 +2,13 @@ import {requestToGateway} from '../others/utils';
 import constants from '../others/constants';
 
 const getBodyOrThrow = (response) => {
+  console.log(response);
+
   if (response.status !== 200) {
     console.log(`Response error with status ${response.status}`);
     throw response;
   }
+
   return response.json();
 }
 
