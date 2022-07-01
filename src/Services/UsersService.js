@@ -24,4 +24,15 @@ const uploadVerificationVideo = body => {
     });
 }
 
-export {getArtists, uploadVerificationVideo};
+const getUser = (userId) => {
+  return requestToGateway('GET', `${constants.USERS_HOST}${constants.PROFILE_URL}?userId=${userId}`)
+    .then(response => {
+      if (response.status !== 200) {
+        console.log(`Response error with status ${response.status}`)
+        throw response;
+      }
+      return response.json();
+    });
+}
+
+export {getArtists, uploadVerificationVideo, getUser};
