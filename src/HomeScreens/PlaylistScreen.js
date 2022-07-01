@@ -9,6 +9,7 @@ import {ScrollView} from "react-native-gesture-handler";
 import {buttonStyle, buttonTextStyle} from "../styles/genericStyles";
 import {useAuthUser} from "../context/AuthContext";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import subscription from "../data/Subscription";
 
 
 
@@ -59,7 +60,8 @@ const PlaylistScreen = ({navigation, route}) => {
           }}>{'Canciones'}</Text>
 
           <Image source={playlist.artwork ? {uri: playlist.artwork} : defaultArtwork} style={styles.artwork}/>
-          <SongList navigation={navigation} songList={playlist.songs ?? []}/>
+
+          <SongList navigation={navigation} songList={playlist.songs.filter(s => subscription[s.subscription].level <= subscription[userState.subscription].level) ?? []}/>
         </View>
 
         <View>
