@@ -6,26 +6,31 @@ import {Button, Text} from "react-native-paper";
 import LoaderScreen from "../Components/LoaderScreen";
 import defaultArtwork from "../../assets/album-placeholder.png";
 import {ScrollView} from "react-native-gesture-handler";
-import {buttonStyle, buttonTextStyle} from "../styles/genericStyles";
+import {buttonStyle} from "../styles/genericStyles";
 import {useAuthUser} from "../context/AuthContext";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import subscription from "../data/Subscription";
-
+import {getUser} from "../Services/UsersService";
+import UserChip from "../Components/UserChip";
 
 
 const PlaylistScreen = ({navigation, route}) => {
   const playlistId = route.params.playlistId;
   const [playlist, setPlaylist] = useState();
   const [isPublic, setIsPublic] = useState(false);
+  const [owner, setOwner] = useState();
   const {userState} = useAuthUser();
 
   useEffect(() => {
     getPlaylist(playlistId).then(p => {
-      setPlaylist(p);
+      getUser(p.owner).then(u => {
+        setOwner(u)
+        setPlaylist(p);
 
-      setIsPublic(p.isCollaborative);
+        setIsPublic(p.isCollaborative);
 
-      navigation.setOptions({headerShown: true, headerTitle: p.title});
+        navigation.setOptions({headerShown: true, headerTitle: p.title});
+      });
     });
   }, [])
 
@@ -52,6 +57,13 @@ const PlaylistScreen = ({navigation, route}) => {
   return (
     <View style={styles.container}>
       <ScrollView>
+        <Image source={playlist.artwork ? {uri: playlist.artwork} : defaultArtwork} style={styles.artwork}/>
+        <Text style={{
+          textAlign: 'left',
+          padding: 15,
+          fontSize: 25
+        }}>{'Autor'}</Text>
+        <UserChip user={owner} navigation={navigation}/>
         <View>
           <Text style={{
             textAlign: 'left',
@@ -59,9 +71,9 @@ const PlaylistScreen = ({navigation, route}) => {
             fontSize: 25
           }}>{'Canciones'}</Text>
 
-          <Image source={playlist.artwork ? {uri: playlist.artwork} : defaultArtwork} style={styles.artwork}/>
 
-          <SongList navigation={navigation} songList={playlist.songs.filter(s => subscription[s.subscription].level <= subscription[userState.subscription].level) ?? []}/>
+          <SongList navigation={navigation}
+                    songList={playlist.songs.filter(s => subscription[s.subscription].level <= subscription[userState.subscription].level) ?? []}/>
         </View>
 
         <View>
@@ -72,16 +84,16 @@ const PlaylistScreen = ({navigation, route}) => {
                      onPress={handleStatusChange}>
               {
                 (isPublic) ?
-                      <MaterialCommunityIcons
-                        name='lock-open'
-                        size={50}
-                        color='#388AD6'/>
+                  <MaterialCommunityIcons
+                    name='lock-open'
+                    size={50}
+                    color='#388AD6'/>
                   :
-                        <MaterialCommunityIcons
-                          name='lock'
-                          size={50}
-                          color='#388AD6'/>
-                }
+                  <MaterialCommunityIcons
+                    name='lock'
+                    size={50}
+                    color='#388AD6'/>
+              }
             </Button>)
           }
         </View>
@@ -105,9 +117,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   artwork: {
-    marginTop: 20,
-    resizeMode: 'contain',
-    flex: 1,
+    width: undefined,
+    aspectRatio: 1,
+    flexGrow: 1,
   },
   button: {
     ...buttonStyle,

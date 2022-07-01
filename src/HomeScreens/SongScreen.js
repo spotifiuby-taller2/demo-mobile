@@ -28,7 +28,7 @@ const SongScreen = ({navigation, route}) => {
 
     getSong().then(s => {
       setSong(s);
-      navigation.setOptions({headerShown: true, headerTitle: s.title});
+      navigation.setOptions({headerShown: true, headerTitle: s?.title});
     });
   }, []);
 
