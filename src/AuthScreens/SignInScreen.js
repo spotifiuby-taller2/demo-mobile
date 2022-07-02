@@ -159,7 +159,7 @@ const SignInScreen = ({navigation}) => {
             </Button>
 
 
-            <SignInGoogleButton navigation={navigation}/>
+            <SignInGoogleButton navigation={navigation} setIsLoading={setIsLoading}/>
             <SignInWithBiometricButton navigation={navigation}/>
 
           </View>
