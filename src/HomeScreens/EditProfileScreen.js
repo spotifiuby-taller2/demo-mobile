@@ -197,6 +197,10 @@ const EditProfileScreen = ({navigation}) => {
       requestBody['subscription'] = profile.subscription;
     }
 
+    requestBody['isListener'] = route.params
+                                     .profile
+                                     .isListener;
+
     if (requestBody?.username === '') {
       alert("Campo nombre vacio.");
       return;
@@ -204,15 +208,16 @@ const EditProfileScreen = ({navigation}) => {
 
     postToGateway(requestBody, 'PATCH')
       .then(res => {
-          if (res.error === undefined) {
+          if (res.error !== undefined) {
             const userSubscription = requestBody?.subscription !== undefined ? requestBody.subscription : userState.subscription;
             const userName = requestBody?.username !== undefined ? requestBody.username : userState.username;
             setUserBasicInfo(userState.usertype, userName, userSubscription);
-            alert(res.status);
-            navigation.goBack();
+            alert(res.error);
+          } else {
+              alert(res.status);
           }
         }
-      )
+      ).then(res => navigation.goBack())
   }
 
   return (
@@ -270,7 +275,7 @@ const EditProfileScreen = ({navigation}) => {
                         />
                         <View style={{flexDirection: 'row', justifyContent: 'space-around'}}>
                           <Button disabled={buttonDisabled} mode='contained'
-                                  onPress={handleUpdateSubscription}>{'Actualizar'}</Button>
+                                  onPress={handleUpdateSubscription}>{'Aceptar'}</Button>
                           <Button mode='contained' style={{backgroundColor: 'red'}}
                                   onPress={hideModalSubscription}>Cancelar</Button>
                         </View>

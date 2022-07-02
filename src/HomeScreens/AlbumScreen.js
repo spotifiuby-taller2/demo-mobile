@@ -7,13 +7,17 @@ import LoaderScreen from "../Components/LoaderScreen";
 import defaultArtwork from "../../assets/album-placeholder.png";
 import FavouriteAlbumIconButton from "../Components/FavouriteAlbumIconButton";
 import { ScrollView } from "react-native-gesture-handler";
+import {getUser} from "../Services/UsersService";
+import UserChip from "../Components/UserChip";
 
 const AlbumScreen = ({navigation, route}) => {
   const albumId = route.params.albumId;
   const [album, setAlbum] = useState();
+  const [artists, setArtists] = useState([]);
 
   useEffect(() => {
     getAlbum(albumId).then(a => {
+      Promise.all(a.artists.map(getUser)).then(setArtists);
       setAlbum(a);
       navigation.setOptions({ headerShown: true, headerTitle: a.title });
     });
@@ -27,8 +31,10 @@ const AlbumScreen = ({navigation, route}) => {
 
     <View style={styles.container}>
       <ScrollView>
-      <Image source={album.link ? {uri: album.link} : defaultArtwork} style={styles.artwork}/>
-      <Text style={styles.title}>{album.title}</Text>
+        <Image source={album.link ? {uri: album.link} : defaultArtwork} style={styles.artwork}/>
+        <Text style={styles.title}>{artists.length > 1 ? 'Autores' : 'Autor'}</Text>
+        {artists.map((a, i) => <UserChip key={i} id={i} user={a} navigation={navigation}/>)}
+        <Text style={styles.title}>Canciones</Text>
 
         <SongList navigation={navigation}
                   songList={album.songs ?? []}/>
@@ -58,12 +64,13 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: 'bold',
     fontSize: 25,
-    alignSelf: 'center',
+    textAlign: 'left',
+    padding: 15,
   },
   artwork: {
-    marginTop: 20,
-    resizeMode: 'contain',
-    flex: 1,
+    width: undefined,
+    aspectRatio: 1,
+    flexGrow: 1,
   },
 });
 
