@@ -3,7 +3,7 @@ import {
     Text
 
 } from 'react-native';
-  
+
 import React, {useState, useEffect} from 'react'
 import { Button } from 'react-native-paper'
 import constants from "../others/constants"
@@ -17,7 +17,7 @@ const firebaseAuth = require("firebase/auth");
 import { useAuthUser } from '../context/AuthContext';
 import {postToGateway} from "../others/utils";
 
-  
+
 export default SignInWithBiometricButton = (props) =>{
 
       const [loading, setLoading] = useState(false);
@@ -26,14 +26,14 @@ export default SignInWithBiometricButton = (props) =>{
 
 
       /*
-      -- casos: 
-        *) el usuario ingresa por primera vez, si no existe ID 
+      -- casos:
+        *) el usuario ingresa por primera vez, si no existe ID
                 ==> se crea y la envia al backend donde se guarda
-        *) el usuario vuelve a ingresar, si existe ID 
+        *) el usuario vuelve a ingresar, si existe ID
                 ==> la envia al backend en el request.
                     ==>si el backend dice Ok, entonces entrar
                     ==>si el backend dice No Ok, ???
-      
+
       */
 
       const setBiometricId = async () =>{
@@ -82,6 +82,8 @@ export default SignInWithBiometricButton = (props) =>{
             return;
         }
 
+        props.setIsLoading(true);
+
         const biometricId = await SecureStore.getItemAsync('secure_biometricId');
 
         const {email, password} = utils.getBiometricalMailAndPassword(biometricId);
@@ -96,8 +98,9 @@ export default SignInWithBiometricButton = (props) =>{
                     if ( err.message !== "Firebase: Error (auth/user-not-found)."){
                         alert(err.message);
                     }
+                    props.setIsLoading(false);
                 });
-        
+
         if ( response === undefined ){
             sendCreateUserWithBiometricRequest(email,hashedPassword);
         }
@@ -108,7 +111,7 @@ export default SignInWithBiometricButton = (props) =>{
       }
 
       const sendSignInUserWithBiometricRequest = (email, password,response)=>{
-        
+
         const idToken = response._tokenResponse.idToken;
 
         const body = {
@@ -121,7 +124,7 @@ export default SignInWithBiometricButton = (props) =>{
         };
 
         postToGateway(body)
-        .then(res => 
+        .then(res =>
             {
                 if (res.error === undefined){
                     signIn(response._tokenResponse.idToken,
@@ -130,7 +133,7 @@ export default SignInWithBiometricButton = (props) =>{
                 else{
                     alert(res.error);
                 }
-            });
+            }).catch(() => props.setIsLoading(false));
       }
 
       const sendCreateUserWithBiometricRequest = (email, password) => {
@@ -152,10 +155,10 @@ export default SignInWithBiometricButton = (props) =>{
             style={{marginBottom: 10, borderRadius: 20}}
             onPress={handleAuthWithBiometric}
             >
-            
+
             <Text>Ingresar con biometria</Text>
           </Button>
         </View>
       )
     }
-  
+

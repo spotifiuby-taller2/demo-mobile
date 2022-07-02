@@ -160,7 +160,7 @@ const SignInScreen = ({navigation}) => {
 
 
             <SignInGoogleButton navigation={navigation} setIsLoading={setIsLoading}/>
-            <SignInWithBiometricButton navigation={navigation}/>
+            <SignInWithBiometricButton navigation={navigation} setIsLoading={setIsLoading}/>
 
           </View>
         </ScrollView>
