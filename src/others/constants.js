@@ -30,7 +30,7 @@ const PROFILE_PHOTO_URL = PROFILE_URL + "/photo";
 const PROFILE_USER_BASIC_INFO_URL = PROFILE_URL + "/basicinfo";
 const PROFILE_VERIFICATION_VIDEO_URL = PROFILE_URL + "/verification/video";
 const MUSICAL_PREF_URL = PROFILE_URL + "/musicalpref";
-const EDIT_PROFILE_URL = USERS_URL + "/editprodile";
+const EDIT_PROFILE_URL = USERS_URL + "/editprofile";
 const USER_ID_QUERY_PARAM = "userId=";
 const SONG_ID_PARAM = "songId=";
 const LISTENER_ID_QUERY_PARAM = "idListener=";
