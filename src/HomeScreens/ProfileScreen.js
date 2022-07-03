@@ -20,7 +20,7 @@ import usePlayerAction from "../Hooks/usePlayerAction";
 const ProfileScreen = ({navigation}) => {
 
   const route = useRoute();
-  const {userState} = useAuthUser();
+  const {userState, setUserBasicInfo} = useAuthUser();
   const [renderButton, setRenderButton] = useState(false);
   const [nameChanged, setNameChanged] = useState(false);
   const [nFollowers, setNFollowers] = useState(null);
@@ -120,6 +120,9 @@ const ProfileScreen = ({navigation}) => {
                   }
                 })
                 .catch(err => console.log(JSON.stringify(err)));
+            }
+            if (userId === userState.uid) {
+              setUserBasicInfo(res.userType, res.username, res.subscription);
             }
             setInitialized(true)
           }
