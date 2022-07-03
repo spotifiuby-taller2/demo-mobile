@@ -114,10 +114,8 @@ const ProfileScreen = ({navigation}) => {
               await getPlaylistsByOwner(userId)
                 .then(playlists => {
                   if (userState.uid === userId) {
-                    console.log(`All playlists: ${JSON.stringify(playlists)}`)
                     setPlaylists(playlists);
                   } else {
-                    console.log(`Public playlists: ${JSON.stringify(playlists)}`)
                     setPlaylists(playlists.filter(p => p.isCollaborative));
                   }
                 })
