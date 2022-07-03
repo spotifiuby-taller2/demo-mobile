@@ -133,6 +133,7 @@ const songToTrack = (song) => {
     title: song.title,
     artist: song.author,
     artwork: song.artwork ? {uri: song.artwork} : defaultArtwork,
+    subscription: song.subscription,
   };
 };
 

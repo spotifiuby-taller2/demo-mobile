@@ -56,6 +56,7 @@ const GenreScreen = ({navigation, route}) => {
       title: album.title,
       artwork: album.link ? {uri: album.link} : defaultArtwork,
       artist: album.artistNames ?? 'Unknown artists',
+      subscription: album.subscription,
     };
   };
 
