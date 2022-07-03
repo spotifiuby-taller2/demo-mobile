@@ -81,7 +81,7 @@ const MY_API_KEY = "13a6bcee5bd256b05e451bde47f45a68e8bee660777f349f15f493b28739
 const LISTENER = "listener";
 const ARTIST = "artist";
 
-const DUPLICATE_NOTIFICATION_ERROR = 'SequelizeUniqueConstraintError: llave duplicada viola restricción de unicidad «notifications_pkey»';
+const DUPLICATE_NOTIFICATION_ERROR = 'SequelizeUniqueConstraintError';
 const SS_TIMESTAMP_LABEL = (__DEV__) ? "signInTimestamp_dev" : "signInTimestamp_prod";
 const SS_ID_LABEL = (__DEV__) ? "userId_dev" : "userId_prod";
 const SS_TOKEN_LABEL = (__DEV__) ? "token_dev" : "token_prod";

@@ -31,8 +31,8 @@ const HomeScreen = ({navigation}) => {
 
         await postToGateway(body, 'POST')
           .then(res => {
-            if (res.error !== undefined && res.error !== constants.DUPLICATE_NOTIFICATION_ERROR) {
-              alert(res.error);
+            if (res.error !== undefined && ! res.error.includes(constants.DUPLICATE_NOTIFICATION_ERROR) ) {
+                console.log(res.error);
             }
           })
       });
