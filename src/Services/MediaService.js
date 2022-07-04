@@ -33,13 +33,6 @@ const getAllSongs = () => {
     .then(getBodyOrThrow);
 }
 
-const getFreeSongs = () => {
-  return requestToGateway('GET', constants.MEDIA_HOST + constants.SONGS_URL
-                                                      + "?"
-                                                      + constants.FREE_SONGS_PARAM)
-      .then(getBodyOrThrow);
-}
-
 const getAlbum = (albumId) => {
   return requestToGateway('GET', `${constants.MEDIA_HOST}${constants.ALBUM_URL}/${albumId}`)
     .then(getBodyOrThrow);
@@ -136,5 +129,5 @@ export {
   removeFavoriteAlbum,
   getGenreSongs,
   getGenreAlbums, createPlaylist, getPublicPlaylists, getPlaylist,
-  getPlaylistsByOwner, setPlaylistStatus, getFreeSongs
+  getPlaylistsByOwner, setPlaylistStatus
 };
