@@ -82,10 +82,11 @@ const GenreScreen = ({navigation, route}) => {
         renderItem={({item, index}) => <PlayableListItem id={index}
                                                          key={index}
                                                          playableItem={toPlayable(item)}
-                                                         play={() => player.playList(item.songs.map(songToTrack), 0)}
+                                                         play={() => player.playList(item.songs.filter(s => subscription[s.subscription].level <= subscription[userState.subscription].level).map(songToTrack), 0)}
                                                          moreInfoCallback={() => {
                                                            navigation.navigate('AlbumScreen', {
-                                                             albumId: item.id
+                                                             albumId: item.id,
+                                                             userSubscription: userState.subscription,
                                                            });
                                                          }}
         />

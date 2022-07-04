@@ -6,16 +6,19 @@ import TopList from "../Components/TopList";
 import genre from "../data/Genre"
 import GenreChip from "../Components/GenreChip";
 import usePlayerAction from "../Hooks/usePlayerAction";
-import {useFocusEffect} from "@react-navigation/native";
+import {useFocusEffect, useRoute} from "@react-navigation/native";
 import {getPublicPlaylists} from "../Services/MediaService";
 import PlayableListItem from "../Components/PlayableListItem";
 import {playlistToPlayable, songToTrack} from "../others/utils";
 import LoaderScreen from "../Components/LoaderScreen";
+import subscription from "../data/Subscription";
 
 const ContentScreen = ({navigation}) => {
 
   const [playlists, setPlaylists] = useState([]);
   const [loading, setLoading] = useState(true);
+  const route = useRoute();
+  const userSubscription = route.params.userSubscription;
 
   const player = usePlayerAction();
 
@@ -39,6 +42,7 @@ const ContentScreen = ({navigation}) => {
         title='Canciones'
         endpoint={constants.MEDIA_HOST + constants.SONGS_URL + "?"}
         navigation={navigation}
+        subscription={userSubscription}
         open='SongListScreen'
         songList={true}
         color={'#f5fcff'}
@@ -48,6 +52,7 @@ const ContentScreen = ({navigation}) => {
         title='Álbumes'
         endpoint={constants.MEDIA_HOST + constants.ALBUM_URL + "?"}
         navigation={navigation}
+        subscription={userSubscription}
         open='AlbumListScreen'
         albumList={true}
         color={'#f5fcff'}
@@ -60,7 +65,7 @@ const ContentScreen = ({navigation}) => {
           <PlayableListItem id={id}
                             key={id}
                             playableItem={playlistToPlayable(playlist)}
-                            play={() => player.playList(playlist.songs.map(songToTrack), 0)}
+                            play={() => player.playList(playlist.songs.filter(s => subscription[s.subscription].level <= subscription[userSubscription].level).map(songToTrack), 0)}
                             moreInfoCallback={() => navigation.navigate('PlaylistScreen', {playlistId: playlist.id})}
 
           />)}

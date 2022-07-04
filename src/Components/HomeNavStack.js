@@ -136,7 +136,7 @@ const HomeNavStack = () =>{
             <HomeStack.Screen name='ProfileScreen' component={ProfileScreen} initialParams={{uid: userState.uid}}/>
             <HomeStack.Screen name='ArtistListScreen' component={ArtistListScreen} />
             <HomeStack.Screen name='FavoriteArtistsListScreen' component={FavoriteArtistListScreen} />
-            <HomeStack.Screen name='ContentScreen' component={ContentScreen} />
+            <HomeStack.Screen name='ContentScreen' component={ContentScreen} initialParams={{userSubscription: userState.subscription}}/>
             <HomeStack.Screen name='CreateContentScreen' component={CreateContentScreen} />
             <HomeStack.Screen name='EditProfileScreen' component={EditProfileScreen}/>
             <HomeStack.Screen name='SongScreen' component={SongScreen} />

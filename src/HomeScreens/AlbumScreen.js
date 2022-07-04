@@ -9,9 +9,11 @@ import FavouriteAlbumIconButton from "../Components/FavouriteAlbumIconButton";
 import { ScrollView } from "react-native-gesture-handler";
 import {getUser} from "../Services/UsersService";
 import UserChip from "../Components/UserChip";
+import subscription from "../data/Subscription";
 
 const AlbumScreen = ({navigation, route}) => {
   const albumId = route.params.albumId;
+  const userSubscription = route.params.userSubscription;
   const [album, setAlbum] = useState();
   const [artists, setArtists] = useState([]);
 
@@ -37,7 +39,7 @@ const AlbumScreen = ({navigation, route}) => {
         <Text style={styles.title}>Canciones</Text>
 
         <SongList navigation={navigation}
-                  songList={album.songs ?? []}/>
+                  songList={album.songs.filter(s => subscription[s.subscription].level <= subscription[userSubscription].level) ?? []}/>
 
 
 

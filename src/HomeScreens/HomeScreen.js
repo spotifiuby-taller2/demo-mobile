@@ -19,6 +19,8 @@ const HomeScreen = ({navigation}) => {
 
   const {userState} = useAuthUser();
 
+  console.log(JSON.stringify(userState));
+
   useEffect(() => {
     const subcriptionNotificationReceived = Notifications.addNotificationReceivedListener(
       async notification => {
@@ -63,6 +65,7 @@ const HomeScreen = ({navigation}) => {
                 + userState.uid
                 + "&"}
                 navigation={navigation}
+                subscription={userState.subscription}
                 open='FavoriteSongListScreen'
                 songList={true}
                 color={'#f5fcff'}
@@ -76,6 +79,7 @@ const HomeScreen = ({navigation}) => {
                 + userState.uid
                 + "&"}
                 navigation={navigation}
+                subscription={userState.subscription}
                 open='FavoriteAlbumListScreen'
                 albumList={true}
                 color={'#f5fcff'}
