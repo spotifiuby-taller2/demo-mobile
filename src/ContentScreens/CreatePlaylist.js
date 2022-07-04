@@ -8,6 +8,7 @@ import {createPlaylist, getAllSongs} from "../Services/MediaService";
 import FilePicker from "../Components/FilePicker";
 import {uploadFile} from "../Services/CloudStorageService";
 import {useRoute} from "@react-navigation/native";
+import {useAuthUser} from "../context/AuthContext";
 
 const CreatePlaylist = ({navigation}) => {
   const route = useRoute();
@@ -18,6 +19,7 @@ const CreatePlaylist = ({navigation}) => {
   const [artworkFile, setArtworkFile] = useState();
   const [isPublic, setIsPublic] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const {userState} = useAuthUser();
 
   useEffect(()=>{
     navigation.setOptions({ headerShown: true, headerTitle: 'Crear Playlist' });
@@ -103,7 +105,7 @@ const CreatePlaylist = ({navigation}) => {
                         buttonText={"Seleccionar canciones"}
                         icon={'music-box-multiple-outline'}
                         renderElement={song => (<Text>{`${song.title} - ${song.author}`}</Text>)}
-                        getAllElements={getAllSongs}
+                        getAllElements={userState.subscription === "premium" ? getAllSongs : getFreeSongs}
                         elementFilter={filterSong}
                         elementCallback={{
                           add: song => setSongs({value: [...songs.value, song], error: null}),
