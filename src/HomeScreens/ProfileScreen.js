@@ -417,7 +417,7 @@ const ProfileScreen = ({navigation}) => {
                           <PlayableListItem id={id}
                                             key={id}
                                             playableItem={playlistToPlayable(playlist)}
-                                            play={() => player.playList(playlist.songs.map(songToTrack), 0)}
+                                            play={() => player.playList(playlist.songs.filter(s => subscription[s.subscription].level <= subscription[userState.subscription].level).map(songToTrack), 0)}
                                             moreInfoCallback={() => navigation.navigate('PlaylistScreen', {playlistId: playlist.id})}
 
                           />)}

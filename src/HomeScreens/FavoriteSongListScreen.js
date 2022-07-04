@@ -6,6 +6,7 @@ import {useAuthUser} from "../context/AuthContext";
 import {useFocusEffect} from "@react-navigation/native";
 import {songToTrack} from "../others/utils";
 import LoaderScreen from '../Components/LoaderScreen';
+import subscription from "../data/Subscription";
 
 const FavoriteSongListScreen = ({navigation}) => {
   const {userState} = useAuthUser();
@@ -31,7 +32,7 @@ const FavoriteSongListScreen = ({navigation}) => {
   if (loading) {
     return <LoaderScreen/>;
   }
-  return <SongList songList={songs} navigation={navigation}/>;
+  return <SongList songList={songs.filter(s => subscription[s.subscription].level <= subscription[userState.subscription].level)} navigation={navigation}/>;
 }
 
 export default FavoriteSongListScreen;
