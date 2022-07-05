@@ -49,7 +49,7 @@ const SignInWithBiometricButton = (props) => {
     const results = await LocalAuthentication.authenticateAsync();
 
     if (results.success) {
-      setBiometricId();
+      await setBiometricId();
     } else if (results.error === 'user_cancel'){
       return;
     } else {
