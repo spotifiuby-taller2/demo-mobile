@@ -39,7 +39,7 @@ const Menu = () => {
       <Drawer.Screen name='Perfil' component={ProfileScreen} initialParams={{uid: userState.uid}}/>
       <Drawer.Screen name='Usuarios' component={UserListScreen}/>
       <Drawer.Screen name='Artistas' component={ArtistListScreen}/>
-      <Drawer.Screen name='Contenido' component={ContentScreen}/>
+      <Drawer.Screen name='Contenido' component={ContentScreen} initialParams={{userSubscription: userState.subscription}}/>
       <Drawer.Screen name='Salir' component={ExitScreen}/>
     </Drawer.Navigator>
   )

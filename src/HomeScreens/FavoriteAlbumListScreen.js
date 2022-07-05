@@ -9,12 +9,14 @@ import {getArtists} from "../Services/UsersService";
 import {getFavoriteAlbums} from "../Services/MediaService";
 import {useAuthUser} from "../context/AuthContext";
 import LoaderScreen from '../Components/LoaderScreen';
+import subscription from "../data/Subscription";
 
 const toPlayable = album => {
   return {
     title: album.title,
     artwork: album.link ? {uri: album.link} : defaultArtwork,
     artist: album.artistNames ?? 'Unknown artists',
+    subscription: album.subscription,
   };
 };
 
@@ -67,10 +69,11 @@ const FavoriteAlbumListScreen = ({navigation}) => {
                     <PlayableListItem id={id}
                                       key={id}
                                       playableItem={toPlayable(album)}
-                                      play={() => player.playList(album.songs.map(songToTrack), 0)}
+                                      play={() => player.playList(album.songs.filter(s => subscription[s.subscription].level <= subscription[userState.subscription].level).map(songToTrack), 0)}
                                       moreInfoCallback={() => {
                                         navigation.navigate('AlbumScreen', {
-                                          albumId: album.id
+                                          albumId: album.id,
+                                          userSubscription: userState.subscription,
                                         });
                                       }}/>
                 )

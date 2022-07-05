@@ -208,13 +208,12 @@ const EditProfileScreen = ({navigation}) => {
 
     postToGateway(requestBody, 'PATCH')
       .then(res => {
-          if (res.error !== undefined) {
+        if (res.error === undefined) {
             const userSubscription = requestBody?.subscription !== undefined ? requestBody.subscription : userState.subscription;
             const userName = requestBody?.username !== undefined ? requestBody.username : userState.username;
             setUserBasicInfo(userState.usertype, userName, userSubscription);
-            alert(res.error);
           } else {
-              alert(res.status);
+            alert(res.error);
           }
         }
       ).then(res => navigation.goBack())

@@ -19,6 +19,8 @@ const HomeScreen = ({navigation}) => {
 
   const {userState} = useAuthUser();
 
+  console.log(JSON.stringify(userState));
+
   useEffect(() => {
     const subcriptionNotificationReceived = Notifications.addNotificationReceivedListener(
       async notification => {
@@ -31,8 +33,8 @@ const HomeScreen = ({navigation}) => {
 
         await postToGateway(body, 'POST')
           .then(res => {
-            if (res.error !== undefined && res.error !== constants.DUPLICATE_NOTIFICATION_ERROR) {
-              alert(res.error);
+            if (res.error !== undefined && ! res.error.includes(constants.DUPLICATE_NOTIFICATION_ERROR) ) {
+                console.log(res.error);
             }
           })
       });
@@ -63,6 +65,7 @@ const HomeScreen = ({navigation}) => {
                 + userState.uid
                 + "&"}
                 navigation={navigation}
+                subscription={userState.subscription}
                 open='FavoriteSongListScreen'
                 songList={true}
                 color={'#f5fcff'}
@@ -76,6 +79,7 @@ const HomeScreen = ({navigation}) => {
                 + userState.uid
                 + "&"}
                 navigation={navigation}
+                subscription={userState.subscription}
                 open='FavoriteAlbumListScreen'
                 albumList={true}
                 color={'#f5fcff'}

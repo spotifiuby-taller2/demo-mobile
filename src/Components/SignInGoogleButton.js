@@ -74,10 +74,14 @@ const SignInWithGoogle = (props) => {
 
   useEffect(() => {
     if (response?.type === 'success') {
+      props.setIsLoading(true);
       const {authentication} = response;
       handleSignInWithGoogle(authentication)
-        .catch(e => alert(`Error al autenticarse con google: ${JSON.stringify(e)}`));
-    }
+        .catch(e => {
+          props.setIsLoading(false);
+          alert(`Error al autenticarse con google: ${JSON.stringify(e)}`);
+        });
+    };
   }, [response]);
 
   return (

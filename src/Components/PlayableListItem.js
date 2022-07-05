@@ -4,6 +4,8 @@ import {
 } from 'react-native';
 import React from 'react'
 import {Text, IconButton} from 'react-native-paper';
+import subscription from "../data/Subscription";
+import MaterialCommunityIcon from "react-native-paper/src/components/MaterialCommunityIcon";
 
 const styles = StyleSheet.create(
   {
@@ -41,6 +43,14 @@ const styles = StyleSheet.create(
       marginHorizontal: 10,
       borderRadius: 10,
     },
+    titleContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      flexShrink: 1,
+      borderColor: 'black',
+      borderWidth: 2,
+      flexWrap: 'nowrap',
+    }
   }
 )
 
@@ -54,9 +64,9 @@ const PlayableListItem = ({playableItem, play, moreInfoCallback}) => (
         {playableItem.artistNames ? (<Text numberOfLines={1} style={styles.artist}>{playableItem.artistNames}</Text>) : null}
       </View>
     </View>
+    {(playableItem.subscription === subscription.premium.value) ? (<MaterialCommunityIcon size={30} name="star" color='#d4af37' direction="rtl"/>) : null}
     <IconButton
       icon='information'
-      style={{flex: 1, marginRight: 5}}
       size={30}
       onPress={() => moreInfoCallback()}
     />

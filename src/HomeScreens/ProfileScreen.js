@@ -20,7 +20,7 @@ import usePlayerAction from "../Hooks/usePlayerAction";
 const ProfileScreen = ({navigation}) => {
 
   const route = useRoute();
-  const {userState} = useAuthUser();
+  const {userState, setUserBasicInfo} = useAuthUser();
   const [renderButton, setRenderButton] = useState(false);
   const [nameChanged, setNameChanged] = useState(false);
   const [nFollowers, setNFollowers] = useState(null);
@@ -114,14 +114,15 @@ const ProfileScreen = ({navigation}) => {
               await getPlaylistsByOwner(userId)
                 .then(playlists => {
                   if (userState.uid === userId) {
-                    console.log(`All playlists: ${JSON.stringify(playlists)}`)
                     setPlaylists(playlists);
                   } else {
-                    console.log(`Public playlists: ${JSON.stringify(playlists)}`)
                     setPlaylists(playlists.filter(p => p.isCollaborative));
                   }
                 })
                 .catch(err => console.log(JSON.stringify(err)));
+            }
+            if (userId === userState.uid) {
+              setUserBasicInfo(res.userType, res.username, res.subscription);
             }
             setInitialized(true)
           }
@@ -416,7 +417,7 @@ const ProfileScreen = ({navigation}) => {
                           <PlayableListItem id={id}
                                             key={id}
                                             playableItem={playlistToPlayable(playlist)}
-                                            play={() => player.playList(playlist.songs.map(songToTrack), 0)}
+                                            play={() => player.playList(playlist.songs.filter(s => subscription[s.subscription].level <= subscription[userState.subscription].level).map(songToTrack), 0)}
                                             moreInfoCallback={() => navigation.navigate('PlaylistScreen', {playlistId: playlist.id})}
 
                           />)}

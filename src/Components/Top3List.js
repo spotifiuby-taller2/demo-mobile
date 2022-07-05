@@ -12,6 +12,7 @@ import defaultArtwork from "../../assets/album-placeholder.png";
 import SongList from "./SongList";
 import {containerStyle} from "../styles/genericStyles";
 import {getArtists} from "../Services/UsersService";
+import subscription from "../data/Subscription";
 
 
 const getAlbumsWithArtists = async (allAlbums) => {
@@ -41,6 +42,7 @@ const Top3List = props => {
       title: album.title,
       artwork: album.link ? {uri: album.link} : defaultArtwork,
       artist: album.artistNames ?? '',
+      subscription: album.subscription,
     };
   };
 
@@ -91,7 +93,7 @@ const Top3List = props => {
             }
             {
               props.songList &&
-              (<SongList navigation={props.navigation} songList={list}/>)
+              (<SongList navigation={props.navigation} songList={list.filter(s => subscription[s.subscription].level <= subscription[props.subscription].level)}/>)
             }
             {
               props.albumList && (
@@ -99,9 +101,9 @@ const Top3List = props => {
                   return (<PlayableListItem id={id}
                                             key={id}
                                             playableItem={toPlayable(album)}
-                                            play={() => player.playList(album.songs.map(songToTrack), 0)}
+                                            play={() => player.playList(album.songs.filter(s => subscription[s.subscription].level <= subscription[props.subscription]).map(songToTrack), 0)}
                                             moreInfoCallback={() => {
-                                              props.navigation.navigate('AlbumScreen', {albumId: album.id});
+                                              props.navigation.navigate('AlbumScreen', {albumId: album.id, userSubscription: propr.subscription});
                                             }}
                   />)
                 })
