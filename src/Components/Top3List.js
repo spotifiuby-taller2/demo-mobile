@@ -101,9 +101,9 @@ const Top3List = props => {
                   return (<PlayableListItem id={id}
                                             key={id}
                                             playableItem={toPlayable(album)}
-                                            play={() => player.playList(album.songs.filter(s => subscription[s.subscription].level <= subscription[props.subscription]).map(songToTrack), 0)}
+                                            play={() => player.playList(album.songs.filter(s => subscription[s.subscription].level <= subscription[props.subscription].level).map(songToTrack), 0)}
                                             moreInfoCallback={() => {
-                                              props.navigation.navigate('AlbumScreen', {albumId: album.id, userSubscription: propr.subscription});
+                                              props.navigation.navigate('AlbumScreen', {albumId: album.id, userSubscription: props.subscription});
                                             }}
                   />)
                 })
